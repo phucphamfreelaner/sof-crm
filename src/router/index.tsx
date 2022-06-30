@@ -8,7 +8,7 @@ import CustomerItem from "@/pages/customer/id";
 
 function Router() {
   return (
-    <BrowserRouter basename="crm">
+    <BrowserRouter basename="/app/crm">
       <Routes>
         <Route path="/" element={<RootPage />}>
           <Route path="customer" element={<Customer />}>
