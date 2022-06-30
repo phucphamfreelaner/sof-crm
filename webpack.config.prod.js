@@ -11,7 +11,14 @@ module.exports = (webpackConfigEnv, argv) => {
   });
 
   return merge(defaultConfig, {
-    externals: [],
+    externals: [
+      "react",
+      "react-dom",
+      "react-router-dom",
+      "react-router",
+      "@mui/material",
+      "@sof/mui",
+    ],
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src/"),

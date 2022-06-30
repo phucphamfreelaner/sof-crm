@@ -8,12 +8,15 @@ import {
 } from "react-redux";
 
 import { customerService, customerSlice } from "./customer";
+// import { demoService, demoSlice } from "./demo";
 
 // @ts-ignore
 const store: any = configureStore({
   reducer: combineReducers({
     customer: customerSlice.reducer,
     [customerService.reducerPath]: customerService.reducer,
+    // demo: demoSlice.reducer,
+    // [demoService.reducerPath]: demoService.reducer,
   }),
   devTools: true,
 });
