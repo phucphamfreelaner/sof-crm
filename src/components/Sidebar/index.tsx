@@ -11,8 +11,8 @@ function Sidebar(props: ISidebar) {
   return (
     <UI.CKBox w={width}>
       <UI.VStack alignItems="flex-start">
-        <Link to="product">Product</Link>
-        <Link to="product/1">Product 1</Link>
+        <Link to="customer">customer</Link>
+        <Link to="customer/1">customer 1</Link>
       </UI.VStack>
     </UI.CKBox>
   );

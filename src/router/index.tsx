@@ -2,19 +2,19 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import RootPage from "@/pages";
-import Product from "@/pages/product";
-import ProductList from "@/pages/product/list";
-import ProductsItem from "@/pages/product/id";
+import Customer from "@/pages/customer";
+import CustomerList from "@/pages/customer/list";
+import CustomerItem from "@/pages/customer/id";
 
 function Router() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<RootPage />}>
-          <Route path="product" element={<Product />}>
-            <Route index element={<ProductList />} />
-            <Route path=":productId" element={<ProductsItem />} />
-            <Route path="productNew" element={<ProductsItem />} />
+          <Route path="customer" element={<Customer />}>
+            <Route index element={<CustomerList />} />
+            <Route path=":customerId" element={<CustomerItem />} />
+            <Route path="customerNew" element={<CustomerItem />} />
           </Route>
         </Route>
       </Routes>
