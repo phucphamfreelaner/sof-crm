@@ -7,18 +7,18 @@ import {
   Provider,
 } from "react-redux";
 
-import { customerSlice, customerService } from "./customer";
-
-export const store = configureStore({
-  reducer: combineReducers({
-    [customerService.reducerPath]: customerService.reducer,
-    auth: customerSlice.reducer,
-  }),
-  devTools: true,
-});
+import { customerService, customerSlice } from "./customer";
 
 type AppDispatch = typeof store.dispatch;
 type RootState = ReturnType<typeof store.getState>;
+
+export const store: any = configureStore({
+  reducer: combineReducers({
+    customer: customerSlice.reducer,
+    [customerService.reducerPath]: customerService.reducer,
+  }),
+  devTools: true,
+});
 
 export const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector;
 export const useDispatch = () => useReduxDispatch<AppDispatch>();
