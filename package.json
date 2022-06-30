@@ -55,7 +55,7 @@
     "@chakra-ui/system": "1",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
-    "@mui/material": "^5.8.6",
+    "@mui/material": "5.8.2",
     "@reduxjs/toolkit": "^1.8.2",
     "@types/jest": "^27.0.1",
     "@types/react": "^17.0.19",

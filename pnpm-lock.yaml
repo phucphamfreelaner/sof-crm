@@ -13,7 +13,7 @@ specifiers:
   '@chakra-ui/system': '1'
   '@emotion/react': ^11.9.3
   '@emotion/styled': ^11.9.3
-  '@mui/material': ^5.8.6
+  '@mui/material': 5.8.2
   '@reduxjs/toolkit': ^1.8.2
   '@testing-library/jest-dom': ^5.14.1
   '@testing-library/react': ^12.0.0
@@ -58,7 +58,7 @@ dependencies:
   '@chakra-ui/system': 1.12.1_z5dax4wbbvawomfdisf4dzswiq
   '@emotion/react': 11.9.3_7xvhny4l7yi42slhiqkpgmpofm
   '@emotion/styled': 11.9.3_i64ertekxmxppn657xiekwuutq
-  '@mui/material': 5.8.6_mzmbzck2qunrnxjb6zwxgpnkmu
+  '@mui/material': 5.8.2_mzmbzck2qunrnxjb6zwxgpnkmu
   '@reduxjs/toolkit': 1.8.2_thunyjspsylz6iliyoygaytnnq
   '@types/jest': 27.5.2
   '@types/react': 17.0.47
@@ -1917,8 +1917,8 @@ packages:
     resolution: {integrity: sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==}
     dev: true
 
-  /@mui/base/5.0.0-alpha.87_nn45z5sr7igu7sfun6tiae5hx4:
-    resolution: {integrity: sha512-PuxRYrvG63Yj/UTwf4hSwZ5ClMv88iXHK+5hUV1CrG3kNPo6FFQiIFNRaNpRt/3nsXj6+xygJByNFA8m4Leetg==}
+  /@mui/base/5.0.0-alpha.83_nn45z5sr7igu7sfun6tiae5hx4:
+    resolution: {integrity: sha512-/bFcjiI36R2Epf2Y3BkZOIdxrz5uMLqOU4cRai4igJ8DHTRMZDeKbOff0SdvwJNwg8r6oPUyoeOpsWkaOOX9/g==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       '@types/react': ^17.0.0 || ^18.0.0
@@ -1941,8 +1941,8 @@ packages:
       react-is: 17.0.2
     dev: false
 
-  /@mui/material/5.8.6_mzmbzck2qunrnxjb6zwxgpnkmu:
-    resolution: {integrity: sha512-9fo5AiNHs+HY5ArMzsDMFrAmJSRw90y/qu81oDIszgK7Bfrm8GuI7Eb0mO6WADWPEyKOzOov/WZsm4G6jPEM4g==}
+  /@mui/material/5.8.2_mzmbzck2qunrnxjb6zwxgpnkmu:
+    resolution: {integrity: sha512-w/A1KG9Czf42uTyJOiRU5U1VullOz1R3xcsBvv3BtKCCWdVP+D6v/Yb8v0tJpIixMEbjeWzWGjotQBU0nd+yNA==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       '@emotion/react': ^11.5.0
@@ -1961,7 +1961,7 @@ packages:
       '@babel/runtime': 7.18.6
       '@emotion/react': 11.9.3_7xvhny4l7yi42slhiqkpgmpofm
       '@emotion/styled': 11.9.3_i64ertekxmxppn657xiekwuutq
-      '@mui/base': 5.0.0-alpha.87_nn45z5sr7igu7sfun6tiae5hx4
+      '@mui/base': 5.0.0-alpha.83_nn45z5sr7igu7sfun6tiae5hx4
       '@mui/system': 5.8.6_a4sljt3p5xdicvpavskhm4wgcy
       '@mui/types': 7.1.4_@types+react@17.0.47
       '@mui/utils': 5.8.6_react@17.0.2
@@ -1969,6 +1969,7 @@ packages:
       '@types/react-transition-group': 4.4.5
       clsx: 1.1.1
       csstype: 3.1.0
+      hoist-non-react-statics: 3.3.2
       prop-types: 15.8.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
