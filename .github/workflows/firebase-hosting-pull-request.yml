@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: npm i pnpm --location=global
-      - run: pnpm i
+      - run: pnpm i --frozen-lockfile
       - run: pnpm build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:

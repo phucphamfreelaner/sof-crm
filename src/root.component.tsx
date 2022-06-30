@@ -2,7 +2,7 @@ import Router from "@/router";
 import * as UI from "@/libs/ui";
 import { ReduxProvider } from "@/store";
 
-export default function Root() {
+export default function Root(props) {
   const theme = UI.createTheme();
   return (
     <ReduxProvider>
