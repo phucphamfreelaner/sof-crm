@@ -8,6 +8,8 @@ import {
 } from "react-redux";
 
 import { customerService, customerSlice } from "./customer";
+import { authService } from "./auth";
+
 // import { demoService, demoSlice } from "./demo";
 
 // @ts-ignore
@@ -15,6 +17,7 @@ const store: any = configureStore({
   reducer: combineReducers({
     customer: customerSlice.reducer,
     [customerService.reducerPath]: customerService.reducer,
+    [authService.reducerPath]: authService.reducer,
     // demo: demoSlice.reducer,
     // [demoService.reducerPath]: demoService.reducer,
   }),

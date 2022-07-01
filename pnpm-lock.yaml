@@ -13,6 +13,7 @@ specifiers:
   '@chakra-ui/system': '1'
   '@emotion/react': ^11.9.3
   '@emotion/styled': ^11.9.3
+  '@hookform/resolvers': ^2.9.3
   '@import-meta-env/babel': ^0.1.9
   '@import-meta-env/unplugin': ^0.1.8
   '@mui/material': 5.8.2
@@ -48,6 +49,7 @@ specifiers:
   qs: ^6.11.0
   react: ^17.0.2
   react-dom: ^17.0.2
+  react-hook-form: ^7.33.0
   react-hot-toast: ^2.2.0
   react-redux: ^8.0.2
   react-router-dom: 6.3.0
@@ -62,6 +64,7 @@ specifiers:
   webpack-config-single-spa-ts: ^4.0.0
   webpack-dev-server: ^4.0.0
   webpack-merge: ^5.8.0
+  yup: ^0.32.11
 
 dependencies:
   '@chakra-ui/image': 1.1.10_5qblqjf622vzzkdskgddihcrca
@@ -69,6 +72,7 @@ dependencies:
   '@chakra-ui/system': 1.12.1_z5dax4wbbvawomfdisf4dzswiq
   '@emotion/react': 11.9.3_7xvhny4l7yi42slhiqkpgmpofm
   '@emotion/styled': 11.9.3_i64ertekxmxppn657xiekwuutq
+  '@hookform/resolvers': 2.9.3_react-hook-form@7.33.0
   '@mui/material': 5.8.2_mzmbzck2qunrnxjb6zwxgpnkmu
   '@reduxjs/toolkit': 1.8.2_thunyjspsylz6iliyoygaytnnq
   axios: 0.27.2
@@ -76,11 +80,13 @@ dependencies:
   qs: 6.11.0
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
+  react-hook-form: 7.33.0_react@17.0.2
   react-hot-toast: 2.2.0_sfoxds7t5ydpegc3knd667wn6m
   react-redux: 8.0.2_itbvd6nzuoidgzct3pixmtsxhi
   react-router-dom: 6.3.0_sfoxds7t5ydpegc3knd667wn6m
   single-spa: 5.9.4
   single-spa-react: 4.6.1_cd6sxiipx7irxcp5iyvjfmb76a
+  yup: 0.32.11
 
 devDependencies:
   '@babel/core': 7.18.6
@@ -1673,6 +1679,14 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@hookform/resolvers/2.9.3_react-hook-form@7.33.0:
+    resolution: {integrity: sha512-Eqc/qgjq0VX/TU0a5D2O+yR/kAKflnjaVlYFC1wI2qBm/sgjKTXxv27ijLwHUoHPIF+MUkB/VuQqHJ5DcmbCww==}
+    peerDependencies:
+      react-hook-form: ^7.0.0
+    dependencies:
+      react-hook-form: 7.33.0_react@17.0.2
+    dev: false
 
   /@humanwhocodes/config-array/0.5.0:
     resolution: {integrity: sha512-FagtKFz74XrTl7y6HCzQpwDfXP0yhxe9lHLD1UZxjvZIcbyRz8zTFF/yYNfSfzU414eDwZ1SrO0Qvtyf+wFMQg==}
@@ -5642,7 +5656,6 @@ packages:
 
   /lodash/4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
-    dev: true
 
   /loose-envify/1.4.0:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
@@ -5789,6 +5802,10 @@ packages:
       arrify: 2.0.1
       minimatch: 3.1.2
     dev: true
+
+  /nanoclone/0.2.1:
+    resolution: {integrity: sha512-wynEP02LmIbLpcYw8uBKpcfF6dmg2vcpKqxeH5UcoKEYdExslsdUA4ugFauuaeYdTB76ez6gJW8XAZ6CgkXYxA==}
+    dev: false
 
   /nanoid/3.3.4:
     resolution: {integrity: sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==}
@@ -6197,6 +6214,10 @@ packages:
       react-is: 16.13.1
     dev: false
 
+  /property-expr/2.0.5:
+    resolution: {integrity: sha512-IJUkICM5dP5znhCckHSv30Q4b5/JA5enCtkRHYaOVOAocnH/1BQEYTC5NMfT3AVl/iXKdr3aqQbQn9DxyWknwA==}
+    dev: false
+
   /proxy-addr/2.0.7:
     resolution: {integrity: sha512-llQsMLSUDUPT44jdrU/O37qlnifitDP+ZwrmmZcoSKyLKvtZxpyV0n2/bD/N4tBAAZ/gJEdZU7KMraoK1+XYAg==}
     engines: {node: '>= 0.10'}
@@ -6268,6 +6289,15 @@ packages:
 
   /react-fast-compare/3.2.0:
     resolution: {integrity: sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==}
+    dev: false
+
+  /react-hook-form/7.33.0_react@17.0.2:
+    resolution: {integrity: sha512-h8XoeUHQs1Snx1s/sSvM+eVTSKkWQt8TcrbL+3/Rt5gugxpy4ueL5ZZkubffyNpUyyTz0qM0kwOi2c+JgGTjLA==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+    dependencies:
+      react: 17.0.2
     dev: false
 
   /react-hot-toast/2.2.0_sfoxds7t5ydpegc3knd667wn6m:
@@ -7137,6 +7167,10 @@ packages:
     engines: {node: '>=0.6'}
     dev: true
 
+  /toposort/2.0.2:
+    resolution: {integrity: sha512-0a5EOkAUp8D4moMi2W8ZF8jcga7BgZd91O/yabJCFY8az+XSzeGyTKs0Aoo897iV1Nj6guFq8orWDS96z91oGg==}
+    dev: false
+
   /totalist/1.1.0:
     resolution: {integrity: sha512-gduQwd1rOdDMGxFG1gEvhV88Oirdo2p+KjoYFU7k2g+i7n6AFFbDQ5kMPUsW0pNbfQsB/cwXvT1i4Bue0s9g5g==}
     engines: {node: '>=6'}
@@ -7774,3 +7808,16 @@ packages:
       y18n: 5.0.8
       yargs-parser: 20.2.9
     dev: true
+
+  /yup/0.32.11:
+    resolution: {integrity: sha512-Z2Fe1bn+eLstG8DRR6FTavGD+MeAwyfmouhHsIUgaADz8jvFKbO/fXc2trJKZg+5EBjh4gGm3iU/t3onKlXHIg==}
+    engines: {node: '>=10'}
+    dependencies:
+      '@babel/runtime': 7.18.6
+      '@types/lodash': 4.14.182
+      lodash: 4.17.21
+      lodash-es: 4.17.21
+      nanoclone: 0.2.1
+      property-expr: 2.0.5
+      toposort: 2.0.2
+    dev: false

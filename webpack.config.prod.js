@@ -12,14 +12,7 @@ module.exports = (webpackConfigEnv, argv) => {
   });
 
   return merge(defaultConfig, {
-    externals: [
-      "react",
-      "react-dom",
-      "react-router-dom",
-      "react-router",
-      "@mui/material",
-      "@sof/mui",
-    ],
+    externals: ["react", "react-dom", "@mui/material"],
     plugins: [
       new webpack.DefinePlugin({
         ENV: JSON.stringify("prod"),

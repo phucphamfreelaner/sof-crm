@@ -27,7 +27,7 @@ export const axiosBaseQuery =
 
     try {
       const result = await axios({
-        url: baseUrl + env("REACT_APP_API_BASE_PREFIX_PATH") + opts?.url,
+        url: baseUrl + opts?.url,
         method: opts?.method,
         data: opts?.data,
         paramsSerializer: (params) => qs.stringify(params, { encode: false }),
