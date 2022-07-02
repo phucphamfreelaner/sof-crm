@@ -5,6 +5,8 @@ import RootPage from "@/pages";
 import Customer from "@/pages/customer";
 import CustomerList from "@/pages/customer/list";
 import CustomerItem from "@/pages/customer/id";
+import Cohoi from "@/pages/cohoi";
+import CohoiList from "@/pages/cohoi/list";
 
 function Router() {
   return (
@@ -15,6 +17,9 @@ function Router() {
             <Route index element={<CustomerList />} />
             <Route path=":customerId" element={<CustomerItem />} />
             <Route path="list" element={<Customer />} />
+          </Route>
+          <Route path="cohoi" element={<Cohoi />}>
+            <Route path="list" element={<CohoiList />} />
           </Route>
         </Route>
       </Routes>
