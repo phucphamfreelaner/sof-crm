@@ -1,7 +1,8 @@
 import React from "react";
+import CohoiTableListContainer from "@/container/CohoiTableList";
 
-function CohoiListPage() {
-  return <div>CohoiListPage</div>;
+function ReactList() {
+  return <CohoiTableListContainer />;
 }
 
-export default CohoiListPage;
+export default ReactList;
