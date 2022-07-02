@@ -13,10 +13,10 @@ function Router() {
     <BrowserRouter basename="/app/crm">
       <Routes>
         <Route path="/" element={<RootPage />}>
-          <Route path="customer" element={<Customer />}>
+          <Route path="customers" element={<Customer />}>
             <Route index element={<CustomerList />} />
             <Route path=":customerId" element={<CustomerItem />} />
-            <Route path="customerNew" element={<CustomerItem />} />
+            <Route path="list" element={<Customer />} />
           </Route>
           <Route path="cohoi" element={<Cohoi />}>
             <Route path="list" element={<CohoiList />} />

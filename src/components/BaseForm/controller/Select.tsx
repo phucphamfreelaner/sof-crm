@@ -1,14 +1,15 @@
 import React from "react";
-import { TextField } from "@mui/material";
+import { MenuItem, TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { IBaseController } from "../types";
 
-export interface IInputController extends IBaseController {
+export interface ISelectController extends IBaseController {
   size?: "medium" | "small";
   textType?: "password" | "number" | "text";
+  selectOptions?: { value: any; label: string }[];
 }
 
-function InputForm(props: IInputController) {
+function InputForm(props: ISelectController) {
   const {
     isRequired,
     label,
@@ -20,12 +21,14 @@ function InputForm(props: IInputController) {
     field,
     size,
     textType = "text",
+    selectOptions = [],
   } = props;
 
   return (
     <TextField
       {...field}
       fullWidth
+      select
       variant="outlined"
       label={label}
       id={name}
@@ -36,11 +39,17 @@ function InputForm(props: IInputController) {
       required={isRequired}
       size={size}
       type={textType}
-    />
+    >
+      {selectOptions?.map((option) => (
+        <MenuItem key={option.value} value={option.value}>
+          {option.label}
+        </MenuItem>
+      ))}
+    </TextField>
   );
 }
 
-const InputController = (props: IInputController) => (
+const SelectController = (props: ISelectController) => (
   <Controller
     name={props.name || "name"}
     control={props.control}
@@ -48,4 +57,4 @@ const InputController = (props: IInputController) => (
   />
 );
 
-export default InputController;
+export default SelectController;

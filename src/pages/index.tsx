@@ -8,9 +8,9 @@ function Root() {
   return (
     <UI.HStack w="100vw" h="100vh" overflow="hidden" alignItems="flex-start">
       <UI.CKBox h="100%" bg="#e6e6e6">
-        <Sidebar width="250px" />
+        <Sidebar width="300px" />
       </UI.CKBox>
-      <UI.CKBox h="100%" bg="white" flexGrow={1}>
+      <UI.CKBox h="100%" bg="white" overflow="auto" flexGrow={1}>
         <Outlet />
       </UI.CKBox>
     </UI.HStack>
