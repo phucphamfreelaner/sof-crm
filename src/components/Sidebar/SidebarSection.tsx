@@ -1,5 +1,5 @@
 import { List, ListSubheader } from "@mui/material";
-import { DashboardSidebarItem } from "./dashboard-sidebar-item";
+import { DashboardSidebarItem } from "./SidebarItem";
 
 const renderNavItems = ({ depth = 0, items, path }) => (
   <List disablePadding>
@@ -24,7 +24,7 @@ const reduceChildRoutes = ({ acc, depth, item, path }) => {
         icon={item.icon}
         info={item.info}
         key={key}
-        open={partialMatch}
+        open
         path={item.path}
         title={item.title}
       >

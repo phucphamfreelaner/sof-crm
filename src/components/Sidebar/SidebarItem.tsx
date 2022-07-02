@@ -1,11 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Button, Collapse, ListItem } from "@mui/material";
-import {
-  HiChevronDown as ChevronDownIcon,
-  HiChevronRight as ChevronRightIcon,
-} from "react-icons/hi";
+import { HiChevronDown, HiChevronRight } from "react-icons/hi";
 import { Link } from "react-router-dom";
-export const DashboardSidebarItem = (props) => {
+
+export const DashboardSidebarItem = (props: any) => {
   const {
     active,
     children,
@@ -18,6 +16,7 @@ export const DashboardSidebarItem = (props) => {
     title,
     ...other
   } = props;
+
   const [open, setOpen] = useState(!!openProp);
 
   const handleToggle = () => {
@@ -46,9 +45,9 @@ export const DashboardSidebarItem = (props) => {
         <Button
           endIcon={
             !open ? (
-              <ChevronRightIcon fontSize="small" />
+              <HiChevronRight fontSize="small" />
             ) : (
-              <ChevronDownIcon fontSize="small" />
+              <HiChevronDown fontSize="small" />
             )
           }
           disableRipple

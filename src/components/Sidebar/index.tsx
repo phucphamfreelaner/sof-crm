@@ -1,52 +1,41 @@
-import React from "react";
-import { Link } from "react-router-dom";
 import * as UI from "@/libs/ui";
-import {
-  Box,
-  Button,
-  Chip,
-  Divider,
-  Drawer,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
-import { DashboardSidebarSection } from "./dashboard-sidebar-section";
+import { DashboardSidebarSection } from "./SidebarSection";
 import { HiUsers } from "react-icons/hi";
-import { background } from "@chakra-ui/system";
-import { red } from "@mui/material/colors";
+import { AiOutlineAppstore } from "react-icons/ai";
 
 interface ISidebar {
   width?: string | number;
+  onBackToAppLibs?: () => any;
 }
 
 const sections = [
   {
-    title: "Management",
-    icon: <HiUsers width={20} />,
+    title: "Quản lý Nghiệp vụ",
     items: [
       {
-        title: "Customers",
-        path: "/customers",
+        title: "Khách hàng",
+        icon: <HiUsers width={20} />,
+        path: "/",
         children: [
           {
             title: "DS Khách hàng",
-            path: "/customers/",
+            path: "/khach_hang",
           },
           {
             title: "Cơ hội",
-            path: "/cohoi/list",
+            path: "/co_hoi",
           },
           {
             title: "Báo giá",
-            path: "/baogia/list",
+            path: "/bao_gia",
           },
           {
             title: "Hợp đồng",
-            path: "/hopdong/list",
+            path: "/hop_dong",
           },
           {
             title: "Đánh giá",
-            path: "/customers/review",
+            path: "/danh_gia",
           },
         ],
       },
@@ -55,19 +44,32 @@ const sections = [
 ];
 
 function Sidebar(props: ISidebar) {
-  const { width = "200px" } = props;
+  const { width, onBackToAppLibs } = props;
+  const { spacing } = UI.useTheme();
   return (
-    // <UI.CKBox w={width}>
-    //   <UI.VStack alignItems="flex-start">
-    //     <Link to="customer">customer</Link>
-    //     <Link to="customer/1">customer 1</Link>
-    //   </UI.VStack>
-    // </UI.CKBox>
-    <Box sx={{ width, height: "100%", backgroundColor: "rgb(15 24 39)" }}>
+    <UI.VStack
+      alignItems="flex-start"
+      justifyContent="space-between"
+      sx={{ width, height: "100%", backgroundColor: "rgb(15 24 39)" }}
+    >
       {sections.map((section) => (
-        <DashboardSidebarSection key={section.title} path={""} {...section} />
+        <DashboardSidebarSection
+          key={section.title}
+          path={"/app/crm"}
+          {...section}
+        />
       ))}
-    </Box>
+      <UI.HStack p={spacing(2)} w="100%">
+        <UI.Button
+          onClick={onBackToAppLibs}
+          startIcon={<AiOutlineAppstore />}
+          variant="contained"
+          fullWidth
+        >
+          App Library
+        </UI.Button>
+      </UI.HStack>
+    </UI.VStack>
   );
 }
 
