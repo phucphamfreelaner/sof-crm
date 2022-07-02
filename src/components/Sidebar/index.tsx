@@ -19,11 +19,11 @@ const sections = [
         children: [
           {
             title: "DS Khách hàng",
-            path: "/khach_hang",
+            path: "/customers",
           },
           {
             title: "Cơ hội",
-            path: "/co_hoi",
+            path: "/cohoi/list",
           },
           {
             title: "Báo giá",
