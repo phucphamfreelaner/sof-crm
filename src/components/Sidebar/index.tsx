@@ -30,7 +30,7 @@ const sections = [
         children: [
           {
             title: "DS Khách hàng",
-            path: "/customers/list",
+            path: "/customers/",
           },
           {
             title: "Cơ hội",

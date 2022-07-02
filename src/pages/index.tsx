@@ -10,7 +10,7 @@ function Root() {
       <UI.CKBox h="100%" bg="#e6e6e6">
         <Sidebar width="300px" />
       </UI.CKBox>
-      <UI.CKBox h="100%" bg="white" flexGrow={1}>
+      <UI.CKBox h="100%" bg="white" overflow="auto" flexGrow={1}>
         <Outlet />
       </UI.CKBox>
     </UI.HStack>

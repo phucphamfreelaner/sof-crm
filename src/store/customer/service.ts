@@ -23,9 +23,9 @@ export const customerService = createApi({
     }),
     getCustomerList: builder.query({
       transformResponse: (response: any) => response?.data as ICustomer[],
-      query: ({ limit, page }) => ({
+      query: ({ limit, page, contact_name }) => ({
         method: "GET",
-        url: `/khach-hang?${limit}&page=${page}`,
+        url: `/khach-hang?limit=${limit}&page=${page}&with[]=user_tao&order_by[created_at]=desc&s[contact]=${contact_name}`,
       }),
     }),
   }),

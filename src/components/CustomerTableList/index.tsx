@@ -4,8 +4,6 @@ import {
   Box,
   Button,
   Checkbox,
-  IconButton,
-  Link,
   Table,
   TableBody,
   TableCell,
@@ -13,12 +11,15 @@ import {
   TablePagination,
   TableRow,
   Typography,
+  Stack,
 } from "@mui/material";
+import * as UI from "@/libs/ui";
 import { Scrollbar } from "@/components/ScrollBar";
-import numeral from "numeral";
-import { Link as NextLink } from "react-router-dom";
-import { ImArrowRight2 as ArrowRightIcon } from "react-icons/im";
-import { FaPencilAlt as PencilAltIcon } from "react-icons/fa";
+import Empty from "@/assets/images/no-data.png";
+import { GiCancel } from "react-icons/gi";
+import { AiFillCheckCircle } from "react-icons/ai";
+import { format } from "date-fns";
+import { isEmpty } from "lodash";
 
 const CustomerListTable = (props) => {
   const {
@@ -120,83 +121,93 @@ const CustomerListTable = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {customers.map((customer) => {
-              const isCustomerSelected = selectedCustomers.includes(
-                customer?.id
-              );
+            {customers &&
+              customers.map((customer) => {
+                const isCustomerSelected = selectedCustomers.includes(
+                  customer?.id
+                );
 
-              return (
-                <TableRow
-                  hover
-                  key={customer?.id}
-                  selected={isCustomerSelected}
-                >
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={isCustomerSelected}
-                      onChange={(event) =>
-                        handleSelectOneCustomer(event, customer?.id)
-                      }
-                      value={isCustomerSelected}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Box
-                      sx={{
-                        alignItems: "center",
-                        display: "flex",
-                      }}
-                    >
-                      <Avatar
-                        src={customer?.avatar}
+                return (
+                  <TableRow
+                    hover
+                    key={customer?.id}
+                    selected={isCustomerSelected}
+                  >
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        checked={isCustomerSelected}
+                        onChange={(event) =>
+                          handleSelectOneCustomer(event, customer?.id)
+                        }
+                        value={isCustomerSelected}
+                      />
+                    </TableCell>
+
+                    <TableCell>{customer?.code}</TableCell>
+
+                    <TableCell>
+                      <Box
                         sx={{
-                          height: 42,
-                          width: 42,
+                          alignItems: "center",
+                          display: "flex",
                         }}
                       >
-                        {getInitials(customer?.contact)}
-                      </Avatar>
-                      <Box sx={{ ml: 1 }}>
-                        <NextLink to="/dashboard/customers/1">
-                          <Link color="inherit" variant="subtitle2">
+                        <Avatar
+                          src={customer?.avatar}
+                          sx={{
+                            height: 42,
+                            width: 42,
+                          }}
+                        >
+                          {customer?.contact
+                            ? getInitials(customer?.contact)
+                            : "UD"}
+                        </Avatar>
+                        <Box sx={{ ml: 1 }}>
+                          <Typography fontSize={"15px"}>
                             {customer?.contact}
-                          </Link>
-                        </NextLink>
-                        <Typography color="textSecondary" variant="body2">
-                          {customer?.email}
-                        </Typography>
+                          </Typography>
+                        </Box>
                       </Box>
-                    </Box>
-                  </TableCell>
-                  <TableCell>
-                    {`${customer?.city}, ${customer?.state}, ${customer?.country}`}
-                  </TableCell>
-                  <TableCell>{customer?.totalOrders}</TableCell>
-                  <TableCell>
-                    <Typography color="success.main" variant="subtitle2">
-                      {numeral(customer?.totalAmountSpent).format(
-                        `${customer?.currency}0,0.00`
+                    </TableCell>
+
+                    <TableCell>{customer?.phone}</TableCell>
+
+                    <TableCell>{customer?.user_tao?.name}</TableCell>
+
+                    <TableCell sx={{ width: "150px" }}>
+                      {customer?.created_at
+                        ? format(new Date(customer?.created_at), "dd MMM yyyy")
+                        : undefined}
+                    </TableCell>
+
+                    <TableCell>{customer?.address}</TableCell>
+
+                    <TableCell>{customer?.totalOrders}</TableCell>
+
+                    <TableCell>{customer?.note}</TableCell>
+
+                    <TableCell>
+                      {customer?.da_cham_soc === 0 ? (
+                        <GiCancel color={"red"} />
+                      ) : (
+                        <AiFillCheckCircle color={"green"} />
                       )}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="right">
-                    <NextLink to="/dashboard/customers/1/edit">
-                      <IconButton component="a">
-                        <PencilAltIcon fontSize="small" />
-                      </IconButton>
-                    </NextLink>
-                    <NextLink to="/dashboard/customers/1">
-                      <IconButton component="a">
-                        <ArrowRightIcon fontSize="small" />
-                      </IconButton>
-                    </NextLink>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
           </TableBody>
         </Table>
       </Scrollbar>
+      {isEmpty(customers) && (
+        <UI.Center width={"full"} mt={20}>
+          <img width="90px" src={Empty} />
+          <Typography color="#8996a3" fontSize="18px" textAlign="center">
+            No data
+          </Typography>
+        </UI.Center>
+      )}
       <TablePagination
         component="div"
         count={customersCount}

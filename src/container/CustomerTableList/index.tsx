@@ -8,8 +8,6 @@ import {
   Divider,
   Grid,
   InputAdornment,
-  Tab,
-  Tabs,
   TextField,
   Typography,
 } from "@mui/material";
@@ -21,33 +19,7 @@ import {
   AiOutlineSearch,
 } from "react-icons/ai";
 import { useGetCustomerListQuery } from "@/store/customer";
-
-const tabs = [
-  {
-    label: "All",
-    value: "all",
-  },
-  {
-    value: "them_khach_hang",
-    label: "Thêm Khách Hàng",
-  },
-  {
-    value: "ds_khach_hang",
-    label: "DS Khách Hàng",
-  },
-  {
-    value: "ds_khach_hang_no_hop_dong",
-    label: "DS KH không có hợp đồng",
-  },
-  {
-    value: "ds_khach_hang_tam",
-    label: "DS KH Tạm",
-  },
-  {
-    value: "co_hoi",
-    label: "Cơ Hội",
-  },
-];
+import Loading from "@/components/Loading";
 
 const sortOptions = [
   {
@@ -145,24 +117,19 @@ const applyPagination = (customers, page, rowsPerPage) =>
 
 function CustomerTableListContainer() {
   const [customers, setCustomers] = useState([]);
-  const [filters, setFilters] = useState({
-    query: "",
-    hasAcceptedMarketing: undefined,
-    isProspect: undefined,
-    isReturning: undefined,
-  });
   const [sort, setSort] = useState(sortOptions[0].value);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentTab, setCurrentTab] = useState("all");
   const queryRef = useRef(null);
-
+  const [filters, setFilters] = useState({
+    query: "",
+  });
   const { data, isLoading, isFetching, refetch } = useGetCustomerListQuery({
     page: page,
     limit: rowsPerPage,
+    contact_name: filters?.query,
   });
-
-  console.log(data);
 
   // Usually query is done on backend with indexing solutions
   const filteredCustomers = applyFilters(customers, filters);
@@ -172,28 +139,20 @@ function CustomerTableListContainer() {
     page,
     rowsPerPage
   );
+  const handleQueryChange = (event) => {
+    event.preventDefault();
+    setFilters((prevState) => ({
+      ...prevState,
+      query: queryRef.current?.value,
+    }));
+  };
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
+    refetch();
   };
 
   const handleRowsPerPageChange = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-  };
-
-  const handleTabsChange = (event, value) => {
-    const updatedFilters = {
-      ...filters,
-      hasAcceptedMarketing: undefined,
-      isProspect: undefined,
-      isReturning: undefined,
-    };
-
-    if (value !== "all") {
-      updatedFilters[value] = true;
-    }
-
-    setFilters(updatedFilters);
-    setCurrentTab(value);
   };
 
   return (
@@ -241,19 +200,6 @@ function CustomerTableListContainer() {
             </Box>
           </Box>
           <Card>
-            <Tabs
-              indicatorColor="primary"
-              onChange={handleTabsChange}
-              scrollButtons="auto"
-              sx={{ px: 3 }}
-              textColor="primary"
-              value={currentTab}
-              variant="scrollable"
-            >
-              {tabs.map((tab) => (
-                <Tab key={tab.value} label={tab.label} value={tab.value} />
-              ))}
-            </Tabs>
             <Divider />
             <Box
               sx={{
@@ -266,9 +212,7 @@ function CustomerTableListContainer() {
             >
               <Box
                 component="form"
-                onSubmit={(val) => {
-                  console.log("helle");
-                }}
+                onSubmit={handleQueryChange}
                 sx={{
                   flexGrow: 1,
                   m: 1.5,
@@ -307,14 +251,18 @@ function CustomerTableListContainer() {
                 ))}
               </TextField> */}
             </Box>
-            <CustomerListTable
-              customers={data ? data : []}
-              customersCount={data ? data.length : 0}
-              onPageChange={handlePageChange}
-              onRowsPerPageChange={handleRowsPerPageChange}
-              rowsPerPage={rowsPerPage}
-              page={page}
-            />
+            {isFetching ? (
+              <Loading />
+            ) : (
+              <CustomerListTable
+                customers={data ? data : []}
+                customersCount={data ? data.length : 0}
+                onPageChange={handlePageChange}
+                onRowsPerPageChange={handleRowsPerPageChange}
+                rowsPerPage={rowsPerPage}
+                page={page}
+              />
+            )}
           </Card>
         </Container>
       </Box>
