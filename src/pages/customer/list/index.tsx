@@ -1,7 +1,8 @@
 import React from "react";
+import CustomerTableListContainer from "@/container/CustomerTableList";
 
 function ReactList() {
-  return <div>ReactList</div>;
+  return <CustomerTableListContainer />;
 }
 
 export default ReactList;
