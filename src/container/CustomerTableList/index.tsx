@@ -227,7 +227,7 @@ function CustomerTableListContainer() {
           <Box sx={{ mb: 4 }}>
             <Grid container justifyContent="space-between" spacing={3}>
               <Grid item>
-                <Typography variant="h4">Customers</Typography>
+                <Typography variant="h4">Danh sách khách hàng</Typography>
               </Grid>
               <Grid item>
                 <Button
@@ -288,7 +288,7 @@ function CustomerTableListContainer() {
                       </InputAdornment>
                     ),
                   }}
-                  placeholder="Search customers"
+                  placeholder="Tìm kiếm tên khách hàng"
                 />
               </Box>
               <TextField
