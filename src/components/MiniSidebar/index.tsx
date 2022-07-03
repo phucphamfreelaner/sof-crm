@@ -7,9 +7,11 @@ import SidebarItem from "./SidebarItem";
 function Minibar({
   onClickItem,
   onExpand,
+  onBackToAppLibs,
 }: {
   onClickItem?: (path: string) => any;
   onExpand?: () => any;
+  onBackToAppLibs?: () => any;
 }) {
   const { spacing } = UI.useTheme();
   return (
@@ -32,7 +34,7 @@ function Minibar({
         />
       </UI.VStack>
       <UI.Box p={spacing(2)}>
-        <UI.IconButton sx={{ background: "#5048e5" }} onClick={onExpand}>
+        <UI.IconButton onClick={onBackToAppLibs} sx={{ background: "#5048e5" }}>
           <AiOutlineAppstore color="white" fontSize="22px" />
         </UI.IconButton>
       </UI.Box>
