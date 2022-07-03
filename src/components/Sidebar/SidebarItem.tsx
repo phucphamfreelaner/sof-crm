@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+
 import { Box, Button, Collapse, ListItem } from "@mui/material";
 import { HiChevronDown, HiChevronRight } from "react-icons/hi";
-import { Link } from "react-router-dom";
 
 export const DashboardSidebarItem = (props: any) => {
   const {
