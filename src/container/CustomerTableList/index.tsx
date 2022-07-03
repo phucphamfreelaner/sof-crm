@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import CustomerListTable from "@/components/CustomerTableList";
 import {
   Box,
@@ -122,11 +122,12 @@ function CustomerTableListContainer() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentTab, setCurrentTab] = useState("all");
   const queryRef = useRef(null);
+  const [totalPages, setTotalPages] = useState(rowsPerPage * (page + 1) + 1);
   const [filters, setFilters] = useState({
     query: "",
   });
   const { data, isLoading, isFetching, refetch } = useGetCustomerListQuery({
-    page: page,
+    page: page + 1,
     limit: rowsPerPage,
     contact_name: filters?.query,
   });
@@ -145,15 +146,23 @@ function CustomerTableListContainer() {
       ...prevState,
       query: queryRef.current?.value,
     }));
+    setPage(0);
   };
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
-    refetch();
   };
 
   const handleRowsPerPageChange = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
   };
+
+  useEffect(() => {
+    if (data?.data?.length === 0 || data?.data?.length < rowsPerPage) {
+      setTotalPages(data?.data?.length);
+    } else {
+      setTotalPages(rowsPerPage * (page + 1) + 1);
+    }
+  }, [data]);
 
   return (
     <>
@@ -255,8 +264,8 @@ function CustomerTableListContainer() {
               <Loading />
             ) : (
               <CustomerListTable
-                customers={data ? data : []}
-                customersCount={data ? data.length : 0}
+                customers={data?.data}
+                customersCount={totalPages}
                 onPageChange={handlePageChange}
                 onRowsPerPageChange={handleRowsPerPageChange}
                 rowsPerPage={rowsPerPage}
