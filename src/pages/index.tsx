@@ -36,6 +36,7 @@ function Root() {
           />
         ) : (
           <MiniSidebar
+            onBackToAppLibs={() => navigateOutside("/app")}
             onExpand={() => {
               setOpen.setTrue();
               localStorage.setItem(LOCAL_KEY.CUSTOMER_MENU_EXPAND, "1");
