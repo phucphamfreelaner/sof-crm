@@ -9,6 +9,7 @@ import Cohoi from "@/pages/coHoi";
 import CohoiList from "@/pages/coHoi/list";
 import BaoGia from "@/pages/baoGia";
 import BaoGiaList from "@/pages/baoGia/list";
+import BaoGiaNew from "@/pages/baoGia/new";
 
 function Router() {
   return (
@@ -25,7 +26,7 @@ function Router() {
           </Route>
           <Route path="bao_gia" element={<BaoGia />}>
             <Route index element={<BaoGiaList />} />
-            <Route path="new" element={<CohoiList />} />
+            <Route path="new" element={<BaoGiaNew />} />
           </Route>
         </Route>
       </Routes>

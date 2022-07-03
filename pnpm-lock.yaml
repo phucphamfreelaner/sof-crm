@@ -27,6 +27,7 @@ specifiers:
   '@types/qs': ^6.9.7
   '@types/react': ^17.0.19
   '@types/react-dom': ^17.0.9
+  '@types/react-helmet': ^6.1.5
   '@types/react-redux': ^7.1.24
   '@types/systemjs': ^6.1.1
   '@types/testing-library__jest-dom': ^5.14.1
@@ -124,6 +125,7 @@ devDependencies:
   '@types/qs': 6.9.7
   '@types/react': 17.0.47
   '@types/react-dom': 17.0.17
+  '@types/react-helmet': 6.1.5
   '@types/react-redux': 7.1.24
   '@types/systemjs': 6.1.1
   '@types/testing-library__jest-dom': 5.14.5
@@ -2505,6 +2507,12 @@ packages:
     resolution: {integrity: sha512-VjnqEmqGnasQKV0CWLevqMTXBYG9GbwuE6x3VetERLh0cq2LTptFE73MrQi2S7GkKXCf2GgwItB/melLnxfnsg==}
     dependencies:
       '@types/react': 17.0.47
+
+  /@types/react-helmet/6.1.5:
+    resolution: {integrity: sha512-/ICuy7OHZxR0YCAZLNg9r7I9aijWUWvxaPR6uTuyxe8tAj5RL4Sw1+R6NhXUtOsarkGYPmaHdBDvuXh2DIN/uA==}
+    dependencies:
+      '@types/react': 17.0.47
+    dev: true
 
   /@types/react-is/17.0.3:
     resolution: {integrity: sha512-aBTIWg1emtu95bLTLx0cpkxwGW3ueZv71nE2YFBpL8k/z5czEW8yYpOo8Dp+UUAFAtKwNaOsh/ioSeQnWlZcfw==}

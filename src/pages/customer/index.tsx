@@ -1,11 +1,14 @@
-import React from "react";
+import { Helmet } from "react-helmet";
 import { Outlet } from "react-router-dom";
 
 function ProductRoot() {
   return (
-    <div>
+    <>
+      <Helmet>
+        <title>Khách hàng | CRM APP</title>
+      </Helmet>
       <Outlet />
-    </div>
+    </>
   );
 }
 
