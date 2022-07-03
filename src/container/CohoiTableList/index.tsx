@@ -167,6 +167,7 @@ function CohoiTableListContainer() {
               </Grid>
               <Grid item>
                 <Button
+                  size="small"
                   startIcon={<AiFillPlusCircle fontSize="small" />}
                   variant="contained"
                 >
