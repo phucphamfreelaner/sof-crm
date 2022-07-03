@@ -13,13 +13,13 @@ function Router() {
     <BrowserRouter basename="/app/crm">
       <Routes>
         <Route path="/" element={<RootPage />}>
-          <Route path="customers" element={<Customer />}>
+          <Route path="khach_hang" element={<Customer />}>
             <Route index element={<CustomerList />} />
             <Route path=":customerId" element={<CustomerItem />} />
             <Route path="list" element={<Customer />} />
           </Route>
-          <Route path="cohoi" element={<Cohoi />}>
-            <Route path="list" element={<CohoiList />} />
+          <Route path="co_hoi" element={<Cohoi />}>
+            <Route index element={<CohoiList />} />
           </Route>
         </Route>
       </Routes>
