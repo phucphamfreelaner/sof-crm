@@ -2,7 +2,7 @@ import { axiosBaseQuery } from "@/store/utils";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import toast from "react-hot-toast";
 import { LOCAL_KEY } from "@/constants";
-import { ICustomer } from "@/types";
+import { ICustomer, IGetCustomersList } from "@/types";
 
 export const customerService = createApi({
   baseQuery: axiosBaseQuery({
@@ -22,10 +22,10 @@ export const customerService = createApi({
       }),
     }),
     getCustomerList: builder.query({
-      transformResponse: (response: any) => response?.data as ICustomer[],
-      query: ({ limit, page, contact_name }) => ({
+      transformResponse: (response: any) => response as IGetCustomersList,
+      query: ({ limit, page, contact_name, order_by }) => ({
         method: "GET",
-        url: `/khach-hang?limit=${limit}&page=${page}&with[]=user_tao&order_by[created_at]=desc&s[contact]=${contact_name}`,
+        url: `/khach-hang?limit=${limit}&page=${page}&with[]=user_tao&s[contact]=${contact_name}&${order_by}`,
       }),
     }),
   }),

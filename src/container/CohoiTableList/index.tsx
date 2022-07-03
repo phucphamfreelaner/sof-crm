@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import CustomerListTable from "@/components/CustomerTableList";
+import React, { useState, useRef } from "react";
+import CohoiListTable from "@/components/CohoiTableList";
 import {
   Box,
   Button,
@@ -18,68 +18,37 @@ import {
   AiOutlineDownload,
   AiOutlineSearch,
 } from "react-icons/ai";
-import { useGetCustomerListQuery } from "@/store/customer";
+import { useGetCohoiListQuery } from "@/store/cohoi";
 import Loading from "@/components/Loading";
 
 const sortOptions = [
   {
-    label: "Mã khách hàng",
-    value: "code",
+    label: "Last update (newest)",
+    value: "updatedAt|desc",
   },
   {
-    label: "Cách gọi KH",
-    value: "contact",
+    label: "Last update (oldest)",
+    value: "updatedAt|asc",
   },
   {
-    label: "Di động",
-    value: "phone",
+    label: "Total orders (highest)",
+    value: "totalOrders|desc",
   },
   {
-    label: "NV nhập",
-    value: "created_by",
-  },
-  {
-    label: "Ngày nhập",
-    value: "created_at",
-  },
-  {
-    label: "Địa chỉ",
-    value: "address",
-  },
-  {
-    label: "Điện thoại bàn",
-    value: "phone2",
-  },
-  {
-    label: "Ghi chú",
-    value: "note",
-  },
-  {
-    label: "Chăm sóc",
-    value: "da_cham_soc",
+    label: "Total orders (lowest)",
+    value: "totalOrders|asc",
   },
 ];
 
-const orderOptions = [
-  {
-    label: "Desc",
-    value: "desc",
-  },
-  {
-    label: "Asc",
-    value: "asc",
-  },
-];
-
-const applyFilters = (customers, filters) =>
-  customers.filter((customer) => {
+const applyFilters = (cohois, filters) =>
+  cohois.filter((cohoi) => {
     if (filters.query) {
       let queryMatched = false;
       const properties = ["email", "name"];
 
       properties.forEach((property) => {
         if (
-          customer[property].toLowerCase().includes(filters.query.toLowerCase())
+          cohoi[property].toLowerCase().includes(filters.query.toLowerCase())
         ) {
           queryMatched = true;
         }
@@ -90,15 +59,15 @@ const applyFilters = (customers, filters) =>
       }
     }
 
-    if (filters.hasAcceptedMarketing && !customer.hasAcceptedMarketing) {
+    if (filters.hasAcceptedMarketing && !cohoi.hasAcceptedMarketing) {
       return false;
     }
 
-    if (filters.isProspect && !customer.isProspect) {
+    if (filters.isProspect && !cohoi.isProspect) {
       return false;
     }
 
-    if (filters.isReturning && !customer.isReturning) {
+    if (filters.isReturning && !cohoi.isReturning) {
       return false;
     }
 
@@ -125,10 +94,10 @@ const getComparator = (sortDir, sortBy) =>
     ? (a, b) => descendingComparator(a, b, sortBy)
     : (a, b) => -descendingComparator(a, b, sortBy);
 
-const applySort = (customers, sort) => {
+const applySort = (cohois, sort) => {
   const [sortBy, sortDir] = sort.split("|");
   const comparator = getComparator(sortDir, sortBy);
-  const stabilizedThis = customers.map((el, index) => [el, index]);
+  const stabilizedThis = cohois.map((el, index) => [el, index]);
 
   stabilizedThis.sort((a, b) => {
     const newOrder = comparator(a[0], b[0]);
@@ -143,76 +112,43 @@ const applySort = (customers, sort) => {
   return stabilizedThis.map((el) => el[0]);
 };
 
-const applyPagination = (customers, page, rowsPerPage) =>
-  customers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+const applyPagination = (cohois, page, rowsPerPage) =>
+  cohois.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
-function CustomerTableListContainer() {
-  const [customers, setCustomers] = useState([]);
+function CohoiTableListContainer() {
+  const [cohois, setCohois] = useState([]);
   const [sort, setSort] = useState(sortOptions[0].value);
-  const [orderBy, setOrderBy] = useState(orderOptions[0].value);
-
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentTab, setCurrentTab] = useState("all");
   const queryRef = useRef(null);
-  const [totalPages, setTotalPages] = useState(rowsPerPage * (page + 1) + 1);
   const [filters, setFilters] = useState({
     query: "",
-    order_by: "order_by[code]=desc",
   });
-  const { data, isLoading, isFetching, refetch } = useGetCustomerListQuery({
-    page: page + 1,
+  const { data, isLoading, isFetching, refetch } = useGetCohoiListQuery({
+    page: page,
     limit: rowsPerPage,
-    contact_name: filters?.query,
-    order_by: filters?.order_by,
   });
 
   // Usually query is done on backend with indexing solutions
-  const filteredCustomers = applyFilters(customers, filters);
-  const sortedCustomers = applySort(filteredCustomers, sort);
-  const paginatedCustomers = applyPagination(
-    sortedCustomers,
-    page,
-    rowsPerPage
-  );
+  const filteredCohois = applyFilters(cohois, filters);
+  const sortedCohois = applySort(filteredCohois, sort);
+  const paginatedCohois = applyPagination(sortedCohois, page, rowsPerPage);
   const handleQueryChange = (event) => {
     event.preventDefault();
     setFilters((prevState) => ({
       ...prevState,
       query: queryRef.current?.value,
     }));
-    setPage(0);
   };
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
+    refetch();
   };
 
   const handleRowsPerPageChange = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
   };
-
-  const handleSortChange = (event) => {
-    setSort(event.target.value);
-  };
-
-  const handleOrderChange = (event) => {
-    setOrderBy(event.target.value);
-  };
-
-  useEffect(() => {
-    setFilters((prevState) => ({
-      ...prevState,
-      order_by: `order_by[${sort}]=${orderBy}`,
-    }));
-  }, [orderBy, sort]);
-
-  useEffect(() => {
-    if (data?.data?.length === 0 || data?.data?.length < rowsPerPage) {
-      setTotalPages(data?.data?.length);
-    } else {
-      setTotalPages(rowsPerPage * (page + 1) + 1);
-    }
-  }, [data]);
 
   return (
     <>
@@ -227,7 +163,7 @@ function CustomerTableListContainer() {
           <Box sx={{ mb: 4 }}>
             <Grid container justifyContent="space-between" spacing={3}>
               <Grid item>
-                <Typography variant="h4">Danh sách khách hàng</Typography>
+                <Typography variant="h4">Cohois</Typography>
               </Grid>
               <Grid item>
                 <Button
@@ -288,47 +224,34 @@ function CustomerTableListContainer() {
                       </InputAdornment>
                     ),
                   }}
-                  placeholder="Tìm kiếm tên khách hàng"
+                  placeholder="Search cohois"
                 />
               </Box>
-              <TextField
+              {/* <TextField
                 label="Sort By"
                 name="sort"
-                onChange={handleSortChange}
+                onChange={()=>{console.log('Sort By')}}
                 select
                 SelectProps={{ native: true }}
                 sx={{ m: 1.5 }}
                 value={sort}
               >
                 {sortOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
+                  <option
+                    key={option.value}
+                    value={option.value}
+                  >
                     {option.label}
                   </option>
                 ))}
-              </TextField>
-
-              <TextField
-                label="Order By"
-                name="order"
-                onChange={handleOrderChange}
-                select
-                SelectProps={{ native: true }}
-                sx={{ m: 1.5 }}
-                value={orderBy}
-              >
-                {orderOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
+              </TextField> */}
             </Box>
             {isFetching ? (
               <Loading />
             ) : (
-              <CustomerListTable
-                customers={data?.data ? data.data : []}
-                customersCount={totalPages}
+              <CohoiListTable
+                cohois={data ? data : []}
+                cohoisCount={data ? data.length : 0}
                 onPageChange={handlePageChange}
                 onRowsPerPageChange={handleRowsPerPageChange}
                 rowsPerPage={rowsPerPage}
@@ -342,4 +265,4 @@ function CustomerTableListContainer() {
   );
 }
 
-export default CustomerTableListContainer;
+export default CohoiTableListContainer;

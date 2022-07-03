@@ -8,6 +8,7 @@ import {
 } from "react-redux";
 
 import { customerService, customerSlice } from "./customer";
+import { cohoiService, cohoiSlice } from "./cohoi";
 import { authService } from "./auth";
 
 // import { demoService, demoSlice } from "./demo";
@@ -16,7 +17,9 @@ import { authService } from "./auth";
 const store: any = configureStore({
   reducer: combineReducers({
     customer: customerSlice.reducer,
+    cohoi: cohoiSlice.reducer,
     [customerService.reducerPath]: customerService.reducer,
+    [cohoiService.reducerPath]: cohoiService.reducer,
     [authService.reducerPath]: authService.reducer,
     // demo: demoSlice.reducer,
     // [demoService.reducerPath]: demoService.reducer,

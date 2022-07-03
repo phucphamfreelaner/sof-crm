@@ -92,7 +92,11 @@ const CustomerListTable = (props) => {
         <Button size="small" sx={{ ml: 2 }}>
           Delete
         </Button>
-        <Button size="small" sx={{ ml: 2 }}>
+        <Button
+          size="small"
+          sx={{ ml: 2 }}
+          disabled={selectedCustomers.length !== 1}
+        >
           Edit
         </Button>
       </Box>
