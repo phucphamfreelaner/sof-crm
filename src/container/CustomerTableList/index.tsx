@@ -23,20 +23,51 @@ import Loading from "@/components/Loading";
 
 const sortOptions = [
   {
-    label: "Last update (newest)",
-    value: "updatedAt|desc",
+    label: "Mã khách hàng",
+    value: "code",
   },
   {
-    label: "Last update (oldest)",
-    value: "updatedAt|asc",
+    label: "Cách gọi KH",
+    value: "contact",
   },
   {
-    label: "Total orders (highest)",
-    value: "totalOrders|desc",
+    label: "Di động",
+    value: "phone",
   },
   {
-    label: "Total orders (lowest)",
-    value: "totalOrders|asc",
+    label: "NV nhập",
+    value: "created_by",
+  },
+  {
+    label: "Ngày nhập",
+    value: "created_at",
+  },
+  {
+    label: "Địa chỉ",
+    value: "address",
+  },
+  {
+    label: "Điện thoại bàn",
+    value: "phone2",
+  },
+  {
+    label: "Ghi chú",
+    value: "note",
+  },
+  {
+    label: "Chăm sóc",
+    value: "da_cham_soc",
+  },
+];
+
+const orderOptions = [
+  {
+    label: "Desc",
+    value: "desc",
+  },
+  {
+    label: "Asc",
+    value: "asc",
   },
 ];
 
@@ -118,6 +149,8 @@ const applyPagination = (customers, page, rowsPerPage) =>
 function CustomerTableListContainer() {
   const [customers, setCustomers] = useState([]);
   const [sort, setSort] = useState(sortOptions[0].value);
+  const [orderBy, setOrderBy] = useState(orderOptions[0].value);
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentTab, setCurrentTab] = useState("all");
@@ -125,11 +158,13 @@ function CustomerTableListContainer() {
   const [totalPages, setTotalPages] = useState(rowsPerPage * (page + 1) + 1);
   const [filters, setFilters] = useState({
     query: "",
+    order_by: "order_by[code]=desc",
   });
   const { data, isLoading, isFetching, refetch } = useGetCustomerListQuery({
     page: page + 1,
     limit: rowsPerPage,
     contact_name: filters?.query,
+    order_by: filters?.order_by,
   });
 
   // Usually query is done on backend with indexing solutions
@@ -155,6 +190,21 @@ function CustomerTableListContainer() {
   const handleRowsPerPageChange = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
   };
+
+  const handleSortChange = (event) => {
+    setSort(event.target.value);
+  };
+
+  const handleOrderChange = (event) => {
+    setOrderBy(event.target.value);
+  };
+
+  useEffect(() => {
+    setFilters((prevState) => ({
+      ...prevState,
+      order_by: `order_by[${sort}]=${orderBy}`,
+    }));
+  }, [orderBy, sort]);
 
   useEffect(() => {
     if (data?.data?.length === 0 || data?.data?.length < rowsPerPage) {
@@ -241,30 +291,43 @@ function CustomerTableListContainer() {
                   placeholder="Search customers"
                 />
               </Box>
-              {/* <TextField
+              <TextField
                 label="Sort By"
                 name="sort"
-                onChange={()=>{console.log('Sort By')}}
+                onChange={handleSortChange}
                 select
                 SelectProps={{ native: true }}
                 sx={{ m: 1.5 }}
                 value={sort}
               >
                 {sortOptions.map((option) => (
-                  <option
-                    key={option.value}
-                    value={option.value}
-                  >
+                  <option key={option.value} value={option.value}>
                     {option.label}
                   </option>
                 ))}
-              </TextField> */}
+              </TextField>
+
+              <TextField
+                label="Order By"
+                name="order"
+                onChange={handleOrderChange}
+                select
+                SelectProps={{ native: true }}
+                sx={{ m: 1.5 }}
+                value={orderBy}
+              >
+                {orderOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </TextField>
             </Box>
             {isFetching ? (
               <Loading />
             ) : (
               <CustomerListTable
-                customers={data?.data}
+                customers={data?.data ? data.data : []}
                 customersCount={totalPages}
                 onPageChange={handlePageChange}
                 onRowsPerPageChange={handleRowsPerPageChange}
