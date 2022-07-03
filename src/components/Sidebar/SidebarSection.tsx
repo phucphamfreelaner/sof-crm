@@ -58,6 +58,7 @@ export const DashboardSidebarSection = (props) => {
 
   return (
     <List
+      sx={{ width: "100%" }}
       subheader={
         <ListSubheader
           disableGutters
