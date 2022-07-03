@@ -163,7 +163,7 @@ function CohoiTableListContainer() {
           <Box sx={{ mb: 4 }}>
             <Grid container justifyContent="space-between" spacing={3}>
               <Grid item>
-                <Typography variant="h4">Cohois</Typography>
+                <Typography variant="h4">Danh sách cơ hội</Typography>
               </Grid>
               <Grid item>
                 <Button
