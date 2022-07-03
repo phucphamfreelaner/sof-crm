@@ -116,6 +116,7 @@ const CustomerListTable = (props) => {
               <TableCell>Mã Khách hàng</TableCell>
               <TableCell>Cách gọi KH</TableCell>
               <TableCell>Di động</TableCell>
+              <TableCell>Email</TableCell>
               <TableCell>NV nhập</TableCell>
               <TableCell>Ngày nhập</TableCell>
               <TableCell>Địa chỉ</TableCell>
@@ -176,6 +177,7 @@ const CustomerListTable = (props) => {
                     </TableCell>
 
                     <TableCell>{customer?.phone}</TableCell>
+                    <TableCell>{customer?.email}</TableCell>
 
                     <TableCell>{customer?.user_tao?.name}</TableCell>
 
