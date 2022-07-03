@@ -38,4 +38,5 @@ export type IFormControl = IBaseController &
     type: "input" | "select" | "label" | "checkbox" | "autocomplete";
     rowSpan?: number;
     colSpan?: number;
+    selectOptions?: { value: any; label: string }[];
   };

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import CustomerListTable from "@/components/CustomerTableList";
+import { debounce } from "lodash";
 import {
   Box,
   Button,
@@ -11,7 +12,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-
+import * as UI from "@/libs/ui";
 import {
   AiFillPlusCircle,
   AiOutlineUpload,
@@ -20,7 +21,10 @@ import {
 } from "react-icons/ai";
 import { useGetCustomerListQuery } from "@/store/customer";
 import Loading from "@/components/Loading";
-
+import BaseForm from "@/components/BaseForm";
+import { Collapse } from "@mui/material";
+import { IoMdArrowDropdown } from "react-icons/io";
+import { RiArrowUpSFill } from "react-icons/ri";
 const sortOptions = [
   {
     label: "Mã khách hàng",
@@ -147,11 +151,13 @@ const applyPagination = (customers, page, rowsPerPage) =>
   customers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
 function CustomerTableListContainer() {
+  const theme = UI.useTheme();
   const [customers, setCustomers] = useState([]);
   const [sort, setSort] = useState(sortOptions[0].value);
   const [orderBy, setOrderBy] = useState(orderOptions[0].value);
-
   const [page, setPage] = useState(0);
+  const [expanded, setExpanded] = useState(false);
+
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentTab, setCurrentTab] = useState("all");
   const queryRef = useRef(null);
@@ -159,12 +165,14 @@ function CustomerTableListContainer() {
   const [filters, setFilters] = useState({
     query: "",
     order_by: "order_by[code]=desc",
+    search: "",
   });
   const { data, isLoading, isFetching, refetch } = useGetCustomerListQuery({
     page: page + 1,
     limit: rowsPerPage,
-    contact_name: filters?.query,
+    code: filters?.query,
     order_by: filters?.order_by,
+    search: filters?.search,
   });
 
   // Usually query is done on backend with indexing solutions
@@ -183,6 +191,24 @@ function CustomerTableListContainer() {
     }));
     setPage(0);
   };
+
+  const handleOnchangeAdvanceSearch = (data) => {
+    let advance_search = "";
+    for (const key in data) {
+      if (data[key]) {
+        if (key === "page") {
+          setPage(data[key]);
+        } else {
+          advance_search += `&s[${key}]=${data[key]}`;
+        }
+      }
+    }
+    setFilters((prevState) => ({
+      ...prevState,
+      search: advance_search,
+    }));
+  };
+
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
   };
@@ -274,7 +300,6 @@ function CustomerTableListContainer() {
                 onSubmit={handleQueryChange}
                 sx={{
                   flexGrow: 1,
-                  m: 1.5,
                 }}
               >
                 <TextField
@@ -288,7 +313,7 @@ function CustomerTableListContainer() {
                       </InputAdornment>
                     ),
                   }}
-                  placeholder="Tìm kiếm tên khách hàng"
+                  placeholder="Tìm kiếm mã khách hàng"
                 />
               </Box>
               <TextField
@@ -322,6 +347,88 @@ function CustomerTableListContainer() {
                   </option>
                 ))}
               </TextField>
+              <UI.HStack sx={{ width: "100%" }} mt={16} mb={16}>
+                <Typography fontStyle={"italic"}>Tìm kiếm nâng cao</Typography>
+                <Box
+                  sx={{ cursor: "pointer" }}
+                  onClick={(val) => {
+                    setExpanded(!expanded);
+                  }}
+                >
+                  {expanded ? <RiArrowUpSFill /> : <IoMdArrowDropdown />}
+                </Box>
+              </UI.HStack>
+              <Collapse in={expanded}>
+                <BaseForm
+                  gap={theme.spacing(2)}
+                  templateColumns="repeat(4,1fr)"
+                  onWatchChange={debounce((val) => {
+                    handleOnchangeAdvanceSearch(val);
+                  }, 1000)}
+                  watchFields={[
+                    "contact",
+                    "phone",
+                    "email",
+                    "created_by",
+                    "phone2",
+                    "note",
+                    "da_cham_soc",
+                    "page",
+                  ]}
+                  fields={[
+                    {
+                      name: "contact",
+                      type: "input",
+                      label: "Tên khách hàng",
+                    },
+                    {
+                      name: "phone",
+                      type: "input",
+                      label: "Di động",
+                    },
+                    {
+                      name: "email",
+                      type: "input",
+                      label: "Email",
+                    },
+                    {
+                      name: "create_by",
+                      type: "input",
+                      label: "Nhân viên nhập",
+                    },
+                    {
+                      name: "phone2",
+                      type: "input",
+                      label: "Điện thoại bàn",
+                    },
+                    {
+                      name: "note",
+                      type: "input",
+                      label: "Ghi chú",
+                    },
+                    {
+                      type: "select",
+                      name: "da_cham_soc",
+                      label: "Chăm sóc",
+                      selectOptions: [
+                        {
+                          label: "Đã chăm sóc",
+                          value: "1",
+                        },
+                        {
+                          label: "Chưa chăm sóc",
+                          value: "0",
+                        },
+                      ],
+                    },
+                    {
+                      name: "page",
+                      type: "input",
+                      label: "Số trang",
+                    },
+                  ]}
+                ></BaseForm>
+              </Collapse>
             </Box>
             {isFetching ? (
               <Loading />
