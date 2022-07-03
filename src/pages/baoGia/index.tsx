@@ -1,6 +1,6 @@
-import React from "react";
 import { Outlet } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import { Box, Container } from "@mui/material";
 
 function CoHoiPage() {
   return (
@@ -8,7 +8,17 @@ function CoHoiPage() {
       <Helmet>
         <title>Báo giá | CRM APP</title>
       </Helmet>
-      <Outlet />
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          py: 4,
+        }}
+      >
+        <Container maxWidth="xl">
+          <Outlet />
+        </Container>
+      </Box>
     </>
   );
 }

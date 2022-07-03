@@ -3,8 +3,8 @@ export { Image } from "@chakra-ui/image";
 export {
   Box as CKBox,
   Flex,
-  Grid,
-  GridItem,
+  Grid as CKGrid,
+  GridItem as CKGridItem,
   Wrap,
   Container as CKContainer,
   Stack as CKStack,
