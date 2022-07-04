@@ -1,17 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import CustomerListTable from "@/components/CustomerTableList";
 import { debounce } from "lodash";
-import {
-  Box,
-  Button,
-  Card,
-  Container,
-  Divider,
-  Grid,
-  InputAdornment,
-  TextField,
-  Typography,
-} from "@mui/material";
 import * as UI from "@/libs/ui";
 import {
   AiFillPlusCircle,
@@ -77,7 +66,6 @@ const orderOptions = [
 
 function CustomerTableListContainer() {
   const theme = UI.useTheme();
-  const [customers, setCustomers] = useState([]);
   const [sort, setSort] = useState(sortOptions[0].value);
   const [orderBy, setOrderBy] = useState(orderOptions[0].value);
   const [page, setPage] = useState(0);
@@ -91,7 +79,7 @@ function CustomerTableListContainer() {
     order_by: "order_by[code]=desc",
     search: "",
   });
-  const { data, isLoading, isFetching, refetch } = useGetCustomerListQuery({
+  const { data, isFetching } = useGetCustomerListQuery({
     page: page + 1,
     limit: rowsPerPage,
     code: filters?.query,
@@ -158,52 +146,52 @@ function CustomerTableListContainer() {
 
   return (
     <>
-      <Box
+      <UI.Box
         component="main"
         sx={{
           flexGrow: 1,
           py: 8,
         }}
       >
-        <Container maxWidth="xl">
-          <Box sx={{ mb: 4 }}>
-            <Grid container justifyContent="space-between" spacing={3}>
-              <Grid item>
-                <Typography variant="h4">Danh sách khách hàng</Typography>
-              </Grid>
-              <Grid item>
-                <Button
+        <UI.Container maxWidth="xl">
+          <UI.Box sx={{ mb: 4 }}>
+            <UI.Grid container justifyContent="space-between" spacing={3}>
+              <UI.Grid item>
+                <UI.Typography variant="h4">Danh sách khách hàng</UI.Typography>
+              </UI.Grid>
+              <UI.Grid item>
+                <UI.Button
                   size="small"
                   startIcon={<AiFillPlusCircle fontSize="small" />}
                   variant="contained"
                 >
                   Add
-                </Button>
-              </Grid>
-            </Grid>
-            <Box
+                </UI.Button>
+              </UI.Grid>
+            </UI.Grid>
+            <UI.Box
               sx={{
                 m: -1,
                 mt: 3,
               }}
             >
-              <Button
+              <UI.Button
                 startIcon={<AiOutlineUpload fontSize="small" />}
                 sx={{ m: 1 }}
               >
                 Import
-              </Button>
-              <Button
+              </UI.Button>
+              <UI.Button
                 startIcon={<AiOutlineDownload fontSize="small" />}
                 sx={{ m: 1 }}
               >
                 Export
-              </Button>
-            </Box>
-          </Box>
-          <Card>
-            <Divider />
-            <Box
+              </UI.Button>
+            </UI.Box>
+          </UI.Box>
+          <UI.Card>
+            <UI.Divider />
+            <UI.Box
               sx={{
                 alignItems: "center",
                 display: "flex",
@@ -212,28 +200,28 @@ function CustomerTableListContainer() {
                 p: 3,
               }}
             >
-              <Box
+              <UI.Box
                 component="form"
                 onSubmit={handleQueryChange}
                 sx={{
                   flexGrow: 1,
                 }}
               >
-                <TextField
+                <UI.TextField
                   defaultValue=""
                   fullWidth
                   inputProps={{ ref: queryRef }}
                   InputProps={{
                     startAdornment: (
-                      <InputAdornment position="start">
+                      <UI.InputAdornment position="start">
                         <AiOutlineSearch fontSize="small" />
-                      </InputAdornment>
+                      </UI.InputAdornment>
                     ),
                   }}
                   placeholder="Tìm kiếm mã khách hàng"
                 />
-              </Box>
-              <TextField
+              </UI.Box>
+              <UI.TextField
                 label="Sort By"
                 name="sort"
                 onChange={handleSortChange}
@@ -247,9 +235,9 @@ function CustomerTableListContainer() {
                     {option.label}
                   </option>
                 ))}
-              </TextField>
+              </UI.TextField>
 
-              <TextField
+              <UI.TextField
                 label="Order By"
                 name="order"
                 onChange={handleOrderChange}
@@ -263,17 +251,19 @@ function CustomerTableListContainer() {
                     {option.label}
                   </option>
                 ))}
-              </TextField>
+              </UI.TextField>
               <UI.HStack sx={{ width: "100%" }} mt={16} mb={16}>
-                <Typography fontStyle={"italic"}>Tìm kiếm nâng cao</Typography>
-                <Box
+                <UI.Typography fontStyle={"italic"}>
+                  Tìm kiếm nâng cao
+                </UI.Typography>
+                <UI.Box
                   sx={{ cursor: "pointer" }}
                   onClick={(val) => {
                     setExpanded(!expanded);
                   }}
                 >
                   {expanded ? <RiArrowUpSFill /> : <IoMdArrowDropdown />}
-                </Box>
+                </UI.Box>
               </UI.HStack>
               <Collapse in={expanded}>
                 <BaseForm
@@ -346,7 +336,7 @@ function CustomerTableListContainer() {
                   ]}
                 ></BaseForm>
               </Collapse>
-            </Box>
+            </UI.Box>
             {isFetching ? (
               <Loading />
             ) : (
@@ -359,9 +349,9 @@ function CustomerTableListContainer() {
                 page={page}
               />
             )}
-          </Card>
-        </Container>
-      </Box>
+          </UI.Card>
+        </UI.Container>
+      </UI.Box>
     </>
   );
 }

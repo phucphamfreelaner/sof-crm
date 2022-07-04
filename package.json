@@ -2,7 +2,7 @@
   "name": "@sof/crm",
   "scripts": {
     "start": "webpack serve",
-    "dev": "webpack serve --env standalone",
+    "dev": "webpack serve --env standalone --port 3000",
     "build": "concurrently pnpm:build:*",
     "build:webpack": "webpack --mode=production --config webpack.config.prod.js",
     "analyze": "webpack --mode=production --env analyze",

@@ -1,7 +1,7 @@
-import React from "react";
+import CustomerDetailsContainer from "@/container/CustomerDetails";
 
-function ProductItem() {
-  return <div>ProductId</div>;
+function CustomerDetails() {
+  return <CustomerDetailsContainer />;
 }
 
-export default ProductItem;
+export default CustomerDetails;
