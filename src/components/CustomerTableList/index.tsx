@@ -20,6 +20,7 @@ import { GiCancel } from "react-icons/gi";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { format } from "date-fns";
 import { isEmpty } from "lodash";
+import { useNavigate } from "react-router-dom";
 
 const CustomerListTable = (props) => {
   const {
@@ -32,6 +33,8 @@ const CustomerListTable = (props) => {
     ...other
   } = props;
   const [selectedCustomers, setSelectedCustomers] = useState([]);
+
+  const navigate = useNavigate();
 
   // Reset selected customers when customers change
   useEffect(
@@ -137,13 +140,23 @@ const CustomerListTable = (props) => {
                     hover
                     key={customer?.id}
                     selected={isCustomerSelected}
+                    onClick={() => {
+                      navigate(`/khach_hang/${customer?.id}`);
+                    }}
+                    sx={{
+                      cursor: "pointer",
+                      tabIndex: -1,
+                    }}
                   >
-                    <TableCell padding="checkbox">
+                    <TableCell
+                      padding="checkbox"
+                      onClick={(event) => event.stopPropagation()}
+                    >
                       <Checkbox
                         checked={isCustomerSelected}
-                        onChange={(event) =>
-                          handleSelectOneCustomer(event, customer?.id)
-                        }
+                        onChange={(event) => {
+                          handleSelectOneCustomer(event, customer?.id);
+                        }}
                         value={isCustomerSelected}
                       />
                     </TableCell>

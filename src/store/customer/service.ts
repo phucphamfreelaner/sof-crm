@@ -15,10 +15,10 @@ export const customerService = createApi({
   reducerPath: "customerService",
   endpoints: (builder) => ({
     getCustomerById: builder.query({
-      transformResponse: (res) => res,
-      query: ({ tableSchemaName, id }) => ({
+      transformResponse: (res) => res?.data as ICustomer,
+      query: ({ id }) => ({
         method: "GET",
-        url: `/table/${tableSchemaName}/${id}`,
+        url: `/khach-hang/${id}`,
       }),
     }),
     getCustomerList: builder.query({

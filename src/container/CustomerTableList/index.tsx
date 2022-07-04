@@ -1,17 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import CustomerListTable from "@/components/CustomerTableList";
 import { debounce } from "lodash";
-import {
-  Box,
-  Button,
-  Card,
-  Container,
-  Divider,
-  Grid,
-  InputAdornment,
-  TextField,
-  Typography,
-} from "@mui/material";
 import * as UI from "@/libs/ui";
 import {
   AiFillPlusCircle,
@@ -66,100 +55,23 @@ const sortOptions = [
 
 const orderOptions = [
   {
-    label: "Desc",
+    label: "Giảm dần",
     value: "desc",
   },
   {
-    label: "Asc",
+    label: "Tăng dần",
     value: "asc",
   },
 ];
 
-const applyFilters = (customers, filters) =>
-  customers.filter((customer) => {
-    if (filters.query) {
-      let queryMatched = false;
-      const properties = ["email", "name"];
-
-      properties.forEach((property) => {
-        if (
-          customer[property].toLowerCase().includes(filters.query.toLowerCase())
-        ) {
-          queryMatched = true;
-        }
-      });
-
-      if (!queryMatched) {
-        return false;
-      }
-    }
-
-    if (filters.hasAcceptedMarketing && !customer.hasAcceptedMarketing) {
-      return false;
-    }
-
-    if (filters.isProspect && !customer.isProspect) {
-      return false;
-    }
-
-    if (filters.isReturning && !customer.isReturning) {
-      return false;
-    }
-
-    return true;
-  });
-
-const descendingComparator = (a, b, sortBy) => {
-  // When compared to something undefined, always returns false.
-  // This means that if a field does not exist from either element ('a' or 'b') the return will be 0.
-
-  if (b[sortBy] < a[sortBy]) {
-    return -1;
-  }
-
-  if (b[sortBy] > a[sortBy]) {
-    return 1;
-  }
-
-  return 0;
-};
-
-const getComparator = (sortDir, sortBy) =>
-  sortDir === "desc"
-    ? (a, b) => descendingComparator(a, b, sortBy)
-    : (a, b) => -descendingComparator(a, b, sortBy);
-
-const applySort = (customers, sort) => {
-  const [sortBy, sortDir] = sort.split("|");
-  const comparator = getComparator(sortDir, sortBy);
-  const stabilizedThis = customers.map((el, index) => [el, index]);
-
-  stabilizedThis.sort((a, b) => {
-    const newOrder = comparator(a[0], b[0]);
-
-    if (newOrder !== 0) {
-      return newOrder;
-    }
-
-    return a[1] - b[1];
-  });
-
-  return stabilizedThis.map((el) => el[0]);
-};
-
-const applyPagination = (customers, page, rowsPerPage) =>
-  customers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-
 function CustomerTableListContainer() {
   const theme = UI.useTheme();
-  const [customers, setCustomers] = useState([]);
   const [sort, setSort] = useState(sortOptions[0].value);
   const [orderBy, setOrderBy] = useState(orderOptions[0].value);
   const [page, setPage] = useState(0);
   const [expanded, setExpanded] = useState(false);
 
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [currentTab, setCurrentTab] = useState("all");
   const queryRef = useRef(null);
   const [totalPages, setTotalPages] = useState(rowsPerPage * (page + 1) + 1);
   const [filters, setFilters] = useState({
@@ -167,7 +79,7 @@ function CustomerTableListContainer() {
     order_by: "order_by[code]=desc",
     search: "",
   });
-  const { data, isLoading, isFetching, refetch } = useGetCustomerListQuery({
+  const { data, isFetching } = useGetCustomerListQuery({
     page: page + 1,
     limit: rowsPerPage,
     code: filters?.query,
@@ -175,14 +87,6 @@ function CustomerTableListContainer() {
     search: filters?.search,
   });
 
-  // Usually query is done on backend with indexing solutions
-  const filteredCustomers = applyFilters(customers, filters);
-  const sortedCustomers = applySort(filteredCustomers, sort);
-  const paginatedCustomers = applyPagination(
-    sortedCustomers,
-    page,
-    rowsPerPage
-  );
   const handleQueryChange = (event) => {
     event.preventDefault();
     setFilters((prevState) => ({
@@ -242,52 +146,52 @@ function CustomerTableListContainer() {
 
   return (
     <>
-      <Box
+      <UI.Box
         component="main"
         sx={{
           flexGrow: 1,
           py: 8,
         }}
       >
-        <Container maxWidth="xl">
-          <Box sx={{ mb: 4 }}>
-            <Grid container justifyContent="space-between" spacing={3}>
-              <Grid item>
-                <Typography variant="h4">Danh sách khách hàng</Typography>
-              </Grid>
-              <Grid item>
-                <Button
+        <UI.Container maxWidth="xl">
+          <UI.Box sx={{ mb: 4 }}>
+            <UI.Grid container justifyContent="space-between" spacing={3}>
+              <UI.Grid item>
+                <UI.Typography variant="h4">Danh sách khách hàng</UI.Typography>
+              </UI.Grid>
+              <UI.Grid item>
+                <UI.Button
                   size="small"
                   startIcon={<AiFillPlusCircle fontSize="small" />}
                   variant="contained"
                 >
                   Add
-                </Button>
-              </Grid>
-            </Grid>
-            <Box
+                </UI.Button>
+              </UI.Grid>
+            </UI.Grid>
+            <UI.Box
               sx={{
                 m: -1,
                 mt: 3,
               }}
             >
-              <Button
+              <UI.Button
                 startIcon={<AiOutlineUpload fontSize="small" />}
                 sx={{ m: 1 }}
               >
                 Import
-              </Button>
-              <Button
+              </UI.Button>
+              <UI.Button
                 startIcon={<AiOutlineDownload fontSize="small" />}
                 sx={{ m: 1 }}
               >
                 Export
-              </Button>
-            </Box>
-          </Box>
-          <Card>
-            <Divider />
-            <Box
+              </UI.Button>
+            </UI.Box>
+          </UI.Box>
+          <UI.Card>
+            <UI.Divider />
+            <UI.Box
               sx={{
                 alignItems: "center",
                 display: "flex",
@@ -296,28 +200,28 @@ function CustomerTableListContainer() {
                 p: 3,
               }}
             >
-              <Box
+              <UI.Box
                 component="form"
                 onSubmit={handleQueryChange}
                 sx={{
                   flexGrow: 1,
                 }}
               >
-                <TextField
+                <UI.TextField
                   defaultValue=""
                   fullWidth
                   inputProps={{ ref: queryRef }}
                   InputProps={{
                     startAdornment: (
-                      <InputAdornment position="start">
+                      <UI.InputAdornment position="start">
                         <AiOutlineSearch fontSize="small" />
-                      </InputAdornment>
+                      </UI.InputAdornment>
                     ),
                   }}
                   placeholder="Tìm kiếm mã khách hàng"
                 />
-              </Box>
-              <TextField
+              </UI.Box>
+              <UI.TextField
                 label="Sort By"
                 name="sort"
                 onChange={handleSortChange}
@@ -331,9 +235,9 @@ function CustomerTableListContainer() {
                     {option.label}
                   </option>
                 ))}
-              </TextField>
+              </UI.TextField>
 
-              <TextField
+              <UI.TextField
                 label="Order By"
                 name="order"
                 onChange={handleOrderChange}
@@ -347,17 +251,19 @@ function CustomerTableListContainer() {
                     {option.label}
                   </option>
                 ))}
-              </TextField>
+              </UI.TextField>
               <UI.HStack sx={{ width: "100%" }} mt={16} mb={16}>
-                <Typography fontStyle={"italic"}>Tìm kiếm nâng cao</Typography>
-                <Box
+                <UI.Typography fontStyle={"italic"}>
+                  Tìm kiếm nâng cao
+                </UI.Typography>
+                <UI.Box
                   sx={{ cursor: "pointer" }}
                   onClick={(val) => {
                     setExpanded(!expanded);
                   }}
                 >
                   {expanded ? <RiArrowUpSFill /> : <IoMdArrowDropdown />}
-                </Box>
+                </UI.Box>
               </UI.HStack>
               <Collapse in={expanded}>
                 <BaseForm
@@ -430,7 +336,7 @@ function CustomerTableListContainer() {
                   ]}
                 ></BaseForm>
               </Collapse>
-            </Box>
+            </UI.Box>
             {isFetching ? (
               <Loading />
             ) : (
@@ -443,9 +349,9 @@ function CustomerTableListContainer() {
                 page={page}
               />
             )}
-          </Card>
-        </Container>
-      </Box>
+          </UI.Card>
+        </UI.Container>
+      </UI.Box>
     </>
   );
 }
