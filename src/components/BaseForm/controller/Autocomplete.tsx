@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-empty-interface */
 import React from "react";
+import Autocomplete from "@mui/material/Autocomplete";
 import { Controller } from "react-hook-form";
 import { IBaseController } from "../types";
 import { debounce } from "lodash-es";
@@ -13,7 +13,7 @@ export interface IAutocompleteController extends IBaseController {
   autocompleteOptions?: { label: string; value: any }[];
 }
 
-function Autocomplete(props: IAutocompleteController) {
+function AutocompleteComponent(props: IAutocompleteController) {
   const {
     isRequired,
     label,
@@ -26,6 +26,7 @@ function Autocomplete(props: IAutocompleteController) {
     size,
     autocompleteOptions = [],
     onSearchChange,
+    isLoading,
   } = props;
 
   const onSearchChangeDebounce = debounce(
@@ -45,22 +46,25 @@ function Autocomplete(props: IAutocompleteController) {
         e.name = name;
         field.onChange(value);
       }}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          name={name}
-          label={label}
-          error={!!errorMessage}
-          helperText={helperText || errorMessage}
-          placeholder={placeholder}
-          disabled={isDisabled}
-          required={isRequired}
-          size={size}
-          onChange={(e) => {
-            onSearchChangeDebounce(e.target.value);
-          }}
-        />
-      )}
+      onInputChange={(__, newInputValue) => {
+        onSearchChangeDebounce(newInputValue);
+      }}
+      loading={isLoading}
+      renderInput={(params) => {
+        return (
+          <TextField
+            {...params}
+            name={name}
+            label={label}
+            error={!!errorMessage}
+            helperText={helperText || errorMessage}
+            placeholder={placeholder}
+            disabled={isDisabled}
+            required={isRequired}
+            size={size}
+          />
+        );
+      }}
     />
   );
 }
@@ -69,7 +73,7 @@ const AutocompleteController = (props: IAutocompleteController) => (
   <Controller
     name={props.name || "name"}
     control={props.control}
-    render={({ field }) => <Autocomplete {...props} field={field} />}
+    render={({ field }) => <AutocompleteComponent {...props} field={field} />}
   />
 );
 

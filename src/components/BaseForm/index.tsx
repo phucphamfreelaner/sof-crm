@@ -46,6 +46,8 @@ const BaseForm = React.forwardRef((props: IBaseForm, ref?: any) => {
     control,
     handleSubmit,
     formState: { errors, isDirty, dirtyFields },
+    setValue,
+    setFocus,
   } = useForm({
     defaultValues,
     resolver: yupResolver(yup.object().shape(schema)),
@@ -55,6 +57,8 @@ const BaseForm = React.forwardRef((props: IBaseForm, ref?: any) => {
     ref,
     () => ({
       handleSubmit,
+      setValue,
+      setFocus,
     }),
     [handleSubmit]
   );

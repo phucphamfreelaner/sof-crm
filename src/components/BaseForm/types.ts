@@ -1,6 +1,11 @@
 import React from "react";
-import type { IInputController } from "./controller/Input";
 import { CSSObject } from "@emotion/react";
+
+import type { IInputController } from "./controller/Input";
+import type { IAutocompleteController } from "./controller/Autocomplete";
+import type { ICheckboxController } from "./controller/Checkbox";
+import type { ISelectController } from "./controller/Select";
+import type { ILableController } from "./controller/Label";
 
 export interface IBaseForm {
   defaultValues?: any;
@@ -34,9 +39,12 @@ export interface IBaseController {
 }
 
 export type IFormControl = IBaseController &
-  IInputController & {
+  ILableController &
+  IInputController &
+  IAutocompleteController &
+  ICheckboxController &
+  ISelectController & {
     type: "input" | "select" | "label" | "checkbox" | "autocomplete";
     rowSpan?: number;
     colSpan?: number;
-    selectOptions?: { value: any; label: string }[];
   };
