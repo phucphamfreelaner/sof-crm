@@ -66,11 +66,11 @@ const sortOptions = [
 
 const orderOptions = [
   {
-    label: "Desc",
+    label: "Giảm dần",
     value: "desc",
   },
   {
-    label: "Asc",
+    label: "Tăng dần",
     value: "asc",
   },
 ];
