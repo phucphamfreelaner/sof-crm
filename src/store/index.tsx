@@ -9,9 +9,11 @@ import {
 
 import { customerService, customerSlice } from "./customer";
 import { cohoiService, cohoiSlice } from "./cohoi";
+import { congTyService } from "./congTy";
 import { authService } from "./auth";
-
-// import { demoService, demoSlice } from "./demo";
+import { loaiBaoGiaService } from "./loaiBaoGia";
+import { ngonNguService } from "./ngonNgu";
+import { loaiTienGiaService } from "./loaiTien";
 
 // @ts-ignore
 const store: any = configureStore({
@@ -21,8 +23,10 @@ const store: any = configureStore({
     [customerService.reducerPath]: customerService.reducer,
     [cohoiService.reducerPath]: cohoiService.reducer,
     [authService.reducerPath]: authService.reducer,
-    // demo: demoSlice.reducer,
-    // [demoService.reducerPath]: demoService.reducer,
+    [congTyService.reducerPath]: congTyService.reducer,
+    [loaiBaoGiaService.reducerPath]: loaiBaoGiaService.reducer,
+    [ngonNguService.reducerPath]: ngonNguService.reducer,
+    [loaiTienGiaService.reducerPath]: loaiTienGiaService.reducer,
   }),
   devTools: true,
 });

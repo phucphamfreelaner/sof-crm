@@ -1,11 +1,14 @@
 import React from "react";
-import { TextField } from "@mui/material";
+import { InputAdornment, TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { IBaseController } from "../types";
 
 export interface IInputController extends IBaseController {
   size?: "medium" | "small";
   textType?: "password" | "number" | "text";
+  multiline?: boolean;
+  maxRows?: number;
+  rows?: number;
 }
 
 function InputForm(props: IInputController) {
@@ -20,6 +23,9 @@ function InputForm(props: IInputController) {
     field,
     size,
     textType = "text",
+    multiline,
+    maxRows,
+    rows,
   } = props;
 
   return (
@@ -27,6 +33,9 @@ function InputForm(props: IInputController) {
       {...field}
       fullWidth
       variant="outlined"
+      multiline={multiline}
+      rows={rows}
+      maxRows={maxRows}
       label={label}
       id={name}
       error={!!errorMessage}
@@ -36,6 +45,17 @@ function InputForm(props: IInputController) {
       required={isRequired}
       size={size}
       type={textType}
+      InputProps={{
+        startAdornment: <InputAdornment position="start"></InputAdornment>,
+      }}
+      sx={{
+        ".MuiFormLabel-root": {
+          fontSize: "1.5rem",
+          background: "white",
+          top: "-5px",
+          padding: "0 4px",
+        },
+      }}
     />
   );
 }

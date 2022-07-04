@@ -2,9 +2,9 @@ import { axiosBaseQuery } from "@/store/utils";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import toast from "react-hot-toast";
 import { LOCAL_KEY } from "@/constants";
-import { ICohoi } from "@/types/cohoi";
+import { keys } from "lodash-es";
 
-export const cohoiService = createApi({
+export const loaiBaoGiaService = createApi({
   baseQuery: axiosBaseQuery({
     baseUrl: "https://apisf.interphase.vn/api",
     onError: (err) => {
@@ -12,16 +12,17 @@ export const cohoiService = createApi({
     },
     token: () => localStorage.getItem(LOCAL_KEY.TOKEN),
   }),
-  reducerPath: "cohoiService",
+  reducerPath: "loaiBaoGiaService",
   endpoints: (builder) => ({
-    getCohoiList: builder.query({
-      transformResponse: (response: any) => response?.data as ICohoi[],
-      query: ({ limit = 0, page = 1, name }) => ({
+    getLoaiBaoGiaList: builder.query({
+      transformResponse: (response: any) =>
+        keys(response)?.map?.((x: any) => ({ label: response[x], value: x })),
+      query: ({ name }) => ({
         method: "GET",
-        url: `/co-hoi?limit=${limit}&page=${page}&s[name]=${name}`,
+        url: `/cau-hinh/group/loai_bao_gia?s=${name}`,
       }),
     }),
   }),
 });
 
-export const { useGetCohoiListQuery, useLazyGetCohoiListQuery } = cohoiService;
+export const { useLazyGetLoaiBaoGiaListQuery } = loaiBaoGiaService;
