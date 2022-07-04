@@ -44,7 +44,6 @@ function BaoGaiNew() {
       data: loaiTienData,
       isLoading: isLoadingLoaiTien,
       isFetching: isFetchingLoaiTien,
-      isSuccess: isSuccessLoaiTien,
     },
   ] = useLazyGetLoaiTienGiaListQuery();
 
@@ -56,15 +55,33 @@ function BaoGaiNew() {
     searchLoaiTien({ name: " " });
   }, []);
 
-  const [key, setKey] = React.useState(1);
+  const [defaultValues, setDefaultValue] = React.useState<any>(null);
 
   React.useEffect(() => {
-    if (isSuccessLoaiTien) setKey((key) => key + 1);
-  }, [isSuccessLoaiTien]);
+    if (companyData && loaiTienData && coHoiData) {
+      setDefaultValue((value) => ({
+        ...value,
+        loai_tien: loaiTienData?.[0],
+        loai_bao_gia: loaiBaoGiaData?.[0],
+        name: {
+          label: coHoiData?.[0]?.name,
+          value: coHoiData?.[0]?.id,
+        },
+        company: {
+          label: companyData?.[0]?.ten,
+          value: companyData?.[0]?.id,
+        },
+        ngon_ngu: {
+          label: ngonNguData?.[0]?.ten,
+          value: ngonNguData?.[0]?.id,
+        },
+      }));
+    }
+  }, [companyData, loaiTienData, coHoiData, loaiBaoGiaData, ngonNguData]);
 
   return (
     <BaoGiaNewForm
-      key={key}
+      key={JSON.stringify(defaultValues)}
       isLoadingSearchCompany={isLoadingCompany || isFetchingCompany}
       companyData={companyData}
       onSearchCompany={(text) => searchCty({ name: text })}
@@ -80,9 +97,7 @@ function BaoGaiNew() {
       loaiTienData={loaiTienData}
       isLoadingLoaiTien={isLoadingLoaiTien || isFetchingLoaiTien}
       onSearchLoaiTien={(text) => searchLoaiTien({ name: text })}
-      defaultValues={{
-        loai_tien_key: loaiTienData?.[0],
-      }}
+      defaultValues={defaultValues}
     />
   );
 }

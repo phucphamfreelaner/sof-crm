@@ -58,7 +58,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
         defaultValues={defaultValues}
         fields={[
           {
-            name: "dieukhoan",
+            name: "dieu_khoan",
             label: "Các điều khoản khác",
             type: "input",
             colSpan: 3,
@@ -74,7 +74,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
             rows: 4,
           },
           {
-            name: "company_id",
+            name: "company",
             label: "Công ty",
             type: "autocomplete",
             colSpan: 2,
@@ -100,7 +100,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
             onSearchChange: onSearchCoHoi,
           },
           {
-            name: "loai_bao_gia_key",
+            name: "loai_bao_gia",
             label: "Loại báo giá",
             type: "autocomplete",
             colSpan: 2,
@@ -109,7 +109,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
             onSearchChange: onSearchLoaiBaoGia,
           },
           {
-            name: "ngon_ngu_key",
+            name: "ngon_ngu",
             label: "Ngôn ngữ",
             type: "autocomplete",
             colSpan: 2,
@@ -122,7 +122,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
             onSearchChange: onSearchNgonNgu,
           },
           {
-            name: "loai_tien_key",
+            name: "loai_tien",
             label: "Loại tiền",
             type: "autocomplete",
             colSpan: 2,
