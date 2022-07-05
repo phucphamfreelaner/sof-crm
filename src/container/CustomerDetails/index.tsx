@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as UI from "@/libs/ui";
 import { BsChevronDown } from "react-icons/bs";
 import { FaPencilAlt, FaSave } from "react-icons/fa";
@@ -10,6 +10,8 @@ import { useParams } from "react-router-dom";
 import Loading from "@/components/Loading";
 import BaseForm from "@/components/BaseForm";
 import { Collapse } from "@mui/material";
+import { useLazyGetQuocGiaListQuery } from "@/store/quocGia/service";
+import { useLazyGetThanhPhoListQuery } from "@/store/thanhPho/service";
 
 const getInitials = (name = "") =>
   name
@@ -23,10 +25,44 @@ const CustomerDetailsContainer = () => {
   const params = useParams();
   const theme = UI.useTheme();
   const [isNotEdit, setNotEdit] = useState(true);
-
+  const [defaultCompletionValue, setDefaultCompletionValue] =
+    useState<any>(null);
   const { data: customer, isFetching } = useGetCustomerByIdQuery({
     id: params?.customerId,
   });
+
+  const [
+    searchQuocGia,
+    {
+      data: quocGiaData,
+      isLoading: isLoadingQuocGia,
+      isFetching: isFetchingQuocGia,
+    },
+  ] = useLazyGetQuocGiaListQuery();
+
+  const [
+    searchThanhPho,
+    {
+      data: thanhPhoData,
+      isLoading: isLoadingThanhPho,
+      isFetching: isFetchingThanhPho,
+    },
+  ] = useLazyGetThanhPhoListQuery();
+
+  useEffect(() => {
+    searchQuocGia({ name: "" });
+    searchThanhPho({ name: "" });
+  }, []);
+
+  useEffect(() => {
+    if (quocGiaData && thanhPhoData) {
+      setDefaultCompletionValue((value) => ({
+        ...value,
+        quocGia: quocGiaData,
+        thanhPho: thanhPhoData,
+      }));
+    }
+  }, [quocGiaData, thanhPhoData]);
 
   let rowsData = [
     {
@@ -79,15 +115,33 @@ const CustomerDetailsContainer = () => {
     },
     {
       name: "thanhpho_key",
-      type: "input",
+      type: "autocomplete",
       label: "Tỉnh/TP",
-      defaultValues: customer?.thanhpho_key,
+      defaultValues: defaultCompletionValue?.thanhPho?.[customer?.thanhpho_key],
+      isLoading: isLoadingThanhPho || isFetchingThanhPho,
+      autocompleteOptions: thanhPhoData
+        ? Object.keys(thanhPhoData).map((key) => {
+            return { label: thanhPhoData[key], value: key };
+          })
+        : [],
+      onSearchChange: (text) => {
+        searchThanhPho({ name: text });
+      },
     },
     {
       name: "quocgia_key",
-      type: "input",
+      type: "autocomplete",
       label: "Quốc gia",
-      defaultValues: customer?.quocgia_key,
+      defaultValues: defaultCompletionValue?.quocGia?.[customer?.quocgia_key],
+      isLoading: isLoadingQuocGia || isFetchingQuocGia,
+      autocompleteOptions: quocGiaData
+        ? Object.keys(quocGiaData).map((key) => {
+            return { label: quocGiaData[key], value: key };
+          })
+        : [],
+      onSearchChange: (text) => {
+        searchQuocGia({ name: text });
+      },
     },
     {
       name: "zalo_number",
@@ -125,6 +179,11 @@ const CustomerDetailsContainer = () => {
     },
   ];
 
+  let defaultValues = rowsData.reduce(
+    (o, item) => ({ ...o, [item.name]: item.defaultValues }),
+    {}
+  );
+
   return (
     <>
       {isFetching ? (
@@ -142,13 +201,11 @@ const CustomerDetailsContainer = () => {
               <UI.Box sx={{ mb: 4 }}>
                 <Link
                   color="textPrimary"
-                  //component="a"
                   style={{
                     alignItems: "center",
                     display: "flex",
                   }}
                   to={"/khach_hang"}
-                  //onClick={()=>{navigate('app/crm/khach_hang')}}
                 >
                   <IoMdArrowRoundBack fontSize="md" />
                   <UI.Typography
@@ -170,7 +227,6 @@ const CustomerDetailsContainer = () => {
                   }}
                 >
                   <UI.Avatar
-                    //src={customer?.avatar}
                     sx={{
                       height: 64,
                       mr: 2,
@@ -237,21 +293,9 @@ const CustomerDetailsContainer = () => {
                   </Collapse>
                   <Collapse in={!isNotEdit}>
                     <BaseForm
-                      gap={theme.spacing(2)}
+                      gap={theme.spacing(4)}
                       templateColumns="repeat(2,1fr)"
-                      // onWatchChange={debounce((val) => {
-                      //     handleOnchangeAdvanceSearch(val);
-                      // }, 1000)}
-                      // watchFields={[
-                      //     "contact",
-                      //     "phone",
-                      //     "email",
-                      //     "created_by",
-                      //     "phone2",
-                      //     "note",
-                      //     "da_cham_soc",
-                      //     "page",
-                      // ]}
+                      defaultValues={defaultValues}
                       //@ts-ignore
                       fields={rowsData}
                     ></BaseForm>

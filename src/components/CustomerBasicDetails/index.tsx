@@ -52,7 +52,6 @@ const PropertyListItem = (props) => {
 
 export const CustomerBasicDetails = (props) => {
   const { rows } = props;
-  console.log(rows);
   const align = true ? "horizontal" : "vertical";
 
   return (
@@ -71,42 +70,6 @@ export const CustomerBasicDetails = (props) => {
             />
           );
         })}
-        {/* <PropertyListItem
-          align={align}
-          divider
-          label="Email"
-          value={email}
-        />
-        <PropertyListItem
-          align={align}
-          divider
-          label="Phone"
-          value={phone}
-        />
-        <PropertyListItem
-          align={align}
-          divider
-          label="Country"
-          value={country}
-        />
-        <PropertyListItem
-          align={align}
-          divider
-          label="State/Region"
-          value={state}
-        />
-        <PropertyListItem
-          align={align}
-          divider
-          label="Address 1"
-          value={state}
-        />
-        <PropertyListItem
-          align={align}
-          divider
-          label="Address 2"
-          value={address2}
-        /> */}
       </PropertyList>
       <UI.CardActions
         sx={{
