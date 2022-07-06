@@ -22,6 +22,7 @@ import {
   useLazyGetThanhPhoListQuery,
   useGetThanhPhoListQuery,
 } from "@/store/thanhPho/service";
+import { useLazyGetDanhXungListQuery } from "@/store/danhXung/service";
 import * as Yup from "yup";
 
 const getInitials = (name = "") =>
@@ -40,7 +41,6 @@ const CustomerDetailsContainer = () => {
     data: customer,
     isLoading: isLoadingCustomer,
     refetch,
-    isFetching: isFetchingCustomer,
   } = useGetCustomerByIdQuery({
     id: params?.customerId,
   });
@@ -67,12 +67,30 @@ const CustomerDetailsContainer = () => {
     },
   ] = useLazyGetThanhPhoListQuery();
 
+  const [
+    searchDanhXung,
+    {
+      data: danhXungData,
+      isLoading: isLoadingDanhXung,
+      isFetching: isFetchingDanhXung,
+    },
+  ] = useLazyGetDanhXungListQuery();
+
   let rowsData = [
     {
       name: "danh_xung",
-      type: "input",
+      type: "autocomplete",
       label: "Danh Xưng",
       defaultValues: customer?.danh_xung?.name,
+      isLoading: isLoadingDanhXung || isFetchingDanhXung,
+      autocompleteOptions: danhXungData
+        ? Object.keys(danhXungData).map((key) => {
+            return { label: danhXungData[key], value: key };
+          })
+        : [],
+      onSearchChange: (text) => {
+        searchDanhXung({ name: text });
+      },
     },
     {
       name: "first_name",
@@ -344,6 +362,7 @@ const CustomerDetailsContainer = () => {
                           ...value,
                           quocgia_key: value.quocgia_key.value,
                           thanhpho_key: value.thanhpho_key.value,
+                          danh_xung_key: value.danh_xung.value,
                         });
                       }}
                       schema={{
