@@ -18,7 +18,7 @@ export const cohoiService = createApi({
       transformResponse: (response: any) => response?.data as ICohoi[],
       query: ({ limit = 0, page = 1, name }) => ({
         method: "GET",
-        url: `/co-hoi?limit=${limit}&page=${page}&s[name]=${name}`,
+        url: `/co-hoi?with[]=khach_hang&with[]=tien_trinh&with[]=trang_thai&with[]=nhan_vien_tao&with[]=co_hoi_cskh&with[]=co_hoi_chua_cham_soc&limit=${limit}&page=${page}`,
       }),
     }),
   }),
