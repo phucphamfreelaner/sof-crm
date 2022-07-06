@@ -8,6 +8,7 @@ import type { ISelectController } from "./controller/Select";
 import type { ILableController } from "./controller/Label";
 
 export interface IBaseForm {
+  id?: string;
   defaultValues?: any;
   onSubmit?: (data: any) => any;
   schema?: any;

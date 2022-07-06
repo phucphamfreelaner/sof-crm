@@ -16,7 +16,7 @@ import {
 import * as UI from "@/libs/ui";
 import { Scrollbar } from "@/components/ScrollBar";
 import Empty from "@/assets/images/no-data.png";
-import { GiCancel } from "react-icons/gi";
+import { MdCancel } from "react-icons/md";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { format } from "date-fns";
 import { isEmpty } from "lodash";
@@ -207,11 +207,16 @@ const CustomerListTable = (props) => {
                     <TableCell>{customer?.note}</TableCell>
 
                     <TableCell>
-                      {customer?.da_cham_soc === 0 ? (
-                        <GiCancel color={"red"} />
-                      ) : (
-                        <AiFillCheckCircle color={"green"} />
-                      )}
+                      <UI.Center>
+                        {customer?.da_cham_soc === 0 ? (
+                          <MdCancel color={"red"} fontSize={"30px"} />
+                        ) : (
+                          <AiFillCheckCircle
+                            color={"green"}
+                            fontSize={"30px"}
+                          />
+                        )}
+                      </UI.Center>
                     </TableCell>
                   </TableRow>
                 );

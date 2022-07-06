@@ -21,6 +21,14 @@ export const customerService = createApi({
         url: `/khach-hang/${id}`,
       }),
     }),
+    updateCustomerByID: builder.mutation({
+      transformResponse: (res) => res,
+      query: ({ id, ...body }) => ({
+        method: "PUT",
+        url: `/khach-hang/${id}`,
+        data: body,
+      }),
+    }),
     getCustomerList: builder.query({
       transformResponse: (response: any) => response as IGetCustomersList,
       query: ({ limit, page, code, order_by, search }) => ({
@@ -31,5 +39,8 @@ export const customerService = createApi({
   }),
 });
 
-export const { useGetCustomerByIdQuery, useGetCustomerListQuery } =
-  customerService;
+export const {
+  useGetCustomerByIdQuery,
+  useGetCustomerListQuery,
+  useUpdateCustomerByIDMutation,
+} = customerService;

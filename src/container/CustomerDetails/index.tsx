@@ -5,13 +5,24 @@ import { FaPencilAlt, FaSave } from "react-icons/fa";
 import { CustomerBasicDetails } from "@/components/CustomerBasicDetails";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { Link } from "react-router-dom";
-import { useGetCustomerByIdQuery } from "@/store/customer/service";
+import {
+  useGetCustomerByIdQuery,
+  useUpdateCustomerByIDMutation,
+} from "@/store/customer/service";
 import { useParams } from "react-router-dom";
 import Loading from "@/components/Loading";
 import BaseForm from "@/components/BaseForm";
 import { Collapse } from "@mui/material";
-import { useLazyGetQuocGiaListQuery } from "@/store/quocGia/service";
-import { useLazyGetThanhPhoListQuery } from "@/store/thanhPho/service";
+import LoadingButton from "@mui/lab/LoadingButton";
+import {
+  useLazyGetQuocGiaListQuery,
+  useGetQuocGiaListQuery,
+} from "@/store/quocGia/service";
+import {
+  useLazyGetThanhPhoListQuery,
+  useGetThanhPhoListQuery,
+} from "@/store/thanhPho/service";
+import * as Yup from "yup";
 
 const getInitials = (name = "") =>
   name
@@ -24,13 +35,15 @@ const getInitials = (name = "") =>
 const CustomerDetailsContainer = () => {
   const params = useParams();
   const theme = UI.useTheme();
-  const [isNotEdit, setNotEdit] = useState(true);
-  const [defaultCompletionValue, setDefaultCompletionValue] =
-    useState<any>(null);
-  const { data: customer, isFetching } = useGetCustomerByIdQuery({
+  const [isView, setView] = useState(true);
+  const {
+    data: customer,
+    isLoading: isLoadingCustomer,
+    refetch,
+    isFetching: isFetchingCustomer,
+  } = useGetCustomerByIdQuery({
     id: params?.customerId,
   });
-
   const [
     searchQuocGia,
     {
@@ -40,6 +53,11 @@ const CustomerDetailsContainer = () => {
     },
   ] = useLazyGetQuocGiaListQuery();
 
+  const { data: defaultListQuocGiaData, isLoading: isLoadingQuocGiaDefault } =
+    useGetQuocGiaListQuery({ name: "" });
+  const { data: defaultListThanhPhoData, isLoading: isLoadingThanhPhoDefault } =
+    useGetThanhPhoListQuery({ name: "" });
+
   const [
     searchThanhPho,
     {
@@ -48,21 +66,6 @@ const CustomerDetailsContainer = () => {
       isFetching: isFetchingThanhPho,
     },
   ] = useLazyGetThanhPhoListQuery();
-
-  useEffect(() => {
-    searchQuocGia({ name: "" });
-    searchThanhPho({ name: "" });
-  }, []);
-
-  useEffect(() => {
-    if (quocGiaData && thanhPhoData) {
-      setDefaultCompletionValue((value) => ({
-        ...value,
-        quocGia: quocGiaData,
-        thanhPho: thanhPhoData,
-      }));
-    }
-  }, [quocGiaData, thanhPhoData]);
 
   let rowsData = [
     {
@@ -117,7 +120,7 @@ const CustomerDetailsContainer = () => {
       name: "thanhpho_key",
       type: "autocomplete",
       label: "Tỉnh/TP",
-      defaultValues: defaultCompletionValue?.thanhPho?.[customer?.thanhpho_key],
+      defaultValues: defaultListThanhPhoData?.[customer?.thanhpho_key],
       isLoading: isLoadingThanhPho || isFetchingThanhPho,
       autocompleteOptions: thanhPhoData
         ? Object.keys(thanhPhoData).map((key) => {
@@ -132,7 +135,7 @@ const CustomerDetailsContainer = () => {
       name: "quocgia_key",
       type: "autocomplete",
       label: "Quốc gia",
-      defaultValues: defaultCompletionValue?.quocGia?.[customer?.quocgia_key],
+      defaultValues: defaultListQuocGiaData?.[customer?.quocgia_key],
       isLoading: isLoadingQuocGia || isFetchingQuocGia,
       autocompleteOptions: quocGiaData
         ? Object.keys(quocGiaData).map((key) => {
@@ -184,9 +187,20 @@ const CustomerDetailsContainer = () => {
     {}
   );
 
+  const [updateCustomerByID, result] = useUpdateCustomerByIDMutation();
+
+  useEffect(() => {
+    if (result?.status == "fulfilled") {
+      setView(!isView);
+      refetch();
+    }
+  }, [result]);
+
   return (
     <>
-      {isFetching ? (
+      {isLoadingCustomer ||
+      isLoadingThanhPhoDefault ||
+      isLoadingQuocGiaDefault ? (
         <Loading />
       ) : (
         <UI.Box
@@ -233,7 +247,7 @@ const CustomerDetailsContainer = () => {
                       width: 64,
                     }}
                   >
-                    {getInitials(customer?.contact)}
+                    {getInitials(customer?.contact ? customer?.contact : "UK")}
                   </UI.Avatar>
                   <div>
                     <UI.Typography variant="h5">
@@ -257,10 +271,37 @@ const CustomerDetailsContainer = () => {
                   </div>
                 </UI.Grid>
                 <UI.Grid item sx={{ m: -1 }}>
-                  <UI.Button
+                  {isView ? (
+                    <UI.Button
+                      component="a"
+                      endIcon={<FaPencilAlt fontSize="small" />}
+                      sx={{ m: 1 }}
+                      variant="outlined"
+                      onClick={() => {
+                        setView(!isView);
+                      }}
+                    >
+                      {"Edit"}
+                    </UI.Button>
+                  ) : (
+                    <LoadingButton
+                      loading={result?.status == "pending"}
+                      loadingPosition="end"
+                      form="vinhnd"
+                      type="submit"
+                      endIcon={<FaSave fontSize="small" />}
+                      sx={{ m: 1 }}
+                      variant="outlined"
+                    >
+                      {"Save"}
+                    </LoadingButton>
+                  )}
+                  {/* <UI.Button
+                    id="base-form"
                     component="a"
+                    type="submit"
                     endIcon={
-                      isNotEdit ? (
+                      isView ? (
                         <FaPencilAlt fontSize="small" />
                       ) : (
                         <FaSave fontSize="small" />
@@ -269,11 +310,11 @@ const CustomerDetailsContainer = () => {
                     sx={{ m: 1 }}
                     variant="outlined"
                     onClick={() => {
-                      setNotEdit(!isNotEdit);
+                      setView(!isView);
                     }}
                   >
-                    {isNotEdit ? "Edit" : "Save"}
-                  </UI.Button>
+                    {isView ? "Edit" : "Save"}
+                  </UI.Button> */}
                   <UI.Button
                     endIcon={<BsChevronDown fontSize="small" />}
                     sx={{ m: 1 }}
@@ -288,14 +329,28 @@ const CustomerDetailsContainer = () => {
             <UI.Box sx={{ mt: 3 }}>
               <UI.Grid container spacing={3}>
                 <UI.Grid item xs={12}>
-                  <Collapse in={isNotEdit}>
+                  <Collapse in={isView}>
                     <CustomerBasicDetails rows={rowsData} />
                   </Collapse>
-                  <Collapse in={!isNotEdit}>
+                  <Collapse in={!isView}>
                     <BaseForm
+                      id="vinhnd"
                       gap={theme.spacing(4)}
                       templateColumns="repeat(2,1fr)"
                       defaultValues={defaultValues}
+                      onSubmit={(value) => {
+                        updateCustomerByID({
+                          ...customer,
+                          ...value,
+                          quocgia_key: value.quocgia_key.value,
+                          thanhpho_key: value.thanhpho_key.value,
+                        });
+                      }}
+                      schema={{
+                        contact: Yup.string().required(
+                          "Cách gọi khách hàng không được để trống"
+                        ),
+                      }}
                       //@ts-ignore
                       fields={rowsData}
                     ></BaseForm>

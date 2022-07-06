@@ -25,6 +25,7 @@ const CONTROLLER: any = {
 
 const BaseForm = React.forwardRef((props: IBaseForm, ref?: any) => {
   const {
+    id,
     defaultValues,
     onSubmit = () => {},
     schema,
@@ -68,7 +69,7 @@ const BaseForm = React.forwardRef((props: IBaseForm, ref?: any) => {
   }, [isDirty, JSON.stringify(dirtyFields)]);
 
   return (
-    <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
+    <form id={id} style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
       <Grid
         width="100%"
         templateColumns={templateColumns || "repeat(1, 1fr)"}

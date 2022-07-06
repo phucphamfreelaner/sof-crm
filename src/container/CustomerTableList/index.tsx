@@ -262,7 +262,9 @@ function CustomerTableListContainer() {
                     setExpanded(!expanded);
                   }}
                 >
-                  {expanded ? <RiArrowUpSFill /> : <IoMdArrowDropdown />}
+                  <UI.IconButton aria-label="show" size="large">
+                    {expanded ? <RiArrowUpSFill /> : <IoMdArrowDropdown />}
+                  </UI.IconButton>
                 </UI.Box>
               </UI.HStack>
               <Collapse in={expanded}>
