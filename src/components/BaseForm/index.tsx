@@ -14,13 +14,16 @@ import SelectController from "./controller/Select";
 import LabelController from "./controller/Label";
 import AutocompleteController from "./controller/Autocomplete";
 import CheckboxController from "./controller/Checkbox";
-
+import ArrayFieldsController from "./controller/ArrayFields";
+import IconButtonController from "./controller/IconButton";
 const CONTROLLER: any = {
   input: InputController,
   select: SelectController,
   checkbox: CheckboxController,
   autocomplete: AutocompleteController,
   label: LabelController,
+  "array-fields": ArrayFieldsController,
+  "icon-button": IconButtonController,
 };
 
 const BaseForm = React.forwardRef((props: IBaseForm, ref?: any) => {

@@ -12,7 +12,7 @@ import { IBaseController } from "../types";
 import { VStack } from "@chakra-ui/layout";
 
 export interface ICheckboxController extends IBaseController {
-  size?: "medium" | "small";
+  size?: "medium" | "small" | "large";
   textType?: "password" | "number" | "text";
 }
 
