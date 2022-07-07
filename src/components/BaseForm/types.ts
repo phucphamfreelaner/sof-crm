@@ -6,6 +6,8 @@ import type { IAutocompleteController } from "./controller/Autocomplete";
 import type { ICheckboxController } from "./controller/Checkbox";
 import type { ISelectController } from "./controller/Select";
 import type { ILableController } from "./controller/Label";
+import type { IArrayFieldsController } from "./controller/ArrayFields";
+import type { IIconButtonFieldController } from "./controller/IconButton";
 
 export interface IBaseForm {
   id?: string;
@@ -44,8 +46,17 @@ export type IFormControl = IBaseController &
   IInputController &
   IAutocompleteController &
   ICheckboxController &
-  ISelectController & {
-    type: "input" | "select" | "label" | "checkbox" | "autocomplete";
+  ISelectController &
+  IArrayFieldsController &
+  IIconButtonFieldController & {
+    type:
+      | "input"
+      | "select"
+      | "label"
+      | "checkbox"
+      | "autocomplete"
+      | "array-fields"
+      | "icon-button";
     rowSpan?: number;
     colSpan?: number;
   };

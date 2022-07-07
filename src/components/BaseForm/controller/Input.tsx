@@ -50,7 +50,7 @@ function InputForm(props: IInputController) {
       }}
       sx={{
         ".MuiFormLabel-root": {
-          fontSize: "1.5rem",
+          fontSize: "1.3rem",
           background: "white",
           top: "-5px",
           padding: "0 4px",
