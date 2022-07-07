@@ -1,6 +1,16 @@
 import { ICustomer } from "..";
 
-export interface ICohoi {
+export interface ICoHoiList {
+  per_page: string;
+  current_page: number;
+  next_page_url: string;
+  prev_page_url?: any;
+  from: number;
+  to: number;
+  data: ICoHoi[];
+}
+
+export interface ICoHoi {
   id: number;
   code: string;
   co_hoi_chua_cham_soc?: any;
