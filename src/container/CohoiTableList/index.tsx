@@ -1,17 +1,7 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import CohoiListTable from "@/components/CohoiTableList";
-import {
-  Box,
-  Button,
-  Card,
-  Container,
-  Divider,
-  Grid,
-  InputAdornment,
-  TextField,
-  Typography,
-} from "@mui/material";
-
+import { debounce } from "lodash";
+import * as UI from "@/libs/ui";
 import {
   AiFillPlusCircle,
   AiOutlineUpload,
@@ -20,184 +10,189 @@ import {
 } from "react-icons/ai";
 import { useGetCohoiListQuery } from "@/store/cohoi";
 import Loading from "@/components/Loading";
+import BaseForm from "@/components/BaseForm";
+import { Collapse } from "@mui/material";
+import { IoMdArrowDropdown } from "react-icons/io";
+import { RiArrowUpSFill } from "react-icons/ri";
 
 const sortOptions = [
   {
-    label: "Last update (newest)",
-    value: "updatedAt|desc",
+    label: "Mã cơ hội",
+    value: "code",
   },
   {
-    label: "Last update (oldest)",
-    value: "updatedAt|asc",
+    label: "Tên cơ hội",
+    value: "name",
   },
   {
-    label: "Total orders (highest)",
-    value: "totalOrders|desc",
+    label: "Phone",
+    value: "phone",
   },
   {
-    label: "Total orders (lowest)",
-    value: "totalOrders|asc",
+    label: "Email",
+    value: "email",
+  },
+  {
+    label: "Trạng thái",
+    value: "trang_thai_key",
+  },
+  {
+    label: "Tiến trình",
+    value: "tien_trinh_key",
+  },
+  {
+    label: "Nhân viên nhập",
+    value: "ten",
+  },
+  {
+    label: "Ngày nhập",
+    value: "created_at",
+  },
+  {
+    label: "Ghi chú",
+    value: "note",
   },
 ];
 
-const applyFilters = (cohois, filters) =>
-  cohois.filter((cohoi) => {
-    if (filters.query) {
-      let queryMatched = false;
-      const properties = ["email", "name"];
-
-      properties.forEach((property) => {
-        if (
-          cohoi[property].toLowerCase().includes(filters.query.toLowerCase())
-        ) {
-          queryMatched = true;
-        }
-      });
-
-      if (!queryMatched) {
-        return false;
-      }
-    }
-
-    if (filters.hasAcceptedMarketing && !cohoi.hasAcceptedMarketing) {
-      return false;
-    }
-
-    if (filters.isProspect && !cohoi.isProspect) {
-      return false;
-    }
-
-    if (filters.isReturning && !cohoi.isReturning) {
-      return false;
-    }
-
-    return true;
-  });
-
-const descendingComparator = (a, b, sortBy) => {
-  // When compared to something undefined, always returns false.
-  // This means that if a field does not exist from either element ('a' or 'b') the return will be 0.
-
-  if (b[sortBy] < a[sortBy]) {
-    return -1;
-  }
-
-  if (b[sortBy] > a[sortBy]) {
-    return 1;
-  }
-
-  return 0;
-};
-
-const getComparator = (sortDir, sortBy) =>
-  sortDir === "desc"
-    ? (a, b) => descendingComparator(a, b, sortBy)
-    : (a, b) => -descendingComparator(a, b, sortBy);
-
-const applySort = (cohois, sort) => {
-  const [sortBy, sortDir] = sort.split("|");
-  const comparator = getComparator(sortDir, sortBy);
-  const stabilizedThis = cohois.map((el, index) => [el, index]);
-
-  stabilizedThis.sort((a, b) => {
-    const newOrder = comparator(a[0], b[0]);
-
-    if (newOrder !== 0) {
-      return newOrder;
-    }
-
-    return a[1] - b[1];
-  });
-
-  return stabilizedThis.map((el) => el[0]);
-};
-
-const applyPagination = (cohois, page, rowsPerPage) =>
-  cohois.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+const orderOptions = [
+  {
+    label: "Giảm dần",
+    value: "desc",
+  },
+  {
+    label: "Tăng dần",
+    value: "asc",
+  },
+];
 
 function CohoiTableListContainer() {
-  const [cohois, setCohois] = useState([]);
+  const theme = UI.useTheme();
   const [sort, setSort] = useState(sortOptions[0].value);
+  const [orderBy, setOrderBy] = useState(orderOptions[0].value);
   const [page, setPage] = useState(0);
+  const [expanded, setExpanded] = useState(false);
+
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [currentTab, setCurrentTab] = useState("all");
   const queryRef = useRef(null);
+  const [totalPages, setTotalPages] = useState(rowsPerPage * (page + 1) + 1);
   const [filters, setFilters] = useState({
     query: "",
+    order_by: "order_by[code]=desc",
+    search: "",
   });
-  const { data, isLoading, isFetching, refetch } = useGetCohoiListQuery({
-    page: page,
+  const { data, isFetching } = useGetCohoiListQuery({
+    page: page + 1,
     limit: rowsPerPage,
+    code: filters?.query,
+    order_by: filters?.order_by,
+    search: filters?.search,
   });
 
-  // Usually query is done on backend with indexing solutions
-  const filteredCohois = applyFilters(cohois, filters);
-  const sortedCohois = applySort(filteredCohois, sort);
-  const paginatedCohois = applyPagination(sortedCohois, page, rowsPerPage);
   const handleQueryChange = (event) => {
     event.preventDefault();
     setFilters((prevState) => ({
       ...prevState,
       query: queryRef.current?.value,
     }));
+    setPage(0);
   };
+
+  const handleOnchangeAdvanceSearch = (data) => {
+    let advance_search = "";
+    for (const key in data) {
+      if (data[key]) {
+        if (key === "page") {
+          setPage(data[key]);
+        } else {
+          advance_search += `&s[${key}]=${data[key]}`;
+        }
+      }
+    }
+    setFilters((prevState) => ({
+      ...prevState,
+      search: advance_search,
+    }));
+  };
+
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
-    refetch();
   };
 
   const handleRowsPerPageChange = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
   };
 
+  const handleSortChange = (event) => {
+    setSort(event.target.value);
+  };
+
+  const handleOrderChange = (event) => {
+    setOrderBy(event.target.value);
+  };
+
+  useEffect(() => {
+    setFilters((prevState) => ({
+      ...prevState,
+      order_by: `order_by[${sort}]=${orderBy}`,
+    }));
+  }, [orderBy, sort]);
+
+  useEffect(() => {
+    if (data?.data?.length === 0 || data?.data?.length < rowsPerPage) {
+      setTotalPages(data?.data?.length);
+    } else {
+      setTotalPages(rowsPerPage * (page + 1) + 1);
+    }
+  }, [data]);
+
   return (
     <>
-      <Box
+      <UI.Box
         component="main"
         sx={{
           flexGrow: 1,
           py: 8,
         }}
       >
-        <Container maxWidth="xl">
-          <Box sx={{ mb: 4 }}>
-            <Grid container justifyContent="space-between" spacing={3}>
-              <Grid item>
-                <Typography variant="h4">Danh sách cơ hội</Typography>
-              </Grid>
-              <Grid item>
-                <Button
+        <UI.Container maxWidth="xl">
+          <UI.Box sx={{ mb: 4 }}>
+            <UI.Grid container justifyContent="space-between" spacing={3}>
+              <UI.Grid item>
+                <UI.Typography variant="h4">Danh sách cơ hội</UI.Typography>
+              </UI.Grid>
+              <UI.Grid item>
+                <UI.Button
                   size="small"
                   startIcon={<AiFillPlusCircle fontSize="small" />}
                   variant="contained"
                 >
                   Thêm mới
-                </Button>
-              </Grid>
-            </Grid>
-            <Box
+                </UI.Button>
+              </UI.Grid>
+            </UI.Grid>
+            <UI.Box
               sx={{
                 m: -1,
                 mt: 3,
               }}
             >
-              <Button
+              <UI.Button
                 startIcon={<AiOutlineUpload fontSize="small" />}
                 sx={{ m: 1 }}
               >
                 Import
-              </Button>
-              <Button
+              </UI.Button>
+              <UI.Button
                 startIcon={<AiOutlineDownload fontSize="small" />}
                 sx={{ m: 1 }}
               >
                 Export
-              </Button>
-            </Box>
-          </Box>
-          <Card>
-            <Divider />
-            <Box
+              </UI.Button>
+            </UI.Box>
+          </UI.Box>
+          <UI.Card>
+            <UI.Divider />
+            <UI.Box
               sx={{
                 alignItems: "center",
                 display: "flex",
@@ -206,62 +201,190 @@ function CohoiTableListContainer() {
                 p: 3,
               }}
             >
-              <Box
+              <UI.Box
                 component="form"
                 onSubmit={handleQueryChange}
                 sx={{
                   flexGrow: 1,
-                  m: 1.5,
                 }}
               >
-                <TextField
+                <UI.TextField
                   defaultValue=""
                   fullWidth
                   inputProps={{ ref: queryRef }}
                   InputProps={{
                     startAdornment: (
-                      <InputAdornment position="start">
+                      <UI.InputAdornment position="start">
                         <AiOutlineSearch fontSize="small" />
-                      </InputAdornment>
+                      </UI.InputAdornment>
                     ),
                   }}
-                  placeholder="Search cohois"
+                  placeholder="Tìm kiếm mã cơ hội"
                 />
-              </Box>
-              {/* <TextField
+              </UI.Box>
+              <UI.TextField
                 label="Sort By"
                 name="sort"
-                onChange={()=>{console.log('Sort By')}}
+                onChange={handleSortChange}
                 select
                 SelectProps={{ native: true }}
                 sx={{ m: 1.5 }}
                 value={sort}
               >
                 {sortOptions.map((option) => (
-                  <option
-                    key={option.value}
-                    value={option.value}
-                  >
+                  <option key={option.value} value={option.value}>
                     {option.label}
                   </option>
                 ))}
-              </TextField> */}
-            </Box>
+              </UI.TextField>
+
+              <UI.TextField
+                label="Order By"
+                name="order"
+                onChange={handleOrderChange}
+                select
+                SelectProps={{ native: true }}
+                sx={{ m: 1.5 }}
+                value={orderBy}
+              >
+                {orderOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </UI.TextField>
+              <UI.HStack sx={{ width: "100%" }} mt={16} mb={16}>
+                <UI.Typography fontStyle={"italic"}>
+                  Tìm kiếm nâng cao
+                </UI.Typography>
+                <UI.Box
+                  sx={{ cursor: "pointer" }}
+                  onClick={(val) => {
+                    setExpanded(!expanded);
+                  }}
+                >
+                  <UI.IconButton aria-label="show" size="large">
+                    {expanded ? <RiArrowUpSFill /> : <IoMdArrowDropdown />}
+                  </UI.IconButton>
+                </UI.Box>
+              </UI.HStack>
+              <Collapse in={expanded}>
+                <BaseForm
+                  gap={theme.spacing(2)}
+                  templateColumns="repeat(4,1fr)"
+                  onWatchChange={debounce((val) => {
+                    console.log("val", val);
+                    handleOnchangeAdvanceSearch(val);
+                  }, 1000)}
+                  watchFields={[
+                    "contact",
+                    "phone",
+                    "email",
+                    "created_by",
+                    "phone2",
+                    "note",
+                    "da_cham_soc",
+                    "page",
+                  ]}
+                  fields={[
+                    {
+                      name: "contact",
+                      type: "input",
+                      label: "Tên khách hàng",
+                    },
+                    {
+                      name: "phone",
+                      type: "input",
+                      label: "Phone",
+                    },
+                    {
+                      name: "email",
+                      type: "input",
+                      label: "Email",
+                    },
+                    {
+                      type: "select",
+                      name: "trang_thai_key",
+                      label: "Trạng thái",
+                      selectOptions: [
+                        {
+                          label: "Đang làm việc",
+                          value: "dang-lam-viec",
+                        },
+                        {
+                          label: "Hoàn thành",
+                          value: "hoan-thanh",
+                        },
+                        {
+                          label: "QC test",
+                          value: "qc-test",
+                        },
+                      ],
+                    },
+                    {
+                      type: "select",
+                      name: "tien_trinh_key",
+                      label: "Tiến trình",
+                      selectOptions: [
+                        {
+                          label: "Đã giao hàng, đang sms và email",
+                          value: "da-giao-hang-dang-sms-va-email",
+                        },
+                        {
+                          label: "Đang xem báo giá",
+                          value: "dang-xem-bao-gia",
+                        },
+                        {
+                          label: "Khách đặt lại, ngưng SMS Email",
+                          value: "khach-dat-lai-ngung-sms-email",
+                        },
+                        {
+                          label: "Chưa báo giá",
+                          value: "chua-bao-gia",
+                        },
+                        {
+                          label: "Đang sản xuất",
+                          value: "dang-san-xuat",
+                        },
+                        {
+                          label: "Báo giá lâu quá không trả lời",
+                          value: "bao-gia-lau-qua-khong-tra-loi",
+                        },
+                        {
+                          label: "GH chưa thanh toán. Không dùng nữa",
+                          value: "gh-chua-thanh-toan-khong-dung-nua",
+                        },
+                      ],
+                    },
+                    {
+                      name: "create_by",
+                      type: "input",
+                      label: "Nhân viên nhập",
+                    },
+                    {
+                      name: "page",
+                      type: "input",
+                      label: "Số trang",
+                    },
+                  ]}
+                ></BaseForm>
+              </Collapse>
+            </UI.Box>
             {isFetching ? (
               <Loading />
             ) : (
               <CohoiListTable
-                cohois={data ? data : []}
-                cohoisCount={data ? data.length : 0}
+                cohois={data?.data ? data.data : []}
+                cohoisCount={totalPages}
                 onPageChange={handlePageChange}
                 onRowsPerPageChange={handleRowsPerPageChange}
                 rowsPerPage={rowsPerPage}
                 page={page}
               />
             )}
-          </Card>
-        </Container>
-      </Box>
+          </UI.Card>
+        </UI.Container>
+      </UI.Box>
     </>
   );
 }
