@@ -5,7 +5,7 @@ function CoHoiPage() {
   return (
     <>
       <Helmet>
-        <title>Báo giá | CRM APP</title>
+        <title>Cơ hội | CRM APP</title>
       </Helmet>
       <Outlet />
     </>
