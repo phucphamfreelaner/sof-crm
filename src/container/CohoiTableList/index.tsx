@@ -273,7 +273,6 @@ function CohoiTableListContainer() {
                   gap={theme.spacing(2)}
                   templateColumns="repeat(4,1fr)"
                   onWatchChange={debounce((val) => {
-                    console.log("val", val);
                     handleOnchangeAdvanceSearch(val);
                   }, 1000)}
                   watchFields={[
