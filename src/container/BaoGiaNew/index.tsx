@@ -4,7 +4,7 @@ import { useLazyGetCongTyListQuery } from "@/store/congTy";
 import { useLazyGetCohoiListQuery } from "@/store/cohoi";
 import { useLazyGetLoaiBaoGiaListQuery } from "@/store/loaiBaoGia";
 import { useLazyGetNgonNguListQuery } from "@/store/ngonNgu";
-import { useLazyGetLoaiTienGiaListQuery } from "@/store/loaiTien";
+import { useLazySearchLoaiTienGiaListQuery } from "@/store/loaiTien";
 
 function BaoGaiNew() {
   const [
@@ -45,7 +45,7 @@ function BaoGaiNew() {
       isLoading: isLoadingLoaiTien,
       isFetching: isFetchingLoaiTien,
     },
-  ] = useLazyGetLoaiTienGiaListQuery();
+  ] = useLazySearchLoaiTienGiaListQuery();
 
   React.useEffect(() => {
     searchCty({ name: " " });

@@ -165,7 +165,7 @@ function CustomerTableListContainer() {
                   startIcon={<AiFillPlusCircle fontSize="small" />}
                   variant="contained"
                 >
-                  Add
+                  Thêm mới
                 </UI.Button>
               </UI.Grid>
             </UI.Grid>

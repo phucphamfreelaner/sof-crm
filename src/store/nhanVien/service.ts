@@ -2,27 +2,24 @@ import { axiosBaseQuery } from "@/store/utils";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import toast from "react-hot-toast";
 import { LOCAL_KEY } from "@/constants";
-import { keys } from "lodash-es";
 
-export const loaiTienGiaService = createApi({
+export const nhanVienService = createApi({
   baseQuery: axiosBaseQuery({
     baseUrl: "https://apisf.interphase.vn/api",
-    onError: (err) => {
-      toast.error(err.error);
-    },
+    onError: (err) => toast.error(err.error),
     token: () => localStorage.getItem(LOCAL_KEY.TOKEN),
   }),
-  reducerPath: "loaiTienGiaService",
+  reducerPath: "nhanVienService",
   endpoints: (builder) => ({
-    searchLoaiTienGiaList: builder.query({
+    searchNhanVien: builder.query({
       transformResponse: (response: any) =>
-        keys(response)?.map?.((x: any) => ({ label: response[x], value: x })),
+        response?.data.map((x) => ({ label: x.name, value: x.id })),
       query: ({ name }) => ({
         method: "GET",
-        url: `/cau-hinh/group/loai_tien?s=${name}`,
+        url: `/nhan-vien?order_by[id]=desc&s[name]=${name}&take=10`,
       }),
     }),
   }),
 });
 
-export const { useLazySearchLoaiTienGiaListQuery } = loaiTienGiaService;
+export const { useLazySearchNhanVienQuery } = nhanVienService;

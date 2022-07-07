@@ -171,7 +171,7 @@ function CohoiTableListContainer() {
                   startIcon={<AiFillPlusCircle fontSize="small" />}
                   variant="contained"
                 >
-                  Add
+                  Thêm mới
                 </Button>
               </Grid>
             </Grid>
