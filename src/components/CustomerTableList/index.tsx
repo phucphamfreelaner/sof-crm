@@ -21,6 +21,7 @@ import { AiFillCheckCircle } from "react-icons/ai";
 import { format } from "date-fns";
 import { isEmpty } from "lodash";
 import { useNavigate } from "react-router-dom";
+import DeleteCustomerModal from "@/modal/DeleteCustomerModal";
 
 const CustomerListTable = (props) => {
   const {
@@ -33,6 +34,7 @@ const CustomerListTable = (props) => {
     ...other
   } = props;
   const [selectedCustomers, setSelectedCustomers] = useState([]);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   const navigate = useNavigate();
 
@@ -92,13 +94,22 @@ const CustomerListTable = (props) => {
           indeterminate={selectedSomeCustomers}
           onChange={handleSelectAllCustomers}
         />
-        <Button size="small" sx={{ ml: 2 }}>
+        <Button
+          size="small"
+          sx={{ ml: 2 }}
+          onClick={() => {
+            setOpenDeleteModal(true);
+          }}
+        >
           Delete
         </Button>
         <Button
           size="small"
           sx={{ ml: 2 }}
           disabled={selectedCustomers.length !== 1}
+          onClick={() => {
+            navigate(`/khach_hang/${selectedCustomers?.[0]}`);
+          }}
         >
           Edit
         </Button>
@@ -240,6 +251,15 @@ const CustomerListTable = (props) => {
         page={page}
         rowsPerPage={rowsPerPage}
         rowsPerPageOptions={[5, 10, 25]}
+      />
+
+      <DeleteCustomerModal
+        open={openDeleteModal}
+        selectedIds={selectedCustomers}
+        customers={customers}
+        onClose={() => {
+          setOpenDeleteModal(false);
+        }}
       />
     </div>
   );

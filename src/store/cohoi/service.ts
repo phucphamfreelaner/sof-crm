@@ -18,10 +18,22 @@ export const cohoiService = createApi({
       transformResponse: (response: any) => response as ICoHoiList,
       query: ({ limit, page, code, order_by, search }) => ({
         method: "GET",
-        url: `/co-hoi?with[]=khach_hang&with[]=tien_trinh&with[]=trang_thai&with[]=nhan_vien_tao&with[]=co_hoi_cskh&with[]=co_hoi_chua_cham_soc&limit=${limit}&page=${page}&s[code]=${code}&${order_by}${search}`,
+        url: `/co-hoi?with[]=khach_hang&with[]=tien_trinh&with[]=trang_thai&with[]=nhan_vien_tao&with[]=co_hoi_cskh&with[]=co_hoi_chua_cham_soc&limit=${limit}&page=${page}&s[code]=${code}&${order_by}&s[name]=${search}`,
+      }),
+    }),
+    searchCohoi: builder.query({
+      transformResponse: (response: any) =>
+        response?.data?.map?.((x: any) => ({ label: x.name, value: x.id })),
+      query: ({ name }) => ({
+        method: "GET",
+        url: `/co-hoi?limit=20&page=1&s[name]=${name}`,
       }),
     }),
   }),
 });
 
-export const { useGetCohoiListQuery, useLazyGetCohoiListQuery } = cohoiService;
+export const {
+  useGetCohoiListQuery,
+  useLazyGetCohoiListQuery,
+  useLazySearchCohoiQuery,
+} = cohoiService;

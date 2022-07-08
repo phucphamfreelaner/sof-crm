@@ -17,6 +17,9 @@ import { quocGiaService } from "./quocGia";
 import { thanhPhoService } from "./thanhPho";
 import { loaiTienGiaService } from "./loaiTien";
 import { danhXungService } from "./danhXung";
+import { khachHangService } from "./khachHang";
+import { nhanVienService } from "./nhanVien";
+import { testService } from "./test";
 
 // @ts-ignore
 const store: any = configureStore({
@@ -33,6 +36,9 @@ const store: any = configureStore({
     [thanhPhoService.reducerPath]: thanhPhoService.reducer,
     [loaiTienGiaService.reducerPath]: loaiTienGiaService.reducer,
     [danhXungService.reducerPath]: danhXungService.reducer,
+    [khachHangService.reducerPath]: khachHangService.reducer,
+    [nhanVienService.reducerPath]: nhanVienService.reducer,
+    [testService.reducerPath]: testService.reducer,
   }),
   devTools: true,
 });
