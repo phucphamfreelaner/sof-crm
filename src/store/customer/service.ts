@@ -29,6 +29,13 @@ export const customerService = createApi({
         data: body,
       }),
     }),
+    deleteCustomerByID: builder.mutation({
+      transformResponse: (res) => res,
+      query: ({ id }) => ({
+        method: "DELETE",
+        url: `/khach-hang/${id}`,
+      }),
+    }),
     getCustomerList: builder.query({
       transformResponse: (response: any) => response as IGetCustomersList,
       query: ({ limit, page, code, order_by, search }) => ({
@@ -43,4 +50,5 @@ export const {
   useGetCustomerByIdQuery,
   useGetCustomerListQuery,
   useUpdateCustomerByIDMutation,
+  useDeleteCustomerByIDMutation,
 } = customerService;

@@ -56,7 +56,7 @@ export const CustomerBasicDetails = (props) => {
 
   return (
     <UI.Card>
-      <UI.CardHeader title="Basic Details" />
+      <UI.CardHeader title="Thông tin cơ bản" />
       <UI.Divider />
       <PropertyList>
         {rows.map((row, index) => {

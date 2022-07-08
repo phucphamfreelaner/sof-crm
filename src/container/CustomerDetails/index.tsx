@@ -3,8 +3,8 @@ import * as UI from "@/libs/ui";
 import { BsChevronDown } from "react-icons/bs";
 import { FaPencilAlt, FaSave } from "react-icons/fa";
 import { CustomerBasicDetails } from "@/components/CustomerBasicDetails";
-import { IoMdArrowRoundBack } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { AiOutlineArrowLeft } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 import {
   useGetCustomerByIdQuery,
   useUpdateCustomerByIDMutation,
@@ -33,8 +33,23 @@ const getInitials = (name = "") =>
     .map((v) => v && v[0].toUpperCase())
     .join("");
 
+const tabs = [
+  { label: "Thông tin cơ bản", value: "thong_tin_co_ban" },
+  { label: "Cơ hội", value: "co_hoi" },
+  { label: "Báo giá", value: "bao_gia" },
+  { label: "Hợp đồng", value: "hop_dong" },
+  { label: "Tiến độ sản xuất", value: "tien_do" },
+  { label: "Phiếu thu", value: "phieu_thu" },
+  { label: "Phiếu giao hàng", value: "phieu_giao_hang" },
+  { label: "Ecommercial Invoice", value: "invoice" },
+  { label: "Thông tin chi tiết công ty", value: "thong_tin_cong_ty" },
+  { label: "Logs", value: "logs" },
+];
+
 const CustomerDetailsContainer = () => {
   const params = useParams();
+  const navigate = useNavigate();
+  const [currentTab, setCurrentTab] = useState("thong_tin_co_ban");
   const theme = UI.useTheme();
   const [isView, setView] = useState(true);
   const {
@@ -207,6 +222,10 @@ const CustomerDetailsContainer = () => {
 
   const [updateCustomerByID, result] = useUpdateCustomerByIDMutation();
 
+  const handleTabsChange = (event, value) => {
+    setCurrentTab(value);
+  };
+
   useEffect(() => {
     if (result?.status == "fulfilled") {
       setView(!isView);
@@ -231,23 +250,12 @@ const CustomerDetailsContainer = () => {
           <UI.Container maxWidth="md">
             <UI.Box mb={4}>
               <UI.Box sx={{ mb: 4 }}>
-                <Link
-                  color="textPrimary"
-                  style={{
-                    alignItems: "center",
-                    display: "flex",
-                  }}
-                  to={"/khach_hang"}
+                <UI.Button
+                  onClick={() => navigate(-1)}
+                  startIcon={<AiOutlineArrowLeft />}
                 >
-                  <IoMdArrowRoundBack fontSize="md" />
-                  <UI.Typography
-                    variant="subtitle2"
-                    ml={1}
-                    sx={{ cursor: "pointer" }}
-                  >
-                    Quay lại
-                  </UI.Typography>
-                </Link>
+                  Quay lại
+                </UI.Button>
               </UI.Box>
               <UI.Grid container justifyContent="space-between" spacing={3}>
                 <UI.Grid
@@ -342,6 +350,19 @@ const CustomerDetailsContainer = () => {
                   </UI.Button>
                 </UI.Grid>
               </UI.Grid>
+              <UI.Tabs
+                indicatorColor="primary"
+                onChange={handleTabsChange}
+                scrollButtons="auto"
+                sx={{ mt: 3 }}
+                textColor="primary"
+                value={currentTab}
+                variant="scrollable"
+              >
+                {tabs.map((tab) => (
+                  <UI.Tab key={tab.value} label={tab.label} value={tab.value} />
+                ))}
+              </UI.Tabs>
             </UI.Box>
             <UI.Divider />
             <UI.Box sx={{ mt: 3 }}>

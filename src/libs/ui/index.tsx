@@ -1,5 +1,6 @@
 export * from "@mui/material";
 export { Image } from "@chakra-ui/image";
+export { LoadingButton } from "@mui/lab";
 export {
   Box as CKBox,
   Flex,
