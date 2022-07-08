@@ -37,13 +37,10 @@ function ArrayFields(props: IArrayFieldsController) {
   };
 
   const handleRemoveRow = (index: number) => {
-    const arr = remove(value, (x, i) => {
-      console.log("🚀 ~ file: ArrayFields.tsx ~ line 41 ~ arr ~ i", i);
-      return i === index;
-    });
-    console.log("🚀 ~ file: ArrayFields.tsx ~ line 43 ~ arr ~ arr", arr);
+    console.log("🚀 ~ index", index);
+    console.log("🚀 ~ value", value);
 
-    setValue(arr);
+    setValue([]);
   };
 
   return (
@@ -57,6 +54,7 @@ function ArrayFields(props: IArrayFieldsController) {
       </Button>
       {value?.map((x: any, index: number) => (
         <BaseForm
+          key={index}
           gap={gap}
           templateColumns={templateColumns || "repeat(24, 1fr)"}
           defaultValues={x}

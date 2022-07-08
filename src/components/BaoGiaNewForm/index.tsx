@@ -45,6 +45,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
     defaultValues,
     onAddSanPham,
   } = props;
+
   return (
     <BaseForm
       sx={{ width: "100%" }}
@@ -145,11 +146,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           type: "autocomplete",
           colSpan: 2,
           isLoading: isLoadingSearchCoHoi,
-          autocompleteOptions:
-            coHoiData?.map((x: any) => ({
-              label: x.name,
-              value: x.id,
-            })) || [],
+          autocompleteOptions: coHoiData || [],
           onSearchChange: onSearchCoHoi,
         },
         {

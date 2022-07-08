@@ -4,7 +4,7 @@ import BaoGiaNewForm from "@/components/BaoGiaNewForm";
 import { FaSave } from "react-icons/fa";
 
 import { useLazyGetCongTyListQuery } from "@/store/congTy";
-import { useLazyGetCohoiListQuery } from "@/store/cohoi";
+import { useLazySearchCohoiQuery } from "@/store/cohoi";
 import { useLazyGetLoaiBaoGiaListQuery } from "@/store/loaiBaoGia";
 import { useLazyGetNgonNguListQuery } from "@/store/ngonNgu";
 import { useLazySearchLoaiTienGiaListQuery } from "@/store/loaiTien";
@@ -20,14 +20,15 @@ function BaoGaiNew() {
     },
   ] = useLazyGetCongTyListQuery();
   const [
-    searchCoHoiList,
+    searchCoHoi,
     {
       data: coHoiData,
       isLoading: isLoadingCoHoi,
       isFetching: isFetchingCoHoi,
       isSuccess: isSuccessCoHoi,
     },
-  ] = useLazyGetCohoiListQuery();
+  ] = useLazySearchCohoiQuery();
+
   const [
     searchLoaiBaoGiaData,
     {
@@ -58,11 +59,11 @@ function BaoGaiNew() {
   ] = useLazySearchLoaiTienGiaListQuery();
 
   React.useEffect(() => {
-    searchCty({ name: " " });
-    searchCoHoiList({ name: " " });
+    searchCty({ name: "" });
+    searchCoHoi({ name: "" });
     searchLoaiBaoGiaData({ name: "" });
-    searchNgonNgu({ name: " " });
-    searchLoaiTien({ name: " " });
+    searchNgonNgu({ name: "" });
+    searchLoaiTien({ name: "" });
   }, []);
 
   const [defaultValues, setDefaultValue] = React.useState<any>(null);
@@ -79,10 +80,7 @@ function BaoGaiNew() {
         ...value,
         loai_tien: loaiTienData?.[0],
         loai_bao_gia: loaiBaoGiaData?.[0],
-        name: {
-          label: coHoiData?.[0]?.name,
-          value: coHoiData?.[0]?.id,
-        },
+        name: coHoiData?.[0],
         company: {
           label: companyData?.[0]?.ten,
           value: companyData?.[0]?.id,
@@ -111,7 +109,7 @@ function BaoGaiNew() {
           onSearchCompany={(text) => searchCty({ name: text })}
           isLoadingSearchCoHoi={isLoadingCoHoi || isFetchingCoHoi}
           coHoiData={coHoiData}
-          onSearchCoHoi={(text) => searchCoHoiList({ name: text })}
+          onSearchCoHoi={(text) => searchCoHoi({ name: text })}
           loaiBaoGiaData={loaiBaoGiaData}
           isLoadingLoaiBaoGia={isLoadingLoaiBaoGia || isFetchingLoaiBaoGia}
           onSearchLoaiBaoGia={(text) => searchLoaiBaoGiaData({ name: text })}
