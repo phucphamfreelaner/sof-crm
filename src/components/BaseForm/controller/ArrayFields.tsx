@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@mui/material";
 import { Controller } from "react-hook-form";
-import { IBaseController, IFormControl } from "../types";
+import { IBaseController, IFormControl, TSetValue } from "../types";
 import { AiFillPlusCircle } from "react-icons/ai";
 
 import BaseForm from "@/components/BaseForm";
@@ -20,12 +20,15 @@ export interface IArrayFieldsController extends IBaseController {
   gap?: string;
   defaultArrayValue?: any[];
   onAddRow?: (index: any) => any;
+  watchFields?: string[];
+  onWatchChange?: (value: any) => any;
 }
 
 function ArrayFields(props: IArrayFieldsController) {
-  const { fields, templateColumns, gap, field, onAddRow, name } = props;
+  const { fields, templateColumns, gap, field, onAddRow, name, onWatchChange } =
+    props;
 
-  const [value, setValue] = React.useState<any[]>(field?.value);
+  const [value, setValue] = React.useState<any[]>(field?.value || []);
 
   React.useEffect(() => {
     setValue(field?.value);
@@ -81,7 +84,10 @@ function ArrayFields(props: IArrayFieldsController) {
             //@ts-ignore
             if (typeof x.name === "string") return x.name;
           })}
-          onWatchChange={(data) => handleChangeFieldValue(x._id, data)}
+          onWatchChange={(data, setValue) => {
+            handleChangeFieldValue(x._id, data);
+            onWatchChange?.(data);
+          }}
           fields={[
             ...fields,
             {

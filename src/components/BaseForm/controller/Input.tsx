@@ -1,7 +1,7 @@
 import React from "react";
 import { InputAdornment, TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
-import { IBaseController } from "../types";
+import { IBaseController, TGetValues, TSetValue } from "../types";
 
 export interface IInputController extends IBaseController {
   size?: "medium" | "small";
@@ -9,6 +9,18 @@ export interface IInputController extends IBaseController {
   multiline?: boolean;
   maxRows?: number;
   rows?: number;
+  onValueChange?: (
+    data: any,
+    {
+      setValue,
+      getValues,
+    }: {
+      setValue?: TSetValue;
+      getValues?: TGetValues;
+    }
+  ) => any;
+  setValue?: TSetValue;
+  getValues?: TGetValues;
 }
 
 function InputForm(props: IInputController) {
@@ -26,11 +38,18 @@ function InputForm(props: IInputController) {
     multiline,
     maxRows,
     rows,
+    onValueChange,
+    setValue,
+    getValues,
   } = props;
 
   return (
     <TextField
       {...field}
+      onChange={(e) => {
+        field.onChange(e);
+        onValueChange(e.target.value, { setValue, getValues });
+      }}
       fullWidth
       variant="outlined"
       multiline={multiline}
