@@ -22,7 +22,18 @@ interface IBaoGiaNewForm {
   isLoadingLoaiTien?: boolean;
 
   defaultValues?: any;
-  onAddSanPham?: () => any;
+  onAddSanPham?: (index: any) => any;
+
+  formRef?: any;
+
+  sanPhamData?: any;
+  onSearchSanPham?: (index: any) => any;
+
+  donViTinhData?: any;
+  onSearchDonViTinh?: (index: any) => any;
+
+  chatLieuData?: any;
+  onSearchChatLieu?: (index: any) => any;
 }
 
 function BaoGiaNewForm(props: IBaoGiaNewForm) {
@@ -44,6 +55,13 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
     isLoadingLoaiTien,
     defaultValues,
     onAddSanPham,
+    sanPhamData,
+    onSearchSanPham,
+    chatLieuData,
+    onSearchChatLieu,
+    donViTinhData,
+    onSearchDonViTinh,
+    formRef,
   } = props;
 
   return (
@@ -52,6 +70,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
       templateColumns="repeat(6, 1fr)"
       gap="26px"
       defaultValues={defaultValues}
+      ref={formRef}
       fields={[
         {
           name: "san_pham",
@@ -64,43 +83,53 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
             {
               name: "ten_san_pham",
               label: "Tên sản phẩm",
-              type: "input",
+              type: "autocomplete",
+              autocompleteOptions: sanPhamData,
+              onSearchChange: onSearchSanPham,
               colSpan: 3,
             },
             {
               name: "chat_lieu",
               label: "Chất liệu",
-              type: "input",
+              type: "autocomplete",
+              autocompleteOptions: chatLieuData,
+              onSearchChange: onSearchChatLieu,
               colSpan: 3,
             },
             {
               name: "don_vi_tinh",
               label: "Đơn vị tính",
-              type: "input",
+              type: "autocomplete",
               colSpan: 3,
+              autocompleteOptions: donViTinhData,
+              onSearchChange: onSearchDonViTinh,
             },
             {
               name: "so_luong",
               label: "Số lượng",
               type: "input",
+              textType: "number",
               colSpan: 2,
             },
             {
               name: "don_gia_von",
               label: "Đơn giá vốn",
-              type: "input",
+              type: "input-mask",
+              textType: "number",
               colSpan: 3,
             },
             {
               name: "don_gia",
               label: "Đơn giá",
-              type: "input",
+              type: "input-mask",
+              textType: "number",
               colSpan: 3,
             },
             {
               name: "thanh_tien",
               label: "Thành tiền",
-              type: "input",
+              type: "input-mask",
+              textType: "number",
               colSpan: 3,
             },
             {
