@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface CohoiState {
+export interface CoHoiState {
   data?: number;
 }
 
-const initialState: CohoiState = {
+const initialState: CoHoiState = {
   data: 0,
 };
 
-export const cohoiSlice = createSlice({
-  name: "cohoiSlide",
+export const coHoiSlice = createSlice({
+  name: "coHoiSlide",
   initialState,
   reducers: {
     setData: (state: any, action: PayloadAction<string>) => {
@@ -18,4 +18,4 @@ export const cohoiSlice = createSlice({
   },
 });
 
-export const { setData } = cohoiSlice.actions;
+export const { setData } = coHoiSlice.actions;
