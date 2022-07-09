@@ -8,7 +8,7 @@ import {
 } from "react-redux";
 
 import { customerService, customerSlice } from "./customer";
-import { cohoiService, cohoiSlice } from "./cohoi";
+import { coHoiService, coHoiSlice } from "./coHoi";
 import { congTyService } from "./congTy";
 import { authService } from "./auth";
 import { loaiBaoGiaService } from "./loaiBaoGia";
@@ -23,14 +23,17 @@ import { sanPhamService } from "./sanPham";
 import { chatLieuService } from "./chatLieu";
 import { donViTinhService, useLazySearchDonViTinhQuery } from "./donViTinh";
 import { testService } from "./test";
+import { soLuongService } from "./soLuong";
+import { trangThaiService } from "./trangThai";
+import { tienTrinhService } from "./tienTrinh";
 
 // @ts-ignore
 const store: any = configureStore({
   reducer: combineReducers({
     customer: customerSlice.reducer,
-    cohoi: cohoiSlice.reducer,
+    coHoi: coHoiSlice.reducer,
     [customerService.reducerPath]: customerService.reducer,
-    [cohoiService.reducerPath]: cohoiService.reducer,
+    [coHoiService.reducerPath]: coHoiService.reducer,
     [authService.reducerPath]: authService.reducer,
     [congTyService.reducerPath]: congTyService.reducer,
     [loaiBaoGiaService.reducerPath]: loaiBaoGiaService.reducer,
@@ -45,6 +48,9 @@ const store: any = configureStore({
     [sanPhamService.reducerPath]: sanPhamService.reducer,
     [chatLieuService.reducerPath]: chatLieuService.reducer,
     [donViTinhService.reducerPath]: donViTinhService.reducer,
+    [soLuongService.reducerPath]: soLuongService.reducer,
+    [trangThaiService.reducerPath]: trangThaiService.reducer,
+    [tienTrinhService.reducerPath]: tienTrinhService.reducer,
   }),
   devTools: true,
 });
