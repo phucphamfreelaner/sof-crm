@@ -3,6 +3,7 @@ import * as UI from "@/libs/ui";
 import { useDeleteCustomerByIDMutation } from "@/store/customer/service";
 import { useLazyGetSampleDataQuery } from "@/store/test/service";
 import { ICustomer } from "@/types";
+import toast from "react-hot-toast";
 
 const style = {
   position: "absolute",
@@ -22,16 +23,23 @@ interface IDeleteCustomerModal {
   onClose?: (open: boolean) => void;
   selectedIds: number[];
   customers: ICustomer[];
+  refetch?: () => any;
 }
 function DeleteCustomerModal(props: IDeleteCustomerModal) {
-  const { open, onClose, selectedIds, customers } = props;
+  const { open, onClose, selectedIds, customers, refetch } = props;
 
   const theme = UI.useTheme();
 
-  const [getSampleData, { data, isLoading, isFetching }] =
-    useLazyGetSampleDataQuery();
+  const [deleteCustomer, result] = useDeleteCustomerByIDMutation();
 
-  const handleConfirm = () => {};
+  const handleConfirm = async () => {
+    selectedIds?.map(async (id) => {
+      await await deleteCustomer({ id });
+    });
+    await onClose(false);
+    await toast.success("Delete customer(s) successfully");
+    await refetch();
+  };
 
   return (
     <UI.Modal
@@ -65,16 +73,20 @@ function DeleteCustomerModal(props: IDeleteCustomerModal) {
               <UI.Typography mb={2}>
                 The following customer(s) will be deleted:
               </UI.Typography>
-              {customers?.map((customer) => {
-                return (
-                  <UI.HStack justifyContent={"start"} alignItems={"center"}>
-                    <UI.Typography width={100}>
-                      <b>{customer?.code}</b>
-                    </UI.Typography>
-                    <UI.Typography>{customer?.contact}</UI.Typography>
-                  </UI.HStack>
-                );
-              })}
+              {customers
+                ?.filter((item) => {
+                  if (selectedIds.includes(item?.id)) return item;
+                })
+                ?.map((customer) => {
+                  return (
+                    <UI.HStack justifyContent={"start"} alignItems={"center"}>
+                      <UI.Typography width={100}>
+                        <b>{customer?.code}</b>
+                      </UI.Typography>
+                      <UI.Typography>{customer?.contact}</UI.Typography>
+                    </UI.HStack>
+                  );
+                })}
             </UI.Alert>
             <UI.HStack
               w="100%"
@@ -82,14 +94,20 @@ function DeleteCustomerModal(props: IDeleteCustomerModal) {
               justifyContent={"center"}
               alignItems={"center"}
             >
-              <UI.Button
+              <UI.LoadingButton
+                loading={result?.status == "pending"}
+                loadingPosition="end"
                 type="button"
                 variant="contained"
                 onClick={handleConfirm}
               >
                 Confirm
-              </UI.Button>
-              <UI.Button type="button" variant="outlined">
+              </UI.LoadingButton>
+              <UI.Button
+                type="button"
+                variant="outlined"
+                onClick={() => onClose(false)}
+              >
                 Cancel
               </UI.Button>
             </UI.HStack>

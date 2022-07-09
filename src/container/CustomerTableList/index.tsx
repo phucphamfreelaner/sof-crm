@@ -79,7 +79,7 @@ function CustomerTableListContainer() {
     order_by: "order_by[code]=desc",
     search: "",
   });
-  const { data, isFetching } = useGetCustomerListQuery({
+  const { data, isFetching, refetch } = useGetCustomerListQuery({
     page: page + 1,
     limit: rowsPerPage,
     code: filters?.query,
@@ -344,6 +344,7 @@ function CustomerTableListContainer() {
             ) : (
               <CustomerListTable
                 customers={data?.data ? data.data : []}
+                refetch={refetch}
                 customersCount={totalPages}
                 onPageChange={handlePageChange}
                 onRowsPerPageChange={handleRowsPerPageChange}
