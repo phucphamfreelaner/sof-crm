@@ -23,6 +23,9 @@ import { sanPhamService } from "./sanPham";
 import { chatLieuService } from "./chatLieu";
 import { donViTinhService, useLazySearchDonViTinhQuery } from "./donViTinh";
 import { testService } from "./test";
+import { soLuongService } from "./soLuong";
+import { trangThaiService } from "./trangThai";
+import { tienTrinhService } from "./tienTrinh";
 
 // @ts-ignore
 const store: any = configureStore({
@@ -45,6 +48,9 @@ const store: any = configureStore({
     [sanPhamService.reducerPath]: sanPhamService.reducer,
     [chatLieuService.reducerPath]: chatLieuService.reducer,
     [donViTinhService.reducerPath]: donViTinhService.reducer,
+    [soLuongService.reducerPath]: soLuongService.reducer,
+    [trangThaiService.reducerPath]: trangThaiService.reducer,
+    [tienTrinhService.reducerPath]: tienTrinhService.reducer,
   }),
   devTools: true,
 });

@@ -56,7 +56,7 @@ export const CoHoiBasicDetails = (props) => {
 
   return (
     <UI.Card>
-      <UI.CardHeader title="Thông tin cơ bản" />
+      <UI.CardHeader title="Chi tiết cơ hội" />
       <UI.Divider />
       <PropertyList>
         {rows.map((row, index) => {

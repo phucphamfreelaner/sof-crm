@@ -15,23 +15,18 @@ import BaseForm from "@/components/BaseForm";
 import { Collapse } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import {
-  useLazyGetQuocGiaListQuery,
-  useGetQuocGiaListQuery,
-} from "@/store/quocGia/service";
+  useLazyGetTrangThaiListQuery,
+  useGetTrangThaiListQuery,
+} from "@/store/trangThai/service";
 import {
-  useLazyGetThanhPhoListQuery,
-  useGetThanhPhoListQuery,
-} from "@/store/thanhPho/service";
-import { useLazyGetDanhXungListQuery } from "@/store/danhXung/service";
+  useLazyGetTienTrinhListQuery,
+  useGetTienTrinhListQuery,
+} from "@/store/tienTrinh/service";
 import * as Yup from "yup";
-
-const getInitials = (name = "") =>
-  name
-    .replace(/\s+/, " ")
-    .split(" ")
-    .slice(0, 2)
-    .map((v) => v && v[0].toUpperCase())
-    .join("");
+import {
+  useGetSoLuongListQuery,
+  useLazyGetSoLuongListQuery,
+} from "@/store/soLuong";
 
 const CoHoiDetailsContainer = () => {
   const params = useParams();
@@ -46,36 +41,41 @@ const CoHoiDetailsContainer = () => {
     id: params?.coHoiId,
   });
   const [
-    searchQuocGia,
+    searchSoLuong,
     {
-      data: quocGiaData,
-      isLoading: isLoadingQuocGia,
-      isFetching: isFetchingQuocGia,
+      data: soLuongData,
+      isLoading: isLoadingSoLuong,
+      isFetching: isFetchingSoLuong,
     },
-  ] = useLazyGetQuocGiaListQuery();
+  ] = useLazyGetSoLuongListQuery();
+  const [
+    searchTrangThai,
+    {
+      data: trangThaiData,
+      isLoading: isLoadingTrangThai,
+      isFetching: isFetchingTrangThai,
+    },
+  ] = useLazyGetTrangThaiListQuery();
 
-  const { data: defaultListQuocGiaData, isLoading: isLoadingQuocGiaDefault } =
-    useGetQuocGiaListQuery({ name: "" });
-  const { data: defaultListThanhPhoData, isLoading: isLoadingThanhPhoDefault } =
-    useGetThanhPhoListQuery({ name: "" });
+  const { data: defaultListSoLuongData, isLoading: isLoadingSoLuongDefault } =
+    useGetSoLuongListQuery({ name: "" });
+  const {
+    data: defaultListTrangThaiData,
+    isLoading: isLoadingTrangThaiDefault,
+  } = useGetTrangThaiListQuery({ name: "" });
+  const {
+    data: defaultListTienTrinhData,
+    isLoading: isLoadingTienTrinhDefault,
+  } = useGetTienTrinhListQuery({ name: "" });
 
   const [
-    searchThanhPho,
+    searchTienTrinh,
     {
-      data: thanhPhoData,
-      isLoading: isLoadingThanhPho,
-      isFetching: isFetchingThanhPho,
+      data: tienTrinhData,
+      isLoading: isLoadingTienTrinh,
+      isFetching: isFetchingTienTrinh,
     },
-  ] = useLazyGetThanhPhoListQuery();
-
-  const [
-    searchDanhXung,
-    {
-      data: danhXungData,
-      isLoading: isLoadingDanhXung,
-      isFetching: isFetchingDanhXung,
-    },
-  ] = useLazyGetDanhXungListQuery();
+  ] = useLazyGetTienTrinhListQuery();
 
   let rowsData = [
     {
@@ -83,6 +83,51 @@ const CoHoiDetailsContainer = () => {
       type: "input",
       label: "Tên",
       defaultValues: coHoi?.name,
+    },
+    {
+      name: "soluong",
+      type: "autocomplete",
+      label: "Số lượng",
+      defaultValues: defaultListSoLuongData?.[coHoi?.soluong],
+      isLoading: isLoadingSoLuong || isFetchingSoLuong,
+      autocompleteOptions: soLuongData
+        ? Object.keys(soLuongData).map((key) => {
+            return { label: soLuongData[key], value: key };
+          })
+        : [],
+      onSearchChange: (text) => {
+        searchSoLuong({ name: text });
+      },
+    },
+    {
+      name: "trang_thai_key",
+      type: "autocomplete",
+      label: "Trạng thái",
+      defaultValues: defaultListTrangThaiData?.[coHoi?.trang_thai_key],
+      isLoading: isLoadingTrangThai || isFetchingTrangThai,
+      autocompleteOptions: trangThaiData
+        ? Object.keys(trangThaiData).map((key) => {
+            return { label: trangThaiData[key], value: key };
+          })
+        : [],
+      onSearchChange: (text) => {
+        searchTrangThai({ name: text });
+      },
+    },
+    {
+      name: "tien_trinh_key",
+      type: "autocomplete",
+      label: "Tiến trình",
+      defaultValues: defaultListTienTrinhData?.[coHoi?.tien_trinh_key],
+      isLoading: isLoadingTienTrinh || isFetchingTienTrinh,
+      autocompleteOptions: tienTrinhData
+        ? Object.keys(tienTrinhData).map((key) => {
+            return { label: tienTrinhData[key], value: key };
+          })
+        : [],
+      onSearchChange: (text) => {
+        searchTienTrinh({ name: text });
+      },
     },
     {
       name: "note",
@@ -108,7 +153,9 @@ const CoHoiDetailsContainer = () => {
 
   return (
     <>
-      {isLoadingCoHoi || isLoadingThanhPhoDefault || isLoadingQuocGiaDefault ? (
+      {isLoadingCoHoi ||
+      isLoadingTienTrinhDefault ||
+      isLoadingTrangThaiDefault ? (
         <Loading />
       ) : (
         <UI.Box
@@ -146,7 +193,7 @@ const CoHoiDetailsContainer = () => {
                       }}
                     >
                       <UI.Typography variant="subtitle2">
-                        Mã khách hàng:
+                        Mã cơ hội:
                       </UI.Typography>
                       <UI.Chip
                         label={coHoi?.code}
@@ -173,7 +220,7 @@ const CoHoiDetailsContainer = () => {
                     <LoadingButton
                       loading={result?.status == "pending"}
                       loadingPosition="end"
-                      form="vinhnd"
+                      form="co-hoi-details"
                       type="submit"
                       endIcon={<FaSave fontSize="small" />}
                       sx={{ m: 1 }}
@@ -220,23 +267,19 @@ const CoHoiDetailsContainer = () => {
                   </Collapse>
                   <Collapse in={!isView}>
                     <BaseForm
-                      id="vinhnd"
+                      id="co-hoi-details"
                       gap={theme.spacing(4)}
                       templateColumns="repeat(2,1fr)"
                       defaultValues={defaultValues}
                       onSubmit={(value) => {
+                        console.log("submit co hoi details");
                         updateCoHoiByID({
                           ...coHoi,
                           ...value,
-                          quocgia_key: value.quocgia_key.value,
-                          thanhpho_key: value.thanhpho_key.value,
-                          danh_xung_key: value.danh_xung.value,
+                          soluong: value.soluong.value,
+                          trang_thai_key: value.trang_thai_key.value,
+                          tien_trinh_key: value.tien_trinh_key.value,
                         });
-                      }}
-                      schema={{
-                        contact: Yup.string().required(
-                          "Cách gọi khách hàng không được để trống"
-                        ),
                       }}
                       //@ts-ignore
                       fields={rowsData}
