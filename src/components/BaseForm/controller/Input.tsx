@@ -2,7 +2,6 @@ import React from "react";
 import { InputAdornment, TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { IBaseController } from "../types";
-import numeral from "numeral";
 
 export interface IInputController extends IBaseController {
   size?: "medium" | "small";
