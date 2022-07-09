@@ -1,7 +1,7 @@
 import React from "react";
 import { InputAdornment, TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
-import { IBaseController } from "../types";
+import { IBaseController, TGetValues, TSetValue } from "../types";
 import NumberFormat, { InputAttributes } from "react-number-format";
 
 export interface IInputMaskController extends IBaseController {
@@ -10,6 +10,18 @@ export interface IInputMaskController extends IBaseController {
   multiline?: boolean;
   maxRows?: number;
   rows?: number;
+  onValueChange?: (
+    data: any,
+    {
+      setValue,
+      getValues,
+    }: {
+      setValue?: TSetValue;
+      getValues?: TGetValues;
+    }
+  ) => any;
+  setValue?: TSetValue;
+  getValues?: TGetValues;
 }
 
 interface CustomProps {
@@ -56,11 +68,18 @@ function InputMaskForm(props: IInputMaskController) {
     multiline,
     maxRows,
     rows,
+    onValueChange,
+    getValues,
+    setValue,
   } = props;
 
   return (
     <TextField
       {...field}
+      onChange={(e) => {
+        field.onChange(e);
+        onValueChange?.(e.target.value, { getValues, setValue });
+      }}
       fullWidth
       variant="outlined"
       multiline={multiline}

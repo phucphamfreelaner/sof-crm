@@ -110,6 +110,10 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               type: "input",
               textType: "number",
               colSpan: 2,
+              onValueChange: (data, fromEl) => {
+                const sl = +fromEl.getValues("thanh_tien");
+                fromEl.setValue("thanh_tien", +data * sl);
+              },
             },
             {
               name: "don_gia_von",
@@ -124,6 +128,10 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               type: "input-mask",
               textType: "number",
               colSpan: 3,
+              onValueChange: (data, fromEl) => {
+                const sl = +fromEl.getValues("so_luong");
+                fromEl.setValue("thanh_tien", +data * sl);
+              },
             },
             {
               name: "thanh_tien",
