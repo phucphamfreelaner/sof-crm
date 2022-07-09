@@ -56,6 +56,7 @@ export type IFormControl = IBaseController &
       | "checkbox"
       | "autocomplete"
       | "array-fields"
+      | "input-mask"
       | "icon-button";
     rowSpan?: number;
     colSpan?: number;

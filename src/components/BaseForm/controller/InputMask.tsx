@@ -2,9 +2,9 @@ import React from "react";
 import { InputAdornment, TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { IBaseController } from "../types";
-import numeral from "numeral";
+import NumberFormat, { InputAttributes } from "react-number-format";
 
-export interface IInputController extends IBaseController {
+export interface IInputMaskController extends IBaseController {
   size?: "medium" | "small";
   textType?: "password" | "number" | "text";
   multiline?: boolean;
@@ -12,7 +12,36 @@ export interface IInputController extends IBaseController {
   rows?: number;
 }
 
-function InputForm(props: IInputController) {
+interface CustomProps {
+  onChange: (event: { target: { name: string; value: string } }) => void;
+  name: string;
+}
+
+const NumberFormatCustom = React.forwardRef<
+  NumberFormat<InputAttributes>,
+  CustomProps
+>(function NumberFormatCustom(props, ref) {
+  const { onChange, ...other } = props;
+
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={ref}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator=","
+      suffix=" đ"
+    />
+  );
+});
+
+function InputMaskForm(props: IInputMaskController) {
   const {
     isRequired,
     label,
@@ -46,9 +75,9 @@ function InputForm(props: IInputController) {
       required={isRequired}
       size={size}
       textType={textType}
-      type={textType}
       InputProps={{
         startAdornment: <InputAdornment position="start"></InputAdornment>,
+        inputComponent: NumberFormatCustom as any,
       }}
       sx={{
         ".MuiFormLabel-root": {
@@ -62,12 +91,12 @@ function InputForm(props: IInputController) {
   );
 }
 
-const InputController = (props: IInputController) => (
+const InputMaskController = (props: IInputMaskController) => (
   <Controller
     name={props.name || "name"}
     control={props.control}
-    render={({ field }) => <InputForm {...props} field={field} />}
+    render={({ field }) => <InputMaskForm {...props} field={field} />}
   />
 );
 
-export default InputController;
+export default InputMaskController;

@@ -7,7 +7,7 @@ import { AiFillPlusCircle } from "react-icons/ai";
 import BaseForm from "@/components/BaseForm";
 import { VStack } from "@chakra-ui/layout";
 import { AiOutlineDelete } from "react-icons/ai";
-import { remove } from "lodash-es";
+import produce from "immer";
 
 export interface IArrayFieldsController extends IBaseController {
   size?: "medium" | "small";
@@ -19,11 +19,11 @@ export interface IArrayFieldsController extends IBaseController {
   templateColumns?: string;
   gap?: string;
   defaultArrayValue?: any[];
-  onAddRow?: () => any;
+  onAddRow?: (index: any) => any;
 }
 
 function ArrayFields(props: IArrayFieldsController) {
-  const { fields, templateColumns, gap, field, onAddRow } = props;
+  const { fields, templateColumns, gap, field, onAddRow, name } = props;
 
   const [value, setValue] = React.useState<any[]>(field?.value);
 
@@ -32,15 +32,34 @@ function ArrayFields(props: IArrayFieldsController) {
   }, [field?.value]);
 
   const handleAddRow = () => {
-    const row = onAddRow();
-    setValue((s: any) => [...s, row]);
+    const row = onAddRow(value.length + 1);
+    const nextState = [...value, row];
+    setValue(nextState);
+    handleSubmitData(nextState);
   };
 
-  const handleRemoveRow = (index: number) => {
-    console.log("🚀 ~ index", index);
-    console.log("🚀 ~ value", value);
+  const handleRemoveRow = (id: number) => {
+    const nextState = value.filter((x) => x._id !== id);
+    setValue(nextState);
+    handleSubmitData(nextState);
+  };
+  const handleChangeFieldValue = (id: number, data: any) => {
+    const _index = value.findIndex((y) => y._id === id);
+    if (_index < 0) return;
+    const nextState = produce(value, (draft) => {
+      draft[_index] = { ...data, _id: id };
+    });
+    setValue(nextState);
+    handleSubmitData(nextState);
+  };
 
-    setValue([]);
+  const handleSubmitData = (data: any) => {
+    field.onChange({
+      name,
+      target: {
+        value: data,
+      },
+    });
   };
 
   return (
@@ -52,12 +71,17 @@ function ArrayFields(props: IArrayFieldsController) {
       >
         Thêm
       </Button>
-      {value?.map((x: any, index: number) => (
+      {value?.map((x: any) => (
         <BaseForm
-          key={index}
+          key={x._id}
           gap={gap}
           templateColumns={templateColumns || "repeat(24, 1fr)"}
           defaultValues={x}
+          watchFields={fields.map((x) => {
+            //@ts-ignore
+            if (typeof x.name === "string") return x.name;
+          })}
+          onWatchChange={(data) => handleChangeFieldValue(x._id, data)}
           fields={[
             ...fields,
             {
@@ -68,7 +92,7 @@ function ArrayFields(props: IArrayFieldsController) {
               btnSize: "large",
               colSpan: 1,
               color: "error",
-              onClick: () => handleRemoveRow(index),
+              onClick: () => handleRemoveRow(x._id),
             },
           ]}
         ></BaseForm>

@@ -19,6 +19,9 @@ import { loaiTienGiaService } from "./loaiTien";
 import { danhXungService } from "./danhXung";
 import { khachHangService } from "./khachHang";
 import { nhanVienService } from "./nhanVien";
+import { sanPhamService } from "./sanPham";
+import { chatLieuService } from "./chatLieu";
+import { donViTinhService, useLazySearchDonViTinhQuery } from "./donViTinh";
 import { testService } from "./test";
 
 // @ts-ignore
@@ -39,6 +42,9 @@ const store: any = configureStore({
     [khachHangService.reducerPath]: khachHangService.reducer,
     [nhanVienService.reducerPath]: nhanVienService.reducer,
     [testService.reducerPath]: testService.reducer,
+    [sanPhamService.reducerPath]: sanPhamService.reducer,
+    [chatLieuService.reducerPath]: chatLieuService.reducer,
+    [donViTinhService.reducerPath]: donViTinhService.reducer,
   }),
   devTools: true,
 });

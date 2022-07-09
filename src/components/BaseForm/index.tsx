@@ -16,6 +16,8 @@ import AutocompleteController from "./controller/Autocomplete";
 import CheckboxController from "./controller/Checkbox";
 import ArrayFieldsController from "./controller/ArrayFields";
 import IconButtonController from "./controller/IconButton";
+import InputMaskController from "./controller/InputMask";
+
 const CONTROLLER: any = {
   input: InputController,
   select: SelectController,
@@ -24,6 +26,7 @@ const CONTROLLER: any = {
   label: LabelController,
   "array-fields": ArrayFieldsController,
   "icon-button": IconButtonController,
+  "input-mask": InputMaskController,
 };
 
 const BaseForm = React.forwardRef((props: IBaseForm, ref?: any) => {
