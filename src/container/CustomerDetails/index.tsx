@@ -24,6 +24,7 @@ import {
 } from "@/store/thanhPho/service";
 import { useLazyGetDanhXungListQuery } from "@/store/danhXung/service";
 import * as Yup from "yup";
+import CustomerCohoiTableListContainer from "./customer-co-hoi";
 
 const getInitials = (name = "") =>
   name
@@ -366,37 +367,44 @@ const CustomerDetailsContainer = () => {
             </UI.Box>
             <UI.Divider />
             <UI.Box sx={{ mt: 3 }}>
-              <UI.Grid container spacing={3}>
-                <UI.Grid item xs={12}>
-                  <Collapse in={isView}>
-                    <CustomerBasicDetails rows={rowsData} />
-                  </Collapse>
-                  <Collapse in={!isView}>
-                    <BaseForm
-                      id="vinhnd"
-                      gap={theme.spacing(4)}
-                      templateColumns="repeat(2,1fr)"
-                      defaultValues={defaultValues}
-                      onSubmit={(value) => {
-                        updateCustomerByID({
-                          ...customer,
-                          ...value,
-                          quocgia_key: value.quocgia_key.value,
-                          thanhpho_key: value.thanhpho_key.value,
-                          danh_xung_key: value.danh_xung.value,
-                        });
-                      }}
-                      schema={{
-                        contact: Yup.string().required(
-                          "Cách gọi khách hàng không được để trống"
-                        ),
-                      }}
-                      //@ts-ignore
-                      fields={rowsData}
-                    ></BaseForm>
-                  </Collapse>
+              {currentTab === "thong_tin_co_ban" && (
+                <UI.Grid container spacing={3}>
+                  <UI.Grid item xs={12}>
+                    <Collapse in={isView}>
+                      <CustomerBasicDetails rows={rowsData} />
+                    </Collapse>
+                    <Collapse in={!isView}>
+                      <BaseForm
+                        id="vinhnd"
+                        gap={theme.spacing(4)}
+                        templateColumns="repeat(2,1fr)"
+                        defaultValues={defaultValues}
+                        onSubmit={(value) => {
+                          updateCustomerByID({
+                            ...customer,
+                            ...value,
+                            quocgia_key: value.quocgia_key.value,
+                            thanhpho_key: value.thanhpho_key.value,
+                            danh_xung_key: value.danh_xung.value,
+                          });
+                        }}
+                        schema={{
+                          contact: Yup.string().required(
+                            "Cách gọi khách hàng không được để trống"
+                          ),
+                        }}
+                        //@ts-ignore
+                        fields={rowsData}
+                      ></BaseForm>
+                    </Collapse>
+                  </UI.Grid>
                 </UI.Grid>
-              </UI.Grid>
+              )}
+              {currentTab === "co_hoi" && (
+                <CustomerCohoiTableListContainer
+                  customerId={params?.customerId}
+                />
+              )}
             </UI.Box>
           </UI.Container>
         </UI.Box>

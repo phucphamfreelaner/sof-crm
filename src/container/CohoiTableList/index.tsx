@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import CohoiListTable from "@/components/CohoiTableList";
+import CohoiTableList from "@/components/CohoiTableList";
 import { debounce } from "lodash";
 import * as UI from "@/libs/ui";
 import {
@@ -273,7 +273,6 @@ function CohoiTableListContainer() {
                   gap={theme.spacing(2)}
                   templateColumns="repeat(4,1fr)"
                   onWatchChange={debounce((val) => {
-                    console.log("val", val);
                     handleOnchangeAdvanceSearch(val);
                   }, 1000)}
                   watchFields={[
@@ -373,7 +372,7 @@ function CohoiTableListContainer() {
             {isFetching ? (
               <Loading />
             ) : (
-              <CohoiListTable
+              <CohoiTableList
                 cohois={data?.data ? data.data : []}
                 cohoisCount={totalPages}
                 onPageChange={handlePageChange}

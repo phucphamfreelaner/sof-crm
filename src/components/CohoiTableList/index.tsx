@@ -16,12 +16,11 @@ import {
 import * as UI from "@/libs/ui";
 import { Scrollbar } from "@/components/ScrollBar";
 import Empty from "@/assets/images/no-data.png";
-import { GiCancel } from "react-icons/gi";
-import { AiFillCheckCircle } from "react-icons/ai";
 import { format } from "date-fns";
 import { isEmpty } from "lodash";
+import { useNavigate } from "react-router-dom";
 
-const CohoiListTable = (props) => {
+const CohoiTableList = (props) => {
   const {
     cohois,
     cohoisCount,
@@ -32,6 +31,8 @@ const CohoiListTable = (props) => {
     ...other
   } = props;
   const [selectedCohois, setSelectedCohois] = useState([]);
+
+  const navigate = useNavigate();
 
   // Reset selected cohois when cohois change
   useEffect(
@@ -126,7 +127,20 @@ const CohoiListTable = (props) => {
                 const isCohoiSelected = selectedCohois.includes(cohoi?.id);
 
                 return (
-                  <TableRow hover key={cohoi?.id} selected={isCohoiSelected}>
+                  <TableRow
+                    hover
+                    key={cohoi?.id}
+                    selected={isCohoiSelected}
+                    onClick={() => {
+                      navigate(
+                        `/khach_hang/${cohoi.khach_hang?.id}?tab=co-hoi`
+                      );
+                    }}
+                    sx={{
+                      cursor: "pointer",
+                      tabIndex: -1,
+                    }}
+                  >
                     <TableCell padding="checkbox">
                       <Checkbox
                         checked={isCohoiSelected}
@@ -185,4 +199,4 @@ const CohoiListTable = (props) => {
   );
 };
 
-export default CohoiListTable;
+export default CohoiTableList;
