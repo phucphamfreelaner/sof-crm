@@ -314,7 +314,7 @@ const CustomerDetailsContainer = () => {
                     <LoadingButton
                       loading={result?.status == "pending"}
                       loadingPosition="end"
-                      form="vinhnd"
+                      form="base-form"
                       type="submit"
                       endIcon={<FaSave fontSize="small" />}
                       sx={{ m: 1 }}
@@ -375,7 +375,7 @@ const CustomerDetailsContainer = () => {
                     </Collapse>
                     <Collapse in={!isView}>
                       <BaseForm
-                        id="vinhnd"
+                        id="base-form"
                         gap={theme.spacing(4)}
                         templateColumns="repeat(2,1fr)"
                         defaultValues={defaultValues}
