@@ -23,7 +23,10 @@ export interface IBaseForm {
   onDirty?: (dirtyFields: any) => any;
   watchFields?: string[];
   watchDefaultValueFields?: any;
-  onWatchChange?: (value: any) => any;
+  onWatchChange?: (
+    value: any,
+    setValue: (name: string, value: any, config?: Object) => void
+  ) => any;
   withLabel?: boolean;
   footerStyle?: React.CSSProperties;
   sx?: CSSObject;
@@ -61,3 +64,6 @@ export type IFormControl = IBaseController &
     rowSpan?: number;
     colSpan?: number;
   };
+
+export type TGetValues = (payload?: string | string[]) => Object;
+export type TSetValue = (name: string, value: any, config?: Object) => void;

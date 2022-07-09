@@ -54,6 +54,7 @@ const BaseForm = React.forwardRef((props: IBaseForm, ref?: any) => {
     handleSubmit,
     formState: { errors, isDirty, dirtyFields },
     setValue,
+    getValues,
     setFocus,
   } = useForm({
     defaultValues,
@@ -66,6 +67,7 @@ const BaseForm = React.forwardRef((props: IBaseForm, ref?: any) => {
       handleSubmit,
       setValue,
       setFocus,
+      getValues,
     }),
     [handleSubmit]
   );
@@ -85,7 +87,6 @@ const BaseForm = React.forwardRef((props: IBaseForm, ref?: any) => {
         {/* @ts-ignore */}
         {compact(fields)?.map((x: IFormControl, i) => {
           const Component = CONTROLLER?.[x.type];
-
           return (
             <GridItem
               key={i}
@@ -94,6 +95,8 @@ const BaseForm = React.forwardRef((props: IBaseForm, ref?: any) => {
             >
               <Component
                 {...x}
+                setValue={setValue}
+                getValues={getValues}
                 errorMessage={errors?.[x.name!]?.message}
                 control={control}
               />
@@ -110,6 +113,7 @@ const BaseForm = React.forwardRef((props: IBaseForm, ref?: any) => {
       </Grid>
       {watchFields && !isEmpty(watchFields) && (
         <FieldWatched
+          setValue={setValue}
           control={control}
           watchFields={watchFields}
           watchDefaultValueFields={watchDefaultValueFields}
@@ -125,11 +129,16 @@ function FieldWatched({
   watchFields,
   watchDefaultValueFields,
   onWatchChange,
+  setValue,
 }: {
   control: Control;
   watchFields: string[];
   watchDefaultValueFields?: any;
-  onWatchChange?: (value: any) => any;
+  onWatchChange?: (
+    value: any,
+    setValue: (name: string, value: any, config?: Object) => void
+  ) => any;
+  setValue?: (name: string, value: any, config?: Object) => void;
 }) {
   const value = useWatch({
     control,
@@ -142,12 +151,11 @@ function FieldWatched({
       watchFields,
       (res, key, index) => {
         res[key] = value[index];
-
         return res;
       },
       {} as any
     );
-    onWatchChange?.(data);
+    onWatchChange?.(data, setValue);
   }, [value]);
 
   return <div />;
