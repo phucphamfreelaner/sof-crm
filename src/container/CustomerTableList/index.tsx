@@ -14,6 +14,8 @@ import BaseForm from "@/components/BaseForm";
 import { Collapse } from "@mui/material";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { RiArrowUpSFill } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
+
 const sortOptions = [
   {
     label: "Mã khách hàng",
@@ -66,6 +68,7 @@ const orderOptions = [
 
 function CustomerTableListContainer() {
   const theme = UI.useTheme();
+  const navigate = useNavigate();
   const [sort, setSort] = useState(sortOptions[0].value);
   const [orderBy, setOrderBy] = useState(orderOptions[0].value);
   const [page, setPage] = useState(0);
@@ -164,6 +167,9 @@ function CustomerTableListContainer() {
                   size="small"
                   startIcon={<AiFillPlusCircle fontSize="small" />}
                   variant="contained"
+                  onClick={() => {
+                    navigate(`/khach_hang/new`);
+                  }}
                 >
                   Thêm mới
                 </UI.Button>

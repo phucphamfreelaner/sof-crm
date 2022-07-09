@@ -5,6 +5,8 @@ import RootPage from "@/pages";
 import Customer from "@/pages/customer";
 import CustomerList from "@/pages/customer/list";
 import CustomerItem from "@/pages/customer/id";
+import CustomerNew from "@/pages/customer/new";
+
 import Cohoi from "@/pages/coHoi";
 import CohoiList from "@/pages/coHoi/list";
 import BaoGia from "@/pages/baoGia";
@@ -20,6 +22,7 @@ function Router() {
             <Route index element={<CustomerList />} />
             <Route path=":customerId" element={<CustomerItem />} />
             <Route path="list" element={<Customer />} />
+            <Route path="new" element={<CustomerNew />} />
           </Route>
           <Route path="co_hoi" element={<Cohoi />}>
             <Route index element={<CohoiList />} />
