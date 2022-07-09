@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import CohoiListTable from "@/components/CohoiTableList";
+import CohoiTableList from "@/components/CohoiTableList";
 import { debounce } from "lodash";
 import * as UI from "@/libs/ui";
 import {
@@ -372,7 +372,7 @@ function CohoiTableListContainer() {
             {isFetching ? (
               <Loading />
             ) : (
-              <CohoiListTable
+              <CohoiTableList
                 cohois={data?.data ? data.data : []}
                 cohoisCount={totalPages}
                 onPageChange={handlePageChange}

@@ -29,6 +29,13 @@ export const cohoiService = createApi({
         url: `/co-hoi?limit=20&page=1&s[name]=${name}`,
       }),
     }),
+    getCohoiListByCustomerId: builder.query({
+      transformResponse: (response: any) => response as ICoHoiList,
+      query: ({ id, limit, page, code, order_by, search }) => ({
+        method: "GET",
+        url: `/co-hoi?with[]=khach_hang&with[]=tien_trinh&with[]=trang_thai&with[]=nhan_vien_tao&with[]=co_hoi_cskh&with[]=co_hoi_chua_cham_soc&limit=${limit}&page=${page}&s[code]=${code}&${order_by}&s[name]=${search}&customer_id=${id}`,
+      }),
+    }),
   }),
 });
 
@@ -36,4 +43,6 @@ export const {
   useGetCohoiListQuery,
   useLazyGetCohoiListQuery,
   useLazySearchCohoiQuery,
+  useGetCohoiListByCustomerIdQuery,
+  useLazyGetCohoiListByCustomerIdQuery,
 } = cohoiService;

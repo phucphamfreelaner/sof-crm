@@ -20,7 +20,7 @@ import { format } from "date-fns";
 import { isEmpty } from "lodash";
 import { useNavigate } from "react-router-dom";
 
-const CohoiListTable = (props) => {
+const CohoiTableList = (props) => {
   const {
     cohois,
     cohoisCount,
@@ -199,4 +199,4 @@ const CohoiListTable = (props) => {
   );
 };
 
-export default CohoiListTable;
+export default CohoiTableList;
