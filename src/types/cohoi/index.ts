@@ -39,7 +39,7 @@ export interface ICoHoi {
   trang_thai_key: string;
 }
 
-export interface IFile {
+interface IFile {
   id: number;
   note?: string;
   object_id: number;
