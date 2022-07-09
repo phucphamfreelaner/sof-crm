@@ -8,7 +8,7 @@ import {
 } from "react-redux";
 
 import { customerService, customerSlice } from "./customer";
-import { cohoiService, cohoiSlice } from "./cohoi";
+import { coHoiService, coHoiSlice } from "./coHoi";
 import { congTyService } from "./congTy";
 import { authService } from "./auth";
 import { loaiBaoGiaService } from "./loaiBaoGia";
@@ -25,9 +25,9 @@ import { testService } from "./test";
 const store: any = configureStore({
   reducer: combineReducers({
     customer: customerSlice.reducer,
-    cohoi: cohoiSlice.reducer,
+    coHoi: coHoiSlice.reducer,
     [customerService.reducerPath]: customerService.reducer,
-    [cohoiService.reducerPath]: cohoiService.reducer,
+    [coHoiService.reducerPath]: coHoiService.reducer,
     [authService.reducerPath]: authService.reducer,
     [congTyService.reducerPath]: congTyService.reducer,
     [loaiBaoGiaService.reducerPath]: loaiBaoGiaService.reducer,

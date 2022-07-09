@@ -24,7 +24,7 @@ import {
 } from "@/store/thanhPho/service";
 import { useLazyGetDanhXungListQuery } from "@/store/danhXung/service";
 import * as Yup from "yup";
-import CustomerCohoiTableListContainer from "./customer-co-hoi";
+import CustomerCoHoiTableListContainer from "./customer-co-hoi";
 
 const getInitials = (name = "") =>
   name
@@ -401,7 +401,7 @@ const CustomerDetailsContainer = () => {
                 </UI.Grid>
               )}
               {currentTab === "co_hoi" && (
-                <CustomerCohoiTableListContainer
+                <CustomerCoHoiTableListContainer
                   customerId={params?.customerId}
                 />
               )}

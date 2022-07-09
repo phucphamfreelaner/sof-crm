@@ -20,51 +20,52 @@ import { format } from "date-fns";
 import { isEmpty } from "lodash";
 import { useNavigate } from "react-router-dom";
 
-const CohoiTableList = (props) => {
+const CoHoiTableList = (props) => {
   const {
-    cohois,
-    cohoisCount,
+    nextUrl,
+    coHois,
+    coHoisCount,
     onPageChange,
     onRowsPerPageChange,
     page,
     rowsPerPage,
     ...other
   } = props;
-  const [selectedCohois, setSelectedCohois] = useState([]);
+  const [selectedCoHois, setSelectedCoHois] = useState([]);
 
   const navigate = useNavigate();
 
-  // Reset selected cohois when cohois change
+  // Reset selected coHois when coHois change
   useEffect(
     () => {
-      if (selectedCohois.length) {
-        setSelectedCohois([]);
+      if (selectedCoHois.length) {
+        setSelectedCoHois([]);
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [cohois]
+    [coHois]
   );
 
-  const handleSelectAllCohois = (event) => {
-    setSelectedCohois(
-      event.target.checked ? cohois.map((cohoi) => cohoi?.id) : []
+  const handleSelectAllCoHois = (event) => {
+    setSelectedCoHois(
+      event.target.checked ? coHois.map((coHoi) => coHoi?.id) : []
     );
   };
 
-  const handleSelectOneCohoi = (event, cohoiId) => {
-    if (!selectedCohois.includes(cohoiId)) {
-      setSelectedCohois((prevSelected) => [...prevSelected, cohoiId]);
+  const handleSelectOneCoHoi = (event, coHoiId) => {
+    if (!selectedCoHois.includes(coHoiId)) {
+      setSelectedCoHois((prevSelected) => [...prevSelected, coHoiId]);
     } else {
-      setSelectedCohois((prevSelected) =>
-        prevSelected.filter((id) => id !== cohoiId)
+      setSelectedCoHois((prevSelected) =>
+        prevSelected.filter((id) => id !== coHoiId)
       );
     }
   };
 
-  const enableBulkActions = selectedCohois.length > 0;
-  const selectedSomeCohois =
-    selectedCohois.length > 0 && selectedCohois.length < cohois.length;
-  const selectedAllCohois = selectedCohois.length === cohois.length;
+  const enableBulkActions = selectedCoHois.length > 0;
+  const selectedSomeCoHois =
+    selectedCoHois.length > 0 && selectedCoHois.length < coHois.length;
+  const selectedAllCoHois = selectedCoHois.length === coHois.length;
 
   const getInitials = (name = "") =>
     name
@@ -86,9 +87,9 @@ const CohoiTableList = (props) => {
         }}
       >
         <Checkbox
-          checked={selectedAllCohois}
-          indeterminate={selectedSomeCohois}
-          onChange={handleSelectAllCohois}
+          checked={selectedAllCoHois}
+          indeterminate={selectedSomeCoHois}
+          onChange={handleSelectAllCoHois}
         />
         <Button size="small" sx={{ ml: 2 }}>
           Delete
@@ -105,9 +106,9 @@ const CohoiTableList = (props) => {
             <TableRow>
               <TableCell padding="checkbox">
                 <Checkbox
-                  checked={selectedAllCohois}
-                  indeterminate={selectedSomeCohois}
-                  onChange={handleSelectAllCohois}
+                  checked={selectedAllCoHois}
+                  indeterminate={selectedSomeCoHois}
+                  onChange={handleSelectAllCoHois}
                 />
               </TableCell>
               <TableCell>Mã Cơ hội</TableCell>
@@ -122,19 +123,23 @@ const CohoiTableList = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {cohois &&
-              cohois.map((cohoi) => {
-                const isCohoiSelected = selectedCohois.includes(cohoi?.id);
+            {coHois &&
+              coHois.map((coHoi) => {
+                const isCoHoiSelected = selectedCoHois.includes(coHoi?.id);
 
                 return (
                   <TableRow
                     hover
-                    key={cohoi?.id}
-                    selected={isCohoiSelected}
+                    key={coHoi?.id}
+                    selected={isCoHoiSelected}
                     onClick={() => {
-                      navigate(
-                        `/khach_hang/${cohoi.khach_hang?.id}?tab=co-hoi`
-                      );
+                      if (nextUrl == "customerCoHoiList") {
+                        navigate(
+                          `/khach_hang/${coHoi.khach_hang?.id}?tab=co-hoi`
+                        );
+                      } else {
+                        navigate(`/co_hoi/${coHoi.id}`);
+                      }
                     }}
                     sx={{
                       cursor: "pointer",
@@ -143,42 +148,42 @@ const CohoiTableList = (props) => {
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
-                        checked={isCohoiSelected}
+                        checked={isCoHoiSelected}
                         onChange={(event) =>
-                          handleSelectOneCohoi(event, cohoi?.id)
+                          handleSelectOneCoHoi(event, coHoi?.id)
                         }
-                        value={isCohoiSelected}
+                        value={isCoHoiSelected}
                       />
                     </TableCell>
 
-                    <TableCell>{cohoi?.code}</TableCell>
+                    <TableCell>{coHoi?.code}</TableCell>
 
-                    <TableCell>{cohoi?.name}</TableCell>
+                    <TableCell>{coHoi?.name}</TableCell>
 
-                    <TableCell>{cohoi?.khach_hang?.phone}</TableCell>
+                    <TableCell>{coHoi?.khach_hang?.phone}</TableCell>
 
-                    <TableCell>{cohoi?.khach_hang?.email}</TableCell>
+                    <TableCell>{coHoi?.khach_hang?.email}</TableCell>
 
-                    <TableCell>{cohoi?.trang_thai?.name}</TableCell>
+                    <TableCell>{coHoi?.trang_thai?.name}</TableCell>
 
-                    <TableCell>{cohoi?.tien_trinh?.name}</TableCell>
+                    <TableCell>{coHoi?.tien_trinh?.name}</TableCell>
 
-                    <TableCell>{cohoi?.nhan_vien_tao?.name}</TableCell>
+                    <TableCell>{coHoi?.nhan_vien_tao?.name}</TableCell>
 
                     <TableCell sx={{ width: "150px" }}>
-                      {cohoi?.created_at
-                        ? format(new Date(cohoi?.created_at), "dd MMM yyyy")
+                      {coHoi?.created_at
+                        ? format(new Date(coHoi?.created_at), "dd MMM yyyy")
                         : undefined}
                     </TableCell>
 
-                    <TableCell>{cohoi?.note}</TableCell>
+                    <TableCell>{coHoi?.note}</TableCell>
                   </TableRow>
                 );
               })}
           </TableBody>
         </Table>
       </Scrollbar>
-      {isEmpty(cohois) && (
+      {isEmpty(coHois) && (
         <UI.Center width={"full"} mt={20}>
           <img width="90px" src={Empty} />
           <Typography color="#8996a3" fontSize="18px" textAlign="center">
@@ -188,7 +193,7 @@ const CohoiTableList = (props) => {
       )}
       <TablePagination
         component="div"
-        count={cohoisCount}
+        count={coHoisCount}
         onPageChange={onPageChange}
         onRowsPerPageChange={onRowsPerPageChange}
         page={page}
@@ -199,4 +204,4 @@ const CohoiTableList = (props) => {
   );
 };
 
-export default CohoiTableList;
+export default CoHoiTableList;
