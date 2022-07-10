@@ -11,11 +11,11 @@ function BaoGiaTable(props: IBaoGiaTable) {
   const { filter } = props;
   const [limit, setLimit] = React.useState(5);
   const [page, setPage] = React.useState(0);
-  console.log("🚀 ~ page", page);
 
   const { data, isLoading, isFetching } = useGetBaoGiaQuery({
     limit,
     page: page + 1,
+    filter,
   });
 
   return (
