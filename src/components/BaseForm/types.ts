@@ -7,6 +7,8 @@ import type { ICheckboxController } from "./controller/Checkbox";
 import type { ISelectController } from "./controller/Select";
 import type { ILableController } from "./controller/Label";
 import type { IArrayFieldsController } from "./controller/ArrayFields";
+import type { ICollapseFieldsController } from "./controller/CollapseFields";
+
 import type { IIconButtonFieldController } from "./controller/IconButton";
 
 export interface IBaseForm {
@@ -17,6 +19,7 @@ export interface IBaseForm {
   children?: React.ReactNode;
   fields: (IFormControl | boolean)[];
   templateColumns?: string;
+  templateRows?: string;
   gap?: string | number;
   childrenColSpan?: number;
   childrenRowSpan?: number;
@@ -42,6 +45,8 @@ export interface IBaseController {
   isDisabled?: boolean;
   control?: any;
   field?: any;
+  colEnd?: number;
+  colStart?: number;
 }
 
 export type IFormControl = IBaseController &
@@ -51,7 +56,8 @@ export type IFormControl = IBaseController &
   ICheckboxController &
   ISelectController &
   IArrayFieldsController &
-  IIconButtonFieldController & {
+  IIconButtonFieldController &
+  ICollapseFieldsController & {
     type:
       | "input"
       | "select"
@@ -60,6 +66,8 @@ export type IFormControl = IBaseController &
       | "autocomplete"
       | "array-fields"
       | "input-mask"
+      | "collapse-fields"
+      | "date-picker"
       | "icon-button";
     rowSpan?: number;
     colSpan?: number;

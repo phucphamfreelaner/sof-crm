@@ -10,11 +10,6 @@ import { AiOutlineDelete } from "react-icons/ai";
 import produce from "immer";
 
 export interface IArrayFieldsController extends IBaseController {
-  size?: "medium" | "small";
-  textType?: "password" | "number" | "text";
-  multiline?: boolean;
-  maxRows?: number;
-  rows?: number;
   fields?: (IFormControl | boolean)[];
   templateColumns?: string;
   gap?: string;
