@@ -203,10 +203,37 @@ function ThongTinCoBanTab() {
     }
   }, [result]);
 
+  const elForm = React.useRef<any>();
+
   return (
     <>
       <UI.HStack mb="14px" w="100%" justifyContent="flex-end">
-        <UI.Button
+        <UI.LoadingButton
+          loading={result?.status == "pending"}
+          loadingPosition="end"
+          endIcon={
+            isView ? (
+              <FaPencilAlt fontSize="small" />
+            ) : (
+              <FaSave fontSize="small" />
+            )
+          }
+          variant="outlined"
+          onClick={() =>
+            elForm.current.handleSubmit((data) => {
+              updateCustomerByID({
+                ...customer,
+                ...data,
+                quocgia_key: data.quocgia_key.value,
+                thanhpho_key: data.thanhpho_key.value,
+                danh_xung_key: data.danh_xung.value,
+              });
+            })()
+          }
+        >
+          {isView ? "Edit" : "Save"}
+        </UI.LoadingButton>
+        {/* <UI.Button
           component="a"
           endIcon={
             isView ? (
@@ -223,7 +250,7 @@ function ThongTinCoBanTab() {
           }}
         >
           {isView ? "Edit" : "Save"}
-        </UI.Button>
+        </UI.Button> */}
       </UI.HStack>
       <UI.Card elevation={10}>
         <UI.Grid container spacing={3}>
@@ -234,20 +261,12 @@ function ThongTinCoBanTab() {
             <Collapse in={!isView}>
               <UI.CardContent>
                 <BaseForm
+                  ref={elForm}
                   key={JSON.stringify(defaultValues)}
                   id="base-form"
                   gap={theme.spacing(4)}
                   templateColumns="repeat(2,1fr)"
                   defaultValues={defaultValues}
-                  onSubmit={(value) => {
-                    updateCustomerByID({
-                      ...customer,
-                      ...value,
-                      quocgia_key: value.quocgia_key.value,
-                      thanhpho_key: value.thanhpho_key.value,
-                      danh_xung_key: value.danh_xung.value,
-                    });
-                  }}
                   schema={{
                     contact: Yup.string().required(
                       "Cách gọi khách hàng không được để trống"
