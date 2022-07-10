@@ -9,10 +9,14 @@ interface IBaoGiaTable {
 
 function BaoGiaTable(props: IBaoGiaTable) {
   const { filter } = props;
-  const [limit, setLimit] = React.useState(20);
-  const [page, setPage] = React.useState(1);
+  const [limit, setLimit] = React.useState(5);
+  const [page, setPage] = React.useState(0);
+  console.log("🚀 ~ page", page);
 
-  const { data, isLoading, isFetching } = useGetBaoGiaQuery({ limit });
+  const { data, isLoading, isFetching } = useGetBaoGiaQuery({
+    limit,
+    page: page + 1,
+  });
 
   return (
     <div style={{ height: "auto", width: "100%" }}>
@@ -20,9 +24,9 @@ function BaoGiaTable(props: IBaoGiaTable) {
         autoHeight
         autoPageSize
         headerHeight={70}
-        pageSize={20}
+        pageSize={limit || 15}
         onPageSizeChange={(newSize) => setLimit(newSize)}
-        rowsPerPageOptions={[20, 30, 50, 80, 100]}
+        rowsPerPageOptions={[15, 20, 30, 50, 80, 100]}
         disableColumnFilter
         paginationMode="server"
         loading={isLoading || isFetching}

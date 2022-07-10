@@ -13,11 +13,14 @@ export const baoGiaService = createApi({
   }),
   reducerPath: "baoGiaService",
   endpoints: (builder) => ({
-    getBaoGia: builder.query<{ data: IBaoGia[] }, { limit?: number }>({
+    getBaoGia: builder.query<
+      { data: IBaoGia[] },
+      { limit?: number; page?: number }
+    >({
       transformResponse: (response: any) => response,
-      query: ({ limit }) => ({
+      query: ({ limit, page }) => ({
         method: "GET",
-        url: `/bao-gia?with[]=khach_hang&with[]=co_hoi&with[]=nhan_vien_nhap&with[]=loai_tien&limit=${limit}&order_by[created_at]=desc`,
+        url: `/bao-gia?with[]=khach_hang&with[]=co_hoi&with[]=nhan_vien_nhap&with[]=loai_tien&limit=${limit}&order_by[created_at]=desc&page=${page}`,
       }),
     }),
   }),
