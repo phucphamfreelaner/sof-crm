@@ -3,7 +3,7 @@ import * as UI from "@/libs/ui";
 import { BsChevronDown } from "react-icons/bs";
 import { FaPencilAlt, FaSave } from "react-icons/fa";
 import { CustomerBasicDetails } from "@/components/CustomerBasicDetails";
-import { AiOutlineArrowLeft } from "react-icons/ai";
+import { AiFillPlusCircle, AiOutlineArrowLeft } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import {
   useGetCustomerByIdQuery,
@@ -297,33 +297,34 @@ const CustomerDetailsContainer = () => {
                     </UI.Box>
                   </div>
                 </UI.Grid>
-                <UI.Grid item sx={{ m: -1 }}>
-                  {isView ? (
-                    <UI.Button
-                      component="a"
-                      endIcon={<FaPencilAlt fontSize="small" />}
-                      sx={{ m: 1 }}
-                      variant="outlined"
-                      onClick={() => {
-                        setView(!isView);
-                      }}
-                    >
-                      {"Edit"}
-                    </UI.Button>
-                  ) : (
-                    <LoadingButton
-                      loading={result?.status == "pending"}
-                      loadingPosition="end"
-                      form="base-form"
-                      type="submit"
-                      endIcon={<FaSave fontSize="small" />}
-                      sx={{ m: 1 }}
-                      variant="outlined"
-                    >
-                      {"Save"}
-                    </LoadingButton>
-                  )}
-                  {/* <UI.Button
+                {currentTab === "thong_tin_co_ban" && (
+                  <UI.Grid item sx={{ m: -1 }}>
+                    {isView ? (
+                      <UI.Button
+                        component="a"
+                        endIcon={<FaPencilAlt fontSize="small" />}
+                        sx={{ m: 1 }}
+                        variant="outlined"
+                        onClick={() => {
+                          setView(!isView);
+                        }}
+                      >
+                        {"Edit"}
+                      </UI.Button>
+                    ) : (
+                      <LoadingButton
+                        loading={result?.status == "pending"}
+                        loadingPosition="end"
+                        form="base-form"
+                        type="submit"
+                        endIcon={<FaSave fontSize="small" />}
+                        sx={{ m: 1 }}
+                        variant="outlined"
+                      >
+                        {"Save"}
+                      </LoadingButton>
+                    )}
+                    {/* <UI.Button
                     id="base-form"
                     component="a"
                     type="submit"
@@ -342,14 +343,29 @@ const CustomerDetailsContainer = () => {
                   >
                     {isView ? "Edit" : "Save"}
                   </UI.Button> */}
-                  <UI.Button
-                    endIcon={<BsChevronDown fontSize="small" />}
-                    sx={{ m: 1 }}
-                    variant="contained"
-                  >
-                    Actions
-                  </UI.Button>
-                </UI.Grid>
+                    <UI.Button
+                      endIcon={<BsChevronDown fontSize="small" />}
+                      sx={{ m: 1 }}
+                      variant="contained"
+                    >
+                      Actions
+                    </UI.Button>
+                  </UI.Grid>
+                )}
+                {currentTab === "co_hoi" && (
+                  <UI.Grid item>
+                    <UI.Button
+                      size="small"
+                      startIcon={<AiFillPlusCircle fontSize="small" />}
+                      variant="contained"
+                      onClick={() => {
+                        navigate(`/co_hoi/new`);
+                      }}
+                    >
+                      Thêm mới
+                    </UI.Button>
+                  </UI.Grid>
+                )}
               </UI.Grid>
               <UI.Tabs
                 indicatorColor="primary"

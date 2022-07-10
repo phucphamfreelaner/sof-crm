@@ -15,9 +15,9 @@ export const tienTrinhService = createApi({
   endpoints: (builder) => ({
     getTienTrinhList: builder.query({
       transformResponse: (response: any) => response,
-      query: ({ name }) => ({
+      query: ({ name, parentKey = "", parentValue = "" }) => ({
         method: "GET",
-        url: `/cau-hinh/group/tien_trinh_co_hoi?s=${name}&take=10`,
+        url: `/cau-hinh/group/tien_trinh_co_hoi?s=${name}&take=10&parent-key=${parentKey}&parent-value=${parentValue}`,
       }),
     }),
   }),

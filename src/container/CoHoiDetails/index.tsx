@@ -22,7 +22,6 @@ import {
   useLazyGetTienTrinhListQuery,
   useGetTienTrinhListQuery,
 } from "@/store/tienTrinh/service";
-import * as Yup from "yup";
 import {
   useGetSoLuongListQuery,
   useLazyGetSoLuongListQuery,
@@ -56,6 +55,14 @@ const CoHoiDetailsContainer = () => {
       isFetching: isFetchingTrangThai,
     },
   ] = useLazyGetTrangThaiListQuery();
+  const [
+    searchTienTrinh,
+    {
+      data: tienTrinhData,
+      isLoading: isLoadingTienTrinh,
+      isFetching: isFetchingTienTrinh,
+    },
+  ] = useLazyGetTienTrinhListQuery();
 
   const { data: defaultListSoLuongData, isLoading: isLoadingSoLuongDefault } =
     useGetSoLuongListQuery({ name: "" });
@@ -68,18 +75,9 @@ const CoHoiDetailsContainer = () => {
     isLoading: isLoadingTienTrinhDefault,
   } = useGetTienTrinhListQuery({ name: "" });
 
-  const [
-    searchTienTrinh,
-    {
-      data: tienTrinhData,
-      isLoading: isLoadingTienTrinh,
-      isFetching: isFetchingTienTrinh,
-    },
-  ] = useLazyGetTienTrinhListQuery();
-
   let rowsData = [
     {
-      name: "first_name",
+      name: "name",
       type: "input",
       label: "Tên",
       defaultValues: coHoi?.name,
@@ -154,8 +152,9 @@ const CoHoiDetailsContainer = () => {
   return (
     <>
       {isLoadingCoHoi ||
-      isLoadingTienTrinhDefault ||
-      isLoadingTrangThaiDefault ? (
+      isLoadingSoLuongDefault ||
+      isLoadingTrangThaiDefault ||
+      isLoadingTienTrinhDefault ? (
         <Loading />
       ) : (
         <UI.Box

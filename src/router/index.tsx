@@ -13,6 +13,7 @@ import BaoGia from "@/pages/baoGia";
 import BaoGiaList from "@/pages/baoGia/list";
 import BaoGiaNew from "@/pages/baoGia/new";
 import HopDongList from "@/pages/hopDong/list";
+import CoHoiNew from "@/pages/coHoi/new";
 
 function Router() {
   return (
@@ -34,6 +35,7 @@ function Router() {
           <Route path="co_hoi" element={<CoHoi />}>
             <Route index element={<CoHoiList />} />
             <Route path=":coHoiId" element={<CoHoiItem />} />
+            <Route path="new" element={<CoHoiNew />} />
           </Route>
           <Route path="bao_gia" element={<BaoGia />}>
             <Route index element={<BaoGiaList />} />

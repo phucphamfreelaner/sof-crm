@@ -43,6 +43,14 @@ export const coHoiService = createApi({
         url: `/co-hoi/${id}`,
       }),
     }),
+    createCoHoi: builder.mutation({
+      transformResponse: (res) => res,
+      query: ({ ...body }) => ({
+        method: "POST",
+        url: `/co-hoi`,
+        data: body,
+      }),
+    }),
     updateCoHoiByID: builder.mutation({
       transformResponse: (res) => res,
       query: ({ id, ...body }) => ({
@@ -68,6 +76,7 @@ export const {
   useGetCoHoiListByCustomerIdQuery,
   useLazyGetCoHoiListByCustomerIdQuery,
   useGetCoHoiByIdQuery,
+  useCreateCoHoiMutation,
   useUpdateCoHoiByIDMutation,
   useDeleteCoHoiByIDMutation,
 } = coHoiService;
