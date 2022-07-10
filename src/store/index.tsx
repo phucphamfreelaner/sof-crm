@@ -21,7 +21,8 @@ import { khachHangService } from "./khachHang";
 import { nhanVienService } from "./nhanVien";
 import { sanPhamService } from "./sanPham";
 import { chatLieuService } from "./chatLieu";
-import { donViTinhService, useLazySearchDonViTinhQuery } from "./donViTinh";
+import { donViTinhService } from "./donViTinh";
+import { baoGiaService } from "./baoGia";
 import { testService } from "./test";
 import { soLuongService } from "./soLuong";
 import { trangThaiService } from "./trangThai";
@@ -49,6 +50,7 @@ const store: any = configureStore({
     [sanPhamService.reducerPath]: sanPhamService.reducer,
     [chatLieuService.reducerPath]: chatLieuService.reducer,
     [donViTinhService.reducerPath]: donViTinhService.reducer,
+    [baoGiaService.reducerPath]: baoGiaService.reducer,
     [soLuongService.reducerPath]: soLuongService.reducer,
     [trangThaiService.reducerPath]: trangThaiService.reducer,
     [tienTrinhService.reducerPath]: tienTrinhService.reducer,
