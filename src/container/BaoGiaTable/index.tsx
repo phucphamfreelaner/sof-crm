@@ -57,7 +57,7 @@ function BaoGiaTable(props: IBaoGiaTable) {
           {
             field: "khach_hang",
             headerName: "Các gọi KH",
-            width: 350,
+            width: 300,
             renderCell: ({ value }) => value?.contact,
           },
           {
@@ -69,7 +69,7 @@ function BaoGiaTable(props: IBaoGiaTable) {
             field: "loai_tien",
             headerName: "Loại tiền",
             renderCell: ({ value }) => value?.name,
-            width: 150,
+            width: 100,
           },
           {
             field: "tong_tien_goc",
@@ -92,7 +92,7 @@ function BaoGiaTable(props: IBaoGiaTable) {
           {
             field: "nhan_vien_nhap",
             headerName: "Nhân viên nhập",
-            renderCell: ({ value }) => numeral(value).format("0,00"),
+            renderCell: ({ value }) => value?.name,
             width: 200,
           },
           {
