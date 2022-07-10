@@ -207,33 +207,8 @@ function ThongTinCoBanTab() {
 
   return (
     <>
-      <UI.HStack mb="14px" w="100%" justifyContent="flex-end">
-        <UI.LoadingButton
-          loading={result?.status == "pending"}
-          loadingPosition="end"
-          endIcon={
-            isView ? (
-              <FaPencilAlt fontSize="small" />
-            ) : (
-              <FaSave fontSize="small" />
-            )
-          }
-          variant="outlined"
-          onClick={() =>
-            elForm.current.handleSubmit((data) => {
-              updateCustomerByID({
-                ...customer,
-                ...data,
-                quocgia_key: data.quocgia_key.value,
-                thanhpho_key: data.thanhpho_key.value,
-                danh_xung_key: data.danh_xung.value,
-              });
-            })()
-          }
-        >
-          {isView ? "Edit" : "Save"}
-        </UI.LoadingButton>
-        {/* <UI.Button
+      <UI.HStack mb="14px" w="100%" justifyContent="flex-start">
+        <UI.Button
           component="a"
           endIcon={
             isView ? (
@@ -250,9 +225,9 @@ function ThongTinCoBanTab() {
           }}
         >
           {isView ? "Edit" : "Save"}
-        </UI.Button> */}
+        </UI.Button>
       </UI.HStack>
-      <UI.Card elevation={10}>
+      <UI.Card sx={{ width: "60%" }} elevation={10}>
         <UI.Grid container spacing={3}>
           <UI.Grid item xs={12}>
             <Collapse in={isView}>

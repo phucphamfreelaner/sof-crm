@@ -22,11 +22,20 @@ export interface IArrayFieldsController extends IBaseController {
   onAddRow?: (index: any) => any;
   watchFields?: string[];
   onWatchChange?: (value: any) => any;
+  addBtnLabel?: string;
 }
 
 function ArrayFields(props: IArrayFieldsController) {
-  const { fields, templateColumns, gap, field, onAddRow, name, onWatchChange } =
-    props;
+  const {
+    fields,
+    templateColumns,
+    gap,
+    field,
+    onAddRow,
+    name,
+    onWatchChange,
+    addBtnLabel,
+  } = props;
 
   const [value, setValue] = React.useState<any[]>(field?.value || []);
 
@@ -72,7 +81,7 @@ function ArrayFields(props: IArrayFieldsController) {
         startIcon={<AiFillPlusCircle />}
         variant="contained"
       >
-        Thêm
+        {addBtnLabel || "Thêm"}
       </Button>
       {value?.map((x: any) => (
         <BaseForm

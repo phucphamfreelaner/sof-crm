@@ -55,7 +55,12 @@ function BaoGiaList() {
         <UI.Divider />
         <UI.CardContent>
           <BaoGiaFilter onWatchChange={handleFilterChange} />
-          <BaoGiaTable filter={filter} />
+          <BaoGiaTable
+            onCellClick={(data) => {
+              navigate(`/khach_hang/${data?.row?.id}/bao_gia`);
+            }}
+            filter={filter}
+          />
         </UI.CardContent>
       </UI.Card>
     </UI.Box>

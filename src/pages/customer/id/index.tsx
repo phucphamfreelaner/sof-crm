@@ -60,7 +60,7 @@ function CustomerDetails() {
         py: 8,
       }}
     >
-      <UI.Container maxWidth="lg">
+      <UI.Container maxWidth="xl">
         <UI.Box mb={4}>
           <UI.Box sx={{ mb: 1 }}>
             <UI.Button
