@@ -57,13 +57,13 @@ function BaoGiaTable(props: IBaoGiaTable) {
           {
             field: "khach_hang",
             headerName: "Các gọi KH",
-            width: 300,
+            width: 250,
             renderCell: ({ value }) => value?.contact,
           },
           {
             field: "ngaybaogia",
             headerName: "Ngày báo giá",
-            width: 200,
+            width: 150,
           },
           {
             field: "loai_tien",
