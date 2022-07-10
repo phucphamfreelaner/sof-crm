@@ -156,7 +156,7 @@ function BaoGaiNew() {
   const elForm = React.useRef<any>();
 
   return (
-    <UI.Card>
+    <UI.Card elevation={10}>
       <UI.CardContent>
         <BaoGiaNewForm
           formRef={elForm}
@@ -206,7 +206,7 @@ function BaoGaiNew() {
           endIcon={<FaSave />}
           variant="outlined"
         >
-          Save
+          Lưu báo giá
         </UI.Button>
       </UI.CardActions>
     </UI.Card>

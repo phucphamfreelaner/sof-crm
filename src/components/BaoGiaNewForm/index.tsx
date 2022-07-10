@@ -79,6 +79,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           label: "",
           gap: "12px",
           onAddRow: onAddSanPham,
+          addBtnLabel: "Thêm sản phẩm",
           fields: [
             {
               name: "ten_san_pham",

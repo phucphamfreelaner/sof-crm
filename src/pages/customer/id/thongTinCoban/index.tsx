@@ -205,7 +205,7 @@ function ThongTinCoBanTab() {
 
   return (
     <>
-      <UI.HStack mb="14px" w="100%" justifyContent="flex-end">
+      <UI.HStack mb="14px" w="100%" justifyContent="flex-start">
         <UI.Button
           component="a"
           endIcon={
@@ -225,7 +225,7 @@ function ThongTinCoBanTab() {
           {isView ? "Edit" : "Save"}
         </UI.Button>
       </UI.HStack>
-      <UI.Card elevation={10}>
+      <UI.Card sx={{ width: "60%" }} elevation={10}>
         <UI.Grid container spacing={3}>
           <UI.Grid item xs={12}>
             <Collapse in={isView}>

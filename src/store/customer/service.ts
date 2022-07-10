@@ -7,9 +7,10 @@ import { ICustomer, IGetCustomersList } from "@/types";
 export const customerService = createApi({
   baseQuery: axiosBaseQuery({
     baseUrl: "https://apisf.interphase.vn/api",
-    onError: (err) => {
-      toast.error(err.error);
-    },
+    onError: (err) =>
+      toast.error(
+        err.error || "Có lỗi xẩy ra: Khách hàng không tồn tại hoặc đã bị xóa!"
+      ),
     token: () => localStorage.getItem(LOCAL_KEY.TOKEN),
   }),
   reducerPath: "customerService",
