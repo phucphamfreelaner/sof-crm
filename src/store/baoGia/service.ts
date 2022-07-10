@@ -15,10 +15,10 @@ export const baoGiaService = createApi({
   endpoints: (builder) => ({
     getBaoGia: builder.query<
       { data: IBaoGia[] },
-      { limit?: number; page?: number }
+      { limit?: number; page?: number; filter?: any }
     >({
       transformResponse: (response: any) => response,
-      query: ({ limit, page }) => ({
+      query: ({ limit, page, filter }) => ({
         method: "GET",
         url: `/bao-gia?with[]=khach_hang&with[]=co_hoi&with[]=nhan_vien_nhap&with[]=loai_tien&limit=${limit}&order_by[created_at]=desc&page=${page}`,
       }),

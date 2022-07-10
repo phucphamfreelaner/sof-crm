@@ -11,11 +11,11 @@ function BaoGiaTable(props: IBaoGiaTable) {
   const { filter } = props;
   const [limit, setLimit] = React.useState(5);
   const [page, setPage] = React.useState(0);
-  console.log("🚀 ~ page", page);
 
   const { data, isLoading, isFetching } = useGetBaoGiaQuery({
     limit,
     page: page + 1,
+    filter,
   });
 
   return (
@@ -57,19 +57,19 @@ function BaoGiaTable(props: IBaoGiaTable) {
           {
             field: "khach_hang",
             headerName: "Các gọi KH",
-            width: 350,
+            width: 250,
             renderCell: ({ value }) => value?.contact,
           },
           {
             field: "ngaybaogia",
             headerName: "Ngày báo giá",
-            width: 200,
+            width: 150,
           },
           {
             field: "loai_tien",
             headerName: "Loại tiền",
             renderCell: ({ value }) => value?.name,
-            width: 150,
+            width: 100,
           },
           {
             field: "tong_tien_goc",
@@ -92,7 +92,7 @@ function BaoGiaTable(props: IBaoGiaTable) {
           {
             field: "nhan_vien_nhap",
             headerName: "Nhân viên nhập",
-            renderCell: ({ value }) => numeral(value).format("0,00"),
+            renderCell: ({ value }) => value?.name,
             width: 200,
           },
           {
