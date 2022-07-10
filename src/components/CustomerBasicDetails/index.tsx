@@ -55,7 +55,7 @@ export const CustomerBasicDetails = (props) => {
   const align = true ? "horizontal" : "vertical";
 
   return (
-    <UI.Card>
+    <>
       <UI.CardHeader title="Thông tin cơ bản" />
       <UI.Divider />
       <PropertyList>
@@ -84,6 +84,6 @@ export const CustomerBasicDetails = (props) => {
         </UI.Button>
         <UI.Button sx={{ m: 1 }}>Login as Customer</UI.Button>
       </UI.CardActions>
-    </UI.Card>
+    </>
   );
 };

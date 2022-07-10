@@ -1,7 +1,6 @@
 import React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { useGetBaoGiaQuery } from "@/store/baoGia";
-import * as UI from "@/libs/ui";
 import numeral from "numeral";
 interface IBaoGiaTable {
   filter?: any;
@@ -38,6 +37,7 @@ function BaoGiaTable(props: IBaoGiaTable) {
         }
         pagination
         filterMode="server"
+        sortingMode="server"
         onPageChange={setPage}
         sx={{
           ".MuiDataGrid-columnHeaders": {
