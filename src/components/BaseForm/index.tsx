@@ -17,6 +17,8 @@ import CheckboxController from "./controller/Checkbox";
 import ArrayFieldsController from "./controller/ArrayFields";
 import IconButtonController from "./controller/IconButton";
 import InputMaskController from "./controller/InputMask";
+import CollapseFieldsController from "./controller/CollapseFields";
+import DateTimeController from "./controller/DateTime";
 
 const CONTROLLER: any = {
   input: InputController,
@@ -25,8 +27,10 @@ const CONTROLLER: any = {
   autocomplete: AutocompleteController,
   label: LabelController,
   "array-fields": ArrayFieldsController,
+  "collapse-fields": CollapseFieldsController,
   "icon-button": IconButtonController,
   "input-mask": InputMaskController,
+  "date-picker": DateTimeController,
 };
 
 const BaseForm = React.forwardRef((props: IBaseForm, ref?: any) => {
@@ -39,6 +43,7 @@ const BaseForm = React.forwardRef((props: IBaseForm, ref?: any) => {
     fields,
     gap,
     templateColumns,
+    templateRows,
     childrenRowSpan,
     childrenColSpan,
     onDirty,
@@ -81,6 +86,7 @@ const BaseForm = React.forwardRef((props: IBaseForm, ref?: any) => {
       <Grid
         width="100%"
         templateColumns={templateColumns || "repeat(1, 1fr)"}
+        templateRows={templateRows}
         gap={gap || 2}
         sx={sx}
       >
@@ -92,6 +98,8 @@ const BaseForm = React.forwardRef((props: IBaseForm, ref?: any) => {
               key={i}
               rowSpan={x?.rowSpan || 1}
               colSpan={x?.colSpan || 1}
+              colStart={x?.colStart}
+              colEnd={x?.colEnd}
             >
               <Component
                 {...x}
