@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import CohoiTableList from "@/components/CohoiTableList";
+import CoHoiTableList from "@/components/CoHoiTableList";
 import { debounce } from "lodash";
 import * as UI from "@/libs/ui";
 import {
@@ -8,7 +8,7 @@ import {
   AiOutlineDownload,
   AiOutlineSearch,
 } from "react-icons/ai";
-import { useGetCohoiListQuery } from "@/store/cohoi";
+import { useGetCoHoiListQuery } from "@/store/coHoi";
 import Loading from "@/components/Loading";
 import BaseForm from "@/components/BaseForm";
 import { Collapse } from "@mui/material";
@@ -65,7 +65,7 @@ const orderOptions = [
   },
 ];
 
-function CohoiTableListContainer() {
+function CoHoiTableListContainer() {
   const theme = UI.useTheme();
   const [sort, setSort] = useState(sortOptions[0].value);
   const [orderBy, setOrderBy] = useState(orderOptions[0].value);
@@ -80,7 +80,7 @@ function CohoiTableListContainer() {
     order_by: "order_by[code]=desc",
     search: "",
   });
-  const { data, isFetching } = useGetCohoiListQuery({
+  const { data, isFetching } = useGetCoHoiListQuery({
     page: page + 1,
     limit: rowsPerPage,
     code: filters?.query,
@@ -372,13 +372,14 @@ function CohoiTableListContainer() {
             {isFetching ? (
               <Loading />
             ) : (
-              <CohoiTableList
-                cohois={data?.data ? data.data : []}
-                cohoisCount={totalPages}
+              <CoHoiTableList
+                coHois={data?.data ? data.data : []}
+                coHoisCount={totalPages}
                 onPageChange={handlePageChange}
                 onRowsPerPageChange={handleRowsPerPageChange}
                 rowsPerPage={rowsPerPage}
                 page={page}
+                nextUrl={"customerCoHoiList"}
               />
             )}
           </UI.Card>
@@ -388,4 +389,4 @@ function CohoiTableListContainer() {
   );
 }
 
-export default CohoiTableListContainer;
+export default CoHoiTableListContainer;

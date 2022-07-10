@@ -31,6 +31,7 @@ const CustomerListTable = (props) => {
     onRowsPerPageChange,
     page,
     rowsPerPage,
+    refetch,
     ...other
   } = props;
   const [selectedCustomers, setSelectedCustomers] = useState([]);
@@ -260,6 +261,7 @@ const CustomerListTable = (props) => {
         onClose={() => {
           setOpenDeleteModal(false);
         }}
+        refetch={refetch}
       />
     </div>
   );

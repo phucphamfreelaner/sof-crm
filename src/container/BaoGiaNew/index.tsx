@@ -4,7 +4,7 @@ import BaoGiaNewForm from "@/components/BaoGiaNewForm";
 import { FaSave } from "react-icons/fa";
 
 import { useLazyGetCongTyListQuery } from "@/store/congTy";
-import { useLazySearchCohoiQuery } from "@/store/cohoi";
+import { useLazySearchCoHoiQuery } from "@/store/coHoi";
 import { useLazyGetLoaiBaoGiaListQuery } from "@/store/loaiBaoGia";
 import { useLazyGetNgonNguListQuery } from "@/store/ngonNgu";
 import { useLazySearchLoaiTienGiaListQuery } from "@/store/loaiTien";
@@ -30,7 +30,7 @@ function BaoGaiNew() {
       isFetching: isFetchingCoHoi,
       isSuccess: isSuccessCoHoi,
     },
-  ] = useLazySearchCohoiQuery();
+  ] = useLazySearchCoHoiQuery();
 
   const [
     searchLoaiBaoGiaData,

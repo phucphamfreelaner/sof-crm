@@ -24,7 +24,7 @@ import {
 } from "@/store/thanhPho/service";
 import { useLazyGetDanhXungListQuery } from "@/store/danhXung/service";
 import * as Yup from "yup";
-import CustomerCohoiTableListContainer from "./customer-co-hoi";
+import CustomerCoHoiTableListContainer from "./customer-co-hoi";
 
 const getInitials = (name = "") =>
   name
@@ -314,7 +314,7 @@ const CustomerDetailsContainer = () => {
                     <LoadingButton
                       loading={result?.status == "pending"}
                       loadingPosition="end"
-                      form="vinhnd"
+                      form="base-form"
                       type="submit"
                       endIcon={<FaSave fontSize="small" />}
                       sx={{ m: 1 }}
@@ -375,7 +375,7 @@ const CustomerDetailsContainer = () => {
                     </Collapse>
                     <Collapse in={!isView}>
                       <BaseForm
-                        id="vinhnd"
+                        id="base-form"
                         gap={theme.spacing(4)}
                         templateColumns="repeat(2,1fr)"
                         defaultValues={defaultValues}
@@ -401,7 +401,7 @@ const CustomerDetailsContainer = () => {
                 </UI.Grid>
               )}
               {currentTab === "co_hoi" && (
-                <CustomerCohoiTableListContainer
+                <CustomerCoHoiTableListContainer
                   customerId={params?.customerId}
                 />
               )}

@@ -23,7 +23,7 @@ export interface ICoHoi {
   da_cham_soc: number;
   example: number;
   file?: any;
-  files?: any[];
+  files?: IFile[];
   khach_hang?: ICustomer;
   muc_dich_key?: any;
   name: string;
@@ -37,4 +37,15 @@ export interface ICoHoi {
   tien_trinh_key: string;
   trang_thai: any;
   trang_thai_key: string;
+}
+
+interface IFile {
+  id: number;
+  note?: string;
+  object_id: number;
+  object_type_key: string;
+  path: string;
+  type: string;
+  created_at: string;
+  updated_at: string;
 }
