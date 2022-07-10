@@ -2,9 +2,9 @@ import { axiosBaseQuery } from "@/store/utils";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import toast from "react-hot-toast";
 import { LOCAL_KEY } from "@/constants";
-import { ICustomer, IGetCustomersList } from "@/types";
+import { IGetHopDongList, IHopDong } from "@/types/hopDong";
 
-export const customerService = createApi({
+export const hopDongService = createApi({
   baseQuery: axiosBaseQuery({
     baseUrl: "https://apisf.interphase.vn/api",
     onError: (err) => {
@@ -12,52 +12,52 @@ export const customerService = createApi({
     },
     token: () => localStorage.getItem(LOCAL_KEY.TOKEN),
   }),
-  reducerPath: "customerService",
+  reducerPath: "hopDongService",
   endpoints: (builder) => ({
-    getCustomerById: builder.query({
-      transformResponse: (res) => res?.data as ICustomer,
+    getHopDongById: builder.query({
+      transformResponse: (res) => res?.data as IHopDong,
       query: ({ id }) => ({
         method: "GET",
-        url: `/khach-hang/${id}`,
+        url: `/hop-dong/${id}`,
       }),
     }),
-    updateCustomerByID: builder.mutation({
+    updateHopDongByID: builder.mutation({
       transformResponse: (res) => res,
       query: ({ id, ...body }) => ({
         method: "PUT",
-        url: `/khach-hang/${id}`,
+        url: `/hop-dong/${id}`,
         data: body,
       }),
     }),
-    createCustomer: builder.mutation({
+    createHopDong: builder.mutation({
       transformResponse: (res) => res,
       query: ({ ...body }) => ({
         method: "POST",
-        url: `/khach-hang`,
+        url: `/hop-dong`,
         data: body,
       }),
     }),
-    deleteCustomerByID: builder.mutation({
+    deleteHopDongByID: builder.mutation({
       transformResponse: (res) => res,
       query: ({ id }) => ({
         method: "DELETE",
-        url: `/khach-hang/${id}`,
+        url: `/hop-dong/${id}`,
       }),
     }),
-    getCustomerList: builder.query({
-      transformResponse: (response: any) => response as IGetCustomersList,
+    getHopDongList: builder.query({
+      transformResponse: (response: any) => response as IGetHopDongList,
       query: ({ limit, page, code, order_by, search }) => ({
         method: "GET",
-        url: `/khach-hang?limit=${limit}&page=${page}&with[]=user_tao&s[code]=${code}&${order_by}${search}`,
+        url: `/hop-dong?with[]=nhan_vien_tao&with[]=loai_hop_dong&with[]=bao_gia_co_hoi_tien_trinh&limit=${limit}&page=${page}&s[code]=${code}&${order_by}${search}`,
       }),
     }),
   }),
 });
 
 export const {
-  useGetCustomerByIdQuery,
-  useGetCustomerListQuery,
-  useUpdateCustomerByIDMutation,
-  useCreateCustomerMutation,
-  useDeleteCustomerByIDMutation,
-} = customerService;
+  useGetHopDongByIdQuery,
+  useGetHopDongListQuery,
+  useUpdateHopDongByIDMutation,
+  useCreateHopDongMutation,
+  useDeleteHopDongByIDMutation,
+} = hopDongService;

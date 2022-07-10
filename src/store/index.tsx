@@ -21,11 +21,13 @@ import { khachHangService } from "./khachHang";
 import { nhanVienService } from "./nhanVien";
 import { sanPhamService } from "./sanPham";
 import { chatLieuService } from "./chatLieu";
-import { donViTinhService, useLazySearchDonViTinhQuery } from "./donViTinh";
+import { donViTinhService } from "./donViTinh";
+import { baoGiaService } from "./baoGia";
 import { testService } from "./test";
 import { soLuongService } from "./soLuong";
 import { trangThaiService } from "./trangThai";
 import { tienTrinhService } from "./tienTrinh";
+import { hopDongService } from "./hopDong";
 
 // @ts-ignore
 const store: any = configureStore({
@@ -48,9 +50,11 @@ const store: any = configureStore({
     [sanPhamService.reducerPath]: sanPhamService.reducer,
     [chatLieuService.reducerPath]: chatLieuService.reducer,
     [donViTinhService.reducerPath]: donViTinhService.reducer,
+    [baoGiaService.reducerPath]: baoGiaService.reducer,
     [soLuongService.reducerPath]: soLuongService.reducer,
     [trangThaiService.reducerPath]: trangThaiService.reducer,
     [tienTrinhService.reducerPath]: tienTrinhService.reducer,
+    [hopDongService.reducerPath]: hopDongService.reducer,
   }),
   devTools: true,
 });
