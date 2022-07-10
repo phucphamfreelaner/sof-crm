@@ -1,14 +1,15 @@
 import React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { useGetBaoGiaQuery } from "@/store/baoGia";
-import * as UI from "@/libs/ui";
 import numeral from "numeral";
 interface IBaoGiaTable {
   filter?: any;
+  customerId?: any;
+  onCellClick?: (cellData: any) => any;
 }
 
 function BaoGiaTable(props: IBaoGiaTable) {
-  const { filter } = props;
+  const { filter, customerId, onCellClick } = props;
   const [limit, setLimit] = React.useState(5);
   const [page, setPage] = React.useState(0);
 
@@ -16,6 +17,7 @@ function BaoGiaTable(props: IBaoGiaTable) {
     limit,
     page: page + 1,
     filter,
+    customerId,
   });
 
   return (
@@ -38,7 +40,9 @@ function BaoGiaTable(props: IBaoGiaTable) {
         }
         pagination
         filterMode="server"
+        sortingMode="server"
         onPageChange={setPage}
+        onCellClick={onCellClick}
         sx={{
           ".MuiDataGrid-columnHeaders": {
             background: "#F3F4F6",
@@ -57,7 +61,7 @@ function BaoGiaTable(props: IBaoGiaTable) {
           {
             field: "khach_hang",
             headerName: "Các gọi KH",
-            width: 250,
+            width: 300,
             renderCell: ({ value }) => value?.contact,
           },
           {
@@ -69,7 +73,7 @@ function BaoGiaTable(props: IBaoGiaTable) {
             field: "loai_tien",
             headerName: "Loại tiền",
             renderCell: ({ value }) => value?.name,
-            width: 100,
+            width: 130,
           },
           {
             field: "tong_tien_goc",

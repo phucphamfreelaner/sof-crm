@@ -1,6 +1,7 @@
 export * from "@mui/material";
 export { Image } from "@chakra-ui/image";
 export { LoadingButton } from "@mui/lab";
+export { DataGrid } from "@mui/x-data-grid";
 export {
   Box as CKBox,
   Flex,

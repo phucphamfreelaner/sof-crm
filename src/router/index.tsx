@@ -15,6 +15,12 @@ import BaoGiaNew from "@/pages/baoGia/new";
 import HopDongList from "@/pages/hopDong/list";
 import CoHoiNew from "@/pages/coHoi/new";
 
+import ThongTinCoban from "@/pages/customer/id/thongTinCoban";
+import ThongTinCongTy from "@/pages/customer/id/thongTinCongTy";
+import KhachHangCoHoi from "@/pages/customer/id/coHoi";
+import KhachHangBaoGia from "@/pages/customer/id/baoGia";
+import KhachHangHopDong from "@/pages/customer/id/hopDong";
+
 function Router() {
   return (
     <BrowserRouter basename="/app/crm">
@@ -22,7 +28,17 @@ function Router() {
         <Route path="/" element={<RootPage />}>
           <Route path="khach_hang" element={<Customer />}>
             <Route index element={<CustomerList />} />
-            <Route path=":customerId" element={<CustomerItem />} />
+            <Route path=":customerId" element={<CustomerItem />}>
+              <Route index element={<ThongTinCoban />} />
+              <Route
+                key="thong_tin_cong_ty"
+                path="thong_tin_cong_ty"
+                element={<ThongTinCongTy />}
+              />
+              <Route path="co_hoi" element={<KhachHangCoHoi />} />
+              <Route path="bao_gia" element={<KhachHangBaoGia />} />
+              <Route path="hop_dong" element={<KhachHangHopDong />} />
+            </Route>
             <Route path="list" element={<Customer />} />
             <Route path="new" element={<CustomerNew />} />
           </Route>
