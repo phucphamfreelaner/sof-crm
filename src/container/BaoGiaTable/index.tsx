@@ -10,13 +10,13 @@ interface IBaoGiaTable {
 
 function BaoGiaTable(props: IBaoGiaTable) {
   const { filter, customerId, onCellClick } = props;
-  const [limit, setLimit] = React.useState(5);
+  const [limit, setLimit] = React.useState(15);
   const [page, setPage] = React.useState(0);
 
   const { data, isLoading, isFetching } = useGetBaoGiaQuery({
     limit,
     page: page + 1,
-    filter,
+    filter: {},
     customerId,
   });
 
@@ -27,7 +27,9 @@ function BaoGiaTable(props: IBaoGiaTable) {
         autoPageSize
         headerHeight={70}
         pageSize={limit || 15}
-        onPageSizeChange={(newSize) => setLimit(newSize)}
+        onPageSizeChange={(newSize) => {
+          if (newSize) setLimit(newSize);
+        }}
         rowsPerPageOptions={[15, 20, 30, 50, 80, 100]}
         disableColumnFilter
         paginationMode="server"
@@ -62,7 +64,7 @@ function BaoGiaTable(props: IBaoGiaTable) {
             field: "khach_hang",
             headerName: "Các gọi KH",
             width: 300,
-            renderCell: ({ value }) => value?.contact,
+            renderCell: ({ value }) => value?.contact || "---",
           },
           {
             field: "ngaybaogia",

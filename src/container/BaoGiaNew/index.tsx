@@ -116,23 +116,23 @@ function BaoGaiNew() {
     ) {
       setDefaultValue((value) => ({
         ...value,
-        loai_tien: loaiTienData?.[0],
+        loai_tien_key: loaiTienData?.[0],
         loai_bao_gia: loaiBaoGiaData?.[0],
-        name: coHoiData?.[0],
-        company: {
+        cohoi_id: coHoiData?.[0],
+        company_id: {
           label: companyData?.[0]?.ten,
           value: companyData?.[0]?.id,
         },
-        ngon_ngu: {
+        ngon_ngu_key: {
           label: ngonNguData?.[0]?.ten,
           value: ngonNguData?.[0]?.id,
         },
         san_pham: [
           {
             _id: 1,
-            ten_san_pham: sanPhamData?.[0],
-            chat_lieu: chatLieuData?.[0],
-            don_vi_tinh: donViTinhData?.[0],
+            product_id: sanPhamData?.[0],
+            chat_lieu_key: chatLieuData?.[0],
+            don_vi_key: donViTinhData?.[0],
             so_luong: 1,
             don_gia_von: "",
             don_gia: "",
@@ -154,6 +154,36 @@ function BaoGaiNew() {
   ]);
 
   const elForm = React.useRef<any>();
+
+  const handleSaveBaoGia = (data: any) => {
+    console.log("🚀 ~ data", data);
+    const san_pham = data?.san_pham.map((x) => ({
+      ...x,
+      chat_lieu_key: x?.chat_lieu_key?.value,
+      don_vi_key: x?.don_vi_key?.value,
+      product_id: x?.product_id?.value,
+    }));
+    const _data = {
+      ...data,
+      san_pham,
+      customer_id: data?.company_id?.value,
+      ngon_ngu_key: data?.ngon_ngu_key?.value,
+      loai_tien_key: data?.loai_tien_key?.value,
+      viewEmail: {
+        files: [],
+      },
+      ngaybaogia: data?.thong_tin_chung?.ngaybaogia,
+      time: data?.thong_tin_chung?.time,
+      datcoc: data?.thong_tin_chung?.datCoc,
+      loai_bao_gia_key: data?.loai_bao_gia_key?.value,
+      name: data?.cohoi_id?.label,
+      company_id: data?.company_id?.value,
+      cohoi_id: data?.cohoi_id?.value,
+      dieukhoan: data?.dieukhoan,
+      note: data?.note,
+      template_id: data?.template_id?.value,
+    };
+  };
 
   return (
     <UI.Card elevation={10}>
@@ -184,9 +214,9 @@ function BaoGaiNew() {
           onSearchDonViTinh={(text) => searchDonViTinh({ name: text })}
           onAddSanPham={(index) => ({
             _id: index,
-            ten_san_pham: sanPhamData?.[0],
-            chat_lieu: chatLieuData?.[0],
-            don_vi_tinh: donViTinhData?.[0],
+            product_id: sanPhamData?.[0],
+            chat_lieu_key: chatLieuData?.[0],
+            don_vi_key: donViTinhData?.[0],
             so_luong: 1,
             don_gia_von: "",
             don_gia: "",
@@ -198,11 +228,7 @@ function BaoGaiNew() {
       </UI.CardContent>
       <UI.CardActions sx={{ justifyContent: "flex-end" }}>
         <UI.Button
-          onClick={() =>
-            elForm.current.handleSubmit((data) => {
-              console.log("🚀 ~ data", data);
-            })()
-          }
+          onClick={() => elForm.current.handleSubmit(handleSaveBaoGia)()}
           endIcon={<FaSave />}
           variant="outlined"
         >
