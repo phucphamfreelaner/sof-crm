@@ -1,11 +1,13 @@
 import React from "react";
 import CoHoiNewContainer from "@/container/CoHoiNew";
 import * as UI from "@/libs/ui";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 
 function CoHoiNew() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const customerId = searchParams.get("customer_id");
 
   return (
     <>
@@ -32,7 +34,7 @@ function CoHoiNew() {
           <UI.Box sx={{ mt: 3 }}>
             <UI.Grid container spacing={3}>
               <UI.Grid item xs={12}>
-                <CoHoiNewContainer />
+                <CoHoiNewContainer customerId={customerId} />
               </UI.Grid>
             </UI.Grid>
           </UI.Box>

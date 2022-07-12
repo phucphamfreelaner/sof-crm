@@ -154,7 +154,7 @@ function CustomerCoHoiTableListContainer(props) {
             startIcon={<AiFillPlusCircle fontSize="small" />}
             variant="contained"
             onClick={() => {
-              navigate(`/co_hoi/new`);
+              navigate(`/co_hoi/new?customer_id=${customerId}`);
             }}
           >
             Thêm mới

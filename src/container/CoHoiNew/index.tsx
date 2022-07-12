@@ -22,8 +22,9 @@ import {
 import { useCreateCoHoiMutation } from "@/store/coHoi/service";
 import Loading from "@/components/Loading";
 
-const CoHoiNewContainer = () => {
+const CoHoiNewContainer = (props) => {
   const navigate = useNavigate();
+  const { customerId } = props;
 
   const [createCoHoi, result] = useCreateCoHoiMutation();
 
@@ -132,17 +133,15 @@ const CoHoiNewContainer = () => {
 
   const elForm = React.useRef<any>();
 
-  console.log(result);
-
   useEffect(() => {
-    if (result?.status == "fulfilled" && result?.data?.data?.id) {
+    if (result?.status == "fulfilled") {
       if (result?.data?.message) {
         toast(result?.data?.message, {
           icon: "⚠️",
         });
-      } else toast.success("Create a new co hoi successfully");
+      } else toast.success("Thêm cơ hội thành công");
 
-      navigate(`/co_hoi/${result?.data?.data?.id}`);
+      navigate(`/khach_hang/${customerId}/co_hoi`);
     }
   }, [result]);
 
@@ -165,7 +164,6 @@ const CoHoiNewContainer = () => {
             //@ts-ignore
             fields={rowsData}
             defaultValues={{
-              use_english: "0",
               soluong: {
                 label:
                   defaultListSoLuongData?.[
@@ -198,6 +196,7 @@ const CoHoiNewContainer = () => {
               onClick={() =>
                 elForm.current.handleSubmit((data) => {
                   createCoHoi({
+                    customer_id: customerId,
                     created_at: format(new Date(), "yyyy-MM-dd"),
                     files: [],
                     ...data,
