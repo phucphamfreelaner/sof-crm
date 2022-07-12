@@ -133,8 +133,6 @@ const CoHoiNewContainer = (props) => {
 
   const elForm = React.useRef<any>();
 
-  console.log(result);
-
   useEffect(() => {
     if (result?.status == "fulfilled") {
       if (result?.data?.message) {
@@ -197,8 +195,6 @@ const CoHoiNewContainer = (props) => {
               variant="outlined"
               onClick={() =>
                 elForm.current.handleSubmit((data) => {
-                  console.log("data", data);
-                  console.log("customerId", customerId);
                   createCoHoi({
                     customer_id: customerId,
                     created_at: format(new Date(), "yyyy-MM-dd"),
