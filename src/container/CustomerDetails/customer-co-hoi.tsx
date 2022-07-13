@@ -2,18 +2,14 @@ import { useState, useRef, useEffect } from "react";
 import CoHoiTableList from "@/components/CoHoiTableList";
 import { debounce } from "lodash";
 import * as UI from "@/libs/ui";
-import {
-  AiFillPlusCircle,
-  AiOutlineUpload,
-  AiOutlineDownload,
-  AiOutlineSearch,
-} from "react-icons/ai";
+import { AiFillPlusCircle, AiOutlineSearch } from "react-icons/ai";
 import { useGetCoHoiListByCustomerIdQuery } from "@/store/coHoi";
 import Loading from "@/components/Loading";
 import BaseForm from "@/components/BaseForm";
 import { Collapse } from "@mui/material";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { RiArrowUpSFill } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
 
 const sortOptions = [
   {
@@ -66,6 +62,7 @@ const orderOptions = [
 ];
 
 function CustomerCoHoiTableListContainer(props) {
+  const navigate = useNavigate();
   const { customerId } = props;
   const theme = UI.useTheme();
   const [sort, setSort] = useState(sortOptions[0].value);
@@ -149,6 +146,21 @@ function CustomerCoHoiTableListContainer(props) {
 
   return (
     <UI.Container maxWidth="xl">
+      <UI.Grid container justifyContent="space-between" spacing={3}>
+        <UI.Grid item></UI.Grid>
+        <UI.Grid item>
+          <UI.Button
+            size="small"
+            startIcon={<AiFillPlusCircle fontSize="small" />}
+            variant="contained"
+            onClick={() => {
+              navigate(`/co_hoi/new?customer_id=${customerId}`);
+            }}
+          >
+            Thêm mới
+          </UI.Button>
+        </UI.Grid>
+      </UI.Grid>
       <UI.Card>
         <UI.Box
           sx={{

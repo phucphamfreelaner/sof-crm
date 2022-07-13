@@ -134,9 +134,7 @@ const CoHoiTableList = (props) => {
                     selected={isCoHoiSelected}
                     onClick={() => {
                       if (nextUrl == "customerCoHoiList") {
-                        navigate(
-                          `/khach_hang/${coHoi.khach_hang?.id}?tab=co-hoi`
-                        );
+                        navigate(`/khach_hang/${coHoi.khach_hang?.id}/co_hoi`);
                       } else {
                         navigate(`/co_hoi/${coHoi.id}`);
                       }
