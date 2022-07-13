@@ -35,7 +35,11 @@ interface IBaoGiaNewForm {
   onSearchDonViTinh?: (index: any) => any;
 
   chatLieuData?: any;
-  onSearchChatLieu?: (index: any) => any;
+  onSearchChatLieu?: (text: any) => any;
+
+  mauInData?: any;
+  onSearchMauIn?: (text: any) => any;
+  isLoadingMauIn?: any;
 }
 
 function BaoGiaNewForm(props: IBaoGiaNewForm) {
@@ -64,6 +68,9 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
     donViTinhData,
     onSearchDonViTinh,
     formRef,
+    mauInData,
+    onSearchMauIn,
+    isLoadingMauIn,
   } = props;
 
   const [isVAT, setIsVAT] = useBoolean(false);
@@ -364,9 +371,9 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           label: "Mẫu",
           type: "autocomplete",
           colSpan: 2,
-          isLoading: isLoadingLoaiTien,
-          autocompleteOptions: loaiTienData || [],
-          onSearchChange: onSearchLoaiTien,
+          isLoading: isLoadingMauIn,
+          autocompleteOptions: mauInData || [],
+          onSearchChange: onSearchMauIn,
         },
       ]}
     />

@@ -20,6 +20,13 @@ export const ngonNguService = createApi({
         url: `/ngon-ngu?s[ten]=${name}`,
       }),
     }),
+    searchNgonNgu: builder.query({
+      transformResponse: (response: any) => response?.data?.map((x) => ({})),
+      query: ({ name }) => ({
+        method: "GET",
+        url: `/ngon-ngu?s[ten]=${name}`,
+      }),
+    }),
   }),
 });
 

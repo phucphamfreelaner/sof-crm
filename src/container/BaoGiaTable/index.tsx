@@ -13,12 +13,15 @@ function BaoGiaTable(props: IBaoGiaTable) {
   const [limit, setLimit] = React.useState(15);
   const [page, setPage] = React.useState(0);
 
-  const { data, isLoading, isFetching } = useGetBaoGiaQuery({
-    limit,
-    page: page + 1,
-    filter: {},
-    customerId,
-  });
+  const { data, isLoading, isFetching } = useGetBaoGiaQuery(
+    {
+      limit,
+      page: page + 1,
+      filter: {},
+      customerId,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
   return (
     <div style={{ height: "auto", width: "100%" }}>

@@ -28,7 +28,26 @@ export const baoGiaService = createApi({
         }limit=${limit}&order_by[created_at]=desc&page=${page}&with[]=khach_hang&with[]=co_hoi&with[]=nhan_vien_nhap&with[]=loai_tien`,
       }),
     }),
+    createBaoGia: builder.query<{ data: any }, { payload: any }>({
+      transformResponse: (response: any) => response,
+      query: ({ payload }) => ({
+        method: "POST",
+        data: payload,
+        url: `/bao-gia`,
+      }),
+    }),
+    getViewBaoGia: builder.query<string, { id: any }>({
+      transformResponse: (response: any) => response?.data,
+      query: ({ id }) => ({
+        method: "GET",
+        url: `/bao-gia/${id}/view`,
+      }),
+    }),
   }),
 });
 
-export const { useGetBaoGiaQuery } = baoGiaService;
+export const {
+  useGetBaoGiaQuery,
+  useLazyCreateBaoGiaQuery,
+  useGetViewBaoGiaQuery,
+} = baoGiaService;

@@ -1,9 +1,13 @@
 import React from "react";
 import * as UI from "@/libs/ui";
-import BaoGiaNewForm from "@/components/BaoGiaNewForm";
 import { FaSave } from "react-icons/fa";
+import { useSearchParams, useNavigate } from "react-router-dom";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { toast } from "react-hot-toast";
+import { isEmpty } from "lodash-es";
 
-import { useLazyGetCongTyListQuery } from "@/store/congTy";
+import BaoGiaNewForm from "@/components/BaoGiaNewForm";
+import { useLazySearchCongTyQuery } from "@/store/congTy";
 import { useLazySearchCoHoiQuery } from "@/store/coHoi";
 import { useLazyGetLoaiBaoGiaListQuery } from "@/store/loaiBaoGia";
 import { useLazyGetNgonNguListQuery } from "@/store/ngonNgu";
@@ -11,8 +15,19 @@ import { useLazySearchLoaiTienGiaListQuery } from "@/store/loaiTien";
 import { useLazySearchSanPhamQuery } from "@/store/sanPham";
 import { useLazySearchChatLieuQuery } from "@/store/chatLieu";
 import { useLazySearchDonViTinhQuery } from "@/store/donViTinh";
+import { useLazySearchMauInQuery } from "@/store/mauIn";
+import { useLazyCreateBaoGiaQuery } from "@/store/baoGia";
 
-function BaoGaiNew() {
+interface IBaoGiaForm {
+  initData?: any;
+}
+
+function BaoGaiForm(props: IBaoGiaForm) {
+  const { initData } = props;
+  const [query] = useSearchParams();
+
+  const navigate = useNavigate();
+
   const [
     searchCty,
     {
@@ -21,7 +36,7 @@ function BaoGaiNew() {
       isFetching: isFetchingCompany,
       isSuccess: isSuccessCompany,
     },
-  ] = useLazyGetCongTyListQuery();
+  ] = useLazySearchCongTyQuery();
   const [
     searchCoHoi,
     {
@@ -91,18 +106,47 @@ function BaoGaiNew() {
     },
   ] = useLazySearchDonViTinhQuery();
 
+  const [
+    searchMauIn,
+    {
+      data: mauInData,
+      isLoading: isLoadingMauIn,
+      isFetching: isFetchingMauIn,
+      isSuccess: isSuccessMauIn,
+    },
+  ] = useLazySearchMauInQuery();
+
+  const [
+    createBaoGia,
+    {
+      data: dataBaoGiaNew,
+      isLoading: isLoadingCreateBaoGia,
+      isSuccess: isSuccessCreateBaoGia,
+    },
+  ] = useLazyCreateBaoGiaQuery();
+
   React.useEffect(() => {
-    searchCty({ name: "" });
-    searchCoHoi({ name: "" });
-    searchLoaiBaoGiaData({ name: "" });
-    searchNgonNgu({ name: "" });
-    searchLoaiTien({ name: "" });
-    searchSanPham({ name: "" });
-    searchChatLieu({ name: "" });
-    searchDonViTinh({ name: "" });
+    if (isEmpty(initData)) {
+      searchCty({ name: "" });
+      searchCoHoi({ name: "" });
+      searchLoaiBaoGiaData({ name: "" });
+      searchNgonNgu({ name: "" });
+      searchLoaiTien({ name: "" });
+      searchSanPham({ name: "" });
+      searchChatLieu({ name: "" });
+      searchDonViTinh({ name: "" });
+      searchMauIn({ name: "" });
+    }
   }, []);
 
   const [defaultValues, setDefaultValue] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    if (isSuccessCreateBaoGia) {
+      toast.success("Thêm báo giá thành công!");
+      navigate(`/bao_gia/${dataBaoGiaNew?.data?.id}/view`);
+    }
+  }, [isSuccessCreateBaoGia]);
 
   React.useEffect(() => {
     if (
@@ -119,14 +163,12 @@ function BaoGaiNew() {
         loai_tien_key: loaiTienData?.[0],
         loai_bao_gia: loaiBaoGiaData?.[0],
         cohoi_id: coHoiData?.[0],
-        company_id: {
-          label: companyData?.[0]?.ten,
-          value: companyData?.[0]?.id,
-        },
+        company_id: companyData?.[0],
         ngon_ngu_key: {
           label: ngonNguData?.[0]?.ten,
           value: ngonNguData?.[0]?.id,
         },
+        template_id: mauInData?.[0],
         san_pham: [
           {
             _id: 1,
@@ -151,24 +193,25 @@ function BaoGaiNew() {
     isSuccessSanPham,
     isSuccessChatLieu,
     isSuccessDonViTinh,
+    isSuccessMauIn,
   ]);
 
   const elForm = React.useRef<any>();
 
   const handleSaveBaoGia = (data: any) => {
-    console.log("🚀 ~ data", data);
     const san_pham = data?.san_pham.map((x) => ({
       ...x,
       chat_lieu_key: x?.chat_lieu_key?.value,
       don_vi_key: x?.don_vi_key?.value,
       product_id: x?.product_id?.value,
     }));
-    const _data = {
+    const payload = {
       ...data,
       san_pham,
-      customer_id: data?.company_id?.value,
+      customer_id: +query.get("customerId"),
       ngon_ngu_key: data?.ngon_ngu_key?.value,
       loai_tien_key: data?.loai_tien_key?.value,
+      loai_bao_gia: data?.loai_bao_gia.value,
       viewEmail: {
         files: [],
       },
@@ -183,6 +226,7 @@ function BaoGaiNew() {
       note: data?.note,
       template_id: data?.template_id?.value,
     };
+    createBaoGia({ payload });
   };
 
   return (
@@ -212,6 +256,9 @@ function BaoGaiNew() {
           onSearchChatLieu={(text) => searchChatLieu({ name: text })}
           donViTinhData={donViTinhData}
           onSearchDonViTinh={(text) => searchDonViTinh({ name: text })}
+          mauInData={mauInData}
+          onSearchMauIn={(name) => searchMauIn({ name })}
+          isLoadingMauIn={isLoadingMauIn || isFetchingMauIn}
           onAddSanPham={(index) => ({
             _id: index,
             product_id: sanPhamData?.[0],
@@ -227,16 +274,17 @@ function BaoGaiNew() {
         />
       </UI.CardContent>
       <UI.CardActions sx={{ justifyContent: "flex-end" }}>
-        <UI.Button
+        <LoadingButton
+          loading={isLoadingCreateBaoGia}
           onClick={() => elForm.current.handleSubmit(handleSaveBaoGia)()}
           endIcon={<FaSave />}
           variant="outlined"
         >
           Lưu báo giá
-        </UI.Button>
+        </LoadingButton>
       </UI.CardActions>
     </UI.Card>
   );
 }
 
-export default BaoGaiNew;
+export default BaoGaiForm;
