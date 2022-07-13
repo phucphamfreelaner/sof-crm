@@ -9,6 +9,7 @@ import { isNull } from "lodash-es";
 import Sidebar from "@/components/Sidebar";
 import MiniSidebar from "@/components/MiniSidebar";
 import { LOCAL_KEY } from "@/constants";
+import { StickyContainer } from "react-sticky";
 
 function Root() {
   const navigate = useNavigate();

@@ -128,7 +128,7 @@ function BaoGaiForm(props: IBaoGiaForm) {
   React.useEffect(() => {
     if (isEmpty(initData)) {
       searchCty({ name: "" });
-      searchCoHoi({ name: "" });
+      searchCoHoi({ name: "", customerId: +query.get("customerId") });
       searchLoaiBaoGiaData({ name: "" });
       searchNgonNgu({ name: "" });
       searchLoaiTien({ name: "" });
@@ -169,6 +169,11 @@ function BaoGaiForm(props: IBaoGiaForm) {
           value: ngonNguData?.[0]?.id,
         },
         template_id: mauInData?.[0],
+        thong_tin_chung: {
+          ngaybaogia: new Date(),
+          time: "15-20",
+          datcoc: 50,
+        },
         san_pham: [
           {
             _id: 1,
@@ -215,9 +220,9 @@ function BaoGaiForm(props: IBaoGiaForm) {
       viewEmail: {
         files: [],
       },
-      ngaybaogia: data?.thong_tin_chung?.ngaybaogia,
-      time: data?.thong_tin_chung?.time,
-      datcoc: data?.thong_tin_chung?.datCoc,
+      ngaybaogia: data?.thong_tin_chung?.ngaybaogia || new Date(),
+      time: data?.thong_tin_chung?.time || "15-20",
+      datcoc: data?.thong_tin_chung?.datCoc || 50,
       loai_bao_gia_key: data?.loai_bao_gia_key?.value,
       name: data?.cohoi_id?.label,
       company_id: data?.company_id?.value,
@@ -237,25 +242,27 @@ function BaoGaiForm(props: IBaoGiaForm) {
           key={JSON.stringify(defaultValues)}
           isLoadingSearchCompany={isLoadingCompany || isFetchingCompany}
           companyData={companyData}
-          onSearchCompany={(text) => searchCty({ name: text })}
+          onSearchCompany={(name) => searchCty({ name })}
           isLoadingSearchCoHoi={isLoadingCoHoi || isFetchingCoHoi}
           coHoiData={coHoiData}
-          onSearchCoHoi={(text) => searchCoHoi({ name: text })}
+          onSearchCoHoi={(name) =>
+            searchCoHoi({ name, customerId: +query.get("customerId") })
+          }
           loaiBaoGiaData={loaiBaoGiaData}
           isLoadingLoaiBaoGia={isLoadingLoaiBaoGia || isFetchingLoaiBaoGia}
-          onSearchLoaiBaoGia={(text) => searchLoaiBaoGiaData({ name: text })}
+          onSearchLoaiBaoGia={(name) => searchLoaiBaoGiaData({ name })}
           ngonNguData={ngonNguData}
           isLoadingNgonNgu={isLoadingNgonNgu || isFetchingNgonNgu}
-          onSearchNgonNgu={(text) => searchNgonNgu({ name: text })}
+          onSearchNgonNgu={(name) => searchNgonNgu({ name })}
           loaiTienData={loaiTienData}
           isLoadingLoaiTien={isLoadingLoaiTien || isFetchingLoaiTien}
-          onSearchLoaiTien={(text) => searchLoaiTien({ name: text })}
+          onSearchLoaiTien={(name) => searchLoaiTien({ name })}
           sanPhamData={sanPhamData}
-          onSearchSanPham={(text) => searchSanPham({ name: text })}
+          onSearchSanPham={(name) => searchSanPham({ name })}
           chatLieuData={chatLieuData}
-          onSearchChatLieu={(text) => searchChatLieu({ name: text })}
+          onSearchChatLieu={(name) => searchChatLieu({ name })}
           donViTinhData={donViTinhData}
-          onSearchDonViTinh={(text) => searchDonViTinh({ name: text })}
+          onSearchDonViTinh={(name) => searchDonViTinh({ name })}
           mauInData={mauInData}
           onSearchMauIn={(name) => searchMauIn({ name })}
           isLoadingMauIn={isLoadingMauIn || isFetchingMauIn}

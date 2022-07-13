@@ -5,15 +5,18 @@ import {
   AiFillPlusCircle,
   AiOutlineUpload,
   AiOutlineDownload,
+  AiOutlineUser,
 } from "react-icons/ai";
 import BaoGiaTable from "@/container/BaoGiaTable";
 import BaoGiaFilter from "@/container/BaoGiaFilter";
-import { debounce } from "lodash-es";
+import { debounce, isEmpty } from "lodash-es";
 
 function BaoGiaList() {
   const navigate = useNavigate();
   const [filter, setFilter] = React.useState<any>(null);
+
   const handleFilterChange = debounce(setFilter, 500);
+
   return (
     <UI.Box>
       <UI.Grid container justifyContent="space-between" spacing={3}>
@@ -55,12 +58,7 @@ function BaoGiaList() {
         <UI.Divider />
         <UI.CardContent>
           <BaoGiaFilter onWatchChange={handleFilterChange} />
-          <BaoGiaTable
-            onCellClick={(data) => {
-              navigate(`/khach_hang/${data?.row?.id}/bao_gia`);
-            }}
-            filter={filter}
-          />
+          <BaoGiaTable isShowKhachHangLink filter={filter} />
         </UI.CardContent>
       </UI.Card>
     </UI.Box>

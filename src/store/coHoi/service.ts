@@ -21,12 +21,12 @@ export const coHoiService = createApi({
         url: `/co-hoi?with[]=khach_hang&with[]=tien_trinh&with[]=trang_thai&with[]=nhan_vien_tao&with[]=co_hoi_cskh&with[]=co_hoi_chua_cham_soc&limit=${limit}&page=${page}&s[code]=${code}&${order_by}&s[name]=${search}`,
       }),
     }),
-    searchCoHoi: builder.query({
+    searchCoHoi: builder.query<any, { name: string; customerId?: number }>({
       transformResponse: (response: any) =>
         response?.data?.map?.((x: any) => ({ label: x.name, value: x.id })),
-      query: ({ name }) => ({
+      query: ({ name, customerId }) => ({
         method: "GET",
-        url: `/co-hoi?limit=20&page=1&s[name]=${name}`,
+        url: `/co-hoi?limit=20&page=1&s[name]=${name}&customer_id=${customerId}`,
       }),
     }),
     getCoHoiListByCustomerId: builder.query({

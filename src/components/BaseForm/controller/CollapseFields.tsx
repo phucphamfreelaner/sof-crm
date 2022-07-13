@@ -8,7 +8,6 @@ import { useBoolean } from "ahooks";
 
 import BaseForm from "@/components/BaseForm";
 import { Box, HStack, VStack } from "@chakra-ui/layout";
-import produce from "immer";
 
 export interface ICollapseFieldsController extends IBaseController {
   fields?: (IFormControl | boolean)[];
@@ -62,7 +61,7 @@ function CollapseFields(props: ICollapseFieldsController) {
             <BaseForm
               gap={gap}
               templateColumns={templateColumns}
-              defaultValues={defaultValues}
+              defaultValues={value}
               watchFields={fields.map((x) => {
                 //@ts-ignore
                 if (typeof x.name === "string") return x.name;

@@ -27,6 +27,7 @@ specifiers:
   '@types/axios': ^0.14.0
   '@types/jest': ^27.0.1
   '@types/lodash-es': ^4.17.6
+  '@types/numeral': ^2.0.2
   '@types/qs': ^6.9.7
   '@types/react': ^17.0.19
   '@types/react-dom': ^17.0.9
@@ -66,6 +67,7 @@ specifiers:
   react-number-format: ^4.9.3
   react-redux: ^8.0.2
   react-router-dom: 6.3.0
+  react-sticky: ^6.0.3
   simplebar: ^5.3.8
   simplebar-react: ^2.4.1
   single-spa: ^5.9.3
@@ -111,6 +113,7 @@ dependencies:
   react-number-format: 4.9.3_sfoxds7t5ydpegc3knd667wn6m
   react-redux: 8.0.2_itbvd6nzuoidgzct3pixmtsxhi
   react-router-dom: 6.3.0_sfoxds7t5ydpegc3knd667wn6m
+  react-sticky: 6.0.3_sfoxds7t5ydpegc3knd667wn6m
   simplebar: 5.3.8
   simplebar-react: 2.4.1_sfoxds7t5ydpegc3knd667wn6m
   single-spa: 5.9.4
@@ -132,6 +135,7 @@ devDependencies:
   '@types/axios': 0.14.0
   '@types/jest': 27.5.2
   '@types/lodash-es': 4.17.6
+  '@types/numeral': 2.0.2
   '@types/qs': 6.9.7
   '@types/react': 17.0.47
   '@types/react-dom': 17.0.17
@@ -2751,6 +2755,10 @@ packages:
 
   /@types/node/18.0.0:
     resolution: {integrity: sha512-cHlGmko4gWLVI27cGJntjs/Sj8th9aYwplmZFwmmgYQQvL5NUsgVJG7OddLvNfLqYS31KFN0s3qlaD9qCaxACA==}
+    dev: true
+
+  /@types/numeral/2.0.2:
+    resolution: {integrity: sha512-A8F30k2gYJ/6e07spSCPpkuZu79LCnkPTvqmIWQzNGcrzwFKpVOydG41lNt5wZXjSI149qjyzC2L1+F2PD/NUA==}
     dev: true
 
   /@types/parse-json/4.0.0:
@@ -6549,6 +6557,10 @@ packages:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
 
+  /performance-now/2.1.0:
+    resolution: {integrity: sha512-7EAHlyLHI56VEIdK57uwHdHKIaAGbnXPiw0yWbarQZOKaKpvUIgW0jWRVLiatnM+XXlSwsanIBH/hzGMJulMow==}
+    dev: false
+
   /picocolors/1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
 
@@ -6753,6 +6765,12 @@ packages:
       side-channel: 1.0.4
     dev: false
 
+  /raf/3.4.1:
+    resolution: {integrity: sha512-Sq4CW4QhwOHE8ucn6J34MqtZCeWFP2aQSmrlroYgqAV1PjStIhJXxYuTgUIfkEk7zTLjmIjLmU5q+fbD1NnOJA==}
+    dependencies:
+      performance-now: 2.1.0
+    dev: false
+
   /randombytes/2.1.0:
     resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}
     dependencies:
@@ -6912,6 +6930,18 @@ packages:
       react: ^16.3.0 || ^17.0.0 || ^18.0.0
     dependencies:
       react: 17.0.2
+    dev: false
+
+  /react-sticky/6.0.3_sfoxds7t5ydpegc3knd667wn6m:
+    resolution: {integrity: sha512-LNH4UJlRatOqo29/VHxDZOf6fwbgfgcHO4mkEFvrie5FuaZCSTGtug5R8NGqJ0kSnX8gHw8qZN37FcvnFBJpTQ==}
+    peerDependencies:
+      react: '>=15'
+      react-dom: '>=15'
+    dependencies:
+      prop-types: 15.8.1
+      raf: 3.4.1
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
     dev: false
 
   /react-transition-group/4.4.2_sfoxds7t5ydpegc3knd667wn6m:

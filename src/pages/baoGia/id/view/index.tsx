@@ -5,13 +5,11 @@ import * as UI from "@/libs/ui";
 
 export default function View() {
   const params = useParams();
-  console.log("🚀 ~ params", params);
 
   const { data } = useGetViewBaoGiaQuery(
     { id: params?.id },
     { skip: !params?.id }
   );
-  console.log("🚀 ~ data", data);
 
   return (
     <UI.Card elevation={5}>
