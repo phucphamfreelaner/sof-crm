@@ -12,6 +12,10 @@ import CoHoiItem from "@/pages/coHoi/id";
 import BaoGia from "@/pages/baoGia";
 import BaoGiaList from "@/pages/baoGia/list";
 import BaoGiaNew from "@/pages/baoGia/new";
+import BaoGiaDetail from "@/pages/baoGia/id";
+import BaoGiaDetailInfo from "@/pages/baoGia/id/info";
+import BaoGiaDetailView from "@/pages/baoGia/id/view";
+
 import HopDongList from "@/pages/hopDong/list";
 import CoHoiNew from "@/pages/coHoi/new";
 
@@ -56,6 +60,10 @@ function Router() {
           <Route path="bao_gia" element={<BaoGia />}>
             <Route index element={<BaoGiaList />} />
             <Route path="new" element={<BaoGiaNew />} />
+            <Route path=":id" element={<BaoGiaDetail />}>
+              <Route index element={<BaoGiaDetailInfo />} />
+              <Route path="view" element={<BaoGiaDetailView />} />
+            </Route>
           </Route>
         </Route>
       </Routes>

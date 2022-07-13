@@ -20,8 +20,22 @@ export const congTyService = createApi({
         url: `/cong-ty?ngon_ngu_key=vi&&s[ten]=${name}`,
       }),
     }),
+    searchCongTy: builder.query({
+      transformResponse: (response: any) =>
+        response?.data?.map((x) => ({
+          label: x?.ten,
+          value: x?.id,
+        })),
+      query: ({ name }) => ({
+        method: "GET",
+        url: `/cong-ty?ngon_ngu_key=vi&&s[ten]=${name}`,
+      }),
+    }),
   }),
 });
 
-export const { useGetCongTyListQuery, useLazyGetCongTyListQuery } =
-  congTyService;
+export const {
+  useGetCongTyListQuery,
+  useLazyGetCongTyListQuery,
+  useLazySearchCongTyQuery,
+} = congTyService;

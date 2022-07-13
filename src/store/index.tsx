@@ -28,6 +28,7 @@ import { soLuongService } from "./soLuong";
 import { trangThaiService } from "./trangThai";
 import { tienTrinhService } from "./tienTrinh";
 import { hopDongService } from "./hopDong";
+import { mauInService } from "./mauIn";
 
 // @ts-ignore
 const store: any = configureStore({
@@ -55,6 +56,7 @@ const store: any = configureStore({
     [trangThaiService.reducerPath]: trangThaiService.reducer,
     [tienTrinhService.reducerPath]: tienTrinhService.reducer,
     [hopDongService.reducerPath]: hopDongService.reducer,
+    [mauInService.reducerPath]: mauInService.reducer,
   }),
   devTools: true,
 });

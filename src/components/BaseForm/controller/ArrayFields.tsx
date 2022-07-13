@@ -1,11 +1,11 @@
 import React from "react";
-import { Button } from "@mui/material";
+import { Button, Box, useTheme } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { IBaseController, IFormControl, TSetValue } from "../types";
 import { AiFillPlusCircle } from "react-icons/ai";
 
 import BaseForm from "@/components/BaseForm";
-import { VStack } from "@chakra-ui/layout";
+import { HStack, VStack } from "@chakra-ui/layout";
 import { AiOutlineDelete } from "react-icons/ai";
 import produce from "immer";
 
@@ -31,7 +31,7 @@ function ArrayFields(props: IArrayFieldsController) {
     onWatchChange,
     addBtnLabel,
   } = props;
-
+  const { palette } = useTheme();
   const [value, setValue] = React.useState<any[]>(field?.value || []);
 
   React.useEffect(() => {
@@ -78,35 +78,48 @@ function ArrayFields(props: IArrayFieldsController) {
       >
         {addBtnLabel || "Thêm"}
       </Button>
-      {value?.map((x: any) => (
-        <BaseForm
-          key={x._id}
-          gap={gap}
-          templateColumns={templateColumns || "repeat(24, 1fr)"}
-          defaultValues={x}
-          watchFields={fields.map((x) => {
-            //@ts-ignore
-            if (typeof x.name === "string") return x.name;
-          })}
-          onWatchChange={(data, setValue) => {
-            handleChangeFieldValue(x._id, data);
-            onWatchChange?.(data);
-          }}
-          fields={[
-            ...fields,
-            {
-              name: "add",
-              label: "aaa",
-              type: "icon-button",
-              icon: <AiOutlineDelete />,
-              btnSize: "large",
-              colSpan: 1,
-              color: "error",
-              onClick: () => handleRemoveRow(x._id),
-            },
-          ]}
-        ></BaseForm>
-      ))}
+      <VStack spacing="18px">
+        {value?.map((x: any) => (
+          <Box
+            sx={{
+              borderColor: palette.grey[200],
+              borderWidth: "1px",
+              borderStyle: "solid",
+              pt: 2,
+              px: 2,
+              borderRadius: "12px",
+            }}
+          >
+            <BaseForm
+              key={x._id}
+              gap={gap}
+              templateColumns={templateColumns || "repeat(24, 1fr)"}
+              defaultValues={x}
+              watchFields={fields.map((x) => {
+                //@ts-ignore
+                if (typeof x.name === "string") return x.name;
+              })}
+              onWatchChange={(data, setValue) => {
+                handleChangeFieldValue(x._id, data);
+                onWatchChange?.(data);
+              }}
+              fields={[
+                ...fields,
+                {
+                  name: "add",
+                  label: "aaa",
+                  type: "icon-button",
+                  icon: <AiOutlineDelete />,
+                  btnSize: "large",
+                  colSpan: 1,
+                  color: "error",
+                  onClick: () => handleRemoveRow(x._id),
+                },
+              ]}
+            ></BaseForm>
+          </Box>
+        ))}
+      </VStack>
     </VStack>
   );
 }

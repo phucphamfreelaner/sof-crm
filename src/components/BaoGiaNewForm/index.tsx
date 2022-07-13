@@ -35,7 +35,11 @@ interface IBaoGiaNewForm {
   onSearchDonViTinh?: (index: any) => any;
 
   chatLieuData?: any;
-  onSearchChatLieu?: (index: any) => any;
+  onSearchChatLieu?: (text: any) => any;
+
+  mauInData?: any;
+  onSearchMauIn?: (text: any) => any;
+  isLoadingMauIn?: any;
 }
 
 function BaoGiaNewForm(props: IBaoGiaNewForm) {
@@ -64,6 +68,9 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
     donViTinhData,
     onSearchDonViTinh,
     formRef,
+    mauInData,
+    onSearchMauIn,
+    isLoadingMauIn,
   } = props;
 
   const [isVAT, setIsVAT] = useBoolean(false);
@@ -99,7 +106,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           addBtnLabel: "Thêm sản phẩm",
           fields: [
             {
-              name: "ten_san_pham",
+              name: "product_id",
               label: "Tên sản phẩm",
               type: "autocomplete",
               autocompleteOptions: sanPhamData,
@@ -107,15 +114,15 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               colSpan: 3,
             },
             {
-              name: "chat_lieu",
+              name: "chat_lieu_key",
               label: "Chất liệu",
               type: "autocomplete",
               autocompleteOptions: chatLieuData,
               onSearchChange: onSearchChatLieu,
-              colSpan: 3,
+              colSpan: 4,
             },
             {
-              name: "don_vi_tinh",
+              name: "don_vi_key",
               label: "Đơn vị tính",
               type: "autocomplete",
               colSpan: 3,
@@ -127,19 +134,69 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               label: "Số lượng",
               type: "input",
               textType: "number",
-              colSpan: 2,
+              colSpan: 3,
               onValueChange: (data, fromEl) => {
                 const sl = +fromEl.getValues("thanh_tien");
                 fromEl.setValue("thanh_tien", +data * sl);
               },
             },
             {
-              name: "don_gia_von",
-              label: "Đơn giá vốn",
+              name: "thue",
+              label: "Thuế",
               type: "input-mask",
               textType: "number",
               colSpan: 3,
             },
+            {
+              name: "phi_chuyen_noi_dia",
+              label: "Phí VC nộ địa",
+              type: "input-mask",
+              textType: "number",
+              colSpan: 3,
+            },
+            {
+              name: "phi_mua_ho",
+              label: "Phí mua hộ",
+              type: "input-mask",
+              textType: "number",
+              colSpan: 3,
+            },
+            {
+              name: "phi_khac",
+              label: "Phí khác",
+              type: "input-mask",
+              textType: "number",
+              colSpan: 2,
+            },
+            {
+              name: "ty_gia",
+              label: "Tỷ giá",
+              type: "input-mask",
+              textType: "number",
+              colSpan: 3,
+            },
+            {
+              name: "thanh_tien_chua_phu_thu",
+              label: "Tổng đơn(chưa ship, phụ thu)",
+              type: "input-mask",
+              textType: "number",
+              colSpan: 3,
+            },
+            {
+              name: "dat_coc",
+              label: "Đặt cọc",
+              type: "input-mask",
+              textType: "number",
+              colSpan: 3,
+            },
+            {
+              name: "phu_thu",
+              label: "Phụ thu",
+              type: "input-mask",
+              textType: "number",
+              colSpan: 3,
+            },
+
             {
               name: "don_gia",
               label: "Đơn giá",
@@ -159,10 +216,17 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               colSpan: 3,
             },
             {
+              name: "tong_thanh_tien",
+              label: "Tổng thành tiền",
+              type: "input-mask",
+              textType: "number",
+              colSpan: 3,
+            },
+            {
               name: "ghi_chu",
               label: "Ghi chú",
               type: "input",
-              colSpan: 3,
+              colSpan: 2,
             },
           ],
         },
@@ -201,19 +265,19 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               ),
             },
             {
-              name: "ngay_bao_gia",
+              name: "ngaybaogia",
               label: "Ngày báo giá",
               type: "date-picker",
               colSpan: 1,
             },
             {
-              name: "tg_giao_hang",
+              name: "time",
               label: "TG giao hàng",
               type: "input",
               colSpan: 1,
             },
             {
-              name: "dat_coc",
+              name: "datcoc",
               label: "Đặt cọc (%)",
               type: "input",
               colSpan: 1,
@@ -234,7 +298,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           ],
         },
         {
-          name: "dieu_khoan",
+          name: "dieukhoan",
           label: "Các điều khoản khác",
           type: "input",
           colSpan: 3,
@@ -250,7 +314,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           rows: 4,
         },
         {
-          name: "company",
+          name: "company_id",
           label: "Công ty",
           type: "autocomplete",
           colSpan: 2,
@@ -263,7 +327,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           onSearchChange: onSearchCompany,
         },
         {
-          name: "name",
+          name: "cohoi_id",
           label: "Cơ hội",
           type: "autocomplete",
           colSpan: 2,
@@ -281,7 +345,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           onSearchChange: onSearchLoaiBaoGia,
         },
         {
-          name: "ngon_ngu",
+          name: "ngon_ngu_key",
           label: "Ngôn ngữ",
           type: "autocomplete",
           colSpan: 2,
@@ -294,13 +358,22 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           onSearchChange: onSearchNgonNgu,
         },
         {
-          name: "loai_tien",
+          name: "loai_tien_key",
           label: "Loại tiền",
           type: "autocomplete",
           colSpan: 2,
           isLoading: isLoadingLoaiTien,
           autocompleteOptions: loaiTienData || [],
           onSearchChange: onSearchLoaiTien,
+        },
+        {
+          name: "template_id",
+          label: "Mẫu",
+          type: "autocomplete",
+          colSpan: 2,
+          isLoading: isLoadingMauIn,
+          autocompleteOptions: mauInData || [],
+          onSearchChange: onSearchMauIn,
         },
       ]}
     />
