@@ -1,19 +1,29 @@
 import React from "react";
-import { DataGrid } from "@mui/x-data-grid";
 import { useGetBaoGiaQuery } from "@/store/baoGia";
+import BaseTable from "@/components/BaseTable";
 import numeral from "numeral";
+import * as UI from "@/libs/ui";
+import { AiOutlineUser } from "react-icons/ai";
+import { isEmpty } from "lodash-es";
+import { AiOutlineEdit, AiOutlineDelete, AiOutlineEye } from "react-icons/ai";
+import { MdOpenInNew } from "react-icons/md";
+
+import { useLazyDeleteBaoGiaQuery } from "@/store/baoGia";
+import { useNavigate } from "react-router-dom";
+
 interface IBaoGiaTable {
   filter?: any;
   customerId?: any;
-  onCellClick?: (cellData: any) => any;
+  isShowKhachHangLink?: boolean;
 }
 
 function BaoGiaTable(props: IBaoGiaTable) {
-  const { filter, customerId, onCellClick } = props;
+  const { filter, customerId, isShowKhachHangLink } = props;
   const [limit, setLimit] = React.useState(15);
   const [page, setPage] = React.useState(0);
+  const navigate = useNavigate();
 
-  const { data, isLoading, isFetching } = useGetBaoGiaQuery(
+  const { data, isLoading, isFetching, refetch } = useGetBaoGiaQuery(
     {
       limit,
       page: page + 1,
@@ -23,95 +33,109 @@ function BaoGiaTable(props: IBaoGiaTable) {
     { refetchOnMountOrArgChange: true }
   );
 
+  const [dataSelected, setDataSelected] = React.useState<any>(null);
+
+  const [deleteBaoGia] = useLazyDeleteBaoGiaQuery();
+
   return (
-    <div style={{ height: "auto", width: "100%" }}>
-      <DataGrid
-        autoHeight
-        autoPageSize
-        headerHeight={70}
-        pageSize={limit || 15}
-        onPageSizeChange={(newSize) => {
-          if (newSize) setLimit(newSize);
-        }}
-        rowsPerPageOptions={[15, 20, 30, 50, 80, 100]}
-        disableColumnFilter
-        paginationMode="server"
-        loading={isLoading || isFetching}
-        rows={data?.data || []}
-        page={page}
-        rowCount={data?.data?.length * 10}
-        getRowClassName={(params) =>
-          params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
-        }
-        pagination
-        filterMode="server"
-        sortingMode="server"
-        onPageChange={setPage}
-        onCellClick={onCellClick}
-        sx={{
-          ".MuiDataGrid-columnHeaders": {
-            background: "#F3F4F6",
-            textTransform: "uppercase",
-          },
-          boxShadow: 2,
-          "& .MuiDataGrid-cell:hover": {
-            color: "primary.main",
-          },
-          ".MuiDataGrid-cell": {
-            borderBottom: "1px solid #eeeef9",
-          },
-        }}
-        columns={[
-          { field: "code", headerName: "Mã báo giá", width: 130 },
-          {
-            field: "khach_hang",
-            headerName: "Các gọi KH",
-            width: 300,
-            renderCell: ({ value }) => value?.contact || "---",
-          },
-          {
-            field: "ngaybaogia",
-            headerName: "Ngày báo giá",
-            width: 150,
-          },
-          {
-            field: "loai_tien",
-            headerName: "Loại tiền",
-            renderCell: ({ value }) => value?.name,
-            width: 130,
-          },
-          {
-            field: "tong_tien_goc",
-            headerName: "Số tiền vốn",
-            renderCell: ({ value }) => numeral(value).format("0,00"),
-            width: 200,
-          },
-          {
-            field: "tong_tien",
-            headerName: "Số tiền",
-            renderCell: ({ value }) => numeral(value).format("0,00"),
-            width: 200,
-          },
-          {
-            field: "tong_tien_vat",
-            headerName: "Số tiền (VAT)",
-            renderCell: ({ value }) => numeral(value).format("0,00"),
-            width: 200,
-          },
-          {
-            field: "nhan_vien_nhap",
-            headerName: "Nhân viên nhập",
-            renderCell: ({ value }) => value?.name,
-            width: 200,
-          },
-          {
-            field: "created_at",
-            headerName: "Ngày nhập",
-            width: 200,
-          },
-        ]}
-      />
-    </div>
+    <BaseTable
+      name="Báo giá"
+      pageSize={limit || 15}
+      onPageSizeChange={(pageSize) => pageSize && setLimit(pageSize)}
+      onSelectedChange={setDataSelected}
+      isLoading={isLoading || isFetching}
+      rows={data?.data || []}
+      page={page}
+      rowCount={data?.data?.length * 10}
+      onPageChange={setPage}
+      toolbarAction={
+        <UI.HStack>
+          <UI.Button
+            disabled={isEmpty(dataSelected)}
+            color="error"
+            variant="outlined"
+            size="small"
+            startIcon={<AiOutlineDelete size="16" />}
+            onClick={() => {
+              deleteBaoGia({ id: dataSelected?.[0]?.id })
+                .unwrap()
+                .then(() => {
+                  refetch();
+                });
+            }}
+          >
+            Xóa
+          </UI.Button>
+          {isShowKhachHangLink && (
+            <UI.Button
+              disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+              variant="outlined"
+              size="small"
+              startIcon={<AiOutlineUser size="16" />}
+              onClick={() => {
+                navigate(
+                  `/khach_hang/${dataSelected?.[0]?.customer_id}/bao_gia`
+                );
+              }}
+            >
+              Khách hàng
+            </UI.Button>
+          )}
+          <UI.Button
+            disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+            variant="outlined"
+            size="small"
+            startIcon={<MdOpenInNew size="16" />}
+          >
+            Chi tiết
+          </UI.Button>
+        </UI.HStack>
+      }
+      columns={[
+        { field: "code", headerName: "Mã báo giá", width: 130 },
+        {
+          field: "khach_hang",
+          headerName: "Các gọi KH",
+          width: 300,
+          renderCell: ({ value }) => value?.contact || "---",
+        },
+        {
+          field: "ngaybaogia",
+          headerName: "Ngày báo giá",
+          width: 150,
+        },
+        {
+          field: "loai_tien",
+          headerName: "Loại tiền",
+          renderCell: ({ value }) => value?.name,
+          width: 130,
+        },
+        {
+          field: "tong_tien_goc",
+          headerName: "Số tiền vốn",
+          renderCell: ({ value }) => numeral(value).format("0,00"),
+          width: 200,
+        },
+        {
+          field: "tong_tien",
+          headerName: "Số tiền",
+          renderCell: ({ value }) => numeral(value).format("0,00"),
+          width: 200,
+        },
+        {
+          field: "tong_tien_vat",
+          headerName: "Số tiền (VAT)",
+          renderCell: ({ value }) => numeral(value).format("0,00"),
+          width: 200,
+        },
+
+        {
+          field: "created_at",
+          headerName: "Ngày nhập",
+          width: 200,
+        },
+      ]}
+    />
   );
 }
 

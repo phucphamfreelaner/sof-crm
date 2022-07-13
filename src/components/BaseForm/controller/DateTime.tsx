@@ -23,7 +23,6 @@ function DateTimePickerForm(props: IInputController) {
     size,
     textType = "text",
   } = props;
-  const [dateTime, setDateTime] = React.useState<Date | null>(null);
 
   return (
     <DatePicker
@@ -31,11 +30,6 @@ function DateTimePickerForm(props: IInputController) {
       disabled={isDisabled}
       label="Date Time picker"
       inputFormat="dd/MM/yyyy, HH:mm"
-      value={dateTime}
-      onChange={(newValue: any) => {
-        setDateTime(newValue);
-        field.onChange(newValue);
-      }}
       renderInput={(params) => {
         return (
           <TextField

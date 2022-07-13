@@ -91,8 +91,8 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
         if (data?.thong_tin_chung?.["phi_giao_hang"]) setIsShipFee.setTrue();
         else setIsShipFee.setFalse();
 
-        if (data?.thong_tin_chung?.["tg_giao_hang"])
-          setTgGiaoHang(data?.thong_tin_chung?.["tg_giao_hang"]);
+        if (data?.thong_tin_chung?.["time"])
+          setTgGiaoHang(data?.thong_tin_chung?.["time"]);
       }}
       ref={formRef}
       fields={[
