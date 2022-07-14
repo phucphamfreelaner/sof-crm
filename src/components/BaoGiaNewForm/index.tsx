@@ -40,6 +40,9 @@ interface IBaoGiaNewForm {
   mauInData?: any;
   onSearchMauIn?: (text: any) => any;
   isLoadingMauIn?: any;
+  getSanPhamById?: (id: any) => Promise<any>;
+  getChatLieuByKey?: (key: string) => Promise<any>;
+  getDonViTinhByKey?: (key: string) => Promise<any>;
 }
 
 function BaoGiaNewForm(props: IBaoGiaNewForm) {
@@ -71,6 +74,9 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
     mauInData,
     onSearchMauIn,
     isLoadingMauIn,
+    getSanPhamById,
+    getChatLieuByKey,
+    getDonViTinhByKey,
   } = props;
 
   const [isVAT, setIsVAT] = useBoolean(false);
@@ -111,6 +117,8 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               type: "autocomplete",
               autocompleteOptions: sanPhamData,
               onSearchChange: onSearchSanPham,
+              mapValueKey: "name",
+              onGetDataByValue: (id) => getSanPhamById(id),
               colSpan: 3,
             },
             {
@@ -119,6 +127,8 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               type: "autocomplete",
               autocompleteOptions: chatLieuData,
               onSearchChange: onSearchChatLieu,
+              onGetDataByValue: (key: any) => getChatLieuByKey(key),
+              mapValueKey: "name",
               colSpan: 4,
             },
             {
@@ -128,6 +138,8 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               colSpan: 3,
               autocompleteOptions: donViTinhData,
               onSearchChange: onSearchDonViTinh,
+              onGetDataByValue: (key: any) => getDonViTinhByKey(key),
+              mapValueKey: "name",
             },
             {
               name: "so_luong",

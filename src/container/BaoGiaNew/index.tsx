@@ -11,9 +11,18 @@ import { useLazySearchCoHoiQuery } from "@/store/coHoi";
 import { useLazyGetLoaiBaoGiaListQuery } from "@/store/loaiBaoGia";
 import { useLazySearchNgonNguQuery } from "@/store/ngonNgu";
 import { useLazySearchLoaiTienGiaListQuery } from "@/store/loaiTien";
-import { useLazySearchSanPhamQuery } from "@/store/sanPham";
-import { useLazySearchChatLieuQuery } from "@/store/chatLieu";
-import { useLazySearchDonViTinhQuery } from "@/store/donViTinh";
+import {
+  useLazySearchSanPhamQuery,
+  useLazyGetSanPhamByIdQuery,
+} from "@/store/sanPham";
+import {
+  useLazySearchChatLieuQuery,
+  useLazyGetLoaiBaoGiaByKeyQuery,
+} from "@/store/chatLieu";
+import {
+  useLazySearchDonViTinhQuery,
+  useLazyGetDonViTinhByKeyQuery,
+} from "@/store/donViTinh";
 import { useLazySearchMauInQuery } from "@/store/mauIn";
 import { useLazyCreateBaoGiaQuery } from "@/store/baoGia";
 
@@ -104,6 +113,8 @@ function BaoGaiForm(props: IBaoGiaForm) {
     },
   ] = useLazySearchChatLieuQuery();
 
+  const [getChatLieuByKey] = useLazyGetLoaiBaoGiaByKeyQuery();
+
   const [
     searchSanPham,
     {
@@ -114,6 +125,8 @@ function BaoGaiForm(props: IBaoGiaForm) {
     },
   ] = useLazySearchSanPhamQuery();
 
+  const [getSanPhamById] = useLazyGetSanPhamByIdQuery();
+
   const [
     searchDonViTinh,
     {
@@ -123,6 +136,8 @@ function BaoGaiForm(props: IBaoGiaForm) {
       isSuccess: isSuccessDonViTinh,
     },
   ] = useLazySearchDonViTinhQuery();
+
+  const [getDonViTinhByKey] = useLazyGetDonViTinhByKeyQuery();
 
   const [
     searchMauIn,
@@ -144,17 +159,15 @@ function BaoGaiForm(props: IBaoGiaForm) {
   ] = useLazyCreateBaoGiaQuery();
 
   React.useEffect(() => {
-    if (!id) {
-      searchCty({ name: "" });
-      searchCoHoi({ name: "", customerId: +query.get("customerId") });
-      searchLoaiBaoGiaData({ name: "" });
-      searchNgonNgu({ name: "" });
-      searchLoaiTien({ name: "" });
-      searchSanPham({ name: "" });
-      searchChatLieu({ name: "" });
-      searchDonViTinh({ name: "" });
-      searchMauIn({ name: "" });
-    }
+    searchCty({ name: "" });
+    searchCoHoi({ name: "", customerId: +query.get("customerId") });
+    searchLoaiBaoGiaData({ name: "" });
+    searchNgonNgu({ name: "" });
+    searchLoaiTien({ name: "" });
+    searchSanPham({ name: "" });
+    searchChatLieu({ name: "" });
+    searchDonViTinh({ name: "" });
+    searchMauIn({ name: "" });
   }, []);
 
   const [defaultValues, setDefaultValue] = React.useState<any>(null);
@@ -174,7 +187,8 @@ function BaoGaiForm(props: IBaoGiaForm) {
       isSuccessCompany &&
       isSuccessCoHoi &&
       isSuccessSanPham &&
-      isSuccessDonViTinh
+      isSuccessDonViTinh &&
+      !id
     ) {
       setDefaultValue((value) => ({
         ...value,
@@ -320,6 +334,13 @@ function BaoGaiForm(props: IBaoGiaForm) {
           mauInData={mauInData}
           onSearchMauIn={(name) => searchMauIn({ name })}
           isLoadingMauIn={isLoadingMauIn || isFetchingMauIn}
+          getSanPhamById={(id: any) => getSanPhamById({ id }).unwrap()}
+          getChatLieuByKey={(value: string) =>
+            getChatLieuByKey({ value }).unwrap()
+          }
+          getDonViTinhByKey={(value: string) =>
+            getDonViTinhByKey({ value }).unwrap()
+          }
           onAddSanPham={(index) => ({
             _id: index,
             product_id: sanPhamData?.[0],

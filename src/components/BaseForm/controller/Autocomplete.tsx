@@ -1,10 +1,11 @@
 import React from "react";
 import { Controller } from "react-hook-form";
-import { debounce } from "lodash-es";
+import { debounce, isNumber, isObject, isString } from "lodash-es";
 import { TextField, Input } from "@mui/material";
 
 import Autocomplete from "@mui/material/Autocomplete";
 import { IBaseController } from "../types";
+import { useUpdateEffect } from "ahooks";
 
 export interface IAutocompleteController extends IBaseController {
   size?: "medium" | "small";
@@ -12,6 +13,8 @@ export interface IAutocompleteController extends IBaseController {
   onSearchChange?: (text: any) => any;
   onBlurChange?: (text: any) => any;
   autocompleteOptions?: { label: string; value: any }[];
+  onGetDataByValue?: (data: any) => Promise<any>;
+  mapValueKey?: string;
 }
 
 function AutocompleteComponent(props: IAutocompleteController) {
@@ -30,6 +33,8 @@ function AutocompleteComponent(props: IAutocompleteController) {
     autocompleteOptions = [],
     onSearchChange,
     isLoading,
+    onGetDataByValue,
+    mapValueKey = "name",
   } = props;
 
   const onSearchChangeDebounce = debounce(
@@ -37,17 +42,26 @@ function AutocompleteComponent(props: IAutocompleteController) {
     300
   );
 
+  const [value, setValue] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    if (isString(field?.value) || isNumber(field?.value)) {
+      onGetDataByValue?.(field?.value).then((data) =>
+        setValue({ label: data?.[mapValueKey], value: field?.value })
+      );
+      return;
+    }
+    setValue(field?.value);
+  }, [field?.value]);
+
   return (
     <Autocomplete
       {...field}
       fullWidth
+      value={value}
       open={open}
-      onOpen={() => {
-        setOpen(true);
-      }}
-      onClose={() => {
-        setOpen(false);
-      }}
+      onOpen={() => setOpen(true)}
+      onClose={() => setOpen(false)}
       id={name}
       options={autocompleteOptions}
       sx={{ ".MuiIconButton-root": { border: "none !important" } }}
@@ -55,6 +69,7 @@ function AutocompleteComponent(props: IAutocompleteController) {
         e.target.value = value;
         e.name = name;
         field.onChange(value);
+        setValue(value);
       }}
       onInputChange={(__, newInputValue) => {
         if (open) onSearchChangeDebounce(newInputValue);
