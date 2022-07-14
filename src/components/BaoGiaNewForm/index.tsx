@@ -336,7 +336,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           onSearchChange: onSearchCoHoi,
         },
         {
-          name: "loai_bao_gia",
+          name: "loai_bao_gia_key",
           label: "Loại báo giá",
           type: "autocomplete",
           colSpan: 2,

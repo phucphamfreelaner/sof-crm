@@ -15,6 +15,8 @@ export interface IAutocompleteController extends IBaseController {
 }
 
 function AutocompleteComponent(props: IAutocompleteController) {
+  const [open, setOpen] = React.useState(false);
+
   const {
     isRequired,
     label,
@@ -39,6 +41,13 @@ function AutocompleteComponent(props: IAutocompleteController) {
     <Autocomplete
       {...field}
       fullWidth
+      open={open}
+      onOpen={() => {
+        setOpen(true);
+      }}
+      onClose={() => {
+        setOpen(false);
+      }}
       id={name}
       options={autocompleteOptions}
       sx={{ ".MuiIconButton-root": { border: "none !important" } }}
@@ -48,7 +57,7 @@ function AutocompleteComponent(props: IAutocompleteController) {
         field.onChange(value);
       }}
       onInputChange={(__, newInputValue) => {
-        onSearchChangeDebounce(newInputValue);
+        if (open) onSearchChangeDebounce(newInputValue);
       }}
       loading={isLoading}
       renderInput={(params) => {

@@ -5,6 +5,8 @@ import { useParams } from "react-router-dom";
 import { useGetBaoGiaByIdQuery } from "@/store/baoGia";
 
 import { useGetCongTyByIdQuery } from "@/store/congTy";
+import { useGetCoHoiByIdQuery } from "@/store/coHoi";
+import { useGetLoaiBaoGiaByKeyQuery } from "@/store/loaiBaoGia";
 
 function Info() {
   const params = useParams();
@@ -17,15 +19,31 @@ function Info() {
       { skip: !baoGiaData?.company_id }
     );
 
-  console.log("🚀 ~ data", congTyData);
+  const { data: coHoiData, isSuccess: isSuccessCoHoi } = useGetCoHoiByIdQuery(
+    { id: baoGiaData?.cohoi_id },
+    { skip: !baoGiaData?.cohoi_id }
+  );
+
+  const { data: loaiBaoGiaData, isSuccess: isSuccessLoaiBaoGia } =
+    useGetLoaiBaoGiaByKeyQuery(
+      { value: baoGiaData?.loai_bao_gia_key || "bao-gia" },
+      { skip: !baoGiaData }
+    );
 
   return (
     <UI.Card>
       <BaoGiaNew
         id={params?.id}
         congTyLabel={congTyData?.ten}
+        coHoiLabel={coHoiData?.name}
         baoGiaData={baoGiaData}
-        isSuccess={isSuccessBaoGia && isSuccessCongTy}
+        loaiBaoGiaLabel={loaiBaoGiaData?.name}
+        isSuccess={
+          isSuccessBaoGia &&
+          isSuccessCongTy &&
+          isSuccessCoHoi &&
+          isSuccessLoaiBaoGia
+        }
       />
     </UI.Card>
   );

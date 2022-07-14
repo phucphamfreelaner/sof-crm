@@ -22,7 +22,15 @@ export const loaiBaoGiaService = createApi({
         url: `/cau-hinh/group/loai_bao_gia?s=${name}`,
       }),
     }),
+    getLoaiBaoGiaByKey: builder.query<any, { value: string }>({
+      transformResponse: (response: any) => response,
+      query: ({ value }) => ({
+        method: "GET",
+        url: `/cau-hinh/group/loai_bao_gia/key/${value}`,
+      }),
+    }),
   }),
 });
 
-export const { useLazyGetLoaiBaoGiaListQuery } = loaiBaoGiaService;
+export const { useLazyGetLoaiBaoGiaListQuery, useGetLoaiBaoGiaByKeyQuery } =
+  loaiBaoGiaService;

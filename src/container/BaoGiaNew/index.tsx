@@ -23,10 +23,19 @@ interface IBaoGiaForm {
   id?: any;
   congTyLabel?: string;
   isSuccess?: boolean;
+  coHoiLabel?: string;
+  loaiBaoGiaLabel?: string;
 }
 
 function BaoGaiForm(props: IBaoGiaForm) {
-  const { baoGiaData, id, congTyLabel, isSuccess } = props;
+  const {
+    baoGiaData,
+    id,
+    congTyLabel,
+    isSuccess,
+    coHoiLabel,
+    loaiBaoGiaLabel,
+  } = props;
   const [query] = useSearchParams();
 
   const navigate = useNavigate();
@@ -202,15 +211,26 @@ function BaoGaiForm(props: IBaoGiaForm) {
   ]);
 
   React.useEffect(() => {
-    if (baoGiaData) {
+    if (isSuccess && baoGiaData) {
+      console.log("🚀 ~ baoGiaData", baoGiaData);
       setDefaultValue({
         ...baoGiaData,
         company_id: {
           label: congTyLabel,
           value: baoGiaData?.company_id,
         },
+        cohoi_id: {
+          value: baoGiaData?.cohoi_id,
+          label: coHoiLabel,
+        },
+        loai_bao_gia_key: {
+          value: baoGiaData?.loai_bao_gia_key,
+          label: loaiBaoGiaLabel,
+        },
         thong_tin_chung: {
-          ngaybaogia: new Date(baoGiaData?.ngaybaogia),
+          ngaybaogia: baoGiaData?.ngaybaogia
+            ? new Date(baoGiaData?.ngaybaogia)
+            : new Date(),
           time: baoGiaData?.time,
           datcoc: baoGiaData?.datcoc,
         },
