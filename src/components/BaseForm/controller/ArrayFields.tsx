@@ -81,6 +81,7 @@ function ArrayFields(props: IArrayFieldsController) {
       <VStack spacing="18px">
         {value?.map((x: any) => (
           <Box
+            key={x._id}
             sx={{
               borderColor: palette.grey[200],
               borderWidth: "1px",

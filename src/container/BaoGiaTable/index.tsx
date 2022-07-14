@@ -5,7 +5,11 @@ import numeral from "numeral";
 import * as UI from "@/libs/ui";
 import { AiOutlineUser } from "react-icons/ai";
 import { isEmpty } from "lodash-es";
-import { AiOutlineEdit, AiOutlineDelete, AiOutlineEye } from "react-icons/ai";
+import {
+  AiOutlineEdit,
+  AiOutlineDelete,
+  AiOutlineFileAdd,
+} from "react-icons/ai";
 import { MdOpenInNew } from "react-icons/md";
 
 import { useLazyDeleteBaoGiaQuery } from "@/store/baoGia";
@@ -86,8 +90,20 @@ function BaoGiaTable(props: IBaoGiaTable) {
             variant="outlined"
             size="small"
             startIcon={<MdOpenInNew size="16" />}
+            onClick={() => {
+              navigate(`/bao_gia/${dataSelected?.[0]?.id}`);
+            }}
           >
             Chi tiết
+          </UI.Button>
+          <UI.Button
+            disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+            variant="outlined"
+            size="small"
+            color="success"
+            startIcon={<AiOutlineFileAdd size="16" />}
+          >
+            Tạo hợp đồng
           </UI.Button>
         </UI.HStack>
       }

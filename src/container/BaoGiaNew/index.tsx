@@ -10,7 +10,7 @@ import BaoGiaNewForm from "@/components/BaoGiaNewForm";
 import { useLazySearchCongTyQuery } from "@/store/congTy";
 import { useLazySearchCoHoiQuery } from "@/store/coHoi";
 import { useLazyGetLoaiBaoGiaListQuery } from "@/store/loaiBaoGia";
-import { useLazyGetNgonNguListQuery } from "@/store/ngonNgu";
+import { useLazySearchNgonNguQuery } from "@/store/ngonNgu";
 import { useLazySearchLoaiTienGiaListQuery } from "@/store/loaiTien";
 import { useLazySearchSanPhamQuery } from "@/store/sanPham";
 import { useLazySearchChatLieuQuery } from "@/store/chatLieu";
@@ -19,11 +19,14 @@ import { useLazySearchMauInQuery } from "@/store/mauIn";
 import { useLazyCreateBaoGiaQuery } from "@/store/baoGia";
 
 interface IBaoGiaForm {
-  initData?: any;
+  baoGiaData?: any;
+  id?: any;
+  congTyLabel?: string;
+  isSuccess?: boolean;
 }
 
 function BaoGaiForm(props: IBaoGiaForm) {
-  const { initData } = props;
+  const { baoGiaData, id, congTyLabel, isSuccess } = props;
   const [query] = useSearchParams();
 
   const navigate = useNavigate();
@@ -64,7 +67,7 @@ function BaoGaiForm(props: IBaoGiaForm) {
       isFetching: isFetchingNgonNgu,
       isSuccess: isSuccessNgonNgu,
     },
-  ] = useLazyGetNgonNguListQuery();
+  ] = useLazySearchNgonNguQuery();
 
   const [
     searchLoaiTien,
@@ -126,7 +129,7 @@ function BaoGaiForm(props: IBaoGiaForm) {
   ] = useLazyCreateBaoGiaQuery();
 
   React.useEffect(() => {
-    if (isEmpty(initData)) {
+    if (!id) {
       searchCty({ name: "" });
       searchCoHoi({ name: "", customerId: +query.get("customerId") });
       searchLoaiBaoGiaData({ name: "" });
@@ -164,10 +167,7 @@ function BaoGaiForm(props: IBaoGiaForm) {
         loai_bao_gia: loaiBaoGiaData?.[0],
         cohoi_id: coHoiData?.[0],
         company_id: companyData?.[0],
-        ngon_ngu_key: {
-          label: ngonNguData?.[0]?.ten,
-          value: ngonNguData?.[0]?.id,
-        },
+        ngon_ngu_key: ngonNguData?.[0],
         template_id: mauInData?.[0],
         thong_tin_chung: {
           ngaybaogia: new Date(),
@@ -200,6 +200,23 @@ function BaoGaiForm(props: IBaoGiaForm) {
     isSuccessDonViTinh,
     isSuccessMauIn,
   ]);
+
+  React.useEffect(() => {
+    if (baoGiaData) {
+      setDefaultValue({
+        ...baoGiaData,
+        company_id: {
+          label: congTyLabel,
+          value: baoGiaData?.company_id,
+        },
+        thong_tin_chung: {
+          ngaybaogia: new Date(baoGiaData?.ngaybaogia),
+          time: baoGiaData?.time,
+          datcoc: baoGiaData?.datcoc,
+        },
+      });
+    }
+  }, [isSuccess]);
 
   const elForm = React.useRef<any>();
 

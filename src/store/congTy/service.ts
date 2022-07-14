@@ -31,6 +31,13 @@ export const congTyService = createApi({
         url: `/cong-ty?ngon_ngu_key=vi&&s[ten]=${name}`,
       }),
     }),
+    getCongTyById: builder.query<any, { id: string }>({
+      transformResponse: (response: any) => response?.data,
+      query: ({ id }) => ({
+        method: "GET",
+        url: `/cong-ty/${id}`,
+      }),
+    }),
   }),
 });
 
@@ -38,4 +45,5 @@ export const {
   useGetCongTyListQuery,
   useLazyGetCongTyListQuery,
   useLazySearchCongTyQuery,
+  useGetCongTyByIdQuery,
 } = congTyService;
