@@ -20,7 +20,15 @@ export const donViTinhService = createApi({
         url: `/cau-hinh/group/don_vi?s=${name}&take=10`,
       }),
     }),
+    getDonViTinhByKey: builder.query<any, { value: string }>({
+      transformResponse: (response: any) => response,
+      query: ({ value }) => ({
+        method: "GET",
+        url: `/cau-hinh/group/don_vi/key/${value}`,
+      }),
+    }),
   }),
 });
 
-export const { useLazySearchDonViTinhQuery } = donViTinhService;
+export const { useLazySearchDonViTinhQuery, useLazyGetDonViTinhByKeyQuery } =
+  donViTinhService;

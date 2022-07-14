@@ -20,7 +20,15 @@ export const chatLieuService = createApi({
         url: `/cau-hinh/group/chat_lieu?s=${name}&take=10`,
       }),
     }),
+    getLoaiBaoGiaByKey: builder.query<any, { value: string }>({
+      transformResponse: (response: any) => response,
+      query: ({ value }) => ({
+        method: "GET",
+        url: `/cau-hinh/group/chat_lieu/key/${value}`,
+      }),
+    }),
   }),
 });
 
-export const { useLazySearchChatLieuQuery } = chatLieuService;
+export const { useLazySearchChatLieuQuery, useLazyGetLoaiBaoGiaByKeyQuery } =
+  chatLieuService;
