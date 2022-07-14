@@ -19,7 +19,15 @@ export const sanPhamService = createApi({
         url: `/san-pham?order_by[id]=desc&s[name]=${name}&take=10`,
       }),
     }),
+    getSanPhamById: builder.query<any, { id: any }>({
+      transformResponse: (response: any) => response?.data,
+      query: ({ id }) => ({
+        method: "GET",
+        url: `/san-pham/${id}`,
+      }),
+    }),
   }),
 });
 
-export const { useLazySearchSanPhamQuery } = sanPhamService;
+export const { useLazySearchSanPhamQuery, useGetSanPhamByIdQuery } =
+  sanPhamService;

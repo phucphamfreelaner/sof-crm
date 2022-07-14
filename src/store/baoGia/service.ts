@@ -43,7 +43,14 @@ export const baoGiaService = createApi({
         url: `/bao-gia/${id}/view`,
       }),
     }),
-    deleteBaoGia: builder.query<string, { id: any }>({
+    getBaoGiaById: builder.query<any, { id: any }>({
+      transformResponse: (response: any) => response?.data,
+      query: ({ id }) => ({
+        method: "GET",
+        url: `/bao-gia/${id}`,
+      }),
+    }),
+    deleteBaoGia: builder.query<any, { id: any }>({
       transformResponse: (response: any) => response?.data,
       query: ({ id }) => ({
         method: "DELETE",
@@ -58,4 +65,5 @@ export const {
   useLazyCreateBaoGiaQuery,
   useGetViewBaoGiaQuery,
   useLazyDeleteBaoGiaQuery,
+  useGetBaoGiaByIdQuery,
 } = baoGiaService;

@@ -19,7 +19,14 @@ export const mauInService = createApi({
         url: `/document-templates?order_by[uu_tien]=desc&s[code]=${name}`,
       }),
     }),
+    getMauInById: builder.query<any, { id: any }>({
+      transformResponse: (response: any) => response?.data,
+      query: ({ id }) => ({
+        method: "GET",
+        url: `/document-templates/${id}`,
+      }),
+    }),
   }),
 });
 
-export const { useLazySearchMauInQuery } = mauInService;
+export const { useLazySearchMauInQuery, useGetMauInByIdQuery } = mauInService;
