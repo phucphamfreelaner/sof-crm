@@ -20,11 +20,18 @@ export const ngonNguService = createApi({
         url: `/ngon-ngu?s[ten]=${name}`,
       }),
     }),
-    searchNgonNgu: builder.query({
+    getNgonNguByCode: builder.query<any, { code: string }>({
+      transformResponse: (response: any) => response?.data,
+      query: ({ code }) => ({
+        method: "GET",
+        url: `/ngon-ngu/code/${code}`,
+      }),
+    }),
+    searchNgonNgu: builder.query<any, { name: string }>({
       transformResponse: (response: any) =>
         response?.data?.map((x: any) => ({
           label: x?.ten,
-          value: x?.id,
+          value: x?.code,
         })),
       query: ({ name }) => ({
         method: "GET",
@@ -34,5 +41,8 @@ export const ngonNguService = createApi({
   }),
 });
 
-export const { useLazyGetNgonNguListQuery, useLazySearchNgonNguQuery } =
-  ngonNguService;
+export const {
+  useLazyGetNgonNguListQuery,
+  useLazySearchNgonNguQuery,
+  useGetNgonNguByCodeQuery,
+} = ngonNguService;

@@ -7,6 +7,9 @@ import { useGetBaoGiaByIdQuery } from "@/store/baoGia";
 import { useGetCongTyByIdQuery } from "@/store/congTy";
 import { useGetCoHoiByIdQuery } from "@/store/coHoi";
 import { useGetLoaiBaoGiaByKeyQuery } from "@/store/loaiBaoGia";
+import { useGetNgonNguByCodeQuery } from "@/store/ngonNgu";
+import { useGetLoaiTienByKeyQuery } from "@/store/loaiTien";
+import { useGetMauInByIdQuery } from "@/store/mauIn";
 
 function Info() {
   const params = useParams();
@@ -16,12 +19,12 @@ function Info() {
   const { data: congTyData, isSuccess: isSuccessCongTy } =
     useGetCongTyByIdQuery(
       { id: baoGiaData?.company_id },
-      { skip: !baoGiaData?.company_id }
+      { skip: !baoGiaData }
     );
 
   const { data: coHoiData, isSuccess: isSuccessCoHoi } = useGetCoHoiByIdQuery(
     { id: baoGiaData?.cohoi_id },
-    { skip: !baoGiaData?.cohoi_id }
+    { skip: !baoGiaData }
   );
 
   const { data: loaiBaoGiaData, isSuccess: isSuccessLoaiBaoGia } =
@@ -29,6 +32,23 @@ function Info() {
       { value: baoGiaData?.loai_bao_gia_key || "bao-gia" },
       { skip: !baoGiaData }
     );
+
+  const { data: ngonNguData, isSuccess: isSuccessNgonNgu } =
+    useGetNgonNguByCodeQuery(
+      { code: baoGiaData?.ngon_ngu_key },
+      { skip: !baoGiaData }
+    );
+
+  const { data: loaiTienData, isSuccess: isSuccessLoaiTien } =
+    useGetLoaiTienByKeyQuery(
+      { value: baoGiaData?.loai_tien_key || "vnd" },
+      { skip: !baoGiaData }
+    );
+
+  const { data: mauInData, isSuccess: isSuccessMauIn } = useGetMauInByIdQuery(
+    { id: baoGiaData?.template_id },
+    { skip: !baoGiaData }
+  );
 
   return (
     <UI.Card>
@@ -38,11 +58,17 @@ function Info() {
         coHoiLabel={coHoiData?.name}
         baoGiaData={baoGiaData}
         loaiBaoGiaLabel={loaiBaoGiaData?.name}
+        ngonNguLabel={ngonNguData?.ten}
+        loaiTienLabel={loaiTienData?.name}
+        mauInLabel={mauInData?.tieu_de}
         isSuccess={
           isSuccessBaoGia &&
           isSuccessCongTy &&
           isSuccessCoHoi &&
-          isSuccessLoaiBaoGia
+          isSuccessLoaiBaoGia &&
+          isSuccessNgonNgu &&
+          isSuccessLoaiTien &&
+          isSuccessMauIn
         }
       />
     </UI.Card>

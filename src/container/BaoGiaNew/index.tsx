@@ -4,7 +4,6 @@ import { FaSave } from "react-icons/fa";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { toast } from "react-hot-toast";
-import { isEmpty } from "lodash-es";
 
 import BaoGiaNewForm from "@/components/BaoGiaNewForm";
 import { useLazySearchCongTyQuery } from "@/store/congTy";
@@ -25,6 +24,9 @@ interface IBaoGiaForm {
   isSuccess?: boolean;
   coHoiLabel?: string;
   loaiBaoGiaLabel?: string;
+  ngonNguLabel?: string;
+  loaiTienLabel?: string;
+  mauInLabel?: string;
 }
 
 function BaoGaiForm(props: IBaoGiaForm) {
@@ -35,6 +37,9 @@ function BaoGaiForm(props: IBaoGiaForm) {
     isSuccess,
     coHoiLabel,
     loaiBaoGiaLabel,
+    ngonNguLabel,
+    loaiTienLabel,
+    mauInLabel,
   } = props;
   const [query] = useSearchParams();
 
@@ -68,6 +73,7 @@ function BaoGaiForm(props: IBaoGiaForm) {
       isSuccess: isSuccessLoaiBaoGia,
     },
   ] = useLazyGetLoaiBaoGiaListQuery();
+
   const [
     searchNgonNgu,
     {
@@ -212,7 +218,6 @@ function BaoGaiForm(props: IBaoGiaForm) {
 
   React.useEffect(() => {
     if (isSuccess && baoGiaData) {
-      console.log("🚀 ~ baoGiaData", baoGiaData);
       setDefaultValue({
         ...baoGiaData,
         company_id: {
@@ -226,6 +231,18 @@ function BaoGaiForm(props: IBaoGiaForm) {
         loai_bao_gia_key: {
           value: baoGiaData?.loai_bao_gia_key,
           label: loaiBaoGiaLabel,
+        },
+        ngon_ngu_key: {
+          value: baoGiaData?.ngon_ngu_key,
+          label: ngonNguLabel,
+        },
+        loai_tien_key: {
+          value: baoGiaData?.loai_tien_key,
+          label: loaiTienLabel,
+        },
+        template_id: {
+          value: baoGiaData?.template_id,
+          label: mauInLabel,
         },
         thong_tin_chung: {
           ngaybaogia: baoGiaData?.ngaybaogia
