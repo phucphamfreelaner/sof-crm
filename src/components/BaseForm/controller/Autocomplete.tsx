@@ -5,7 +5,6 @@ import { TextField, Input } from "@mui/material";
 
 import Autocomplete from "@mui/material/Autocomplete";
 import { IBaseController } from "../types";
-import { useUpdateEffect } from "ahooks";
 
 export interface IAutocompleteController extends IBaseController {
   size?: "medium" | "small";
@@ -46,9 +45,15 @@ function AutocompleteComponent(props: IAutocompleteController) {
 
   React.useEffect(() => {
     if (isString(field?.value) || isNumber(field?.value)) {
-      onGetDataByValue?.(field?.value).then((data) =>
-        setValue({ label: data?.[mapValueKey], value: field?.value })
-      );
+      onGetDataByValue?.(field?.value).then((data) => {
+        setValue({ label: data?.[mapValueKey], value: field?.value });
+        field.onChange({
+          name,
+          target: {
+            value: { label: data?.[mapValueKey], value: field?.value },
+          },
+        });
+      });
       return;
     }
     setValue(field?.value);
@@ -66,9 +71,12 @@ function AutocompleteComponent(props: IAutocompleteController) {
       options={autocompleteOptions}
       sx={{ ".MuiIconButton-root": { border: "none !important" } }}
       onChange={(e: any, value) => {
-        e.target.value = value;
-        e.name = name;
-        field.onChange(value);
+        field.onChange({
+          name,
+          target: {
+            value,
+          },
+        });
         setValue(value);
       }}
       onInputChange={(__, newInputValue) => {

@@ -4,6 +4,7 @@ import { FaSave } from "react-icons/fa";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { toast } from "react-hot-toast";
+import { omit } from "lodash-es";
 
 import BaoGiaNewForm from "@/components/BaoGiaNewForm";
 import { useLazySearchCongTyQuery } from "@/store/congTy";
@@ -24,7 +25,10 @@ import {
   useLazyGetDonViTinhByKeyQuery,
 } from "@/store/donViTinh";
 import { useLazySearchMauInQuery } from "@/store/mauIn";
-import { useLazyCreateBaoGiaQuery } from "@/store/baoGia";
+import {
+  useLazyCreateBaoGiaQuery,
+  useLazyPutBaoGiaByIdQuery,
+} from "@/store/baoGia";
 
 interface IBaoGiaForm {
   baoGiaData?: any;
@@ -63,6 +67,7 @@ function BaoGaiForm(props: IBaoGiaForm) {
       isSuccess: isSuccessCompany,
     },
   ] = useLazySearchCongTyQuery();
+
   const [
     searchCoHoi,
     {
@@ -158,6 +163,9 @@ function BaoGaiForm(props: IBaoGiaForm) {
     },
   ] = useLazyCreateBaoGiaQuery();
 
+  const [updateBaoGia, { isLoading: isLoadingUpdateBaoGia }] =
+    useLazyPutBaoGiaByIdQuery();
+
   React.useEffect(() => {
     searchCty({ name: "" });
     searchCoHoi({ name: "", customerId: +query.get("customerId") });
@@ -232,8 +240,12 @@ function BaoGaiForm(props: IBaoGiaForm) {
 
   React.useEffect(() => {
     if (isSuccess && baoGiaData) {
-      setDefaultValue({
+      const defaultValue = {
         ...baoGiaData,
+        san_pham: baoGiaData?.san_pham?.map?.((x: any) => ({
+          ...x,
+          _id: x.id,
+        })),
         company_id: {
           label: congTyLabel,
           value: baoGiaData?.company_id,
@@ -265,18 +277,21 @@ function BaoGaiForm(props: IBaoGiaForm) {
           time: baoGiaData?.time,
           datcoc: baoGiaData?.datcoc,
         },
-      });
+      };
+      setDefaultValue(defaultValue);
     }
   }, [isSuccess]);
 
   const elForm = React.useRef<any>();
 
-  const handleSaveBaoGia = (data: any) => {
-    const san_pham = data?.san_pham.map((x) => ({
+  const handleSaveBaoGia = (data: any, id: any) => {
+    const san_pham = data?.san_pham.map((x: any, index: number) => ({
+      ...baoGiaData?.san_pham?.[index],
       ...x,
       chat_lieu_key: x?.chat_lieu_key?.value,
       don_vi_key: x?.don_vi_key?.value,
       product_id: x?.product_id?.value,
+      baogia_id: +id,
     }));
     const payload = {
       ...data,
@@ -284,7 +299,7 @@ function BaoGaiForm(props: IBaoGiaForm) {
       customer_id: +query.get("customerId"),
       ngon_ngu_key: data?.ngon_ngu_key?.value,
       loai_tien_key: data?.loai_tien_key?.value,
-      loai_bao_gia: data?.loai_bao_gia.value,
+      loai_bao_gia: data?.loai_bao_gia?.value,
       viewEmail: {
         files: [],
       },
@@ -299,6 +314,16 @@ function BaoGaiForm(props: IBaoGiaForm) {
       note: data?.note,
       template_id: data?.template_id?.value,
     };
+    if (id) {
+      updateBaoGia({
+        id: data?.id,
+        payload: omit(payload, ["thong_tin_chung"]),
+      }).finally(() => {
+        toast.success("Sửa báo giá thành công!");
+        navigate(`/bao_gia/${data?.id}/view`);
+      });
+      return;
+    }
     createBaoGia({ payload });
   };
 
@@ -357,12 +382,14 @@ function BaoGaiForm(props: IBaoGiaForm) {
       </UI.CardContent>
       <UI.CardActions sx={{ justifyContent: "flex-end" }}>
         <LoadingButton
-          loading={isLoadingCreateBaoGia}
-          onClick={() => elForm.current.handleSubmit(handleSaveBaoGia)()}
+          loading={isLoadingCreateBaoGia || isLoadingUpdateBaoGia}
+          onClick={() =>
+            elForm.current.handleSubmit((data) => handleSaveBaoGia(data, id))()
+          }
           endIcon={<FaSave />}
           variant="outlined"
         >
-          Lưu báo giá
+          {id ? "Cập nhật báo giá" : "Lưu báo giá"}
         </LoadingButton>
       </UI.CardActions>
     </UI.Card>

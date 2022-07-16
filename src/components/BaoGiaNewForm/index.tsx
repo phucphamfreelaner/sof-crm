@@ -235,7 +235,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               colSpan: 3,
             },
             {
-              name: "ghi_chu",
+              name: "note",
               label: "Ghi chú",
               type: "input",
               colSpan: 2,
@@ -331,11 +331,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           type: "autocomplete",
           colSpan: 2,
           isLoading: isLoadingSearchCompany,
-          autocompleteOptions:
-            companyData?.map((x: any) => ({
-              label: x.ten,
-              value: x.id,
-            })) || [],
+          autocompleteOptions: companyData || [],
           onSearchChange: onSearchCompany,
         },
         {
@@ -362,11 +358,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           type: "autocomplete",
           colSpan: 2,
           isLoading: isLoadingNgonNgu,
-          autocompleteOptions:
-            ngonNguData?.map((x: any) => ({
-              label: x.ten,
-              value: x.code,
-            })) || [],
+          autocompleteOptions: ngonNguData || [],
           onSearchChange: onSearchNgonNgu,
         },
         {
