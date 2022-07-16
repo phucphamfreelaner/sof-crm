@@ -3,7 +3,11 @@ import { useGetBaoGiaQuery } from "@/store/baoGia";
 import BaseTable from "@/components/BaseTable";
 import numeral from "numeral";
 import * as UI from "@/libs/ui";
-import { AiOutlineUser, AiOutlinePrinter } from "react-icons/ai";
+import {
+  AiOutlineUser,
+  AiOutlinePrinter,
+  AiOutlineDownload,
+} from "react-icons/ai";
 import { isEmpty } from "lodash-es";
 import {
   AiOutlineEdit,
@@ -14,6 +18,7 @@ import { MdOpenInNew } from "react-icons/md";
 
 import { useLazyDeleteBaoGiaQuery } from "@/store/baoGia";
 import { useNavigate } from "react-router-dom";
+import { LOCAL_KEY } from "@/constants";
 
 interface IBaoGiaTable {
   filter?: any;
@@ -107,6 +112,22 @@ function BaoGiaTable(props: IBaoGiaTable) {
             }}
           >
             Mẫu in
+          </UI.Button>
+          <UI.Button
+            disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+            variant="outlined"
+            size="small"
+            startIcon={<AiOutlineDownload size="16" />}
+            onClick={() => {
+              window.open(
+                `https://apisf.interphase.vn/api/bao-gia/${
+                  dataSelected?.[0]?.id
+                }/download-doc?token=${localStorage.getItem(LOCAL_KEY?.TOKEN)}`,
+                "_blank"
+              );
+            }}
+          >
+            Tải xuống
           </UI.Button>
           <UI.Button
             disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
