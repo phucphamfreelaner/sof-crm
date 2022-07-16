@@ -4,9 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { useGetHopDongListQuery } from "@/store/hopDong";
 import numeral from "numeral";
 import { MdCancel } from "react-icons/md";
-import { AiFillCheckCircle } from "react-icons/ai";
+import { AiFillCheckCircle, AiOutlineDelete } from "react-icons/ai";
 import { format } from "date-fns";
 import SearchBar from "@/components/SearchBar";
+import BaseTable from "@/components/BaseTable";
+import { isEmpty } from "lodash-es";
 
 const sortOptions = [
   {
@@ -76,12 +78,12 @@ const sortOptions = [
   },
   {
     label: "Điện Thoại",
-    name: "customer_id",
+    name: "phone",
     type: "input",
   },
   {
     label: "Ngày Ký",
-    name: "created_at",
+    name: "ngayky",
     type: "input",
   },
 ];
@@ -102,6 +104,7 @@ function HopDongListContainer() {
   const [sort, setSort] = useState(sortOptions[0].name);
   const [orderBy, setOrderBy] = useState(orderOptions[0].value);
   const [page, setPage] = useState(0);
+  const [dataSelected, setDataSelected] = useState<any>(null);
 
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const queryRef = useRef(null);
@@ -183,40 +186,46 @@ function HopDongListContainer() {
         handleSortChange={handleSortChange}
         handleOnchangeAdvanceSearch={handleOnchangeAdvanceSearch}
       />
-      <UI.DataGrid
-        autoHeight
-        autoPageSize
-        headerHeight={70}
+      <BaseTable
+        name="Báo giá"
         pageSize={rowsPerPage || 15}
         onPageSizeChange={(newSize) => {
           newSize == 0 ? setRowsPerPage(15) : setRowsPerPage(newSize);
         }}
-        rowsPerPageOptions={[15, 20, 30, 50, 80, 100]}
-        disableColumnFilter
-        paginationMode="server"
-        loading={isLoading || isFetching}
+        isLoading={isLoading || isFetching}
         rows={data?.data || []}
         page={page}
+        onSelectedChange={setDataSelected}
         rowCount={totalPages}
-        getRowClassName={(params) =>
-          params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
-        }
-        pagination
-        filterMode="server"
         onPageChange={setPage}
-        sx={{
-          ".MuiDataGrid-columnHeaders": {
-            background: "#F3F4F6",
-            textTransform: "uppercase",
-          },
-          boxShadow: 2,
-          "& .MuiDataGrid-cell:hover": {
-            color: "primary.main",
-          },
-          ".MuiDataGrid-cell": {
-            borderBottom: "1px solid #eeeef9",
-          },
+        onSortChange={(mode) => {
+          setFilters((prevState) => ({
+            ...prevState,
+            order_by: `order_by[${mode?.[0]?.field}]=${mode?.[0]?.sort}`,
+          }));
         }}
+        toolbarAction={({ setSelectionModel }) => (
+          <UI.HStack>
+            <UI.Button
+              disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+              color="error"
+              variant="outlined"
+              size="small"
+              startIcon={<AiOutlineDelete size="16" />}
+              onClick={() => {
+                // deleteBaoGia({ id: dataSelected?.[0]?.id })
+                //   .unwrap()
+                //   .then(() => {
+                //     refetch();
+                //     setDataSelected([]);
+                //     setSelectionModel([]);
+                //   });
+              }}
+            >
+              Xóa
+            </UI.Button>
+          </UI.HStack>
+        )}
         columns={[
           { field: "code", headerName: "Số HĐ", width: 130 },
           {
