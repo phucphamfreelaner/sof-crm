@@ -57,7 +57,7 @@ function BaoGiaTable(props: IBaoGiaTable) {
       page={page}
       rowCount={data?.data?.length * 10}
       onPageChange={setPage}
-      toolbarAction={
+      toolbarAction={({ setSelectionModel }) => (
         <UI.HStack>
           <UI.Button
             disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
@@ -66,11 +66,12 @@ function BaoGiaTable(props: IBaoGiaTable) {
             size="small"
             startIcon={<AiOutlineDelete size="16" />}
             onClick={() => {
-              setDataSelected([]);
               deleteBaoGia({ id: dataSelected?.[0]?.id })
                 .unwrap()
                 .then(() => {
                   refetch();
+                  setDataSelected([]);
+                  setSelectionModel([]);
                 });
             }}
           >
@@ -139,7 +140,7 @@ function BaoGiaTable(props: IBaoGiaTable) {
             Tạo hợp đồng
           </UI.Button>
         </UI.HStack>
-      }
+      )}
       columns={[
         { field: "code", headerName: "Mã báo giá", width: 130 },
         {

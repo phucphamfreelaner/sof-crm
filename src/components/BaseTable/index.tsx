@@ -23,7 +23,11 @@ interface IBaseTable {
   page?: number;
   pageSize?: number;
   onPageChange?: (page: number) => any;
-  toolbarAction?: React.ReactNode;
+  toolbarAction?: ({
+    setSelectionModel,
+  }: {
+    setSelectionModel?: (data?: any) => any;
+  }) => React.ReactNode;
   name?: string;
 }
 
@@ -98,7 +102,11 @@ function BaseTable(props: IBaseTable) {
         onPageChange={onPageChange}
         checkboxSelection
         components={{
-          Toolbar: () => <CustomToolbar>{toolbarAction}</CustomToolbar>,
+          Toolbar: () => (
+            <CustomToolbar>
+              {toolbarAction({ setSelectionModel })}
+            </CustomToolbar>
+          ),
         }}
         sx={{
           ".MuiDataGrid-columnHeaders": {
