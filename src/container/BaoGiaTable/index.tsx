@@ -24,10 +24,11 @@ interface IBaoGiaTable {
   filter?: any;
   customerId?: any;
   isShowKhachHangLink?: boolean;
+  onSortChange?: (orderBy?: any) => any;
 }
 
 function BaoGiaTable(props: IBaoGiaTable) {
-  const { filter, customerId, isShowKhachHangLink } = props;
+  const { filter, customerId, isShowKhachHangLink, onSortChange } = props;
   const [limit, setLimit] = React.useState(15);
   const [page, setPage] = React.useState(0);
   const navigate = useNavigate();
@@ -57,6 +58,9 @@ function BaoGiaTable(props: IBaoGiaTable) {
       page={page}
       rowCount={data?.data?.length * 10}
       onPageChange={setPage}
+      onSortChange={(mode) => {
+        onSortChange({ order_by: { [mode?.[0].field]: mode?.[0]?.sort } });
+      }}
       toolbarAction={({ setSelectionModel }) => (
         <UI.HStack>
           <UI.Button

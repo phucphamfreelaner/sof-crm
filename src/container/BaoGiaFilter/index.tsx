@@ -4,13 +4,14 @@ import BaseForm from "@/components/BaseForm";
 import { useLazySearchKhachHangListQuery } from "@/store/khachHang";
 import { useLazySearchLoaiTienGiaListQuery } from "@/store/loaiTien";
 import { useLazySearchNhanVienQuery } from "@/store/nhanVien";
-
+import { AiOutlineReload } from "react-icons/ai";
 interface IBaoGiaFilter {
   onWatchChange: (data: any) => any;
+  onReload: () => any;
 }
 
 function BaoGiaFilter(props: IBaoGiaFilter) {
-  const { onWatchChange } = props;
+  const { onWatchChange, onReload } = props;
   const [
     searchKhachHang,
     {
@@ -57,10 +58,10 @@ function BaoGiaFilter(props: IBaoGiaFilter) {
   };
 
   return (
-    <UI.Box>
+    <UI.HStack pb={"20px"} alignItems="center" w="100%">
       <BaseForm
         templateColumns="repeat(12, 1fr)"
-        gap="24px"
+        columnGap="24px"
         watchFields={["code", "customer_id", "loai_tien_key", "created_by"]}
         onWatchChange={onWatchChange}
         fields={[
@@ -103,7 +104,10 @@ function BaoGiaFilter(props: IBaoGiaFilter) {
           },
         ]}
       ></BaseForm>
-    </UI.Box>
+      <UI.IconButton onClick={onReload}>
+        <AiOutlineReload />
+      </UI.IconButton>
+    </UI.HStack>
   );
 }
 
