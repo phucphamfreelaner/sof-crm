@@ -29,7 +29,7 @@ export const ngonNguService = createApi({
     }),
     searchNgonNgu: builder.query<any, { name: string }>({
       transformResponse: (response: any) =>
-        response?.data?.map((x: any) => ({
+        response?.data?.map?.((x: any) => ({
           label: x?.ten,
           value: x?.code,
         })),

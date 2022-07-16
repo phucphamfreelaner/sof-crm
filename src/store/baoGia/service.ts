@@ -8,10 +8,7 @@ import { IBaoGia } from "@/store/types";
 export const baoGiaService = createApi({
   baseQuery: axiosBaseQuery({
     baseUrl: "https://apisf.interphase.vn/api",
-    onError: (err) =>
-      toast.error(
-        err.error || "Có lỗi xẩy ra: Báo giá không tồn tại hoặc đã bị xóa!"
-      ),
+    onError: (err) => toast.error(err.error || "Có lỗi xẩy ra!"),
     token: () => localStorage.getItem(LOCAL_KEY.TOKEN),
   }),
   reducerPath: "baoGiaService",
@@ -50,6 +47,14 @@ export const baoGiaService = createApi({
         url: `/bao-gia/${id}`,
       }),
     }),
+    putBaoGiaById: builder.query<any, { id: any; payload: any }>({
+      transformResponse: (response: any) => response?.data,
+      query: ({ id, payload }) => ({
+        method: "PUT",
+        url: `/bao-gia/${id}`,
+        data: payload,
+      }),
+    }),
     deleteBaoGia: builder.query<any, { id: any }>({
       transformResponse: (response: any) => response?.data,
       query: ({ id }) => ({
@@ -66,4 +71,5 @@ export const {
   useGetViewBaoGiaQuery,
   useLazyDeleteBaoGiaQuery,
   useGetBaoGiaByIdQuery,
+  useLazyPutBaoGiaByIdQuery,
 } = baoGiaService;
