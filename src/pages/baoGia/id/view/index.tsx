@@ -6,17 +6,24 @@ import * as UI from "@/libs/ui";
 export default function View() {
   const params = useParams();
 
-  const { data } = useGetViewBaoGiaQuery(
+  const { data, isLoading } = useGetViewBaoGiaQuery(
     { id: params?.id },
     { skip: !params?.id }
   );
 
   return (
     <UI.Card elevation={5}>
-      <UI.CardHeader title="Mẫu báo giá" />
-      <UI.CardContent>
-        {data && <UI.CKBox dangerouslySetInnerHTML={{ __html: data }} />}
-      </UI.CardContent>
+      <UI.CardHeader title="Mẫu in báo giá" />
+      <UI.Divider />
+      {isLoading ? (
+        <UI.Center minH="200px" w="100%">
+          <UI.CircularProgress />
+        </UI.Center>
+      ) : (
+        <UI.CardContent>
+          {data && <UI.CKBox dangerouslySetInnerHTML={{ __html: data }} />}
+        </UI.CardContent>
+      )}
     </UI.Card>
   );
 }

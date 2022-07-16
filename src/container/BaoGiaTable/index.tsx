@@ -3,7 +3,7 @@ import { useGetBaoGiaQuery } from "@/store/baoGia";
 import BaseTable from "@/components/BaseTable";
 import numeral from "numeral";
 import * as UI from "@/libs/ui";
-import { AiOutlineUser } from "react-icons/ai";
+import { AiOutlineUser, AiOutlinePrinter } from "react-icons/ai";
 import { isEmpty } from "lodash-es";
 import {
   AiOutlineEdit,
@@ -31,7 +31,7 @@ function BaoGiaTable(props: IBaoGiaTable) {
     {
       limit,
       page: page + 1,
-      filter: {},
+      filter,
       customerId,
     },
     { refetchOnMountOrArgChange: true }
@@ -55,12 +55,13 @@ function BaoGiaTable(props: IBaoGiaTable) {
       toolbarAction={
         <UI.HStack>
           <UI.Button
-            disabled={isEmpty(dataSelected)}
+            disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
             color="error"
             variant="outlined"
             size="small"
             startIcon={<AiOutlineDelete size="16" />}
             onClick={() => {
+              setDataSelected([]);
               deleteBaoGia({ id: dataSelected?.[0]?.id })
                 .unwrap()
                 .then(() => {
@@ -95,6 +96,17 @@ function BaoGiaTable(props: IBaoGiaTable) {
             }}
           >
             Chi tiết
+          </UI.Button>
+          <UI.Button
+            disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+            variant="outlined"
+            size="small"
+            startIcon={<AiOutlinePrinter size="16" />}
+            onClick={() => {
+              navigate(`/bao_gia/${dataSelected?.[0]?.id}/view`);
+            }}
+          >
+            Mẫu in
           </UI.Button>
           <UI.Button
             disabled={isEmpty(dataSelected) || dataSelected?.length > 1}

@@ -1,7 +1,7 @@
 import React from "react";
 import { Controller } from "react-hook-form";
 import { debounce, isNumber, isObject, isString } from "lodash-es";
-import { TextField, Input } from "@mui/material";
+import { TextField, Input, InputAdornment } from "@mui/material";
 
 import Autocomplete from "@mui/material/Autocomplete";
 import { IBaseController } from "../types";
@@ -95,6 +95,20 @@ function AutocompleteComponent(props: IAutocompleteController) {
             disabled={isDisabled}
             required={isRequired}
             size={size}
+            sx={{
+              ".MuiFormLabel-root": {
+                fontSize: "1.1rem",
+                background: "white",
+                top: "-1px",
+                padding: "0 4px",
+              },
+            }}
+            InputProps={{
+              ...params?.InputProps,
+              startAdornment: (
+                <InputAdornment position="start"></InputAdornment>
+              ),
+            }}
           />
         );
       }}

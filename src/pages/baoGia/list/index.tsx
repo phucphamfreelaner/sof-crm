@@ -57,7 +57,16 @@ function BaoGiaList() {
       <UI.Card>
         <UI.Divider />
         <UI.CardContent>
-          <BaoGiaFilter onWatchChange={handleFilterChange} />
+          <BaoGiaFilter
+            onWatchChange={(filterData) => {
+              handleFilterChange({
+                code: filterData?.code,
+                customer_id: filterData?.customer_id?.value,
+                loai_tien_key: filterData?.loai_tien_key?.value,
+                created_by: filterData?.created_by?.value,
+              });
+            }}
+          />
           <BaoGiaTable isShowKhachHangLink filter={filter} />
         </UI.CardContent>
       </UI.Card>
