@@ -23,20 +23,16 @@ interface IBaseTable {
   page?: number;
   pageSize?: number;
   onPageChange?: (page: number) => any;
-  toolbarAction?: React.ReactNode;
+  toolbarAction?: ({
+    setSelectionModel,
+  }: {
+    setSelectionModel?: (data?: any) => any;
+  }) => React.ReactNode;
   name?: string;
+  onSortChange?: (mode: any, detail: any) => any;
 }
 
 function BaseTable(props: IBaseTable) {
-  const [selectionModel, setSelectionModel] =
-    React.useState<GridSelectionModel>([]);
-
-  useUpdateEffect(() => {
-    onSelectedChange(
-      compact(selectionModel.map((x) => keyBy(rows, "id")?.[x]))
-    );
-  }, [selectionModel]);
-
   const {
     columns,
     height = "calc(100vh - 400px)",
@@ -50,7 +46,18 @@ function BaseTable(props: IBaseTable) {
     page,
     onPageChange,
     toolbarAction,
+    onSortChange,
   } = props;
+
+  const [selectionModel, setSelectionModel] =
+    React.useState<GridSelectionModel>([]);
+
+  useUpdateEffect(() => {
+    onSelectedChange(
+      compact(selectionModel.map((x) => keyBy(rows, "id")?.[x]))
+    );
+  }, [selectionModel]);
+
   return (
     <div
       style={{
@@ -96,9 +103,14 @@ function BaseTable(props: IBaseTable) {
         filterMode="server"
         sortingMode="server"
         onPageChange={onPageChange}
+        onSortModelChange={onSortChange}
         checkboxSelection
         components={{
-          Toolbar: () => <CustomToolbar>{toolbarAction}</CustomToolbar>,
+          Toolbar: () => (
+            <CustomToolbar>
+              {toolbarAction({ setSelectionModel })}
+            </CustomToolbar>
+          ),
         }}
         sx={{
           ".MuiDataGrid-columnHeaders": {

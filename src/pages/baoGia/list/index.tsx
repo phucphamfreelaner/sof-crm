@@ -14,6 +14,7 @@ import { debounce, isEmpty } from "lodash-es";
 function BaoGiaList() {
   const navigate = useNavigate();
   const [filter, setFilter] = React.useState<any>(null);
+  const [key, setKey] = React.useState<any>(null);
 
   const handleFilterChange = debounce(setFilter, 500);
 
@@ -58,6 +59,11 @@ function BaoGiaList() {
         <UI.Divider />
         <UI.CardContent>
           <BaoGiaFilter
+            key={key}
+            onReload={() => {
+              setFilter(null);
+              setKey((s) => s + 1);
+            }}
             onWatchChange={(filterData) => {
               handleFilterChange({
                 code: filterData?.code,
@@ -67,7 +73,13 @@ function BaoGiaList() {
               });
             }}
           />
-          <BaoGiaTable isShowKhachHangLink filter={filter} />
+          <BaoGiaTable
+            onSortChange={(orderBy) => {
+              setFilter((filter) => ({ ...filter, ...orderBy }));
+            }}
+            isShowKhachHangLink
+            filter={filter}
+          />
         </UI.CardContent>
       </UI.Card>
     </UI.Box>

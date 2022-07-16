@@ -21,6 +21,8 @@ export interface IBaseForm {
   templateColumns?: string;
   templateRows?: string;
   gap?: string | number;
+  rowGap?: string | number;
+  columnGap?: string | number;
   childrenColSpan?: number;
   childrenRowSpan?: number;
   onDirty?: (dirtyFields: any) => any;
