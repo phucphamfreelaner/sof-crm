@@ -66,6 +66,13 @@ export const coHoiService = createApi({
         url: `/co-hoi/${id}`,
       }),
     }),
+    deleteCoHoi: builder.query<any, { id: any }>({
+      transformResponse: (response: any) => response?.data,
+      query: ({ id }) => ({
+        method: "DELETE",
+        url: `/co-hoi/${id}`,
+      }),
+    }),
   }),
 });
 
@@ -79,4 +86,5 @@ export const {
   useCreateCoHoiMutation,
   useUpdateCoHoiByIDMutation,
   useDeleteCoHoiByIDMutation,
+  useLazyDeleteCoHoiQuery,
 } = coHoiService;

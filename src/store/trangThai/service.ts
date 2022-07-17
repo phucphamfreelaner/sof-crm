@@ -20,8 +20,21 @@ export const trangThaiService = createApi({
         url: `/cau-hinh/group/tinh_trang_co_hoi?s=${name}&take=10`,
       }),
     }),
+    searchTrangThaiList: builder.query({
+      transformResponse: (response: any) =>
+        Object.keys(response).map((key) => {
+          return { label: response[key], value: key };
+        }),
+      query: ({ name }) => ({
+        method: "GET",
+        url: `/cau-hinh/group/tinh_trang_co_hoi?s=${name}&take=10`,
+      }),
+    }),
   }),
 });
 
-export const { useGetTrangThaiListQuery, useLazyGetTrangThaiListQuery } =
-  trangThaiService;
+export const {
+  useGetTrangThaiListQuery,
+  useLazyGetTrangThaiListQuery,
+  useLazySearchTrangThaiListQuery,
+} = trangThaiService;

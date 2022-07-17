@@ -1,0 +1,154 @@
+import React from "react";
+import BaseTable from "@/components/BaseTable";
+import numeral from "numeral";
+import * as UI from "@/libs/ui";
+import { AiOutlineUser } from "react-icons/ai";
+import { isEmpty } from "lodash-es";
+import {
+  AiOutlineEdit,
+  AiOutlineDelete,
+  AiOutlineFileAdd,
+} from "react-icons/ai";
+import { MdOpenInNew } from "react-icons/md";
+
+import { useGetCoHoiListQuery, useLazyDeleteCoHoiQuery } from "@/store/coHoi";
+import { useNavigate } from "react-router-dom";
+
+interface ICoHoiTable {
+  filter?: any;
+  isShowKhachHangLink?: boolean;
+}
+
+function CoHoiTable(props: ICoHoiTable) {
+  const { filter, isShowKhachHangLink } = props;
+  const [limit, setLimit] = React.useState(15);
+  const [page, setPage] = React.useState(0);
+  const navigate = useNavigate();
+
+  const { data, isLoading, isFetching, refetch } = useGetCoHoiListQuery(
+    {
+      limit,
+      page: page + 1,
+      filter: filter,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
+
+  const [dataSelected, setDataSelected] = React.useState<any>(null);
+
+  const [deleteCoHoi] = useLazyDeleteCoHoiQuery();
+
+  return (
+    <BaseTable
+      name="Báo giá"
+      pageSize={limit || 15}
+      onPageSizeChange={(pageSize) => pageSize && setLimit(pageSize)}
+      onSelectedChange={setDataSelected}
+      isLoading={isLoading || isFetching}
+      rows={data?.data || []}
+      page={page}
+      rowCount={data?.data?.length * 10}
+      onPageChange={setPage}
+      toolbarAction={
+        <UI.HStack>
+          <UI.Button
+            disabled={isEmpty(dataSelected)}
+            color="error"
+            variant="outlined"
+            size="small"
+            startIcon={<AiOutlineDelete size="16" />}
+            onClick={() => {
+              deleteCoHoi({ id: dataSelected?.[0]?.id })
+                .unwrap()
+                .then(() => {
+                  refetch();
+                });
+            }}
+          >
+            Xóa
+          </UI.Button>
+          {isShowKhachHangLink && (
+            <UI.Button
+              disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+              variant="outlined"
+              size="small"
+              startIcon={<AiOutlineUser size="16" />}
+              onClick={() => {
+                navigate(
+                  `/khach_hang/${dataSelected?.[0]?.customer_id}/co_hoi`
+                );
+              }}
+            >
+              Khách hàng
+            </UI.Button>
+          )}
+          <UI.Button
+            disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+            variant="outlined"
+            size="small"
+            startIcon={<MdOpenInNew size="16" />}
+            onClick={() => {
+              navigate(`/bao_gia/${dataSelected?.[0]?.id}`);
+            }}
+          >
+            Chi tiết
+          </UI.Button>
+          <UI.Button
+            disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+            variant="outlined"
+            size="small"
+            color="success"
+            startIcon={<AiOutlineFileAdd size="16" />}
+          >
+            Tạo hợp đồng
+          </UI.Button>
+        </UI.HStack>
+      }
+      columns={[
+        { field: "code", headerName: "Mã cơ hội", width: 130 },
+        {
+          field: "name",
+          headerName: "Tên cơ hội",
+          width: 300,
+        },
+        {
+          field: "phone",
+          headerName: "Phone",
+          width: 150,
+        },
+        {
+          field: "email",
+          headerName: "Email",
+          width: 150,
+        },
+        {
+          field: "trang_thai_key",
+          headerName: "Trạng thái",
+          width: 200,
+        },
+        {
+          field: "tien_trinh_key",
+          headerName: "Tiến trình",
+          width: 200,
+        },
+        {
+          field: "ten",
+          headerName: "Nhân viên nhập",
+          width: 200,
+        },
+        {
+          field: "created_at",
+          headerName: "Ngày nhập",
+          width: 200,
+        },
+        {
+          field: "note",
+          headerName: "Ghi chú",
+          width: 200,
+        },
+      ]}
+    />
+  );
+}
+
+export default CoHoiTable;
