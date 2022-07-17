@@ -51,11 +51,18 @@ export const hopDongService = createApi({
         url: `/hop-dong/${id}/view`,
       }),
     }),
+    getHopDongByCustomerId: builder.query<string, { id: any }>({
+      transformResponse: (response: any) => response?.data,
+      query: ({ id }) => ({
+        method: "GET",
+        url: `/hop-dong?customer_id=${id}&with[]=loai_tien&with[]=nhan_vien_tao&with[]=dai_dien&with[]=loai_hop_dong&with[]=bao_gia&limit=100&with[]=khach_hang&with[]=bao_gia_co_hoi_tien_trinh&view=pagination&order_by[id]=desc`,
+      }),
+    }),
     getHopDongList: builder.query({
       transformResponse: (response: any) => response as IGetHopDongList,
-      query: ({ limit, page, code, order_by, search }) => ({
+      query: ({ limit, page, code, order_by, search, customerQuery }) => ({
         method: "GET",
-        url: `/hop-dong?with[]=khach_hang&with[]=nhan_vien_tao&with[]=loai_hop_dong&with[]=bao_gia_co_hoi_tien_trinh&limit=${limit}&page=${page}&s[code]=${code}&${order_by}${search}`,
+        url: `/hop-dong?with[]=khach_hang&with[]=nhan_vien_tao&with[]=loai_hop_dong&with[]=bao_gia_co_hoi_tien_trinh&limit=${limit}&page=${page}&s[code]=${code}&${order_by}${search}${customerQuery}`,
       }),
     }),
   }),
@@ -65,6 +72,7 @@ export const {
   useGetHopDongByIdQuery,
   useGetHopDongListQuery,
   useGetViewHopDongQuery,
+  useGetHopDongByCustomerIdQuery,
   useUpdateHopDongByIDMutation,
   useCreateHopDongMutation,
   useDeleteHopDongByIDMutation,

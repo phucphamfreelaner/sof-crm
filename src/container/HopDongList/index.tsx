@@ -8,6 +8,7 @@ import {
   AiFillCheckCircle,
   AiOutlineDownload,
   AiOutlinePrinter,
+  AiOutlineUser,
 } from "react-icons/ai";
 import { IoMdCreate } from "react-icons/io";
 import { format } from "date-fns";
@@ -105,8 +106,9 @@ const orderOptions = [
   },
 ];
 
-function HopDongListContainer() {
+function HopDongListContainer(props) {
   const navigate = useNavigate();
+  const { customerId, isHiddenKhachHang } = props;
   const [sort, setSort] = useState(sortOptions[0].name);
   const [orderBy, setOrderBy] = useState(orderOptions[0].value);
   const [page, setPage] = useState(0);
@@ -128,6 +130,7 @@ function HopDongListContainer() {
     code: filters?.query,
     order_by: filters?.order_by,
     search: filters?.search,
+    customerQuery: customerId ? `&customer_id=${customerId}` : "",
   });
 
   const handleQueryChange = (event) => {
@@ -216,7 +219,7 @@ function HopDongListContainer() {
               variant="outlined"
               size="small"
               color="success"
-              disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+              disabled
               startIcon={<IoMdCreate size="16" />}
               onClick={() => {
                 navigate(`/hop_dong/${dataSelected?.[0]?.id}/view`);
@@ -224,6 +227,22 @@ function HopDongListContainer() {
             >
               Tạo Đơn Hàng
             </UI.Button>
+
+            {!isHiddenKhachHang && (
+              <UI.Button
+                disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+                variant="outlined"
+                size="small"
+                startIcon={<AiOutlineUser size="16" />}
+                onClick={() => {
+                  navigate(
+                    `/khach_hang/${dataSelected?.[0]?.customer_id}/hop_dong`
+                  );
+                }}
+              >
+                Khách hàng
+              </UI.Button>
+            )}
             <UI.Button
               disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
               variant="outlined"
