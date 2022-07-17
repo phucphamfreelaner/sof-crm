@@ -24,6 +24,13 @@ export const loaiHdService = createApi({
         url: `/cau-hinh/group/loai_hd?take=10&s=${name}`,
       }),
     }),
+    getLoaiHdById: builder.query({
+      transformResponse: (response: any) => response,
+      query: ({ name }) => ({
+        method: "GET",
+        url: `/cau-hinh/group/loai_hd?take=10&s=${name}`,
+      }),
+    }),
     searchBenHd: builder.query({
       transformResponse: (response: any) =>
         Object.keys(response).map((key) => ({
@@ -35,8 +42,20 @@ export const loaiHdService = createApi({
         url: `/cau-hinh/group/ben_hd?take=10&s=${name}`,
       }),
     }),
+    searchBenHdById: builder.query({
+      transformResponse: (response: any) => response,
+      query: ({ name }) => ({
+        method: "GET",
+        url: `/cau-hinh/group/ben_hd?take=10&s=${name}`,
+      }),
+    }),
   }),
 });
 
-export const { useLazySearchloaiHdQuery, useLazySearchBenHdQuery } =
-  loaiHdService;
+export const {
+  useLazySearchloaiHdQuery,
+  useSearchBenHdByIdQuery,
+  useGetLoaiHdByIdQuery,
+  useSearchloaiHdQuery,
+  useLazySearchBenHdQuery,
+} = loaiHdService;

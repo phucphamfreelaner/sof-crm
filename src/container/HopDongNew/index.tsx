@@ -32,36 +32,41 @@ import {
 } from "@/store/loaiHd";
 import { useGetBaoGiaByIdQuery } from "@/store/baoGia";
 import { useParams } from "react-router-dom";
-import { useLazyCreateHopDongQuery } from "@/store/hopDong";
+import {
+  useLazyCreateHopDongQuery,
+  useLazyPutHopDongByIdQuery,
+} from "@/store/hopDong";
 
 interface IBaoGiaForm {
   id?: any;
-  congTyLabel?: string;
-  isSuccess?: boolean;
-  coHoiLabel?: string;
-  loaiBaoGiaLabel?: string;
-  ngonNguLabel?: string;
-  loaiTienLabel?: string;
-  mauInLabel?: string;
+  hopDongData?: any;
+  isSuccess?: any;
+  nhanVienLabel?: any;
+  ngonNguLabel?: any;
+  loaiTienLabel?: any;
+  loaiHdLabel?: any;
+  mauInLabel?: any;
+  benHdLabel?: any;
 }
 
 function HopDongFormContainer(props: IBaoGiaForm) {
   const {
     id,
-    congTyLabel,
+    hopDongData,
     isSuccess,
-    coHoiLabel,
-    loaiBaoGiaLabel,
+    nhanVienLabel,
     ngonNguLabel,
     loaiTienLabel,
+    loaiHdLabel,
     mauInLabel,
+    benHdLabel,
   } = props;
   const [query] = useSearchParams();
 
   const { data: baoGiaData, isSuccess: isSuccessBaoGia } =
     useGetBaoGiaByIdQuery(
-      { id: query.get("baogia_id") },
-      { skip: !query.get("baogia_id") }
+      { id: hopDongData?.baogia_id || query.get("baogia_id") },
+      { skip: !hopDongData?.baogia_id || !query.get("baogia_id") }
     );
 
   const [
@@ -171,6 +176,9 @@ function HopDongFormContainer(props: IBaoGiaForm) {
     },
   ] = useLazyCreateHopDongQuery();
 
+  const [updateHopDong, { isLoading: isLoadingUpdateHopDong }] =
+    useLazyPutHopDongByIdQuery();
+
   const handleSaveHopDong = (data: any, id: any) => {
     const san_pham = data?.san_pham.map((x: any, index: number) => ({
       ...baoGiaData?.san_pham?.[index],
@@ -197,20 +205,21 @@ function HopDongFormContainer(props: IBaoGiaForm) {
       loai_tien_key: data?.loai_tien_key?.value,
       vat: data?.vat ? 1 : 0,
       created_at: data?.created_at
-        ? format(data?.created_at, "yyyy-mm-dd")
-        : "",
+        ? typeof data?.created_at === "string"
+          ? format(new Date(data?.created_at), "yyyy-mm-dd")
+          : format(data?.created_at, "yyyy-mm-dd")
+        : format(new Date(), "yyyy-mm-dd"),
     };
-    // if (id) {
-    //   updateBaoGia({
-    //     id: data?.id,
-    //     payload: omit(payload, ["thong_tin_chung"]),
-    //   }).finally(() => {
-    //     toast.success("Sửa báo giá thành công!");
-    //     navigate(`/bao_gia/${data?.id}/view`);
-    //   });
-    //   return;
-    // }
-    // createBaoGia({ payload });
+    if (id) {
+      updateHopDong({
+        id: data?.id,
+        payload: payload,
+      }).finally(() => {
+        toast.success("Sửa báo giá thành công!");
+        navigate(`/hop_dong/${data?.id}/view`);
+      });
+      return;
+    }
     createHopDong({ payload });
   };
 
@@ -281,7 +290,40 @@ function HopDongFormContainer(props: IBaoGiaForm) {
   ]);
   1;
   React.useEffect(() => {
-    if (baoGiaData) {
+    console.log(loaiHdLabel);
+    if (id && hopDongData && isSuccess) {
+      const defaultValue = {
+        ...hopDongData,
+        vat: hopDongData?.vat === 1 ? true : false,
+        dai_dien_id: {
+          value: hopDongData?.dai_dien_id,
+          label: nhanVienLabel,
+        },
+        ngon_ngu_key: {
+          value: hopDongData?.ngon_ngu_key,
+          label: ngonNguLabel,
+        },
+        loai_tien_key: {
+          value: hopDongData?.loai_tien_key,
+          label: loaiTienLabel,
+        },
+        loai_hd_key: {
+          value: hopDongData?.loai_hd_key,
+          label: loaiHdLabel,
+        },
+        template_id: {
+          value: hopDongData?.template_id,
+          label: mauInLabel,
+        },
+        chiphivanchuyen: {
+          value: hopDongData?.chiphivanchuyen,
+          label: benHdLabel,
+        },
+      };
+      setDefaultValue(defaultValue);
+      return;
+    }
+    if (baoGiaData && !id) {
       const defaultValue = {
         tong_tien: baoGiaData?.tong_tien,
         time: baoGiaData?.time,
@@ -304,11 +346,9 @@ function HopDongFormContainer(props: IBaoGiaForm) {
       };
       setDefaultValue(defaultValue);
     }
-  }, [baoGiaData]);
+  }, [baoGiaData, hopDongData, isSuccess]);
 
   const elForm = React.useRef<any>();
-
-  console.log(baoGiaData);
 
   return (
     <UI.Card elevation={10}>
@@ -375,7 +415,7 @@ function HopDongFormContainer(props: IBaoGiaForm) {
       </UI.CardContent>
       <UI.CardActions sx={{ justifyContent: "flex-end" }}>
         <LoadingButton
-          //loading={isLoadingCreateBaoGia || isLoadingUpdateBaoGia}
+          loading={isLoadingCreateHopDong || isLoadingUpdateHopDong}
           onClick={() =>
             elForm.current.handleSubmit((data) => handleSaveHopDong(data, id))()
           }

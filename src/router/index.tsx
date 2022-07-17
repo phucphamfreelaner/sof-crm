@@ -21,7 +21,7 @@ import HopDong from "@/pages/hopDong";
 import HopDongDetail from "@/pages/hopDong/id";
 import HopDongDetailView from "@/pages/hopDong/id/view";
 import HopDongNew from "@/pages/hopDong/new";
-
+import HopDongDetailInfo from "@/pages/hopDong/id/info";
 import CoHoiNew from "@/pages/coHoi/new";
 
 import ThongTinCoban from "@/pages/customer/id/thongTinCoban";
@@ -55,7 +55,7 @@ function Router() {
             <Route index element={<HopDongList />} />
             <Route path="new" element={<HopDongNew />} />
             <Route path=":id" element={<HopDongDetail />}>
-              <Route index element={<HopDongDetailView />} />
+              <Route index element={<HopDongDetailInfo />} />
               <Route path="view" element={<HopDongDetailView />} />
             </Route>
           </Route>

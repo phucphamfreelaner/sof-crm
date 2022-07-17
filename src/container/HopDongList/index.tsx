@@ -1,14 +1,18 @@
 import { useState, useRef, useEffect } from "react";
 import * as UI from "@/libs/ui";
 import { useNavigate } from "react-router-dom";
-import { useGetHopDongListQuery } from "@/store/hopDong";
+import {
+  useGetHopDongListQuery,
+  useLazyDeleteHopDongQuery,
+} from "@/store/hopDong";
 import numeral from "numeral";
-import { MdCancel } from "react-icons/md";
+import { MdCancel, MdOpenInNew } from "react-icons/md";
 import {
   AiFillCheckCircle,
   AiOutlineDownload,
   AiOutlinePrinter,
   AiOutlineUser,
+  AiOutlineDelete,
 } from "react-icons/ai";
 import { IoMdCreate } from "react-icons/io";
 import { format } from "date-fns";
@@ -182,6 +186,8 @@ function HopDongListContainer(props) {
     }
   }, [data]);
 
+  const [deleteHopDong] = useLazyDeleteHopDongQuery();
+
   return (
     <>
       <SearchBar
@@ -215,6 +221,36 @@ function HopDongListContainer(props) {
         }}
         toolbarAction={({ setSelectionModel }) => (
           <UI.HStack>
+            <UI.Button
+              disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+              color="error"
+              variant="outlined"
+              size="small"
+              startIcon={<AiOutlineDelete size="16" />}
+              onClick={() => {
+                deleteHopDong({ id: dataSelected?.[0]?.id })
+                  .unwrap()
+                  .finally(() => {
+                    refetch();
+                    setDataSelected([]);
+                    setSelectionModel([]);
+                  });
+              }}
+            >
+              Xóa
+            </UI.Button>
+            <UI.Button
+              disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+              variant="outlined"
+              size="small"
+              startIcon={<MdOpenInNew size="16" />}
+              onClick={() => {
+                console.log(dataSelected);
+                navigate(`/hop_dong/${dataSelected?.[0]?.id}`);
+              }}
+            >
+              Chi tiết
+            </UI.Button>
             <UI.Button
               variant="outlined"
               size="small"

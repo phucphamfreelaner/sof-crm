@@ -19,7 +19,18 @@ export const nhanVienService = createApi({
         url: `/nhan-vien?order_by[id]=desc&s[name]=${name}&take=10&with[]=chuc_vu&${chuc_vu_key}`,
       }),
     }),
+    searchNhanVienByCode: builder.query<any, { id: any }>({
+      transformResponse: (response: any) => response?.data,
+      query: ({ id }) => ({
+        method: "GET",
+        url: `/nhan-vien/${id}`,
+      }),
+    }),
   }),
 });
 
-export const { useLazySearchNhanVienQuery } = nhanVienService;
+export const {
+  useLazySearchNhanVienQuery,
+  useSearchNhanVienQuery,
+  useSearchNhanVienByCodeQuery,
+} = nhanVienService;

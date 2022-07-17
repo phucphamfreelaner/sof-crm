@@ -21,12 +21,12 @@ export const hopDongService = createApi({
         url: `/hop-dong/${id}`,
       }),
     }),
-    updateHopDongByID: builder.mutation({
-      transformResponse: (res) => res,
-      query: ({ id, ...body }) => ({
+    putHopDongById: builder.query<any, { id: any; payload: any }>({
+      transformResponse: (response: any) => response?.data,
+      query: ({ id, payload }) => ({
         method: "PUT",
         url: `/hop-dong/${id}`,
-        data: body,
+        data: payload,
       }),
     }),
     // createHopDong: builder.mutation({
@@ -45,8 +45,8 @@ export const hopDongService = createApi({
         url: `/hop-dong`,
       }),
     }),
-    deleteHopDongByID: builder.mutation({
-      transformResponse: (res) => res,
+    deleteHopDong: builder.query<any, { id: any }>({
+      transformResponse: (response: any) => response?.data,
       query: ({ id }) => ({
         method: "DELETE",
         url: `/hop-dong/${id}`,
@@ -81,7 +81,7 @@ export const {
   useGetHopDongListQuery,
   useGetViewHopDongQuery,
   useGetHopDongByCustomerIdQuery,
-  useUpdateHopDongByIDMutation,
+  useLazyPutHopDongByIdQuery,
   useLazyCreateHopDongQuery,
-  useDeleteHopDongByIDMutation,
+  useLazyDeleteHopDongQuery,
 } = hopDongService;

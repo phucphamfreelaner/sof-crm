@@ -318,7 +318,7 @@ function BaoGaiForm(props: IBaoGiaForm) {
         payload: omit(payload, ["thong_tin_chung"]),
       }).finally(() => {
         toast.success("Sửa báo giá thành công!");
-        navigate(`/bao_gia/${data?.id}/view`);
+        navigate(`/bao_gia/${data?.id}`);
       });
       return;
     }
