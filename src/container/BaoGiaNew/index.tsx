@@ -7,7 +7,10 @@ import { toast } from "react-hot-toast";
 import { omit } from "lodash-es";
 
 import BaoGiaNewForm from "@/components/BaoGiaNewForm";
-import { useLazySearchCongTyQuery } from "@/store/congTy";
+import {
+  useLazySearchCongTyQuery,
+  useLazyGetCongTyByIdQuery,
+} from "@/store/congTy";
 import { useLazySearchCoHoiQuery } from "@/store/coHoi";
 import { useLazyGetLoaiBaoGiaListQuery } from "@/store/loaiBaoGia";
 import { useLazySearchNgonNguQuery } from "@/store/ngonNgu";
@@ -24,7 +27,10 @@ import {
   useLazySearchDonViTinhQuery,
   useLazyGetDonViTinhByKeyQuery,
 } from "@/store/donViTinh";
-import { useLazySearchMauInQuery } from "@/store/mauIn";
+import {
+  useLazySearchMauInQuery,
+  useLazyGetMauInByIdQuery,
+} from "@/store/mauIn";
 import {
   useLazyCreateBaoGiaQuery,
   useLazyPutBaoGiaByIdQuery,
@@ -46,13 +52,11 @@ function BaoGaiForm(props: IBaoGiaForm) {
   const {
     baoGiaData,
     id,
-    congTyLabel,
     isSuccess,
     coHoiLabel,
     loaiBaoGiaLabel,
     ngonNguLabel,
     loaiTienLabel,
-    mauInLabel,
   } = props;
   const [query] = useSearchParams();
 
@@ -246,10 +250,7 @@ function BaoGaiForm(props: IBaoGiaForm) {
           ...x,
           _id: x.id,
         })),
-        company_id: {
-          label: congTyLabel,
-          value: baoGiaData?.company_id,
-        },
+
         cohoi_id: {
           value: baoGiaData?.cohoi_id,
           label: coHoiLabel,
@@ -266,10 +267,7 @@ function BaoGaiForm(props: IBaoGiaForm) {
           value: baoGiaData?.loai_tien_key,
           label: loaiTienLabel,
         },
-        template_id: {
-          value: baoGiaData?.template_id,
-          label: mauInLabel,
-        },
+
         thong_tin_chung: {
           ngaybaogia: baoGiaData?.ngaybaogia
             ? new Date(baoGiaData?.ngaybaogia)
@@ -296,7 +294,7 @@ function BaoGaiForm(props: IBaoGiaForm) {
     const payload = {
       ...data,
       san_pham,
-      customer_id: +query.get("customerId"),
+      customer_id: +query.get("customerId") || baoGiaData?.customer_id,
       ngon_ngu_key: data?.ngon_ngu_key?.value,
       loai_tien_key: data?.loai_tien_key?.value,
       loai_bao_gia: data?.loai_bao_gia?.value,
@@ -327,6 +325,9 @@ function BaoGaiForm(props: IBaoGiaForm) {
     createBaoGia({ payload });
   };
 
+  const [getCongTyById] = useLazyGetCongTyByIdQuery();
+  const [getMauInById] = useLazyGetMauInByIdQuery();
+
   return (
     <UI.Card elevation={10}>
       <UI.CardContent>
@@ -339,7 +340,10 @@ function BaoGaiForm(props: IBaoGiaForm) {
           isLoadingSearchCoHoi={isLoadingCoHoi || isFetchingCoHoi}
           coHoiData={coHoiData}
           onSearchCoHoi={(name) =>
-            searchCoHoi({ name, customerId: +query.get("customerId") })
+            searchCoHoi({
+              name,
+              customerId: +query.get("customerId") || +baoGiaData?.customer_id,
+            })
           }
           loaiBaoGiaData={loaiBaoGiaData}
           isLoadingLoaiBaoGia={isLoadingLoaiBaoGia || isFetchingLoaiBaoGia}
@@ -366,6 +370,8 @@ function BaoGaiForm(props: IBaoGiaForm) {
           getDonViTinhByKey={(value: string) =>
             getDonViTinhByKey({ value }).unwrap()
           }
+          getCongTyById={(id: any) => getCongTyById({ id }).unwrap()}
+          getMauInById={(id: any) => getMauInById({ id }).unwrap()}
           onAddSanPham={(index) => ({
             _id: index,
             product_id: sanPhamData?.[0],

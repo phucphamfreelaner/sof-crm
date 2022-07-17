@@ -43,6 +43,8 @@ interface IBaoGiaNewForm {
   getSanPhamById?: (id: any) => Promise<any>;
   getChatLieuByKey?: (key: string) => Promise<any>;
   getDonViTinhByKey?: (key: string) => Promise<any>;
+  getCongTyById?: (key: string) => Promise<any>;
+  getMauInById?: (key: string) => Promise<any>;
 }
 
 function BaoGiaNewForm(props: IBaoGiaNewForm) {
@@ -77,6 +79,8 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
     getSanPhamById,
     getChatLieuByKey,
     getDonViTinhByKey,
+    getCongTyById,
+    getMauInById,
   } = props;
 
   const [isVAT, setIsVAT] = useBoolean(false);
@@ -333,6 +337,8 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           isLoading: isLoadingSearchCompany,
           autocompleteOptions: companyData || [],
           onSearchChange: onSearchCompany,
+          onGetDataByValue: (key: any) => getCongTyById(key),
+          mapValueKey: "ten",
         },
         {
           name: "cohoi_id",
@@ -378,6 +384,8 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           isLoading: isLoadingMauIn,
           autocompleteOptions: mauInData || [],
           onSearchChange: onSearchMauIn,
+          onGetDataByValue: (key: any) => getMauInById(key),
+          mapValueKey: "tieu_de",
         },
       ]}
     />

@@ -1,7 +1,6 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import * as UI from "@/libs/ui";
-import { useNavigate } from "react-router-dom";
 import { useBoolean } from "ahooks";
 import { navigateOutside } from "@/helper";
 import { isNull } from "lodash-es";
@@ -9,10 +8,10 @@ import { isNull } from "lodash-es";
 import Sidebar from "@/components/Sidebar";
 import MiniSidebar from "@/components/MiniSidebar";
 import { LOCAL_KEY } from "@/constants";
-import { StickyContainer } from "react-sticky";
 
 function Root() {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [open, setOpen] = useBoolean(
     Boolean(+localStorage.getItem(LOCAL_KEY.CUSTOMER_MENU_EXPAND))
   );
@@ -22,6 +21,12 @@ function Root() {
     if (isNull(isExpand))
       localStorage.setItem(LOCAL_KEY.CUSTOMER_MENU_EXPAND, "1");
   }, []);
+
+  React.useEffect(() => {
+    if (pathname === "/") {
+      navigate("/khach_hang", { replace: true });
+    }
+  }, [pathname]);
 
   return (
     <UI.HStack w="100vw" h="100vh" overflow="hidden" alignItems="flex-start">
