@@ -2,7 +2,6 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { useGetViewBaoGiaQuery } from "@/store/baoGia";
 import { AiOutlinePrinter } from "react-icons/ai";
-import { useReactToPrint } from "react-to-print";
 
 import * as UI from "@/libs/ui";
 
@@ -13,10 +12,6 @@ export default function View() {
     { id: params?.id },
     { skip: !params?.id }
   );
-  const componentRef = React.useRef();
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  });
 
   const handlePrintNewTab = () => {
     var uri = "data:text/html," + encodeURIComponent(data);
@@ -49,12 +44,7 @@ export default function View() {
         </UI.Center>
       ) : (
         <UI.CardContent>
-          {data && (
-            <UI.CKBox
-              ref={componentRef}
-              dangerouslySetInnerHTML={{ __html: data }}
-            />
-          )}
+          {data && <UI.CKBox dangerouslySetInnerHTML={{ __html: data }} />}
         </UI.CardContent>
       )}
     </UI.Card>
