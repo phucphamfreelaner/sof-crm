@@ -8,6 +8,7 @@ import { isNull } from "lodash-es";
 import Sidebar from "@/components/Sidebar";
 import MiniSidebar from "@/components/MiniSidebar";
 import { LOCAL_KEY } from "@/constants";
+import TopTab from "@/components/TopTab";
 
 function Root() {
   const navigate = useNavigate();
@@ -52,6 +53,7 @@ function Root() {
         )}
       </UI.CKBox>
       <UI.CKBox h="100%" bg="white" overflow="auto" flexGrow={1}>
+        <TopTab />
         <Outlet />
       </UI.CKBox>
     </UI.HStack>
