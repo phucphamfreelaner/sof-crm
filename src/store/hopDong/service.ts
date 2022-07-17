@@ -44,6 +44,13 @@ export const hopDongService = createApi({
         url: `/hop-dong/${id}`,
       }),
     }),
+    getViewHopDong: builder.query<string, { id: any }>({
+      transformResponse: (response: any) => response?.data,
+      query: ({ id }) => ({
+        method: "GET",
+        url: `/hop-dong/${id}/view`,
+      }),
+    }),
     getHopDongList: builder.query({
       transformResponse: (response: any) => response as IGetHopDongList,
       query: ({ limit, page, code, order_by, search }) => ({
@@ -57,6 +64,7 @@ export const hopDongService = createApi({
 export const {
   useGetHopDongByIdQuery,
   useGetHopDongListQuery,
+  useGetViewHopDongQuery,
   useUpdateHopDongByIDMutation,
   useCreateHopDongMutation,
   useDeleteHopDongByIDMutation,

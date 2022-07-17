@@ -4,11 +4,17 @@ import { useNavigate } from "react-router-dom";
 import { useGetHopDongListQuery } from "@/store/hopDong";
 import numeral from "numeral";
 import { MdCancel } from "react-icons/md";
-import { AiFillCheckCircle, AiOutlineDelete } from "react-icons/ai";
+import {
+  AiFillCheckCircle,
+  AiOutlineDownload,
+  AiOutlinePrinter,
+} from "react-icons/ai";
+import { IoMdCreate } from "react-icons/io";
 import { format } from "date-fns";
 import SearchBar from "@/components/SearchBar";
 import BaseTable from "@/components/BaseTable";
 import { isEmpty } from "lodash-es";
+import { LOCAL_KEY } from "@/constants";
 
 const sortOptions = [
   {
@@ -207,22 +213,45 @@ function HopDongListContainer() {
         toolbarAction={({ setSelectionModel }) => (
           <UI.HStack>
             <UI.Button
-              disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
-              color="error"
               variant="outlined"
               size="small"
-              startIcon={<AiOutlineDelete size="16" />}
+              color="success"
+              disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+              startIcon={<IoMdCreate size="16" />}
               onClick={() => {
-                // deleteBaoGia({ id: dataSelected?.[0]?.id })
-                //   .unwrap()
-                //   .then(() => {
-                //     refetch();
-                //     setDataSelected([]);
-                //     setSelectionModel([]);
-                //   });
+                navigate(`/hop_dong/${dataSelected?.[0]?.id}/view`);
               }}
             >
-              Xóa
+              Tạo Đơn Hàng
+            </UI.Button>
+            <UI.Button
+              disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+              variant="outlined"
+              size="small"
+              startIcon={<AiOutlinePrinter size="16" />}
+              onClick={() => {
+                navigate(`/hop_dong/${dataSelected?.[0]?.id}/view`);
+              }}
+            >
+              Mẫu in
+            </UI.Button>
+            <UI.Button
+              variant="outlined"
+              size="small"
+              disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+              startIcon={<AiOutlineDownload size="16" />}
+              onClick={() => {
+                window.open(
+                  `https://apisf.interphase.vn/api/hop-dong/${
+                    dataSelected?.[0]?.id
+                  }/download-doc?token=${localStorage.getItem(
+                    LOCAL_KEY?.TOKEN
+                  )}`,
+                  "_blank"
+                );
+              }}
+            >
+              Tải xuống
             </UI.Button>
           </UI.HStack>
         )}

@@ -14,8 +14,6 @@ function HopDongList() {
     <UI.Box
       sx={{
         flexGrow: 1,
-        py: 8,
-        px: 3,
       }}
     >
       <UI.Grid container justifyContent="space-between" spacing={3}>
