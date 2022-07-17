@@ -74,6 +74,7 @@ specifiers:
   single-spa-react: ^4.3.1
   ts-config-single-spa: ^3.0.0
   typescript: ^4.3.5
+  vn-num2words: ^1.0.4
   webpack: ^5.51.1
   webpack-cli: ^4.8.0
   webpack-config-single-spa-react: ^4.0.0
@@ -118,6 +119,7 @@ dependencies:
   simplebar-react: 2.4.1_sfoxds7t5ydpegc3knd667wn6m
   single-spa: 5.9.4
   single-spa-react: 4.6.1_cd6sxiipx7irxcp5iyvjfmb76a
+  vn-num2words: 1.0.4
   yup: 0.32.11
 
 devDependencies:
@@ -7994,6 +7996,10 @@ packages:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
     dev: true
+
+  /vn-num2words/1.0.4:
+    resolution: {integrity: sha512-Zjm/TOsYK3kdoylWibXriM9GTLFRS5ACpI2+yqHgltMaIp7/QStHEqBb5M4vfjqz/Xosg3jrT7YVmllJEbY3Vg==}
+    dev: false
 
   /w3c-hr-time/1.0.2:
     resolution: {integrity: sha512-z8P5DvDNjKDoFIHK7q8r8lackT6l+jo/Ye3HOle7l9nICP9lf1Ci25fy9vHd0JOWewkIFzXIEig3TdKT7JQ5fQ==}
