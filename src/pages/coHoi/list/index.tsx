@@ -26,7 +26,7 @@ function CoHoiList() {
         </UI.Grid>
         <UI.Grid item>
           <UI.Button
-            onClick={() => navigate("/bao_gia/new")}
+            onClick={() => navigate("/co_hoi/new")}
             size="small"
             startIcon={<AiFillPlusCircle fontSize="small" />}
             variant="contained"
