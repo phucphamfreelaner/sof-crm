@@ -215,7 +215,7 @@ function HopDongFormContainer(props: IBaoGiaForm) {
         id: data?.id,
         payload: payload,
       }).finally(() => {
-        toast.success("Sửa báo giá thành công!");
+        toast.success("Sửa hợp đồng thành công!");
         navigate(`/hop_dong/${data?.id}/view`);
       });
       return;
