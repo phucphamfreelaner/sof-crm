@@ -17,10 +17,11 @@ import { useNavigate } from "react-router-dom";
 interface ICoHoiTable {
   filter?: any;
   isShowKhachHangLink?: boolean;
+  onSortChange?: (orderBy?: any) => any;
 }
 
 function CoHoiTable(props: ICoHoiTable) {
-  const { filter, isShowKhachHangLink } = props;
+  const { filter, isShowKhachHangLink, onSortChange } = props;
   const [limit, setLimit] = React.useState(15);
   const [page, setPage] = React.useState(0);
   const navigate = useNavigate();
@@ -49,10 +50,13 @@ function CoHoiTable(props: ICoHoiTable) {
       page={page}
       rowCount={data?.data?.length * 10}
       onPageChange={setPage}
-      toolbarAction={
+      onSortChange={(mode) => {
+        onSortChange({ order_by: { [mode?.[0].field]: mode?.[0]?.sort } });
+      }}
+      toolbarAction={({ setSelectionModel }) => (
         <UI.HStack>
           <UI.Button
-            disabled={isEmpty(dataSelected)}
+            disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
             color="error"
             variant="outlined"
             size="small"
@@ -60,8 +64,10 @@ function CoHoiTable(props: ICoHoiTable) {
             onClick={() => {
               deleteCoHoi({ id: dataSelected?.[0]?.id })
                 .unwrap()
-                .then(() => {
+                .finally(() => {
                   refetch();
+                  setDataSelected([]);
+                  setSelectionModel([]);
                 });
             }}
           >
@@ -88,22 +94,13 @@ function CoHoiTable(props: ICoHoiTable) {
             size="small"
             startIcon={<MdOpenInNew size="16" />}
             onClick={() => {
-              navigate(`/bao_gia/${dataSelected?.[0]?.id}`);
+              navigate(`/co_hoi/${dataSelected?.[0]?.id}`);
             }}
           >
             Chi tiết
           </UI.Button>
-          <UI.Button
-            disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
-            variant="outlined"
-            size="small"
-            color="success"
-            startIcon={<AiOutlineFileAdd size="16" />}
-          >
-            Tạo hợp đồng
-          </UI.Button>
         </UI.HStack>
-      }
+      )}
       columns={[
         { field: "code", headerName: "Mã cơ hội", width: 130 },
         {
@@ -115,26 +112,31 @@ function CoHoiTable(props: ICoHoiTable) {
           field: "phone",
           headerName: "Phone",
           width: 150,
+          renderCell: (cellData) => cellData?.row?.khach_hang?.phone || "",
         },
         {
           field: "email",
           headerName: "Email",
           width: 150,
+          renderCell: (cellData) => cellData?.row?.khach_hang?.email || "",
         },
         {
-          field: "trang_thai_key",
+          field: "trang_thai",
           headerName: "Trạng thái",
           width: 200,
+          renderCell: ({ value }) => value?.name,
         },
         {
-          field: "tien_trinh_key",
+          field: "tien_trinh",
           headerName: "Tiến trình",
           width: 200,
+          renderCell: ({ value }) => value?.name,
         },
         {
-          field: "ten",
+          field: "nhan_vien_tao",
           headerName: "Nhân viên nhập",
           width: 200,
+          renderCell: ({ value }) => value?.name,
         },
         {
           field: "created_at",

@@ -14,6 +14,7 @@ import CoHoiTable from "@/container/CoHoiTable";
 function CoHoiList() {
   const navigate = useNavigate();
   const [filter, setFilter] = React.useState<any>(null);
+  const [key, setKey] = React.useState<any>(null);
 
   const handleFilterChange = debounce(setFilter, 500);
 
@@ -57,8 +58,28 @@ function CoHoiList() {
       <UI.Card>
         <UI.Divider />
         <UI.CardContent>
-          <CoHoiFilter onWatchChange={handleFilterChange} />
-          <CoHoiTable isShowKhachHangLink filter={filter} />
+          <CoHoiFilter
+            key={key}
+            onReload={() => {
+              setFilter(null);
+              setKey((s) => s + 1);
+            }}
+            onWatchChange={(filterData) => {
+              handleFilterChange({
+                code: filterData?.code,
+                customer_id: filterData?.customer_id?.value,
+                loai_tien_key: filterData?.loai_tien_key?.value,
+                created_by: filterData?.created_by?.value,
+              });
+            }}
+          />
+          <CoHoiTable
+            onSortChange={(orderBy) => {
+              setFilter((filter) => ({ ...filter, ...orderBy }));
+            }}
+            isShowKhachHangLink
+            filter={filter}
+          />
         </UI.CardContent>
       </UI.Card>
     </UI.Box>
