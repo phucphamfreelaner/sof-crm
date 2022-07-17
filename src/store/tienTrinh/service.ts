@@ -20,8 +20,21 @@ export const tienTrinhService = createApi({
         url: `/cau-hinh/group/tien_trinh_co_hoi?s=${name}&take=10&parent-key=${parentKey}&parent-value=${parentValue}`,
       }),
     }),
+    searchTienTrinhList: builder.query({
+      transformResponse: (response: any) =>
+        Object.keys(response).map((key) => {
+          return { label: response[key], value: key };
+        }),
+      query: ({ name, parentKey = "", parentValue = "" }) => ({
+        method: "GET",
+        url: `/cau-hinh/group/tien_trinh_co_hoi?s=${name}&take=10&parent-key=${parentKey}&parent-value=${parentValue}`,
+      }),
+    }),
   }),
 });
 
-export const { useGetTienTrinhListQuery, useLazyGetTienTrinhListQuery } =
-  tienTrinhService;
+export const {
+  useGetTienTrinhListQuery,
+  useLazyGetTienTrinhListQuery,
+  useLazySearchTienTrinhListQuery,
+} = tienTrinhService;

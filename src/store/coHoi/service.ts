@@ -3,6 +3,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import toast from "react-hot-toast";
 import { LOCAL_KEY } from "@/constants";
 import { ICoHoi, ICoHoiList } from "@/types/coHoi";
+import { omit } from "lodash-es";
 
 export const coHoiService = createApi({
   baseQuery: axiosBaseQuery({
@@ -16,9 +17,29 @@ export const coHoiService = createApi({
   endpoints: (builder) => ({
     getCoHoiList: builder.query({
       transformResponse: (response: any) => response as ICoHoiList,
-      query: ({ limit, page, code, order_by, search }) => ({
+      query: ({ limit, page, filter = {}, customerId }) => ({
         method: "GET",
-        url: `/co-hoi?with[]=khach_hang&with[]=tien_trinh&with[]=trang_thai&with[]=nhan_vien_tao&with[]=co_hoi_cskh&with[]=co_hoi_chua_cham_soc&limit=${limit}&page=${page}&s[code]=${code}&${order_by}&s[name]=${search}`,
+        url: `/co-hoi`,
+        params: {
+          limit,
+          page,
+          with: [
+            "khach_hang",
+            "tien_trinh",
+            "trang_thai",
+            "nhan_vien_tao",
+            "co_hoi_cskh",
+            "co_hoi_chua_cham_soc",
+          ],
+          customer_id: customerId,
+          order_by: {
+            created_at: "desc",
+          },
+          ...omit(filter, ["code"]),
+          s: {
+            code: filter?.code,
+          },
+        },
       }),
     }),
     searchCoHoi: builder.query<any, { name: string; customerId?: number }>({
@@ -66,6 +87,13 @@ export const coHoiService = createApi({
         url: `/co-hoi/${id}`,
       }),
     }),
+    deleteCoHoi: builder.query<any, { id: any }>({
+      transformResponse: (response: any) => response?.data,
+      query: ({ id }) => ({
+        method: "DELETE",
+        url: `/co-hoi/${id}`,
+      }),
+    }),
   }),
 });
 
@@ -79,4 +107,5 @@ export const {
   useCreateCoHoiMutation,
   useUpdateCoHoiByIDMutation,
   useDeleteCoHoiByIDMutation,
+  useLazyDeleteCoHoiQuery,
 } = coHoiService;

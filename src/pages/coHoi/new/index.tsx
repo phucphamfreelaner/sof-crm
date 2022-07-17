@@ -7,7 +7,7 @@ import { AiOutlineArrowLeft } from "react-icons/ai";
 function CoHoiNew() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const customerId = searchParams.get("customer_id");
+  const customerId = searchParams.get("customerId");
 
   return (
     <>
