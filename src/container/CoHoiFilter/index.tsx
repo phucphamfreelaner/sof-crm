@@ -83,7 +83,7 @@ function CoHoiFilter(props: ICoHoiFilter) {
         <BaseForm
           templateColumns="repeat(12, 1fr)"
           columnGap="24px"
-          watchFields={["code", "customer_id", "loai_tien_key", "created_by"]}
+          watchFields={["code", "customer_id"]}
           onWatchChange={onWatchChange}
           fields={[
             {
@@ -94,8 +94,8 @@ function CoHoiFilter(props: ICoHoiFilter) {
               placeholder: "Nhập mã cơ hội",
             },
             {
-              name: "contact",
-              label: "Tên khách hàng",
+              name: "customer_id",
+              label: "Cách gọi KH",
               type: "autocomplete",
               colSpan: 4,
               isLoading: isLoadingKhachHang || isFetchingKhachHang,
@@ -126,7 +126,13 @@ function CoHoiFilter(props: ICoHoiFilter) {
         <BaseForm
           templateColumns="repeat(12, 1fr)"
           columnGap="24px"
-          watchFields={["code", "customer_id", "loai_tien_key", "created_by"]}
+          watchFields={[
+            "phone",
+            "email",
+            "trang_thai_key",
+            "tien_trinh_key",
+            "nhan_vien_nhap",
+          ]}
           onWatchChange={onWatchChange}
           fields={[
             {

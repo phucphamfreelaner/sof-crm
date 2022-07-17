@@ -68,8 +68,11 @@ function CoHoiList() {
               handleFilterChange({
                 code: filterData?.code,
                 customer_id: filterData?.customer_id?.value,
-                loai_tien_key: filterData?.loai_tien_key?.value,
-                created_by: filterData?.created_by?.value,
+                phone: filterData?.phone,
+                email: filterData?.email,
+                trang_thai_key: filterData?.trang_thai_key?.value,
+                tien_trinh_key: filterData?.tien_trinh_key?.value,
+                nhan_vien_nhap: filterData?.nhan_vien_nhap?.value,
               });
             }}
           />
