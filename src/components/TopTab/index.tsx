@@ -2,6 +2,8 @@ import React from "react";
 import * as UI from "@/libs/ui";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AiFillPlusCircle, AiOutlineUser } from "react-icons/ai";
+import { FaRegLightbulb } from "react-icons/fa";
+import { MdOutlineNoteAdd } from "react-icons/md";
 
 function TopTab() {
   const navigate = useNavigate();
@@ -19,9 +21,36 @@ function TopTab() {
       value: "/khach_hang",
       icon: AiFillPlusCircle,
     },
-    { label: "Cơ hội", value: "/co_hoi", icon: AiFillPlusCircle },
-    { label: "Báo giá", value: "/bao_gia", icon: AiFillPlusCircle },
-    { label: "Hợp đồng", value: "/hop_dong", icon: AiFillPlusCircle },
+    {
+      label: (
+        <UI.HStack>
+          <FaRegLightbulb size="20px" />
+          <UI.Typography variant="subtitle1">Cơ hội</UI.Typography>
+        </UI.HStack>
+      ),
+      value: "/co_hoi",
+      icon: AiFillPlusCircle,
+    },
+    {
+      label: (
+        <UI.HStack>
+          <MdOutlineNoteAdd size="20px" />
+          <UI.Typography variant="subtitle1">Báo giá</UI.Typography>
+        </UI.HStack>
+      ),
+      value: "/bao_gia",
+      icon: AiFillPlusCircle,
+    },
+    {
+      label: (
+        <UI.HStack>
+          <MdOutlineNoteAdd size="20px" />
+          <UI.Typography variant="subtitle1">Hợp đồng</UI.Typography>
+        </UI.HStack>
+      ),
+      value: "/hop_dong",
+      icon: AiFillPlusCircle,
+    },
     // { label: "Đánh giá", value: "danh_gia", icon: AiFillPlusCircle },
   ];
 
