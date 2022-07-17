@@ -29,12 +29,20 @@ export const hopDongService = createApi({
         data: body,
       }),
     }),
-    createHopDong: builder.mutation({
-      transformResponse: (res) => res,
-      query: ({ ...body }) => ({
+    // createHopDong: builder.mutation({
+    //   transformResponse: (res) => res,
+    //   query: ({ ...body }) => ({
+    //     method: "POST",
+    //     url: `/hop-dong`,
+    //     data: body,
+    //   }),
+    // }),
+    createHopDong: builder.query<{ data: any }, { payload: any }>({
+      transformResponse: (response: any) => response,
+      query: ({ payload }) => ({
         method: "POST",
+        data: payload,
         url: `/hop-dong`,
-        data: body,
       }),
     }),
     deleteHopDongByID: builder.mutation({
@@ -74,6 +82,6 @@ export const {
   useGetViewHopDongQuery,
   useGetHopDongByCustomerIdQuery,
   useUpdateHopDongByIDMutation,
-  useCreateHopDongMutation,
+  useLazyCreateHopDongQuery,
   useDeleteHopDongByIDMutation,
 } = hopDongService;

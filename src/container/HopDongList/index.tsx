@@ -196,7 +196,7 @@ function HopDongListContainer(props) {
         handleOnchangeAdvanceSearch={handleOnchangeAdvanceSearch}
       />
       <BaseTable
-        name="Báo giá"
+        name="Hợp Đồng"
         pageSize={rowsPerPage || 15}
         onPageSizeChange={(newSize) => {
           newSize == 0 ? setRowsPerPage(15) : setRowsPerPage(newSize);

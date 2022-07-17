@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Box, useTheme } from "@mui/material";
+import { Button, Box, useTheme, Typography } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { IBaseController, IFormControl, TSetValue } from "../types";
 import { AiFillPlusCircle } from "react-icons/ai";
@@ -18,6 +18,7 @@ export interface IArrayFieldsController extends IBaseController {
   watchFields?: string[];
   onWatchChange?: (value: any) => any;
   addBtnLabel?: string;
+  label?: string;
 }
 
 function ArrayFields(props: IArrayFieldsController) {
@@ -30,6 +31,7 @@ function ArrayFields(props: IArrayFieldsController) {
     name,
     onWatchChange,
     addBtnLabel,
+    label,
   } = props;
   const { palette } = useTheme();
   const [value, setValue] = React.useState<any[]>(field?.value || []);
@@ -71,13 +73,18 @@ function ArrayFields(props: IArrayFieldsController) {
 
   return (
     <VStack justifyContent="flex-end" alignItems="flex-end" spacing="20px">
-      <Button
-        onClick={handleAddRow}
-        startIcon={<AiFillPlusCircle />}
-        variant="contained"
-      >
-        {addBtnLabel || "Thêm"}
-      </Button>
+      <Typography variant="h6" mr={"auto"}>
+        {label}
+      </Typography>
+      {addBtnLabel && handleAddRow && (
+        <Button
+          onClick={handleAddRow}
+          startIcon={<AiFillPlusCircle />}
+          variant="contained"
+        >
+          {addBtnLabel || "Thêm"}
+        </Button>
+      )}
       <VStack spacing="18px">
         {value?.map((x: any) => (
           <Box

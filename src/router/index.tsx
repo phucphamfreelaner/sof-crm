@@ -20,6 +20,7 @@ import HopDongList from "@/pages/hopDong/list";
 import HopDong from "@/pages/hopDong";
 import HopDongDetail from "@/pages/hopDong/id";
 import HopDongDetailView from "@/pages/hopDong/id/view";
+import HopDongNew from "@/pages/hopDong/new";
 
 import CoHoiNew from "@/pages/coHoi/new";
 
@@ -52,7 +53,7 @@ function Router() {
           </Route>
           <Route path="hop_dong" element={<HopDong />}>
             <Route index element={<HopDongList />} />
-            <Route path="new" element={<CustomerNew />} />
+            <Route path="new" element={<HopDongNew />} />
             <Route path=":id" element={<HopDongDetail />}>
               <Route index element={<HopDongDetailView />} />
               <Route path="view" element={<HopDongDetailView />} />

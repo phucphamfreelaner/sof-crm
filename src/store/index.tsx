@@ -29,6 +29,7 @@ import { trangThaiService } from "./trangThai";
 import { tienTrinhService } from "./tienTrinh";
 import { hopDongService } from "./hopDong";
 import { mauInService } from "./mauIn";
+import { loaiHdService } from "./loaiHd";
 
 // @ts-ignore
 const store: any = configureStore({
@@ -57,6 +58,7 @@ const store: any = configureStore({
     [tienTrinhService.reducerPath]: tienTrinhService.reducer,
     [hopDongService.reducerPath]: hopDongService.reducer,
     [mauInService.reducerPath]: mauInService.reducer,
+    [loaiHdService.reducerPath]: loaiHdService.reducer,
   }),
   devTools: true,
 });

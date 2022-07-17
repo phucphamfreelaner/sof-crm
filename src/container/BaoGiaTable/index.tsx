@@ -139,6 +139,9 @@ function BaoGiaTable(props: IBaoGiaTable) {
             variant="outlined"
             size="small"
             color="success"
+            onClick={() => {
+              navigate(`/hop_dong/new?baogia_id=${dataSelected?.[0]?.id}`);
+            }}
             startIcon={<AiOutlineFileAdd size="16" />}
           >
             Tạo hợp đồng
