@@ -16,12 +16,13 @@ import { useNavigate } from "react-router-dom";
 
 interface ICoHoiTable {
   filter?: any;
+  customerId?: any;
   isShowKhachHangLink?: boolean;
   onSortChange?: (orderBy?: any) => any;
 }
 
 function CoHoiTable(props: ICoHoiTable) {
-  const { filter, isShowKhachHangLink, onSortChange } = props;
+  const { filter, customerId, isShowKhachHangLink, onSortChange } = props;
   const [limit, setLimit] = React.useState(15);
   const [page, setPage] = React.useState(0);
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ function CoHoiTable(props: ICoHoiTable) {
       limit,
       page: page + 1,
       filter: filter,
+      customerId,
     },
     { refetchOnMountOrArgChange: true }
   );

@@ -17,7 +17,7 @@ export const coHoiService = createApi({
   endpoints: (builder) => ({
     getCoHoiList: builder.query({
       transformResponse: (response: any) => response as ICoHoiList,
-      query: ({ limit, page, filter = {} }) => ({
+      query: ({ limit, page, filter = {}, customerId }) => ({
         method: "GET",
         url: `/co-hoi`,
         params: {
@@ -31,6 +31,7 @@ export const coHoiService = createApi({
             "co_hoi_cskh",
             "co_hoi_chua_cham_soc",
           ],
+          customer_id: customerId,
           order_by: {
             created_at: "desc",
           },
