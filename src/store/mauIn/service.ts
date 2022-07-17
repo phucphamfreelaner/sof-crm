@@ -6,7 +6,7 @@ import { LOCAL_KEY } from "@/constants";
 export const mauInService = createApi({
   baseQuery: axiosBaseQuery({
     baseUrl: "https://apisf.interphase.vn/api",
-    onError: (err) => toast.error(err.error),
+    onError: (err) => toast.error(err.error || "mauInService: Có lỗi xẩy ra!"),
     token: () => localStorage.getItem(LOCAL_KEY.TOKEN),
   }),
   reducerPath: "mauInService",
@@ -29,4 +29,8 @@ export const mauInService = createApi({
   }),
 });
 
-export const { useLazySearchMauInQuery, useGetMauInByIdQuery } = mauInService;
+export const {
+  useLazySearchMauInQuery,
+  useGetMauInByIdQuery,
+  useLazyGetMauInByIdQuery,
+} = mauInService;

@@ -72,7 +72,7 @@ function BaoGiaTable(props: IBaoGiaTable) {
             onClick={() => {
               deleteBaoGia({ id: dataSelected?.[0]?.id })
                 .unwrap()
-                .then(() => {
+                .finally(() => {
                   refetch();
                   setDataSelected([]);
                   setSelectionModel([]);

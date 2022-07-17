@@ -1,6 +1,9 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useGetViewBaoGiaQuery } from "@/store/baoGia";
+import { AiOutlinePrinter } from "react-icons/ai";
+import { useReactToPrint } from "react-to-print";
+
 import * as UI from "@/libs/ui";
 
 export default function View() {
@@ -10,10 +13,35 @@ export default function View() {
     { id: params?.id },
     { skip: !params?.id }
   );
+  const componentRef = React.useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
+  const handlePrintNewTab = () => {
+    var uri = "data:text/html," + encodeURIComponent(data);
+    var newWindow = window.open(uri);
+    newWindow.document.write(data);
+    newWindow.focus();
+    newWindow.print();
+  };
 
   return (
     <UI.Card elevation={5}>
-      <UI.CardHeader title="Mẫu in báo giá" />
+      <UI.CardHeader
+        title={
+          <UI.HStack justifyContent="space-between" w="100%">
+            <UI.Typography variant="h6">Xem trước mẫu in</UI.Typography>
+            <UI.Button
+              onClick={handlePrintNewTab}
+              startIcon={<AiOutlinePrinter />}
+              variant="outlined"
+            >
+              In
+            </UI.Button>
+          </UI.HStack>
+        }
+      />
       <UI.Divider />
       {isLoading ? (
         <UI.Center minH="200px" w="100%">
@@ -21,7 +49,12 @@ export default function View() {
         </UI.Center>
       ) : (
         <UI.CardContent>
-          {data && <UI.CKBox dangerouslySetInnerHTML={{ __html: data }} />}
+          {data && (
+            <UI.CKBox
+              ref={componentRef}
+              dangerouslySetInnerHTML={{ __html: data }}
+            />
+          )}
         </UI.CardContent>
       )}
     </UI.Card>
