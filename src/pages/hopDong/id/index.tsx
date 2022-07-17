@@ -1,11 +1,8 @@
-import React from "react";
 import * as UI from "@/libs/ui";
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
 
-import HopDongFormContainer from "@/container/HopDongNew";
-
-function AddHopDong() {
+function HopDongDetail() {
   const navigate = useNavigate();
   return (
     <UI.Box sx={{ mb: 4, width: "100%" }}>
@@ -17,14 +14,14 @@ function AddHopDong() {
           >
             Quay lại
           </UI.Button>
-          <UI.Typography variant="h4">Thêm mới hợp đồng</UI.Typography>
+          <UI.Typography variant="h4">Chi tiết hợp đồng</UI.Typography>
         </UI.Grid>
       </UI.Grid>
       <UI.Box sx={{ mt: 5, width: "100%" }}>
-        <HopDongFormContainer />
+        <Outlet />
       </UI.Box>
     </UI.Box>
   );
 }
 
-export default AddHopDong;
+export default HopDongDetail;

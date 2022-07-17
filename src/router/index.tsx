@@ -17,6 +17,11 @@ import BaoGiaDetailInfo from "@/pages/baoGia/id/info";
 import BaoGiaDetailView from "@/pages/baoGia/id/view";
 
 import HopDongList from "@/pages/hopDong/list";
+import HopDong from "@/pages/hopDong";
+import HopDongDetail from "@/pages/hopDong/id";
+import HopDongDetailView from "@/pages/hopDong/id/view";
+import HopDongNew from "@/pages/hopDong/new";
+
 import CoHoiNew from "@/pages/coHoi/new";
 
 import ThongTinCoban from "@/pages/customer/id/thongTinCoban";
@@ -46,11 +51,13 @@ function Router() {
             <Route path="list" element={<Customer />} />
             <Route path="new" element={<CustomerNew />} />
           </Route>
-          <Route path="hop_dong" element={<HopDongList />}>
-            <Route index element={<CustomerList />} />
-            <Route path=":hopDongId" element={<CustomerItem />} />
-            <Route path="list" element={<HopDongList />} />
-            <Route path="new" element={<CustomerNew />} />
+          <Route path="hop_dong" element={<HopDong />}>
+            <Route index element={<HopDongList />} />
+            <Route path="new" element={<HopDongNew />} />
+            <Route path=":id" element={<HopDongDetail />}>
+              <Route index element={<HopDongDetailView />} />
+              <Route path="view" element={<HopDongDetailView />} />
+            </Route>
           </Route>
           <Route path="co_hoi" element={<CoHoi />}>
             <Route index element={<CoHoiList />} />

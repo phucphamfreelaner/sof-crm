@@ -5,14 +5,11 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { toast } from "react-hot-toast";
 import { omit } from "lodash-es";
+import { format } from "date-fns";
 
-import BaoGiaNewForm from "@/components/BaoGiaNewForm";
-import {
-  useLazySearchCongTyQuery,
-  useLazyGetCongTyByIdQuery,
-} from "@/store/congTy";
-import { useLazySearchCoHoiQuery } from "@/store/coHoi";
-import { useLazyGetLoaiBaoGiaListQuery } from "@/store/loaiBaoGia";
+import VNnum2words from "vn-num2words";
+import { capitalize } from "lodash-es";
+import HopDongNewForm from "@/components/HopDongNewForm";
 import { useLazySearchNgonNguQuery } from "@/store/ngonNgu";
 import { useLazySearchLoaiTienGiaListQuery } from "@/store/loaiTien";
 import {
@@ -27,17 +24,17 @@ import {
   useLazySearchDonViTinhQuery,
   useLazyGetDonViTinhByKeyQuery,
 } from "@/store/donViTinh";
+import { useLazySearchMauInQuery } from "@/store/mauIn";
+import { useLazySearchNhanVienQuery } from "@/store/nhanVien";
 import {
-  useLazySearchMauInQuery,
-  useLazyGetMauInByIdQuery,
-} from "@/store/mauIn";
-import {
-  useLazyCreateBaoGiaQuery,
-  useLazyPutBaoGiaByIdQuery,
-} from "@/store/baoGia";
+  useLazySearchBenHdQuery,
+  useLazySearchloaiHdQuery,
+} from "@/store/loaiHd";
+import { useGetBaoGiaByIdQuery } from "@/store/baoGia";
+import { useParams } from "react-router-dom";
+import { useLazyCreateHopDongQuery } from "@/store/hopDong";
 
 interface IBaoGiaForm {
-  baoGiaData?: any;
   id?: any;
   congTyLabel?: string;
   isSuccess?: boolean;
@@ -48,49 +45,54 @@ interface IBaoGiaForm {
   mauInLabel?: string;
 }
 
-function BaoGaiForm(props: IBaoGiaForm) {
+function HopDongFormContainer(props: IBaoGiaForm) {
   const {
-    baoGiaData,
     id,
+    congTyLabel,
     isSuccess,
     coHoiLabel,
     loaiBaoGiaLabel,
     ngonNguLabel,
     loaiTienLabel,
+    mauInLabel,
   } = props;
   const [query] = useSearchParams();
 
-  const navigate = useNavigate();
+  const { data: baoGiaData, isSuccess: isSuccessBaoGia } =
+    useGetBaoGiaByIdQuery(
+      { id: query.get("baogia_id") },
+      { skip: !query.get("baogia_id") }
+    );
 
   const [
-    searchCty,
+    searchNhanVien,
     {
-      data: companyData,
-      isLoading: isLoadingCompany,
-      isFetching: isFetchingCompany,
-      isSuccess: isSuccessCompany,
+      data: nhanVienData,
+      isLoading: isLoadingNhanVien,
+      isFetching: isFetchingNhanVien,
+      isSuccess: isSuccessNhanVien,
     },
-  ] = useLazySearchCongTyQuery();
+  ] = useLazySearchNhanVienQuery();
 
   const [
-    searchCoHoi,
+    searchLoaiHd,
     {
-      data: coHoiData,
-      isLoading: isLoadingCoHoi,
-      isFetching: isFetchingCoHoi,
-      isSuccess: isSuccessCoHoi,
+      data: LoaiHdData,
+      isLoading: isLoadingLoaiHd,
+      isFetching: isFetchingLoaiHd,
+      isSuccess: isSuccessLoaiHd,
     },
-  ] = useLazySearchCoHoiQuery();
+  ] = useLazySearchloaiHdQuery();
 
   const [
-    searchLoaiBaoGiaData,
+    searchBenHd,
     {
-      data: loaiBaoGiaData,
-      isLoading: isLoadingLoaiBaoGia,
-      isFetching: isFetchingLoaiBaoGia,
-      isSuccess: isSuccessLoaiBaoGia,
+      data: benHdData,
+      isLoading: isLoadingBenHd,
+      isFetching: isFetchingBenHd,
+      isSuccess: isSuccessBenHd,
     },
-  ] = useLazyGetLoaiBaoGiaListQuery();
+  ] = useLazySearchBenHdQuery();
 
   const [
     searchNgonNgu,
@@ -158,22 +160,75 @@ function BaoGaiForm(props: IBaoGiaForm) {
     },
   ] = useLazySearchMauInQuery();
 
-  const [
-    createBaoGia,
-    {
-      data: dataBaoGiaNew,
-      isLoading: isLoadingCreateBaoGia,
-      isSuccess: isSuccessCreateBaoGia,
-    },
-  ] = useLazyCreateBaoGiaQuery();
+  const navigate = useNavigate();
 
-  const [updateBaoGia, { isLoading: isLoadingUpdateBaoGia }] =
-    useLazyPutBaoGiaByIdQuery();
+  const [
+    createHopDong,
+    {
+      data: dataHopDongNew,
+      isLoading: isLoadingCreateHopDong,
+      isSuccess: isSuccessCreateHopDong,
+    },
+  ] = useLazyCreateHopDongQuery();
+
+  const handleSaveHopDong = (data: any, id: any) => {
+    const san_pham = data?.san_pham.map((x: any, index: number) => ({
+      ...baoGiaData?.san_pham?.[index],
+      ...x,
+      chat_lieu_key: x?.chat_lieu_key?.value,
+      don_vi_key: x?.don_vi_key?.value,
+      product_id: x?.product_id?.value,
+      baogia_id: baoGiaData?.id,
+    }));
+    const payload = {
+      ...data,
+      san_pham,
+      customer_id: baoGiaData?.customer_id,
+      cohoi_id: baoGiaData?.cohoi_id,
+      baogia_id: baoGiaData?.id,
+      company_id: baoGiaData?.company_id,
+      name: baoGiaData?.name,
+      ngon_ngu_key: data?.ngon_ngu_key?.value,
+      file_tmp: [],
+      template_id: data?.template_id?.value,
+      chiphivanchuyen: data?.chiphivanchuyen?.value,
+      dai_dien_id: data?.dai_dien_id?.value,
+      loai_hd_key: data?.loai_hd_key?.value,
+      loai_tien_key: data?.loai_tien_key?.value,
+      vat: data?.vat ? 1 : 0,
+      created_at: data?.created_at
+        ? format(data?.created_at, "yyyy-mm-dd")
+        : "",
+    };
+    // if (id) {
+    //   updateBaoGia({
+    //     id: data?.id,
+    //     payload: omit(payload, ["thong_tin_chung"]),
+    //   }).finally(() => {
+    //     toast.success("Sửa báo giá thành công!");
+    //     navigate(`/bao_gia/${data?.id}/view`);
+    //   });
+    //   return;
+    // }
+    // createBaoGia({ payload });
+    createHopDong({ payload });
+  };
 
   React.useEffect(() => {
-    searchCty({ name: "" });
-    searchCoHoi({ name: "", customerId: +query.get("customerId") });
-    searchLoaiBaoGiaData({ name: "" });
+    if (isSuccessCreateHopDong) {
+      toast.success("Tạo hợp đồng thành công!");
+      navigate(`/hop_dong/${dataHopDongNew?.data?.id}/view`);
+    }
+  }, [isSuccessCreateHopDong]);
+
+  React.useEffect(() => {
+    searchNhanVien({
+      name: "",
+      chuc_vu_key:
+        "chuc_vu_key=giam-doc,giam-doc-kinh-doanh,giam-doc-dieu-hanh",
+    });
+    searchLoaiHd({ name: "" });
+    searchBenHd({ name: "" });
     searchNgonNgu({ name: "" });
     searchLoaiTien({ name: "" });
     searchSanPham({ name: "" });
@@ -185,47 +240,30 @@ function BaoGaiForm(props: IBaoGiaForm) {
   const [defaultValues, setDefaultValue] = React.useState<any>(null);
 
   React.useEffect(() => {
-    if (isSuccessCreateBaoGia) {
-      toast.success("Thêm báo giá thành công!");
-      navigate(`/bao_gia/${dataBaoGiaNew?.data?.id}/view`);
-    }
-  }, [isSuccessCreateBaoGia]);
-
-  React.useEffect(() => {
     if (
       isSuccessLoaiTien &&
       isSuccessNgonNgu &&
-      isSuccessLoaiBaoGia &&
-      isSuccessCompany &&
-      isSuccessCoHoi &&
       isSuccessSanPham &&
       isSuccessDonViTinh &&
+      isSuccessBenHd &&
+      isSuccessNhanVien &&
+      isSuccessLoaiHd &&
       !id
     ) {
       setDefaultValue((value) => ({
         ...value,
+        dai_dien_id: nhanVienData?.[0],
+        loai_hd_key: LoaiHdData?.[0],
+        chiphivanchuyen: benHdData?.[0],
         loai_tien_key: loaiTienData?.[0],
-        loai_bao_gia: loaiBaoGiaData?.[0],
-        cohoi_id: coHoiData?.[0],
-        company_id: companyData?.[0],
         ngon_ngu_key: ngonNguData?.[0],
         template_id: mauInData?.[0],
-        thong_tin_chung: {
-          ngaybaogia: new Date(),
-          time: "15-20",
-          datcoc: 50,
-        },
-        san_pham: [
+        quy_trinh: [
           {
             _id: 1,
-            product_id: sanPhamData?.[0],
-            chat_lieu_key: chatLieuData?.[0],
-            don_vi_key: donViTinhData?.[0],
-            so_luong: 1,
-            don_gia_von: "",
-            don_gia: "",
-            thanh_tien: "",
-            ghi_chu: "",
+            phan_tram: 100,
+            tong_tien_dot_locate: "1",
+            tong_tien_chu: "Một Đồng",
           },
         ],
       }));
@@ -233,121 +271,66 @@ function BaoGaiForm(props: IBaoGiaForm) {
   }, [
     isSuccessLoaiTien,
     isSuccessNgonNgu,
-    isSuccessLoaiBaoGia,
-    isSuccessCompany,
-    isSuccessCoHoi,
+    isSuccessNhanVien,
+    isSuccessLoaiHd,
+    isSuccessBenHd,
     isSuccessSanPham,
     isSuccessChatLieu,
     isSuccessDonViTinh,
     isSuccessMauIn,
   ]);
-
+  1;
   React.useEffect(() => {
-    if (isSuccess && baoGiaData) {
+    if (baoGiaData) {
       const defaultValue = {
-        ...baoGiaData,
+        tong_tien: baoGiaData?.tong_tien,
+        time: baoGiaData?.time,
+        vat_phan_tram: baoGiaData?.vat_phan_tram,
+        tong_tien_chu: `${capitalize(VNnum2words(baoGiaData?.tong_tien))} đồng`,
+
+        vat: baoGiaData?.vat === 1 ? true : false,
         san_pham: baoGiaData?.san_pham?.map?.((x: any) => ({
           ...x,
           _id: x.id,
         })),
-
-        cohoi_id: {
-          value: baoGiaData?.cohoi_id,
-          label: coHoiLabel,
-        },
-        loai_bao_gia_key: {
-          value: baoGiaData?.loai_bao_gia_key,
-          label: loaiBaoGiaLabel,
-        },
-        ngon_ngu_key: {
-          value: baoGiaData?.ngon_ngu_key,
-          label: ngonNguLabel,
-        },
-        loai_tien_key: {
-          value: baoGiaData?.loai_tien_key,
-          label: loaiTienLabel,
-        },
-
-        thong_tin_chung: {
-          ngaybaogia: baoGiaData?.ngaybaogia
-            ? new Date(baoGiaData?.ngaybaogia)
-            : new Date(),
-          time: baoGiaData?.time,
-          datcoc: baoGiaData?.datcoc,
-        },
+        quy_trinh: [
+          {
+            _id: 1,
+            phan_tram: 100,
+            tong_tien_dot_locate: "1",
+            tong_tien_chu: "Một Đồng",
+          },
+        ],
       };
       setDefaultValue(defaultValue);
     }
-  }, [isSuccess]);
+  }, [baoGiaData]);
 
   const elForm = React.useRef<any>();
 
-  const handleSaveBaoGia = (data: any, id: any) => {
-    const san_pham = data?.san_pham.map((x: any, index: number) => ({
-      ...baoGiaData?.san_pham?.[index],
-      ...x,
-      chat_lieu_key: x?.chat_lieu_key?.value,
-      don_vi_key: x?.don_vi_key?.value,
-      product_id: x?.product_id?.value,
-      baogia_id: +id,
-    }));
-    const payload = {
-      ...data,
-      san_pham,
-      customer_id: +query.get("customerId") || baoGiaData?.customer_id,
-      ngon_ngu_key: data?.ngon_ngu_key?.value,
-      loai_tien_key: data?.loai_tien_key?.value,
-      loai_bao_gia: data?.loai_bao_gia?.value,
-      viewEmail: {
-        files: [],
-      },
-      ngaybaogia: data?.thong_tin_chung?.ngaybaogia || new Date(),
-      time: data?.thong_tin_chung?.time || "15-20",
-      datcoc: data?.thong_tin_chung?.datCoc || 50,
-      loai_bao_gia_key: data?.loai_bao_gia_key?.value,
-      name: data?.cohoi_id?.label,
-      company_id: data?.company_id?.value,
-      cohoi_id: data?.cohoi_id?.value,
-      dieukhoan: data?.dieukhoan,
-      note: data?.note,
-      template_id: data?.template_id?.value,
-    };
-    if (id) {
-      updateBaoGia({
-        id: data?.id,
-        payload: omit(payload, ["thong_tin_chung"]),
-      }).finally(() => {
-        toast.success("Sửa báo giá thành công!");
-        navigate(`/bao_gia/${data?.id}/view`);
-      });
-      return;
-    }
-    createBaoGia({ payload });
-  };
-
-  const [getCongTyById] = useLazyGetCongTyByIdQuery();
-  const [getMauInById] = useLazyGetMauInByIdQuery();
+  console.log(baoGiaData);
 
   return (
     <UI.Card elevation={10}>
       <UI.CardContent>
-        <BaoGiaNewForm
+        <HopDongNewForm
           formRef={elForm}
           key={JSON.stringify(defaultValues)}
-          isLoadingSearchCompany={isLoadingCompany || isFetchingCompany}
-          companyData={companyData}
-          onSearchCompany={(name) => searchCty({ name })}
-          isLoadingSearchCoHoi={isLoadingCoHoi || isFetchingCoHoi}
-          coHoiData={coHoiData}
-          onSearchCoHoi={(name) =>
-            searchCoHoi({
-              name,
-              customerId: +query.get("customerId") || +baoGiaData?.customer_id,
+          nhanVienData={nhanVienData}
+          isLoadingSearchNhanVien={isLoadingNhanVien || isFetchingNhanVien}
+          onSearchNhanVien={(name) =>
+            searchNhanVien({
+              name: name,
+              chuc_vu_key:
+                "chuc_vu_key=giam-doc,giam-doc-kinh-doanh,giam-doc-dieu-hanh",
             })
           }
-          loaiBaoGiaData={loaiBaoGiaData}
-          isLoadingLoaiBaoGia={isLoadingLoaiBaoGia || isFetchingLoaiBaoGia}
-          onSearchLoaiBaoGia={(name) => searchLoaiBaoGiaData({ name })}
+          LoaiHdData={LoaiHdData}
+          isLoadingSearchLoaiHd={isLoadingLoaiHd || isFetchingLoaiHd}
+          onSearchLoaiHd={(name) => searchLoaiHd({ name })}
+          benHdData={benHdData}
+          isLoadingBenHd={isLoadingBenHd || isFetchingBenHd}
+          onSearchBenHd={(name) => searchBenHd({ name })}
           ngonNguData={ngonNguData}
           isLoadingNgonNgu={isLoadingNgonNgu || isFetchingNgonNgu}
           onSearchNgonNgu={(name) => searchNgonNgu({ name })}
@@ -370,8 +353,6 @@ function BaoGaiForm(props: IBaoGiaForm) {
           getDonViTinhByKey={(value: string) =>
             getDonViTinhByKey({ value }).unwrap()
           }
-          getCongTyById={(id: any) => getCongTyById({ id }).unwrap()}
-          getMauInById={(id: any) => getMauInById({ id }).unwrap()}
           onAddSanPham={(index) => ({
             _id: index,
             product_id: sanPhamData?.[0],
@@ -383,14 +364,20 @@ function BaoGaiForm(props: IBaoGiaForm) {
             thanh_tien: "",
             ghi_chu: "",
           })}
+          onAddQuyTrinh={(index) => ({
+            _id: index,
+            phan_tram: 100,
+            tong_tien_dot_locate: "",
+            tong_tien_chu: "",
+          })}
           defaultValues={defaultValues}
         />
       </UI.CardContent>
       <UI.CardActions sx={{ justifyContent: "flex-end" }}>
         <LoadingButton
-          loading={isLoadingCreateBaoGia || isLoadingUpdateBaoGia}
+          //loading={isLoadingCreateBaoGia || isLoadingUpdateBaoGia}
           onClick={() =>
-            elForm.current.handleSubmit((data) => handleSaveBaoGia(data, id))()
+            elForm.current.handleSubmit((data) => handleSaveHopDong(data, id))()
           }
           endIcon={<FaSave />}
           variant="outlined"
@@ -402,4 +389,4 @@ function BaoGaiForm(props: IBaoGiaForm) {
   );
 }
 
-export default BaoGaiForm;
+export default HopDongFormContainer;

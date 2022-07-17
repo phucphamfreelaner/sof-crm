@@ -42,6 +42,8 @@ const BaseForm = React.forwardRef((props: IBaseForm, ref?: any) => {
     children,
     fields,
     gap,
+    rowGap,
+    columnGap,
     templateColumns,
     templateRows,
     childrenRowSpan,
@@ -88,6 +90,8 @@ const BaseForm = React.forwardRef((props: IBaseForm, ref?: any) => {
         templateColumns={templateColumns || "repeat(1, 1fr)"}
         templateRows={templateRows}
         gap={gap || 2}
+        rowGap={rowGap}
+        columnGap={columnGap}
         sx={sx}
       >
         {/* @ts-ignore */}

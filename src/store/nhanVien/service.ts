@@ -14,9 +14,9 @@ export const nhanVienService = createApi({
     searchNhanVien: builder.query({
       transformResponse: (response: any) =>
         response?.data.map((x) => ({ label: x.name, value: x.id })),
-      query: ({ name }) => ({
+      query: ({ name, chuc_vu_key }) => ({
         method: "GET",
-        url: `/nhan-vien?order_by[id]=desc&s[name]=${name}&take=10`,
+        url: `/nhan-vien?order_by[id]=desc&s[name]=${name}&take=10&with[]=chuc_vu&${chuc_vu_key}`,
       }),
     }),
   }),

@@ -1,7 +1,7 @@
 import React from "react";
 import * as UI from "@/libs/ui";
 import { useUpdateEffect } from "ahooks";
-
+import { AiFillSetting } from "react-icons/ai";
 import {
   DataGrid,
   GridColumns,
@@ -23,20 +23,16 @@ interface IBaseTable {
   page?: number;
   pageSize?: number;
   onPageChange?: (page: number) => any;
-  toolbarAction?: React.ReactNode;
+  toolbarAction?: ({
+    setSelectionModel,
+  }: {
+    setSelectionModel?: (data?: any) => any;
+  }) => React.ReactNode;
   name?: string;
+  onSortChange?: (mode: any, detail: any) => any;
 }
 
 function BaseTable(props: IBaseTable) {
-  const [selectionModel, setSelectionModel] =
-    React.useState<GridSelectionModel>([]);
-
-  useUpdateEffect(() => {
-    onSelectedChange(
-      compact(selectionModel.map((x) => keyBy(rows, "id")?.[x]))
-    );
-  }, [selectionModel]);
-
   const {
     columns,
     height = "calc(100vh - 400px)",
@@ -50,7 +46,18 @@ function BaseTable(props: IBaseTable) {
     page,
     onPageChange,
     toolbarAction,
+    onSortChange,
   } = props;
+
+  const [selectionModel, setSelectionModel] =
+    React.useState<GridSelectionModel>([]);
+
+  useUpdateEffect(() => {
+    onSelectedChange(
+      compact(selectionModel.map((x) => keyBy(rows, "id")?.[x]))
+    );
+  }, [selectionModel]);
+
   return (
     <div
       style={{
@@ -61,8 +68,8 @@ function BaseTable(props: IBaseTable) {
     >
       <DataGrid
         localeText={{
-          toolbarColumns: "Cột",
-          toolbarDensity: "Hàng",
+          toolbarColumns: "Cấu hình cột",
+          toolbarDensity: "Cấu hình hàng",
           toolbarDensityComfortable: "Rộng rãi",
           toolbarDensityCompact: "Thu gọn",
           toolbarDensityStandard: "Bình thường",
@@ -96,9 +103,14 @@ function BaseTable(props: IBaseTable) {
         filterMode="server"
         sortingMode="server"
         onPageChange={onPageChange}
+        onSortModelChange={onSortChange}
         checkboxSelection
         components={{
-          Toolbar: () => <CustomToolbar>{toolbarAction}</CustomToolbar>,
+          Toolbar: () => (
+            <CustomToolbar>
+              {toolbarAction({ setSelectionModel })}
+            </CustomToolbar>
+          ),
         }}
         sx={{
           ".MuiDataGrid-columnHeaders": {
@@ -121,6 +133,20 @@ function BaseTable(props: IBaseTable) {
 
 function CustomToolbar(props: any) {
   const { children } = props;
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
   return (
     <GridToolbarContainer>
       <UI.HStack
@@ -130,10 +156,28 @@ function CustomToolbar(props: any) {
         sx={{ display: "flex", justifyContent: "space-between" }}
       >
         {children}
-        <UI.HStack>
-          <GridToolbarColumnsButton />
-          <GridToolbarDensitySelector />
-        </UI.HStack>
+        <UI.IconButton onClick={handleClick}>
+          <AiFillSetting />
+        </UI.IconButton>
+        <UI.Popover
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+        >
+          <UI.List>
+            <UI.ListItem>
+              <GridToolbarColumnsButton />
+            </UI.ListItem>
+            <UI.ListItem>
+              <GridToolbarDensitySelector />
+            </UI.ListItem>
+          </UI.List>
+        </UI.Popover>
       </UI.HStack>
     </GridToolbarContainer>
   );

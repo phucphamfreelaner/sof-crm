@@ -2,6 +2,7 @@ import { axiosBaseQuery } from "@/store/utils";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import toast from "react-hot-toast";
 import { LOCAL_KEY } from "@/constants";
+import { omit } from "lodash-es";
 
 import { IBaoGia } from "@/store/types";
 
@@ -18,11 +19,22 @@ export const baoGiaService = createApi({
       { limit?: number; page?: number; filter?: any; customerId?: any }
     >({
       transformResponse: (response: any) => response,
-      query: ({ limit, page, filter, customerId }) => ({
+      query: ({ limit, page, filter = {}, customerId }) => ({
         method: "GET",
-        url: `/bao-gia?${
-          customerId ? "customer_id=" + customerId : ""
-        }limit=${limit}&order_by[created_at]=desc&page=${page}&with[]=khach_hang&with[]=co_hoi&with[]=nhan_vien_nhap&with[]=loai_tien`,
+        url: `/bao-gia`,
+        params: {
+          limit,
+          page,
+          with: ["khach_hang", "co_hoi", "nhan_vien_nhap", "loai_tien"],
+          customer_id: customerId,
+          order_by: {
+            created_at: "desc",
+          },
+          ...omit(filter, ["code"]),
+          s: {
+            code: filter?.code,
+          },
+        },
       }),
     }),
     createBaoGia: builder.query<{ data: any }, { payload: any }>({

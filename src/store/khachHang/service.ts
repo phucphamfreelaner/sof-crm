@@ -16,7 +16,7 @@ export const khachHangService = createApi({
   endpoints: (builder) => ({
     searchKhachHangList: builder.query({
       transformResponse: (response: any) =>
-        response?.data.map((x) => ({ label: x.contact, value: x.code })),
+        response?.data.map((x) => ({ label: x.contact, value: x.id })),
       query: ({ name }) => ({
         method: "GET",
         url: `/khach-hang?s[contact]=${name}&limit=10&page=1`,

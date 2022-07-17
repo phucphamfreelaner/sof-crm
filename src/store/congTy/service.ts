@@ -7,7 +7,7 @@ export const congTyService = createApi({
   baseQuery: axiosBaseQuery({
     baseUrl: "https://apisf.interphase.vn/api",
     onError: (err) => {
-      toast.error(err.error);
+      toast.error(err.error || "congTyService: Có lỗi xẩy ra!");
     },
     token: () => localStorage.getItem(LOCAL_KEY.TOKEN),
   }),
@@ -46,4 +46,5 @@ export const {
   useLazyGetCongTyListQuery,
   useLazySearchCongTyQuery,
   useGetCongTyByIdQuery,
+  useLazyGetCongTyByIdQuery,
 } = congTyService;

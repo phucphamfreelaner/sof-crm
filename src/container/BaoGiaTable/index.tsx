@@ -3,7 +3,11 @@ import { useGetBaoGiaQuery } from "@/store/baoGia";
 import BaseTable from "@/components/BaseTable";
 import numeral from "numeral";
 import * as UI from "@/libs/ui";
-import { AiOutlineUser } from "react-icons/ai";
+import {
+  AiOutlineUser,
+  AiOutlinePrinter,
+  AiOutlineDownload,
+} from "react-icons/ai";
 import { isEmpty } from "lodash-es";
 import {
   AiOutlineEdit,
@@ -14,15 +18,17 @@ import { MdOpenInNew } from "react-icons/md";
 
 import { useLazyDeleteBaoGiaQuery } from "@/store/baoGia";
 import { useNavigate } from "react-router-dom";
+import { LOCAL_KEY } from "@/constants";
 
 interface IBaoGiaTable {
   filter?: any;
   customerId?: any;
   isShowKhachHangLink?: boolean;
+  onSortChange?: (orderBy?: any) => any;
 }
 
 function BaoGiaTable(props: IBaoGiaTable) {
-  const { filter, customerId, isShowKhachHangLink } = props;
+  const { filter, customerId, isShowKhachHangLink, onSortChange } = props;
   const [limit, setLimit] = React.useState(15);
   const [page, setPage] = React.useState(0);
   const navigate = useNavigate();
@@ -31,7 +37,7 @@ function BaoGiaTable(props: IBaoGiaTable) {
     {
       limit,
       page: page + 1,
-      filter: {},
+      filter,
       customerId,
     },
     { refetchOnMountOrArgChange: true }
@@ -52,10 +58,13 @@ function BaoGiaTable(props: IBaoGiaTable) {
       page={page}
       rowCount={data?.data?.length * 10}
       onPageChange={setPage}
-      toolbarAction={
+      onSortChange={(mode) => {
+        onSortChange({ order_by: { [mode?.[0].field]: mode?.[0]?.sort } });
+      }}
+      toolbarAction={({ setSelectionModel }) => (
         <UI.HStack>
           <UI.Button
-            disabled={isEmpty(dataSelected)}
+            disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
             color="error"
             variant="outlined"
             size="small"
@@ -63,8 +72,10 @@ function BaoGiaTable(props: IBaoGiaTable) {
             onClick={() => {
               deleteBaoGia({ id: dataSelected?.[0]?.id })
                 .unwrap()
-                .then(() => {
+                .finally(() => {
                   refetch();
+                  setDataSelected([]);
+                  setSelectionModel([]);
                 });
             }}
           >
@@ -100,13 +111,43 @@ function BaoGiaTable(props: IBaoGiaTable) {
             disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
             variant="outlined"
             size="small"
+            startIcon={<AiOutlinePrinter size="16" />}
+            onClick={() => {
+              navigate(`/bao_gia/${dataSelected?.[0]?.id}/view`);
+            }}
+          >
+            Mẫu in
+          </UI.Button>
+          <UI.Button
+            disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+            variant="outlined"
+            size="small"
+            startIcon={<AiOutlineDownload size="16" />}
+            onClick={() => {
+              window.open(
+                `https://apisf.interphase.vn/api/bao-gia/${
+                  dataSelected?.[0]?.id
+                }/download-doc?token=${localStorage.getItem(LOCAL_KEY?.TOKEN)}`,
+                "_blank"
+              );
+            }}
+          >
+            Tải xuống
+          </UI.Button>
+          <UI.Button
+            disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+            variant="outlined"
+            size="small"
             color="success"
+            onClick={() => {
+              navigate(`/hop_dong/new?baogia_id=${dataSelected?.[0]?.id}`);
+            }}
             startIcon={<AiOutlineFileAdd size="16" />}
           >
             Tạo hợp đồng
           </UI.Button>
         </UI.HStack>
-      }
+      )}
       columns={[
         { field: "code", headerName: "Mã báo giá", width: 130 },
         {

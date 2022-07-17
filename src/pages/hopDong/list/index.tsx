@@ -14,15 +14,13 @@ function HopDongList() {
     <UI.Box
       sx={{
         flexGrow: 1,
-        py: 8,
-        px: 3,
       }}
     >
       <UI.Grid container justifyContent="space-between" spacing={3}>
         <UI.Grid item>
           <UI.Typography variant="h4">Danh Sách Hợp Đồng</UI.Typography>
         </UI.Grid>
-        <UI.Grid item>
+        {/* <UI.Grid item>
           <UI.Button
             onClick={() => navigate("/bao_gia/new")}
             size="small"
@@ -31,7 +29,7 @@ function HopDongList() {
           >
             Thêm mới
           </UI.Button>
-        </UI.Grid>
+        </UI.Grid> */}
       </UI.Grid>
       <UI.Box
         sx={{

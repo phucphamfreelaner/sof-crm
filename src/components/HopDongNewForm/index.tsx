@@ -1,8 +1,22 @@
 import React from "react";
-import * as UI from "@/libs/ui";
 import BaseForm from "@/components/BaseForm";
 import { useBoolean } from "ahooks";
-interface IBaoGiaNewForm {
+import VNnum2words from "vn-num2words";
+import { capitalize } from "lodash-es";
+
+interface IHopDongNewForm {
+  nhanVienData?: any;
+  onSearchNhanVien?: (text: any) => any;
+  isLoadingSearchNhanVien?: boolean;
+
+  LoaiHdData?: any;
+  onSearchLoaiHd?: (text: any) => any;
+  isLoadingSearchLoaiHd?: boolean;
+
+  benHdData?: any;
+  onSearchBenHd?: (text: any) => any;
+  isLoadingBenHd?: boolean;
+
   companyData?: any;
   onSearchCompany?: (text: any) => any;
   isLoadingSearchCompany?: boolean;
@@ -25,6 +39,7 @@ interface IBaoGiaNewForm {
 
   defaultValues?: any;
   onAddSanPham?: (index: any) => any;
+  onAddQuyTrinh?: (index: any) => any;
 
   formRef?: any;
 
@@ -43,29 +58,34 @@ interface IBaoGiaNewForm {
   getSanPhamById?: (id: any) => Promise<any>;
   getChatLieuByKey?: (key: string) => Promise<any>;
   getDonViTinhByKey?: (key: string) => Promise<any>;
-  getCongTyById?: (key: string) => Promise<any>;
-  getMauInById?: (key: string) => Promise<any>;
 }
 
-function BaoGiaNewForm(props: IBaoGiaNewForm) {
+function HopDongNewForm(props: IHopDongNewForm) {
   const {
-    companyData,
-    onSearchCompany,
-    isLoadingSearchCompany,
-    coHoiData,
-    onSearchCoHoi,
-    isLoadingSearchCoHoi,
-    loaiBaoGiaData,
-    onSearchLoaiBaoGia,
-    isLoadingLoaiBaoGia,
+    LoaiHdData,
+    isLoadingSearchLoaiHd,
+    onSearchLoaiHd,
+
+    nhanVienData,
+    isLoadingSearchNhanVien,
+    onSearchNhanVien,
+
+    benHdData,
+    isLoadingBenHd,
+    onSearchBenHd,
+
     ngonNguData,
     onSearchNgonNgu,
     isLoadingNgonNgu,
+
     loaiTienData,
     onSearchLoaiTien,
     isLoadingLoaiTien,
+
     defaultValues,
     onAddSanPham,
+    onAddQuyTrinh,
+
     sanPhamData,
     onSearchSanPham,
     chatLieuData,
@@ -79,13 +99,9 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
     getSanPhamById,
     getChatLieuByKey,
     getDonViTinhByKey,
-    getCongTyById,
-    getMauInById,
   } = props;
 
   const [isVAT, setIsVAT] = useBoolean(false);
-  const [isShipFee, setIsShipFee] = useBoolean(false);
-  const [tgGiaoHang, setTgGiaoHang] = React.useState("15-20");
 
   return (
     <BaseForm
@@ -93,27 +109,152 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
       templateColumns="repeat(6, 1fr)"
       gap="26px"
       defaultValues={defaultValues}
-      watchFields={["thong_tin_chung"]}
+      watchFields={["vat"]}
       onWatchChange={(data) => {
-        if (data?.thong_tin_chung?.vat) setIsVAT.setTrue();
+        if (data?.vat) setIsVAT.setTrue();
         else setIsVAT.setFalse();
-
-        if (data?.thong_tin_chung?.["phi_giao_hang"]) setIsShipFee.setTrue();
-        else setIsShipFee.setFalse();
-
-        if (data?.thong_tin_chung?.["time"])
-          setTgGiaoHang(data?.thong_tin_chung?.["time"]);
       }}
       ref={formRef}
       fields={[
         {
+          name: "loai_hd_key",
+          label: "Loại hợp đồng",
+          type: "autocomplete",
+          colSpan: 2,
+          isLoading: isLoadingSearchLoaiHd,
+          autocompleteOptions: LoaiHdData || [],
+          onSearchChange: onSearchLoaiHd,
+        },
+
+        {
+          name: "time",
+          label: "Số ngày giao",
+          type: "input",
+          colSpan: 2,
+        },
+
+        {
+          name: "dai_dien_id",
+          label: "Đại diện",
+          type: "autocomplete",
+          colSpan: 2,
+          isLoading: isLoadingSearchNhanVien,
+          autocompleteOptions: nhanVienData || [],
+          onSearchChange: onSearchNhanVien,
+        },
+
+        {
+          name: "vat",
+          label: "VAT",
+          type: "checkbox",
+          colSpan: 1,
+        },
+        {
+          name: "vat_phan_tram",
+          label: "VAT %",
+          type: "input",
+          textType: "number",
+          colSpan: 1,
+          isDisabled: !isVAT,
+        },
+        {
+          name: "tong_tien",
+          label: "Tổng tiền bằng số",
+          colSpan: 2,
+          type: "input-mask",
+          textType: "number",
+          onValueChange: (data, fromEl) => {
+            const sl = capitalize(VNnum2words(fromEl.getValues("tong_tien")));
+            fromEl.setValue("tong_tien_chu", `${sl} đồng`);
+          },
+        },
+        {
+          name: "tong_tien_chu",
+          label: "Tổng tiền bằng chữ",
+          colSpan: 2,
+          type: "input",
+        },
+        {
+          name: "loai_tien_key",
+          label: "Loại tiền",
+          type: "autocomplete",
+          colSpan: 2,
+          isLoading: isLoadingLoaiTien,
+          autocompleteOptions: loaiTienData || [],
+          onSearchChange: onSearchLoaiTien,
+        },
+        {
+          name: "ngon_ngu_key",
+          label: "Ngôn ngữ",
+          type: "autocomplete",
+          colSpan: 2,
+          isLoading: isLoadingNgonNgu,
+          autocompleteOptions: ngonNguData || [],
+          onSearchChange: onSearchNgonNgu,
+        },
+        {
+          name: "template_id",
+          label: "Mẫu",
+          type: "autocomplete",
+          colSpan: 2,
+          isLoading: isLoadingMauIn,
+          autocompleteOptions: mauInData || [],
+          onSearchChange: onSearchMauIn,
+        },
+
+        {
+          name: "dia_chi_giao",
+          label: "Địa chỉ giao",
+          colSpan: 6,
+          multiline: true,
+          rows: 4,
+          type: "input",
+        },
+        {
+          name: "quy_trinh",
+          label: "Quy Trình Thanh Toán",
+          colSpan: 6,
+          type: "array-fields",
+          gap: "12px",
+          onAddRow: onAddQuyTrinh,
+          addBtnLabel: "Thêm quy trình",
+          fields: [
+            {
+              name: "phan_tram",
+              label: "Phần trăm",
+              type: "input",
+              textType: "number",
+              colSpan: 3,
+            },
+            {
+              name: "tong_tien_dot_locate",
+              label: "Số tiền",
+              type: "input-mask",
+              textType: "number",
+              colSpan: 6,
+              onValueChange: (data, fromEl) => {
+                const sl = capitalize(
+                  VNnum2words(fromEl.getValues("tong_tien_dot_locate"))
+                );
+                fromEl.setValue("tong_tien_chu", `${sl} đồng`);
+              },
+            },
+            {
+              name: "tong_tien_chu",
+              label: "Số tiền bằng chữ",
+              type: "input",
+              colSpan: 14,
+            },
+          ],
+        },
+        {
           name: "san_pham",
           colSpan: 6,
           type: "array-fields",
-          label: "",
           gap: "12px",
-          onAddRow: onAddSanPham,
-          addBtnLabel: "Thêm sản phẩm",
+          label: "Sản Phẩm",
+          //onAddRow: onAddSanPham,
+          //addBtnLabel: "Thêm sản phẩm",
           fields: [
             {
               name: "product_id",
@@ -246,150 +387,33 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
             },
           ],
         },
+
         {
-          name: "thong_tin_chung",
-          label: "Thông tin chung",
-          type: "collapse-fields",
-          colSpan: 6,
-          gap: "10px",
-          templateColumns: "repeat(6, 1fr)",
-          templateRows: "repeat(2, 1fr)",
-          fields: [
-            {
-              name: "chu_thich",
-              label: "chu_thich",
-              type: "label",
-              colSpan: 3,
-              rowSpan: 2,
-              labelContent: (
-                <UI.VStack alignItems="flex-start" w="100%">
-                  <UI.Typography fontWeight={700} variant="body2">
-                    Các điều khoản chung
-                  </UI.Typography>
-                  <ul style={{ fontSize: "14px" }}>
-                    {!isShipFee && <li>Giao hàng miễn phí toàn quốc</li>}
-                    <li>
-                      Báo giá trên {isVAT ? "đã" : "chưa"} bao gồm thuế VAT
-                    </li>
-                    <li>
-                      Thời gian giao hàng: Trong vòng {tgGiaoHang} ngày làm việc
-                    </li>
-                    <li>Báo giá có giá trị trong vòng 30 ngày</li>
-                    <li>Đặt cọc 50% tổng giá trị đơn hàng</li>
-                  </ul>
-                </UI.VStack>
-              ),
-            },
-            {
-              name: "ngaybaogia",
-              label: "Ngày báo giá",
-              type: "date-picker",
-              colSpan: 1,
-            },
-            {
-              name: "time",
-              label: "TG giao hàng",
-              type: "input",
-              colSpan: 1,
-            },
-            {
-              name: "datcoc",
-              label: "Đặt cọc (%)",
-              type: "input",
-              colSpan: 1,
-              textType: "number",
-            },
-            {
-              name: "vat",
-              label: "Thuế VAT",
-              type: "checkbox",
-              colSpan: 1,
-            },
-            {
-              name: "phi_giao_hang",
-              label: "Giao hàng có tính thuế",
-              type: "checkbox",
-              colSpan: 2,
-            },
-          ],
+          name: "chiphivanchuyen",
+          label: "Chi phí vận chuyển",
+          type: "autocomplete",
+          colSpan: 2,
+          isLoading: isLoadingBenHd,
+          autocompleteOptions: benHdData || [],
+          onSearchChange: onSearchBenHd,
         },
         {
-          name: "dieukhoan",
-          label: "Các điều khoản khác",
+          name: "created_at",
+          label: "Ngày tạo",
+          type: "date-picker",
+          colSpan: 2,
+        },
+
+        {
+          name: "thoi_han_thanh_toan",
+          label: "Thời hạn thanh toán",
           type: "input",
-          colSpan: 3,
-          multiline: true,
-          rows: 4,
-        },
-        {
-          name: "note",
-          label: "Ghi chú",
-          type: "input",
-          colSpan: 3,
-          multiline: true,
-          rows: 4,
-        },
-        {
-          name: "company_id",
-          label: "Công ty",
-          type: "autocomplete",
+          textType: "number",
           colSpan: 2,
-          isLoading: isLoadingSearchCompany,
-          autocompleteOptions: companyData || [],
-          onSearchChange: onSearchCompany,
-          onGetDataByValue: (key: any) => getCongTyById(key),
-          mapValueKey: "ten",
-        },
-        {
-          name: "cohoi_id",
-          label: "Cơ hội",
-          type: "autocomplete",
-          colSpan: 2,
-          isLoading: isLoadingSearchCoHoi,
-          autocompleteOptions: coHoiData || [],
-          onSearchChange: onSearchCoHoi,
-        },
-        {
-          name: "loai_bao_gia_key",
-          label: "Loại báo giá",
-          type: "autocomplete",
-          colSpan: 2,
-          isLoading: isLoadingLoaiBaoGia,
-          autocompleteOptions: loaiBaoGiaData || [],
-          onSearchChange: onSearchLoaiBaoGia,
-        },
-        {
-          name: "ngon_ngu_key",
-          label: "Ngôn ngữ",
-          type: "autocomplete",
-          colSpan: 2,
-          isLoading: isLoadingNgonNgu,
-          autocompleteOptions: ngonNguData || [],
-          onSearchChange: onSearchNgonNgu,
-        },
-        {
-          name: "loai_tien_key",
-          label: "Loại tiền",
-          type: "autocomplete",
-          colSpan: 2,
-          isLoading: isLoadingLoaiTien,
-          autocompleteOptions: loaiTienData || [],
-          onSearchChange: onSearchLoaiTien,
-        },
-        {
-          name: "template_id",
-          label: "Mẫu",
-          type: "autocomplete",
-          colSpan: 2,
-          isLoading: isLoadingMauIn,
-          autocompleteOptions: mauInData || [],
-          onSearchChange: onSearchMauIn,
-          onGetDataByValue: (key: any) => getMauInById(key),
-          mapValueKey: "tieu_de",
         },
       ]}
     />
   );
 }
 
-export default BaoGiaNewForm;
+export default HopDongNewForm;

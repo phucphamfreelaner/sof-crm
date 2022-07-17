@@ -4,13 +4,14 @@ import BaseForm from "@/components/BaseForm";
 import { useLazySearchKhachHangListQuery } from "@/store/khachHang";
 import { useLazySearchLoaiTienGiaListQuery } from "@/store/loaiTien";
 import { useLazySearchNhanVienQuery } from "@/store/nhanVien";
-
+import { AiOutlineReload } from "react-icons/ai";
 interface IBaoGiaFilter {
   onWatchChange: (data: any) => any;
+  onReload: () => any;
 }
 
 function BaoGiaFilter(props: IBaoGiaFilter) {
-  const { onWatchChange } = props;
+  const { onWatchChange, onReload } = props;
   const [
     searchKhachHang,
     {
@@ -57,58 +58,56 @@ function BaoGiaFilter(props: IBaoGiaFilter) {
   };
 
   return (
-    <UI.Box>
+    <UI.HStack pb={"20px"} alignItems="center" w="100%">
       <BaseForm
         templateColumns="repeat(12, 1fr)"
-        gap="24px"
-        watchFields={[
-          "ma_bao_gia",
-          "cach_goi_kh",
-          "loai_tien",
-          "nhan_vien_nhap",
-        ]}
+        columnGap="24px"
+        watchFields={["code", "customer_id", "loai_tien_key", "created_by"]}
         onWatchChange={onWatchChange}
         fields={[
           {
-            name: "ma_bao_gia",
+            name: "code",
             label: "Mã báo giá",
             type: "input",
-            // size: "small",
             colSpan: 3,
+            placeholder: "Nhập mã báo giá",
           },
           {
-            name: "cach_goi_kh",
+            name: "customer_id",
             label: "Cách gọi KH",
             type: "autocomplete",
-            // size: "small",
             colSpan: 3,
             isLoading: isLoadingKhachHang || isFetchingKhachHang,
             autocompleteOptions: khachHangData,
             onSearchChange: handleSearchKhachHang,
+            placeholder: "Tất cả",
           },
           {
-            name: "loai_tien",
+            name: "loai_tien_key",
             label: "Loại tiền",
             type: "autocomplete",
-            // size: "small",
             colSpan: 3,
             autocompleteOptions: loaiTienData,
             isLoading: isLoadingLoaiTien || isFetchingLoaiTien,
             onSearchChange: handleSearchLoaiTien,
+            placeholder: "Tất cả",
           },
           {
-            name: "nhan_vien_nhap",
+            name: "created_by",
             label: "Nhân viên nhập",
             type: "autocomplete",
-            // size: "small",
             colSpan: 3,
             autocompleteOptions: nhanVienData,
             isLoading: isLoadingNhanVien || isFetchingNhanVien,
             onSearchChange: handleSearchNhanVien,
+            placeholder: "Tất cả",
           },
         ]}
       ></BaseForm>
-    </UI.Box>
+      <UI.IconButton onClick={onReload}>
+        <AiOutlineReload />
+      </UI.IconButton>
+    </UI.HStack>
   );
 }
 
