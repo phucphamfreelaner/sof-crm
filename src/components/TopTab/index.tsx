@@ -51,7 +51,6 @@ function TopTab() {
       value: "/hop_dong",
       icon: AiFillPlusCircle,
     },
-    // { label: "Đánh giá", value: "danh_gia", icon: AiFillPlusCircle },
   ];
 
   const handleTabsChange = (__, value: any) => {
@@ -65,19 +64,22 @@ function TopTab() {
   }, [pathname]);
 
   return (
-    <UI.Tabs
-      indicatorColor="primary"
-      onChange={handleTabsChange}
-      scrollButtons="auto"
-      sx={{ mt: 1, ml: 3 }}
-      textColor="primary"
-      value={currentTab}
-      variant="scrollable"
-    >
-      {tabs.map((tab) => (
-        <UI.Tab key={tab.value} label={tab.label} value={tab.value} />
-      ))}
-    </UI.Tabs>
+    <>
+      <UI.Tabs
+        indicatorColor="primary"
+        onChange={handleTabsChange}
+        scrollButtons="auto"
+        sx={{ mt: 1, ml: 3 }}
+        textColor="primary"
+        value={currentTab}
+        variant="scrollable"
+      >
+        {tabs.map((tab) => (
+          <UI.Tab key={tab.value} label={tab.label} value={tab.value} />
+        ))}
+      </UI.Tabs>
+      <UI.Divider />
+    </>
   );
 }
 

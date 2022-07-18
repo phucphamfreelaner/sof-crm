@@ -16,41 +16,17 @@ function HopDongList() {
         flexGrow: 1,
       }}
     >
-      <UI.Grid container justifyContent="space-between" spacing={3}>
+      <UI.Grid
+        sx={{ mb: 4 }}
+        container
+        justifyContent="space-between"
+        spacing={3}
+      >
         <UI.Grid item>
           <UI.Typography variant="h4">Danh Sách Hợp Đồng</UI.Typography>
         </UI.Grid>
-        {/* <UI.Grid item>
-          <UI.Button
-            onClick={() => navigate("/bao_gia/new")}
-            size="small"
-            startIcon={<AiFillPlusCircle fontSize="small" />}
-            variant="contained"
-          >
-            Thêm mới
-          </UI.Button>
-        </UI.Grid> */}
       </UI.Grid>
-      <UI.Box
-        sx={{
-          m: -1,
-          mt: 3,
-          mb: 4,
-        }}
-      >
-        <UI.Button
-          startIcon={<AiOutlineUpload fontSize="small" />}
-          sx={{ m: 1 }}
-        >
-          Import
-        </UI.Button>
-        <UI.Button
-          startIcon={<AiOutlineDownload fontSize="small" />}
-          sx={{ m: 1 }}
-        >
-          Export
-        </UI.Button>
-      </UI.Box>
+
       <UI.Card>
         <UI.Divider />
         <UI.CardContent>

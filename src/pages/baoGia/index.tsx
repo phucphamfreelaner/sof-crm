@@ -12,7 +12,7 @@ function CoHoiPage() {
         component="main"
         sx={{
           flexGrow: 1,
-          pt: 8,
+          pt: 3,
         }}
       >
         <Container maxWidth="xl">
