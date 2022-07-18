@@ -20,7 +20,12 @@ function BaoGiaList() {
 
   return (
     <UI.Box>
-      <UI.Grid container justifyContent="space-between" spacing={3}>
+      <UI.Grid
+        sx={{ mb: 4 }}
+        container
+        justifyContent="space-between"
+        spacing={3}
+      >
         <UI.Grid item>
           <UI.Typography variant="h4">Báo Giá</UI.Typography>
         </UI.Grid>
@@ -35,26 +40,7 @@ function BaoGiaList() {
           </UI.Button>
         </UI.Grid>
       </UI.Grid>
-      <UI.Box
-        sx={{
-          m: -1,
-          mt: 3,
-          mb: 4,
-        }}
-      >
-        <UI.Button
-          startIcon={<AiOutlineUpload fontSize="small" />}
-          sx={{ m: 1 }}
-        >
-          Import
-        </UI.Button>
-        <UI.Button
-          startIcon={<AiOutlineDownload fontSize="small" />}
-          sx={{ m: 1 }}
-        >
-          Export
-        </UI.Button>
-      </UI.Box>
+
       <UI.Card>
         <UI.Divider />
         <UI.CardContent>

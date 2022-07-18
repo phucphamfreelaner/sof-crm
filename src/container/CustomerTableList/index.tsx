@@ -153,7 +153,7 @@ function CustomerTableListContainer() {
         component="main"
         sx={{
           flexGrow: 1,
-          py: 8,
+          py: 3,
         }}
       >
         <UI.Container maxWidth="xl">
@@ -175,25 +175,6 @@ function CustomerTableListContainer() {
                 </UI.Button>
               </UI.Grid>
             </UI.Grid>
-            <UI.Box
-              sx={{
-                m: -1,
-                mt: 3,
-              }}
-            >
-              <UI.Button
-                startIcon={<AiOutlineUpload fontSize="small" />}
-                sx={{ m: 1 }}
-              >
-                Import
-              </UI.Button>
-              <UI.Button
-                startIcon={<AiOutlineDownload fontSize="small" />}
-                sx={{ m: 1 }}
-              >
-                Export
-              </UI.Button>
-            </UI.Box>
           </UI.Box>
           <UI.Card>
             <UI.Divider />

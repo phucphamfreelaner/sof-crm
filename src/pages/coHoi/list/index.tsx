@@ -1,13 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import * as UI from "@/libs/ui";
-import {
-  AiFillPlusCircle,
-  AiOutlineUpload,
-  AiOutlineDownload,
-  AiOutlineUser,
-} from "react-icons/ai";
-import { debounce, isEmpty } from "lodash-es";
+import { AiFillPlusCircle } from "react-icons/ai";
+import { debounce } from "lodash-es";
 import CoHoiFilter from "@/container/CoHoiFilter";
 import CoHoiTable from "@/container/CoHoiTable";
 
@@ -20,7 +15,12 @@ function CoHoiList() {
 
   return (
     <UI.Box>
-      <UI.Grid container justifyContent="space-between" spacing={3}>
+      <UI.Grid
+        sx={{ mb: 4 }}
+        container
+        justifyContent="space-between"
+        spacing={3}
+      >
         <UI.Grid item>
           <UI.Typography variant="h4">Cơ Hội</UI.Typography>
         </UI.Grid>
@@ -35,26 +35,7 @@ function CoHoiList() {
           </UI.Button>
         </UI.Grid>
       </UI.Grid>
-      <UI.Box
-        sx={{
-          m: -1,
-          mt: 3,
-          mb: 4,
-        }}
-      >
-        <UI.Button
-          startIcon={<AiOutlineUpload fontSize="small" />}
-          sx={{ m: 1 }}
-        >
-          Import
-        </UI.Button>
-        <UI.Button
-          startIcon={<AiOutlineDownload fontSize="small" />}
-          sx={{ m: 1 }}
-        >
-          Export
-        </UI.Button>
-      </UI.Box>
+
       <UI.Card>
         <UI.Divider />
         <UI.CardContent>
