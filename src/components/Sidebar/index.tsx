@@ -3,8 +3,6 @@ import { HiUsers } from "react-icons/hi";
 import { AiOutlineAppstore } from "react-icons/ai";
 import { HiChevronDoubleLeft } from "react-icons/hi";
 
-import { CUSTOMER_SUBMENU } from "@/constants";
-
 import { DashboardSidebarSection } from "./SidebarSection";
 
 interface ISidebar {
@@ -21,7 +19,6 @@ const sections = [
         title: "Khách hàng",
         icon: <HiUsers width={20} />,
         path: "/",
-        children: CUSTOMER_SUBMENU,
       },
     ],
   },
