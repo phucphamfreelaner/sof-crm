@@ -1,6 +1,5 @@
 import React from "react";
 import * as UI from "@/libs/ui";
-import { CUSTOMER_SUBMENU } from "@/constants";
 
 interface ISidebarItem {
   icon?: React.ReactNode;
@@ -38,35 +37,6 @@ function SidebarItem(props: ISidebarItem) {
       >
         {icon}
       </UI.IconButton>
-      <UI.Popover
-        open={open}
-        onClose={handleClose}
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: "center",
-          horizontal: "right",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-      >
-        <UI.Paper>
-          <UI.List sx={{ width: "200px" }}>
-            {CUSTOMER_SUBMENU.map((x, index) => (
-              <UI.ListItem
-                onClick={() => onClickItem(x.path)}
-                key={index}
-                disablePadding
-              >
-                <UI.ListItemButton>
-                  <UI.ListItemText primary={x.title} />
-                </UI.ListItemButton>
-              </UI.ListItem>
-            ))}
-          </UI.List>
-        </UI.Paper>
-      </UI.Popover>
     </>
   );
 }

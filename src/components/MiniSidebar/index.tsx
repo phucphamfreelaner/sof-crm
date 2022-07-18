@@ -3,6 +3,8 @@ import { HiChevronDoubleRight, HiUsers } from "react-icons/hi";
 import { AiOutlineAppstore } from "react-icons/ai";
 
 import SidebarItem from "./SidebarItem";
+import { Link } from "react-router-dom";
+import LogoSmall from "@/assets/images/logo-capa-group-small.png";
 
 function Minibar({
   onClickItem,
@@ -25,6 +27,18 @@ function Minibar({
       }}
     >
       <UI.VStack spacing="20px">
+        <UI.Box>
+          <Link
+            to="/"
+            style={{
+              marginTop: "4px",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <img width="85%" src={LogoSmall} />
+          </Link>
+        </UI.Box>
         <UI.IconButton onClick={onExpand}>
           <HiChevronDoubleRight fontSize="22px" />
         </UI.IconButton>
