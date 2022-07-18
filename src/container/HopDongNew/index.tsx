@@ -6,6 +6,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { toast } from "react-hot-toast";
 import { omit } from "lodash-es";
 import { format } from "date-fns";
+import Loading from "@/components/Loading";
 
 import VNnum2words from "vn-num2words";
 import { capitalize } from "lodash-es";
@@ -47,6 +48,7 @@ interface IBaoGiaForm {
   loaiHdLabel?: any;
   mauInLabel?: any;
   benHdLabel?: any;
+  isEdit?: any;
 }
 
 function HopDongFormContainer(props: IBaoGiaForm) {
@@ -54,6 +56,7 @@ function HopDongFormContainer(props: IBaoGiaForm) {
     id,
     hopDongData,
     isSuccess,
+    isEdit,
     nhanVienLabel,
     ngonNguLabel,
     loaiTienLabel,
@@ -63,11 +66,18 @@ function HopDongFormContainer(props: IBaoGiaForm) {
   } = props;
   const [query] = useSearchParams();
 
-  const { data: baoGiaData, isSuccess: isSuccessBaoGia } =
-    useGetBaoGiaByIdQuery(
-      { id: hopDongData?.baogia_id || query.get("baogia_id") },
-      { skip: !hopDongData?.baogia_id || !query.get("baogia_id") }
-    );
+  const baogia_id = hopDongData?.baogia_id
+    ? hopDongData?.baogia_id
+    : query.get("baogia_id")
+    ? query.get("baogia_id")
+    : false;
+
+  const {
+    data: baoGiaData,
+    isSuccess: isSuccessBaoGia,
+    isLoading: isLoadingBaogia,
+    isFetching: isFetchingBaoGia,
+  } = useGetBaoGiaByIdQuery({ id: baogia_id }, { skip: !baogia_id });
 
   const [
     searchNhanVien,
@@ -180,47 +190,76 @@ function HopDongFormContainer(props: IBaoGiaForm) {
     useLazyPutHopDongByIdQuery();
 
   const handleSaveHopDong = (data: any, id: any) => {
-    const san_pham = data?.san_pham.map((x: any, index: number) => ({
-      ...baoGiaData?.san_pham?.[index],
-      ...x,
-      chat_lieu_key: x?.chat_lieu_key?.value,
-      don_vi_key: x?.don_vi_key?.value,
-      product_id: x?.product_id?.value,
-      baogia_id: baoGiaData?.id,
-    }));
-    const payload = {
-      ...data,
-      san_pham,
-      customer_id: baoGiaData?.customer_id,
-      cohoi_id: baoGiaData?.cohoi_id,
-      baogia_id: baoGiaData?.id,
-      company_id: baoGiaData?.company_id,
-      name: baoGiaData?.name,
-      ngon_ngu_key: data?.ngon_ngu_key?.value,
-      file_tmp: [],
-      template_id: data?.template_id?.value,
-      chiphivanchuyen: data?.chiphivanchuyen?.value,
-      dai_dien_id: data?.dai_dien_id?.value,
-      loai_hd_key: data?.loai_hd_key?.value,
-      loai_tien_key: data?.loai_tien_key?.value,
-      vat: data?.vat ? 1 : 0,
-      created_at: data?.created_at
-        ? typeof data?.created_at === "string"
-          ? format(new Date(data?.created_at), "yyyy-mm-dd")
-          : format(data?.created_at, "yyyy-mm-dd")
-        : format(new Date(), "yyyy-mm-dd"),
-    };
     if (id) {
+      const san_pham = data?.san_pham.map((x: any, index: number) => ({
+        ...hopDongData?.san_pham?.[index],
+        ...x,
+        chat_lieu_key: x?.chat_lieu_key?.value,
+        don_vi_key: x?.don_vi_key?.value,
+        product_id: x?.product_id?.value,
+      }));
+      const payload = {
+        ...data,
+        san_pham,
+        customer_id: baoGiaData?.customer_id,
+        cohoi_id: baoGiaData?.cohoi_id,
+        baogia_id: baoGiaData?.id,
+        company_id: baoGiaData?.company_id,
+        name: baoGiaData?.name,
+        ngon_ngu_key: data?.ngon_ngu_key?.value,
+        file_tmp: [],
+        template_id: data?.template_id?.value,
+        chiphivanchuyen: data?.chiphivanchuyen?.value,
+        dai_dien_id: data?.dai_dien_id?.value,
+        loai_hd_key: data?.loai_hd_key?.value,
+        loai_tien_key: data?.loai_tien_key?.value,
+        vat: data?.vat ? 1 : 0,
+        created_at: data?.created_at
+          ? typeof data?.created_at === "string"
+            ? format(new Date(data?.created_at), "yyyy-mm-dd")
+            : format(data?.created_at, "yyyy-mm-dd")
+          : format(new Date(), "yyyy-mm-dd"),
+      };
       updateHopDong({
         id: data?.id,
-        payload: payload,
+        payload: { payload },
       }).finally(() => {
         toast.success("Sửa hợp đồng thành công!");
-        navigate(`/hop_dong/${data?.id}/view`);
+        navigate(`/hop_dong/${data?.id}`);
       });
-      return;
+    } else {
+      const san_pham = data?.san_pham.map((x: any, index: number) => ({
+        ...baoGiaData?.san_pham?.[index],
+        ...x,
+        chat_lieu_key: x?.chat_lieu_key?.value,
+        don_vi_key: x?.don_vi_key?.value,
+        product_id: x?.product_id?.value,
+        baogia_id: baoGiaData?.id,
+      }));
+      const payload = {
+        ...data,
+        san_pham,
+        customer_id: baoGiaData?.customer_id,
+        cohoi_id: baoGiaData?.cohoi_id,
+        baogia_id: baoGiaData?.id,
+        company_id: baoGiaData?.company_id,
+        name: baoGiaData?.name,
+        ngon_ngu_key: data?.ngon_ngu_key?.value,
+        file_tmp: [],
+        template_id: data?.template_id?.value,
+        chiphivanchuyen: data?.chiphivanchuyen?.value,
+        dai_dien_id: data?.dai_dien_id?.value,
+        loai_hd_key: data?.loai_hd_key?.value,
+        loai_tien_key: data?.loai_tien_key?.value,
+        vat: data?.vat ? 1 : 0,
+        created_at: data?.created_at
+          ? typeof data?.created_at === "string"
+            ? format(new Date(data?.created_at), "yyyy-mmm-dd")
+            : format(data?.created_at, "yyyy-mmm-dd")
+          : format(new Date(), "yyyy-mmm-dd"),
+      };
+      createHopDong({ payload });
     }
-    createHopDong({ payload });
   };
 
   React.useEffect(() => {
@@ -290,7 +329,6 @@ function HopDongFormContainer(props: IBaoGiaForm) {
   ]);
   1;
   React.useEffect(() => {
-    console.log(loaiHdLabel);
     if (id && hopDongData && isSuccess) {
       const defaultValue = {
         ...hopDongData,
@@ -353,65 +391,69 @@ function HopDongFormContainer(props: IBaoGiaForm) {
   return (
     <UI.Card elevation={10}>
       <UI.CardContent>
-        <HopDongNewForm
-          formRef={elForm}
-          key={JSON.stringify(defaultValues)}
-          nhanVienData={nhanVienData}
-          isLoadingSearchNhanVien={isLoadingNhanVien || isFetchingNhanVien}
-          onSearchNhanVien={(name) =>
-            searchNhanVien({
-              name: name,
-              chuc_vu_key:
-                "chuc_vu_key=giam-doc,giam-doc-kinh-doanh,giam-doc-dieu-hanh",
-            })
-          }
-          LoaiHdData={LoaiHdData}
-          isLoadingSearchLoaiHd={isLoadingLoaiHd || isFetchingLoaiHd}
-          onSearchLoaiHd={(name) => searchLoaiHd({ name })}
-          benHdData={benHdData}
-          isLoadingBenHd={isLoadingBenHd || isFetchingBenHd}
-          onSearchBenHd={(name) => searchBenHd({ name })}
-          ngonNguData={ngonNguData}
-          isLoadingNgonNgu={isLoadingNgonNgu || isFetchingNgonNgu}
-          onSearchNgonNgu={(name) => searchNgonNgu({ name })}
-          loaiTienData={loaiTienData}
-          isLoadingLoaiTien={isLoadingLoaiTien || isFetchingLoaiTien}
-          onSearchLoaiTien={(name) => searchLoaiTien({ name })}
-          sanPhamData={sanPhamData}
-          onSearchSanPham={(name) => searchSanPham({ name })}
-          chatLieuData={chatLieuData}
-          onSearchChatLieu={(name) => searchChatLieu({ name })}
-          donViTinhData={donViTinhData}
-          onSearchDonViTinh={(name) => searchDonViTinh({ name })}
-          mauInData={mauInData}
-          onSearchMauIn={(name) => searchMauIn({ name })}
-          isLoadingMauIn={isLoadingMauIn || isFetchingMauIn}
-          getSanPhamById={(id: any) => getSanPhamById({ id }).unwrap()}
-          getChatLieuByKey={(value: string) =>
-            getChatLieuByKey({ value }).unwrap()
-          }
-          getDonViTinhByKey={(value: string) =>
-            getDonViTinhByKey({ value }).unwrap()
-          }
-          onAddSanPham={(index) => ({
-            _id: index,
-            product_id: sanPhamData?.[0],
-            chat_lieu_key: chatLieuData?.[0],
-            don_vi_key: donViTinhData?.[0],
-            so_luong: 1,
-            don_gia_von: "",
-            don_gia: "",
-            thanh_tien: "",
-            ghi_chu: "",
-          })}
-          onAddQuyTrinh={(index) => ({
-            _id: index,
-            phan_tram: 100,
-            tong_tien_dot_locate: "",
-            tong_tien_chu: "",
-          })}
-          defaultValues={defaultValues}
-        />
+        {(isEdit && !isSuccess) || isFetchingBaoGia || isLoadingBaogia ? (
+          <Loading />
+        ) : (
+          <HopDongNewForm
+            formRef={elForm}
+            key={JSON.stringify(defaultValues)}
+            nhanVienData={nhanVienData}
+            isLoadingSearchNhanVien={isLoadingNhanVien || isFetchingNhanVien}
+            onSearchNhanVien={(name) =>
+              searchNhanVien({
+                name: name,
+                chuc_vu_key:
+                  "chuc_vu_key=giam-doc,giam-doc-kinh-doanh,giam-doc-dieu-hanh",
+              })
+            }
+            LoaiHdData={LoaiHdData}
+            isLoadingSearchLoaiHd={isLoadingLoaiHd || isFetchingLoaiHd}
+            onSearchLoaiHd={(name) => searchLoaiHd({ name })}
+            benHdData={benHdData}
+            isLoadingBenHd={isLoadingBenHd || isFetchingBenHd}
+            onSearchBenHd={(name) => searchBenHd({ name })}
+            ngonNguData={ngonNguData}
+            isLoadingNgonNgu={isLoadingNgonNgu || isFetchingNgonNgu}
+            onSearchNgonNgu={(name) => searchNgonNgu({ name })}
+            loaiTienData={loaiTienData}
+            isLoadingLoaiTien={isLoadingLoaiTien || isFetchingLoaiTien}
+            onSearchLoaiTien={(name) => searchLoaiTien({ name })}
+            sanPhamData={sanPhamData}
+            onSearchSanPham={(name) => searchSanPham({ name })}
+            chatLieuData={chatLieuData}
+            onSearchChatLieu={(name) => searchChatLieu({ name })}
+            donViTinhData={donViTinhData}
+            onSearchDonViTinh={(name) => searchDonViTinh({ name })}
+            mauInData={mauInData}
+            onSearchMauIn={(name) => searchMauIn({ name })}
+            isLoadingMauIn={isLoadingMauIn || isFetchingMauIn}
+            getSanPhamById={(id: any) => getSanPhamById({ id }).unwrap()}
+            getChatLieuByKey={(value: string) =>
+              getChatLieuByKey({ value }).unwrap()
+            }
+            getDonViTinhByKey={(value: string) =>
+              getDonViTinhByKey({ value }).unwrap()
+            }
+            onAddSanPham={(index) => ({
+              _id: index,
+              product_id: sanPhamData?.[0],
+              chat_lieu_key: chatLieuData?.[0],
+              don_vi_key: donViTinhData?.[0],
+              so_luong: 1,
+              don_gia_von: "",
+              don_gia: "",
+              thanh_tien: "",
+              ghi_chu: "",
+            })}
+            onAddQuyTrinh={(index) => ({
+              _id: index,
+              phan_tram: 100,
+              tong_tien_dot_locate: "",
+              tong_tien_chu: "",
+            })}
+            defaultValues={defaultValues}
+          />
+        )}
       </UI.CardContent>
       <UI.CardActions sx={{ justifyContent: "flex-end" }}>
         <LoadingButton

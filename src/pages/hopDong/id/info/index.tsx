@@ -58,6 +58,7 @@ function Info() {
         benHdLabel={benHdData?.[hopDongData?.chiphivanchuyen]}
         nhanVienLabel={nhanVienData?.name}
         mauInLabel={mauInData?.tieu_de}
+        isEdit={true}
         isSuccess={
           isSuccessNhanVien &&
           isSuccessNgonNgu &&
