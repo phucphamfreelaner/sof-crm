@@ -4,6 +4,8 @@ import { AiOutlineAppstore } from "react-icons/ai";
 import { HiChevronDoubleLeft } from "react-icons/hi";
 
 import { DashboardSidebarSection } from "./SidebarSection";
+import { Link } from "react-router-dom";
+import Logo from "@/assets/images/logo-capa-group.png";
 
 interface ISidebar {
   width?: string | number;
@@ -35,6 +37,18 @@ function Sidebar(props: ISidebar) {
       sx={{ width, height: "100%", backgroundColor: "rgb(15 24 39)" }}
     >
       <UI.VStack w="100%" spacing={0}>
+        <UI.Box>
+          <Link
+            to="/"
+            style={{
+              marginTop: "10px",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <img width="90%" src={Logo} />
+          </Link>
+        </UI.Box>
         <UI.HStack
           onClick={onCollapse}
           cursor="pointer"
