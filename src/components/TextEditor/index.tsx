@@ -10,6 +10,7 @@ interface ITextEditor {
   onChange?: (content: any) => any;
   defaultValue?: string;
   value?: string;
+  isDisabled?: boolean;
 }
 
 function TextEditor(props: ITextEditor) {

@@ -201,14 +201,42 @@ function HopDongNewForm(props: IHopDongNewForm) {
           autocompleteOptions: mauInData || [],
           onSearchChange: onSearchMauIn,
         },
-
+        {
+          name: "quy_cach_pham_chat",
+          label: "Quy cách phẩm chất",
+          colSpan: 3,
+          multiline: true,
+          type: "text-editor",
+        },
         {
           name: "dia_chi_giao",
           label: "Địa chỉ giao",
-          colSpan: 6,
+          colSpan: 3,
           multiline: true,
           rows: 4,
           type: "input",
+        },
+        {
+          name: "hinh_thuc_thanh_toan",
+          label: "Hình thức thanh toán",
+          colSpan: 6,
+          multiline: true,
+          type: "radio",
+          radioDirection: "row",
+          radioOptions: [
+            {
+              label: "Nhập tay",
+              value: "nhap_tay",
+            },
+            {
+              label: "Ưu tiên %",
+              value: "uu_tien_phan_tram",
+            },
+            {
+              label: "Ưu tiên giá",
+              value: "uu_tien_giá",
+            },
+          ],
         },
         {
           name: "quy_trinh",
