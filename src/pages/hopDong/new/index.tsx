@@ -4,6 +4,7 @@ import { AiOutlineArrowLeft } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 
 import HopDongFormContainer from "@/container/HopDongNew";
+import TextEditor from "@/components/TextEditor";
 
 function AddHopDong() {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ function AddHopDong() {
         </UI.Grid>
       </UI.Grid>
       <UI.Box sx={{ mt: 5, width: "100%" }}>
+        <TextEditor value="<h1>This is data</h1>" id="text-01" />
         <HopDongFormContainer />
       </UI.Box>
     </UI.Box>

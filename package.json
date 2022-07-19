@@ -98,6 +98,7 @@
     "simplebar-react": "^2.4.1",
     "single-spa": "^5.9.3",
     "single-spa-react": "^4.3.1",
+    "suneditor": "^2.43.14",
     "vn-num2words": "^1.0.4",
     "yup": "^0.32.11"
   },
