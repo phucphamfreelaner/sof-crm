@@ -10,6 +10,7 @@ import type { IArrayFieldsController } from "./controller/ArrayFields";
 import type { ICollapseFieldsController } from "./controller/CollapseFields";
 
 import type { IIconButtonFieldController } from "./controller/IconButton";
+import type { IRadioController } from "./controller/Radio";
 
 export interface IBaseForm {
   id?: string;
@@ -59,17 +60,20 @@ export type IFormControl = IBaseController &
   ISelectController &
   IArrayFieldsController &
   IIconButtonFieldController &
-  ICollapseFieldsController & {
+  ICollapseFieldsController &
+  IRadioController & {
     type:
       | "input"
       | "select"
       | "label"
       | "checkbox"
+      | "radio"
       | "autocomplete"
       | "array-fields"
       | "input-mask"
       | "collapse-fields"
       | "date-picker"
+      | "text-editor"
       | "icon-button";
     rowSpan?: number;
     colSpan?: number;

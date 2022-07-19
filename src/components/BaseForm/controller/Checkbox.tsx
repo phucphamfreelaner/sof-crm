@@ -5,7 +5,6 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-export { HStack, VStack } from "@chakra-ui/layout";
 
 import { Controller } from "react-hook-form";
 import { IBaseController } from "../types";

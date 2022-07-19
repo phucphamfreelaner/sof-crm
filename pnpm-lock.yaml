@@ -72,6 +72,7 @@ specifiers:
   simplebar-react: ^2.4.1
   single-spa: ^5.9.3
   single-spa-react: ^4.3.1
+  suneditor: ^2.43.14
   ts-config-single-spa: ^3.0.0
   typescript: ^4.3.5
   vn-num2words: ^1.0.4
@@ -119,6 +120,7 @@ dependencies:
   simplebar-react: 2.4.1_sfoxds7t5ydpegc3knd667wn6m
   single-spa: 5.9.4
   single-spa-react: 4.6.1_cd6sxiipx7irxcp5iyvjfmb76a
+  suneditor: 2.43.14
   vn-num2words: 1.0.4
   yup: 0.32.11
 
@@ -7616,6 +7618,10 @@ packages:
 
   /stylis/4.0.13:
     resolution: {integrity: sha512-xGPXiFVl4YED9Jh7Euv2V220mriG9u4B2TA6Ybjc1catrstKD2PpIdU3U0RKpkVBC2EhmL/F0sPCr9vrFTNRag==}
+    dev: false
+
+  /suneditor/2.43.14:
+    resolution: {integrity: sha512-5FMoAW/TwwU2MQl795iE1RZy5vHxgReHJjo208z2SAyr/erG2N4XDv392tThHAe0fWBNvx3b8HfaMrrj5do00w==}
     dev: false
 
   /supports-color/5.5.0:

@@ -19,6 +19,8 @@ import IconButtonController from "./controller/IconButton";
 import InputMaskController from "./controller/InputMask";
 import CollapseFieldsController from "./controller/CollapseFields";
 import DateTimeController from "./controller/DateTime";
+import TextEditorController from "./controller/TextEditor";
+import Radio from "./controller/Radio";
 
 const CONTROLLER: any = {
   input: InputController,
@@ -31,6 +33,8 @@ const CONTROLLER: any = {
   "icon-button": IconButtonController,
   "input-mask": InputMaskController,
   "date-picker": DateTimeController,
+  "text-editor": TextEditorController,
+  radio: Radio,
 };
 
 const BaseForm = React.forwardRef((props: IBaseForm, ref?: any) => {
