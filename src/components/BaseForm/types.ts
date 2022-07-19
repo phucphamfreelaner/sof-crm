@@ -74,6 +74,7 @@ export type IFormControl = IBaseController &
       | "collapse-fields"
       | "date-picker"
       | "text-editor"
+      | "upload-file"
       | "icon-button";
     rowSpan?: number;
     colSpan?: number;

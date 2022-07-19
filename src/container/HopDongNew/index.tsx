@@ -190,6 +190,7 @@ function HopDongFormContainer(props: IBaoGiaForm) {
     useLazyPutHopDongByIdQuery();
 
   const handleSaveHopDong = (data: any, id: any) => {
+    console.log("🚀 ~ data", data);
     if (id) {
       const san_pham = data?.san_pham.map((x: any, index: number) => ({
         ...hopDongData?.san_pham?.[index],
@@ -207,7 +208,6 @@ function HopDongFormContainer(props: IBaoGiaForm) {
         company_id: baoGiaData?.company_id,
         name: baoGiaData?.name,
         ngon_ngu_key: data?.ngon_ngu_key?.value,
-        file_tmp: [],
         template_id: data?.template_id?.value,
         chiphivanchuyen: data?.chiphivanchuyen?.value,
         dai_dien_id: data?.dai_dien_id?.value,
@@ -245,7 +245,6 @@ function HopDongFormContainer(props: IBaoGiaForm) {
         company_id: baoGiaData?.company_id,
         name: baoGiaData?.name,
         ngon_ngu_key: data?.ngon_ngu_key?.value,
-        file_tmp: [],
         template_id: data?.template_id?.value,
         chiphivanchuyen: data?.chiphivanchuyen?.value,
         dai_dien_id: data?.dai_dien_id?.value,
