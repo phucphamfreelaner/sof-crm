@@ -59,7 +59,7 @@ function TextEditor(props: ITextEditor) {
       editor.current.onChange = function (contents: string) {
         onChange?.(contents);
       };
-      if (defaultValue) editor.current.setContents(value);
+      if (defaultValue) editor.current.setContents(defaultValue);
     }
   }, [editor.current]);
 
