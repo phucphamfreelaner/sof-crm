@@ -239,6 +239,13 @@ function HopDongNewForm(props: IHopDongNewForm) {
           ],
         },
         {
+          name: "file_tmp",
+          label: "Thêm File thiết kế",
+          colSpan: 3,
+          multiline: true,
+          type: "upload-file",
+        },
+        {
           name: "quy_trinh",
           label: "Quy Trình Thanh Toán",
           colSpan: 6,

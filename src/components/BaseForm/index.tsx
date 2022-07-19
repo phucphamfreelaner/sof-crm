@@ -21,6 +21,7 @@ import CollapseFieldsController from "./controller/CollapseFields";
 import DateTimeController from "./controller/DateTime";
 import TextEditorController from "./controller/TextEditor";
 import Radio from "./controller/Radio";
+import UploadImage from "./controller/UploadImage";
 
 const CONTROLLER: any = {
   input: InputController,
@@ -35,6 +36,7 @@ const CONTROLLER: any = {
   "date-picker": DateTimeController,
   "text-editor": TextEditorController,
   radio: Radio,
+  "upload-file": UploadImage,
 };
 
 const BaseForm = React.forwardRef((props: IBaseForm, ref?: any) => {
