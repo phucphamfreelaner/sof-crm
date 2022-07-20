@@ -256,7 +256,6 @@ const CustomerListTable = (props) => {
 
       <DeleteCustomerModal
         open={openDeleteModal}
-        selectedIds={selectedCustomers}
         customers={customers}
         onClose={() => {
           setOpenDeleteModal(false);

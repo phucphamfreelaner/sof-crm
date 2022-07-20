@@ -21,21 +21,21 @@ const style = {
 interface IDeleteCustomerModal {
   open: boolean;
   onClose?: (open: boolean) => void;
-  selectedIds: number[];
   customers: ICustomer[];
   refetch?: () => any;
 }
 function DeleteCustomerModal(props: IDeleteCustomerModal) {
-  const { open, onClose, selectedIds, customers, refetch } = props;
-
+  const { open, onClose, customers, refetch } = props;
   const theme = UI.useTheme();
 
   const [deleteCustomer, result] = useDeleteCustomerByIDMutation();
 
   const handleConfirm = async () => {
-    selectedIds?.map(async (id) => {
-      await await deleteCustomer({ id });
+    const promise = [];
+    customers?.map((customer) => {
+      promise.push(deleteCustomer({ id: customer?.id }));
     });
+    Promise.all(promise);
     await onClose(false);
     await toast.success("Delete customer(s) successfully");
     await refetch();
@@ -73,20 +73,16 @@ function DeleteCustomerModal(props: IDeleteCustomerModal) {
               <UI.Typography mb={2}>
                 The following customer(s) will be deleted:
               </UI.Typography>
-              {customers
-                ?.filter((item) => {
-                  if (selectedIds.includes(item?.id)) return item;
-                })
-                ?.map((customer) => {
-                  return (
-                    <UI.HStack justifyContent={"start"} alignItems={"center"}>
-                      <UI.Typography width={100}>
-                        <b>{customer?.code}</b>
-                      </UI.Typography>
-                      <UI.Typography>{customer?.contact}</UI.Typography>
-                    </UI.HStack>
-                  );
-                })}
+              {customers?.map((customer) => {
+                return (
+                  <UI.HStack justifyContent={"start"} alignItems={"center"}>
+                    <UI.Typography width={100}>
+                      <b>{customer?.code}</b>
+                    </UI.Typography>
+                    <UI.Typography>{customer?.contact}</UI.Typography>
+                  </UI.HStack>
+                );
+              })}
             </UI.Alert>
             <UI.HStack
               w="100%"
