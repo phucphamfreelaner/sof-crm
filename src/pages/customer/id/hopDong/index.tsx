@@ -11,6 +11,7 @@ function HopDong() {
       <HopDongListContainer
         customerId={params?.customerId}
         isHiddenKhachHang={true}
+        isHiddenSearchBar={true}
       />
     </UI.VStack>
   ) : null;

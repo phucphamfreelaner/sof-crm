@@ -83,25 +83,32 @@ function CoHoiFilter(props: ICoHoiFilter) {
         <BaseForm
           templateColumns="repeat(12, 1fr)"
           columnGap="24px"
-          watchFields={["code", "customer_id"]}
+          watchFields={["code", "name", "customer_id"]}
           onWatchChange={onWatchChange}
           fields={[
             {
-              name: "code",
-              label: "Mã cơ hội",
+              name: "name",
+              label: "Tên Cơ Hội",
               type: "input",
-              colSpan: 4,
-              placeholder: "Nhập mã cơ hội",
+              colSpan: 6,
+              placeholder: "Nhập tên cơ hội",
             },
             {
               name: "customer_id",
               label: "Cách gọi KH",
               type: "autocomplete",
-              colSpan: 4,
+              colSpan: 3,
               isLoading: isLoadingKhachHang || isFetchingKhachHang,
               autocompleteOptions: khachHangData,
               onSearchChange: handleSearchKhachHang,
               placeholder: "Tất cả",
+            },
+            {
+              name: "code",
+              label: "Mã cơ hội",
+              type: "input",
+              colSpan: 3,
+              placeholder: "Nhập mã cơ hội",
             },
           ]}
         ></BaseForm>

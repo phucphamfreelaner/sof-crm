@@ -68,9 +68,17 @@ export const hopDongService = createApi({
     }),
     getHopDongList: builder.query({
       transformResponse: (response: any) => response as IGetHopDongList,
-      query: ({ limit, page, code, order_by, search, customerQuery }) => ({
+      query: ({ limit, page, name, order_by, search, customerQuery }) => ({
         method: "GET",
-        url: `/hop-dong?with[]=khach_hang&with[]=nhan_vien_tao&with[]=loai_hop_dong&with[]=bao_gia_co_hoi_tien_trinh&limit=${limit}&page=${page}&s[code]=${code}&${order_by}${search}${customerQuery}`,
+        url: `/hop-dong?with[]=khach_hang&with[]=nhan_vien_tao&with[]=loai_hop_dong&with[]=bao_gia_co_hoi_tien_trinh&limit=${limit}&page=${page}&s[name]=${name}&${order_by}${search}${customerQuery}`,
+      }),
+    }),
+    getHopDongByName: builder.query({
+      transformResponse: (response: any) =>
+        response?.data.map((x) => ({ label: x.name, value: x.id })),
+      query: ({ name }) => ({
+        method: "GET",
+        url: `/hop-dong?with[]=khach_hang&with[]=nhan_vien_tao&with[]=loai_hop_dong&with[]=bao_gia_co_hoi_tien_trinh&limit=10&page=1&s[name]=${name}`,
       }),
     }),
   }),
@@ -79,6 +87,8 @@ export const hopDongService = createApi({
 export const {
   useGetHopDongByIdQuery,
   useGetHopDongListQuery,
+  useLazyGetHopDongListQuery,
+  useLazyGetHopDongByNameQuery,
   useGetViewHopDongQuery,
   useGetHopDongByCustomerIdQuery,
   useLazyPutHopDongByIdQuery,

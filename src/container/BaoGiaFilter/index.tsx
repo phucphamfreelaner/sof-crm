@@ -66,27 +66,28 @@ function BaoGiaFilter(props: IBaoGiaFilter) {
         onWatchChange={onWatchChange}
         fields={[
           {
-            name: "code",
-            label: "Mã báo giá",
-            type: "input",
-            colSpan: 3,
-            placeholder: "Nhập mã báo giá",
-          },
-          {
             name: "customer_id",
             label: "Cách gọi KH",
             type: "autocomplete",
-            colSpan: 3,
+            colSpan: 6,
             isLoading: isLoadingKhachHang || isFetchingKhachHang,
             autocompleteOptions: khachHangData,
             onSearchChange: handleSearchKhachHang,
             placeholder: "Tất cả",
           },
           {
+            name: "code",
+            label: "Mã báo giá",
+            type: "input",
+            colSpan: 2,
+            placeholder: "Nhập mã báo giá",
+          },
+
+          {
             name: "loai_tien_key",
             label: "Loại tiền",
             type: "autocomplete",
-            colSpan: 3,
+            colSpan: 2,
             autocompleteOptions: loaiTienData,
             isLoading: isLoadingLoaiTien || isFetchingLoaiTien,
             onSearchChange: handleSearchLoaiTien,
@@ -96,7 +97,7 @@ function BaoGiaFilter(props: IBaoGiaFilter) {
             name: "created_by",
             label: "Nhân viên nhập",
             type: "autocomplete",
-            colSpan: 3,
+            colSpan: 2,
             autocompleteOptions: nhanVienData,
             isLoading: isLoadingNhanVien || isFetchingNhanVien,
             onSearchChange: handleSearchNhanVien,

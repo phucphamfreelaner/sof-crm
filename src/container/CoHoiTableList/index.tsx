@@ -210,7 +210,7 @@ function CoHoiTableListContainer() {
                       </UI.InputAdornment>
                     ),
                   }}
-                  placeholder="Tìm kiếm mã cơ hội"
+                  placeholder="Tìm kiếm tên cơ hội"
                 />
               </UI.Box>
               <UI.TextField

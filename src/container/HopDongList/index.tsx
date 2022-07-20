@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import {
   useGetHopDongListQuery,
   useLazyDeleteHopDongQuery,
+  useLazyGetHopDongByNameQuery,
 } from "@/store/hopDong";
 import numeral from "numeral";
 import { MdCancel, MdOpenInNew } from "react-icons/md";
@@ -21,15 +22,10 @@ import BaseTable from "@/components/BaseTable";
 import { isEmpty } from "lodash-es";
 import { LOCAL_KEY } from "@/constants";
 
-const sortOptions = [
+const advanceSearchOptions = [
   {
     label: "Số HĐ",
     name: "code",
-    type: "input",
-  },
-  {
-    label: "Tiêu Đề",
-    name: "name",
     type: "input",
   },
   {
@@ -99,27 +95,13 @@ const sortOptions = [
   },
 ];
 
-const orderOptions = [
-  {
-    label: "Giảm dần",
-    value: "desc",
-  },
-  {
-    label: "Tăng dần",
-    value: "asc",
-  },
-];
-
 function HopDongListContainer(props) {
   const navigate = useNavigate();
-  const { customerId, isHiddenKhachHang } = props;
-  const [sort, setSort] = useState(sortOptions[0].name);
-  const [orderBy, setOrderBy] = useState(orderOptions[0].value);
+  const { customerId, isHiddenKhachHang, isHiddenSearchBar } = props;
   const [page, setPage] = useState(0);
   const [dataSelected, setDataSelected] = useState<any>(null);
 
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const queryRef = useRef(null);
   const [totalPages, setTotalPages] = useState(rowsPerPage * (page + 1) + 1);
 
   const [filters, setFilters] = useState({
@@ -131,19 +113,17 @@ function HopDongListContainer(props) {
   const { data, isFetching, refetch, isLoading } = useGetHopDongListQuery({
     page: page + 1,
     limit: rowsPerPage,
-    code: filters?.query,
+    name: filters?.query,
     order_by: filters?.order_by,
     search: filters?.search,
     customerQuery: customerId ? `&customer_id=${customerId}` : "",
   });
 
-  const handleQueryChange = (event) => {
-    event.preventDefault();
+  const handleOnchangeBaseSearch = (data) => {
     setFilters((prevState) => ({
       ...prevState,
-      query: queryRef.current?.value,
+      query: data?.hopdong_name?.label ? data?.hopdong_name?.label : "",
     }));
-    setPage(0);
   };
 
   const handleOnchangeAdvanceSearch = (data) => {
@@ -163,21 +143,6 @@ function HopDongListContainer(props) {
     }));
   };
 
-  const handleSortChange = (event) => {
-    setSort(event.target.value);
-  };
-
-  const handleOrderChange = (event) => {
-    setOrderBy(event.target.value);
-  };
-
-  useEffect(() => {
-    setFilters((prevState) => ({
-      ...prevState,
-      order_by: `order_by[${sort}]=${orderBy}`,
-    }));
-  }, [orderBy, sort]);
-
   useEffect(() => {
     if (data?.data?.length === 0 || data?.data?.length < rowsPerPage) {
       setTotalPages(data?.data?.length);
@@ -188,19 +153,38 @@ function HopDongListContainer(props) {
 
   const [deleteHopDong] = useLazyDeleteHopDongQuery();
 
+  const [
+    searchHopDong,
+    {
+      data: hopDongSearchData,
+      isLoading: isLoadingSearchHopDong,
+      isFetching: isFetchingSearchHopDong,
+    },
+  ] = useLazyGetHopDongByNameQuery();
+
   return (
     <>
-      <SearchBar
-        sort={sort}
-        orderBy={orderBy}
-        queryRef={queryRef}
-        sortOptions={sortOptions}
-        orderOptions={orderOptions}
-        handleQueryChange={handleQueryChange}
-        handleOrderChange={handleOrderChange}
-        handleSortChange={handleSortChange}
-        handleOnchangeAdvanceSearch={handleOnchangeAdvanceSearch}
-      />
+      {!isHiddenSearchBar && (
+        <SearchBar
+          baseSearchOptions={[
+            {
+              name: "hopdong_name",
+              label: "Tìm kiếm tên hợp đồng",
+              type: "autocomplete",
+              colSpan: 8,
+              isLoading: isLoadingSearchHopDong || isFetchingSearchHopDong,
+              autocompleteOptions: hopDongSearchData,
+              onSearchChange: (data) => {
+                searchHopDong({ name: data ? data : "" });
+              },
+              placeholder: "Tất cả",
+            },
+          ]}
+          advanceSearchOptions={advanceSearchOptions}
+          handleOnchangeBaseSearch={handleOnchangeBaseSearch}
+          handleOnchangeAdvanceSearch={handleOnchangeAdvanceSearch}
+        />
+      )}
       <BaseTable
         name="Hợp Đồng"
         pageSize={rowsPerPage || 15}
@@ -245,7 +229,6 @@ function HopDongListContainer(props) {
               size="small"
               startIcon={<MdOpenInNew size="16" />}
               onClick={() => {
-                console.log(dataSelected);
                 navigate(`/hop_dong/${dataSelected?.[0]?.id}`);
               }}
             >

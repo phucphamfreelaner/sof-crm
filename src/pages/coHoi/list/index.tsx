@@ -47,6 +47,7 @@ function CoHoiList() {
             }}
             onWatchChange={(filterData) => {
               handleFilterChange({
+                name: filterData?.name,
                 code: filterData?.code,
                 customer_id: filterData?.customer_id?.value,
                 phone: filterData?.phone,
