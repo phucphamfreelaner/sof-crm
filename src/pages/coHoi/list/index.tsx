@@ -24,16 +24,6 @@ function CoHoiList() {
         <UI.Grid item>
           <UI.Typography variant="h4">Cơ Hội</UI.Typography>
         </UI.Grid>
-        <UI.Grid item>
-          <UI.Button
-            onClick={() => navigate("/co_hoi/new")}
-            size="small"
-            startIcon={<AiFillPlusCircle fontSize="small" />}
-            variant="contained"
-          >
-            Thêm mới
-          </UI.Button>
-        </UI.Grid>
       </UI.Grid>
 
       <UI.Card>
