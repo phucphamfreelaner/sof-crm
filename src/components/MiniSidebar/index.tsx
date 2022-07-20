@@ -1,5 +1,6 @@
 import * as UI from "@/libs/ui";
-import { HiChevronDoubleRight, HiUsers } from "react-icons/hi";
+import { HiChevronDoubleRight } from "react-icons/hi";
+import { BiTask } from "react-icons/bi";
 import { AiOutlineAppstore } from "react-icons/ai";
 
 import SidebarItem from "./SidebarItem";
@@ -44,7 +45,7 @@ function Minibar({
         </UI.IconButton>
         <SidebarItem
           onClickItem={onClickItem}
-          icon={<HiUsers fontSize="22px" />}
+          icon={<BiTask fontSize="22px" />}
         />
       </UI.VStack>
       <UI.Box p={spacing(2)}>
