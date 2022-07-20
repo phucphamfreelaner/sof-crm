@@ -1,5 +1,5 @@
 import * as UI from "@/libs/ui";
-import { HiUsers } from "react-icons/hi";
+import { BiTask } from "react-icons/bi";
 import { AiOutlineAppstore } from "react-icons/ai";
 import { HiChevronDoubleLeft } from "react-icons/hi";
 
@@ -18,8 +18,8 @@ const sections = [
     title: "Quản lý Nghiệp vụ",
     items: [
       {
-        title: "Khách hàng",
-        icon: <HiUsers width={20} />,
+        title: "CRM",
+        icon: <BiTask width={20} />,
         path: "/",
       },
     ],

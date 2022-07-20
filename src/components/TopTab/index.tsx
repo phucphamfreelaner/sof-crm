@@ -1,9 +1,13 @@
 import React from "react";
 import * as UI from "@/libs/ui";
 import { useNavigate, useLocation } from "react-router-dom";
-import { AiFillPlusCircle, AiOutlineUser } from "react-icons/ai";
+import {
+  AiFillPlusCircle,
+  AiOutlineUser,
+  AiOutlineFileDone,
+  AiOutlineFileSync,
+} from "react-icons/ai";
 import { FaRegLightbulb } from "react-icons/fa";
-import { MdOutlineNoteAdd } from "react-icons/md";
 
 function TopTab() {
   const navigate = useNavigate();
@@ -12,40 +16,50 @@ function TopTab() {
 
   const tabs = [
     {
-      label: (
+      label: ({ currentTab }) => (
         <UI.HStack>
           <AiOutlineUser size="20px" />
-          <UI.Typography variant="subtitle1">DS khách hàng</UI.Typography>
+          {currentTab !== "/khach_hang" && (
+            <UI.Typography variant="subtitle1">Khách hàng</UI.Typography>
+          )}
         </UI.HStack>
       ),
       value: "/khach_hang",
       icon: AiFillPlusCircle,
     },
     {
-      label: (
-        <UI.HStack>
-          <FaRegLightbulb size="20px" />
-          <UI.Typography variant="subtitle1">Cơ hội</UI.Typography>
-        </UI.HStack>
-      ),
+      label: ({ currentTab }) => {
+        return (
+          <UI.HStack>
+            <FaRegLightbulb size="20px" />
+            {currentTab !== "/co_hoi" && (
+              <UI.Typography variant="subtitle1">Cơ hội</UI.Typography>
+            )}
+          </UI.HStack>
+        );
+      },
       value: "/co_hoi",
       icon: AiFillPlusCircle,
     },
     {
-      label: (
+      label: ({ currentTab }) => (
         <UI.HStack>
-          <MdOutlineNoteAdd size="20px" />
-          <UI.Typography variant="subtitle1">Báo giá</UI.Typography>
+          <AiOutlineFileSync size="20px" />
+          {currentTab !== "/bao_gia" && (
+            <UI.Typography variant="subtitle1">Báo giá</UI.Typography>
+          )}
         </UI.HStack>
       ),
       value: "/bao_gia",
       icon: AiFillPlusCircle,
     },
     {
-      label: (
+      label: ({ currentTab }) => (
         <UI.HStack>
-          <MdOutlineNoteAdd size="20px" />
-          <UI.Typography variant="subtitle1">Hợp đồng</UI.Typography>
+          <AiOutlineFileDone size="20px" />
+          {currentTab !== "/hop_dong" && (
+            <UI.Typography variant="subtitle1">Hợp đồng</UI.Typography>
+          )}
         </UI.HStack>
       ),
       value: "/hop_dong",
@@ -75,7 +89,11 @@ function TopTab() {
         variant="scrollable"
       >
         {tabs.map((tab) => (
-          <UI.Tab key={tab.value} label={tab.label} value={tab.value} />
+          <UI.Tab
+            key={tab.value}
+            label={tab.label({ currentTab })}
+            value={tab.value}
+          />
         ))}
       </UI.Tabs>
       <UI.Divider />
