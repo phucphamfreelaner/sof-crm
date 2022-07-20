@@ -5,6 +5,7 @@ import { AiFillSetting } from "react-icons/ai";
 import {
   DataGrid,
   GridColumns,
+  GridColumnVisibilityModel,
   GridSelectionModel,
   GridToolbarColumnsButton,
   GridToolbarContainer,
@@ -58,6 +59,9 @@ function BaseTable(props: IBaseTable) {
     );
   }, [selectionModel]);
 
+  const [columnVisibilityModel, setColumnVisibilityModel] =
+    React.useState<GridColumnVisibilityModel>({});
+
   return (
     <div
       style={{
@@ -83,6 +87,10 @@ function BaseTable(props: IBaseTable) {
             </UI.Typography>
           ),
         }}
+        columnVisibilityModel={columnVisibilityModel}
+        onColumnVisibilityModelChange={(newModel) =>
+          setColumnVisibilityModel(newModel)
+        }
         keepNonExistentRowsSelected
         pageSize={pageSize}
         onPageSizeChange={onPageSizeChange}
