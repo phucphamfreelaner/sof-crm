@@ -129,6 +129,13 @@ const CoHoiNewContainer = (props) => {
       label: "Diễn giải",
       colSpan: 6,
     },
+    {
+      name: "file_tmp",
+      label: "UPLOAD FILE",
+      colSpan: 3,
+      multiline: true,
+      type: "upload-file",
+    },
   ];
 
   const elForm = React.useRef<any>();
