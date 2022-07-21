@@ -52,7 +52,6 @@ function UploadFileDetailForm(props: IUploadFileDetailController) {
     setValue(_data);
   };
   const handleRemoveFile = (path: string) => {
-    console.log("🚀 ~ path", path, value);
     setValue((s) => s.filter((x) => x?.path !== path));
   };
   return (
