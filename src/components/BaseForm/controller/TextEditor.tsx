@@ -44,6 +44,7 @@ function TextEditorPickerForm(props: ITextEditorController) {
       <TextEditor
         isDisabled={isDisabled}
         id={name}
+        value={field?.value}
         onChange={(value) => field?.onChange(value)}
       />
       <VStack spacing={0} alignItems="flex-start" w="100%">

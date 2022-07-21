@@ -5,7 +5,7 @@ import { IBaseController, IFormControl, TSetValue } from "../types";
 import { AiFillPlusCircle } from "react-icons/ai";
 
 import BaseForm from "@/components/BaseForm";
-import { HStack, VStack } from "@chakra-ui/layout";
+import { VStack } from "@chakra-ui/layout";
 import { AiOutlineDelete } from "react-icons/ai";
 import produce from "immer";
 
