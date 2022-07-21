@@ -80,7 +80,7 @@ const CoHoiDetailsContainer = () => {
       name: "name",
       type: "input",
       label: "Tên",
-      defaultValues: coHoi?.name,
+      colSpan: 3,
     },
     {
       name: "soluong",
@@ -88,6 +88,7 @@ const CoHoiDetailsContainer = () => {
       label: "Số lượng",
       defaultValues: defaultListSoLuongData?.[coHoi?.soluong],
       isLoading: isLoadingSoLuong || isFetchingSoLuong,
+      colSpan: 3,
       autocompleteOptions: soLuongData
         ? Object.keys(soLuongData).map((key) => {
             return { label: soLuongData[key], value: key };
@@ -111,6 +112,7 @@ const CoHoiDetailsContainer = () => {
       onSearchChange: (text) => {
         searchTrangThai({ name: text });
       },
+      colSpan: 3,
     },
     {
       name: "tien_trinh_key",
@@ -126,19 +128,38 @@ const CoHoiDetailsContainer = () => {
       onSearchChange: (text) => {
         searchTienTrinh({ name: text });
       },
+      colSpan: 3,
     },
     {
       name: "note",
-      type: "input",
+      type: "text-editor",
       label: "Diễn giải",
       defaultValues: coHoi?.note,
+      colSpan: 6,
+    },
+    {
+      name: "files",
+      label: "UPLOAD FILE",
+      colSpan: 6,
+      type: "upload-file-detail",
+      templateColumns: "repeat(10, 1fr)",
+      gap: "12px",
+      fields: [
+        {
+          type: "input",
+          name: "type",
+          label: "Loại",
+          colSpan: 3,
+        },
+        {
+          type: "input",
+          name: "note",
+          label: "Diễn giải",
+          colSpan: 3,
+        },
+      ],
     },
   ];
-
-  let defaultValues = rowsData.reduce(
-    (o, item) => ({ ...o, [item.name]: item.defaultValues }),
-    {}
-  );
 
   const [updateCoHoiByID, result] = useUpdateCoHoiByIDMutation();
 
@@ -268,8 +289,8 @@ const CoHoiDetailsContainer = () => {
                     <BaseForm
                       id="co-hoi-details"
                       gap={theme.spacing(4)}
-                      templateColumns="repeat(2,1fr)"
-                      defaultValues={defaultValues}
+                      templateColumns="repeat(6,1fr)"
+                      defaultValues={coHoi}
                       onSubmit={(value) => {
                         console.log("submit co hoi details");
                         updateCoHoiByID({
@@ -281,7 +302,93 @@ const CoHoiDetailsContainer = () => {
                         });
                       }}
                       //@ts-ignore
-                      fields={rowsData}
+                      fields={[
+                        {
+                          name: "name",
+                          type: "input",
+                          label: "Tên",
+                          colSpan: 3,
+                        },
+                        {
+                          name: "soluong",
+                          type: "autocomplete",
+                          label: "Số lượng",
+                          isLoading: isLoadingSoLuong || isFetchingSoLuong,
+                          colSpan: 3,
+                          autocompleteOptions: soLuongData
+                            ? Object.keys(soLuongData).map((key) => {
+                                return { label: soLuongData[key], value: key };
+                              })
+                            : [],
+                          onSearchChange: (text) => {
+                            searchSoLuong({ name: text });
+                          },
+                        },
+                        {
+                          name: "trang_thai_key",
+                          type: "autocomplete",
+                          label: "Trạng thái",
+                          isLoading: isLoadingTrangThai || isFetchingTrangThai,
+                          autocompleteOptions: trangThaiData
+                            ? Object.keys(trangThaiData).map((key) => {
+                                return {
+                                  label: trangThaiData[key],
+                                  value: key,
+                                };
+                              })
+                            : [],
+                          onSearchChange: (text) => {
+                            searchTrangThai({ name: text });
+                          },
+                          colSpan: 3,
+                        },
+                        {
+                          name: "tien_trinh_key",
+                          type: "autocomplete",
+                          label: "Tiến trình",
+                          isLoading: isLoadingTienTrinh || isFetchingTienTrinh,
+                          autocompleteOptions: tienTrinhData
+                            ? Object.keys(tienTrinhData).map((key) => {
+                                return {
+                                  label: tienTrinhData[key],
+                                  value: key,
+                                };
+                              })
+                            : [],
+                          onSearchChange: (text) => {
+                            searchTienTrinh({ name: text });
+                          },
+                          colSpan: 3,
+                        },
+                        {
+                          name: "note",
+                          type: "text-editor",
+                          label: "Diễn giải",
+                          colSpan: 6,
+                        },
+                        {
+                          name: "files",
+                          label: "UPLOAD FILE",
+                          colSpan: 6,
+                          type: "upload-file-detail",
+                          templateColumns: "repeat(10, 1fr)",
+                          gap: "12px",
+                          fields: [
+                            {
+                              type: "input",
+                              name: "type",
+                              label: "Loại",
+                              colSpan: 3,
+                            },
+                            {
+                              type: "input",
+                              name: "note",
+                              label: "Diễn giải",
+                              colSpan: 3,
+                            },
+                          ],
+                        },
+                      ]}
                     ></BaseForm>
                   </Collapse>
                 </UI.Grid>

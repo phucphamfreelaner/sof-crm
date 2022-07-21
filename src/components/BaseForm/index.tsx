@@ -22,6 +22,8 @@ import DateTimeController from "./controller/DateTime";
 import TextEditorController from "./controller/TextEditor";
 import Radio from "./controller/Radio";
 import UploadImage from "./controller/UploadImage";
+import UploadFileDetail from "./controller/UploadFileDetail";
+import FileInfo from "./controller/FileInfo";
 
 const CONTROLLER: any = {
   input: InputController,
@@ -37,6 +39,8 @@ const CONTROLLER: any = {
   "text-editor": TextEditorController,
   radio: Radio,
   "upload-file": UploadImage,
+  "upload-file-detail": UploadFileDetail,
+  "file-info": FileInfo,
 };
 
 const BaseForm = React.forwardRef((props: IBaseForm, ref?: any) => {

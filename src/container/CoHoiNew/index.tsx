@@ -70,74 +70,6 @@ const CoHoiNewContainer = (props) => {
     parentValue: "dang-lam-viec",
   });
 
-  let rowsData = [
-    {
-      name: "name",
-      type: "input",
-      label: "Tên cơ hội",
-      defaultValues: "",
-      colSpan: 3,
-    },
-    {
-      name: "soluong",
-      type: "autocomplete",
-      label: "Số lượng",
-      isLoading: isLoadingSoLuong || isFetchingSoLuong,
-      autocompleteOptions: soLuongData
-        ? Object.keys(soLuongData).map((key) => {
-            return { label: soLuongData[key], value: key };
-          })
-        : [],
-      onSearchChange: (text) => {
-        searchSoLuong({ name: text });
-      },
-      colSpan: 3,
-    },
-    {
-      name: "trang_thai_key",
-      type: "autocomplete",
-      label: "Trạng thái",
-      isLoading: isLoadingTrangThai || isFetchingTrangThai,
-      autocompleteOptions: trangThaiData
-        ? Object.keys(trangThaiData).map((key) => {
-            return { label: trangThaiData[key], value: key };
-          })
-        : [],
-      onSearchChange: (text) => {
-        searchTrangThai({ name: text });
-      },
-      colSpan: 3,
-    },
-    {
-      name: "tien_trinh_key",
-      type: "autocomplete",
-      label: "Tiến trình",
-      isLoading: isLoadingTienTrinh || isFetchingTienTrinh,
-      autocompleteOptions: tienTrinhData
-        ? Object.keys(tienTrinhData).map((key) => {
-            return { label: tienTrinhData[key], value: key };
-          })
-        : [],
-      onSearchChange: (text) => {
-        searchTienTrinh({ name: text });
-      },
-      colSpan: 3,
-    },
-    {
-      name: "note",
-      type: "input",
-      label: "Diễn giải",
-      colSpan: 6,
-    },
-    {
-      name: "file_tmp",
-      label: "UPLOAD FILE",
-      colSpan: 3,
-      multiline: true,
-      type: "upload-file",
-    },
-  ];
-
   const elForm = React.useRef<any>();
 
   useEffect(() => {
@@ -161,7 +93,7 @@ const CoHoiNewContainer = (props) => {
       ) : (
         <>
           <BaseForm
-            width={"100%"}
+            // width={"100%"}
             gap={theme.spacing(4)}
             templateColumns="repeat(6,1fr)"
             schema={{
@@ -169,7 +101,88 @@ const CoHoiNewContainer = (props) => {
             }}
             ref={elForm}
             //@ts-ignore
-            fields={rowsData}
+            fields={[
+              {
+                name: "name",
+                type: "input",
+                label: "Tên cơ hội",
+                defaultValues: "",
+                colSpan: 3,
+              },
+              {
+                name: "soluong",
+                type: "autocomplete",
+                label: "Số lượng",
+                isLoading: isLoadingSoLuong || isFetchingSoLuong,
+                autocompleteOptions: soLuongData
+                  ? Object.keys(soLuongData).map((key) => {
+                      return { label: soLuongData[key], value: key };
+                    })
+                  : [],
+                onSearchChange: (text) => {
+                  searchSoLuong({ name: text });
+                },
+                colSpan: 3,
+              },
+              {
+                name: "trang_thai_key",
+                type: "autocomplete",
+                label: "Trạng thái",
+                isLoading: isLoadingTrangThai || isFetchingTrangThai,
+                autocompleteOptions: trangThaiData
+                  ? Object.keys(trangThaiData).map((key) => {
+                      return { label: trangThaiData[key], value: key };
+                    })
+                  : [],
+                onSearchChange: (text) => {
+                  searchTrangThai({ name: text });
+                },
+                colSpan: 3,
+              },
+              {
+                name: "tien_trinh_key",
+                type: "autocomplete",
+                label: "Tiến trình",
+                isLoading: isLoadingTienTrinh || isFetchingTienTrinh,
+                autocompleteOptions: tienTrinhData
+                  ? Object.keys(tienTrinhData).map((key) => {
+                      return { label: tienTrinhData[key], value: key };
+                    })
+                  : [],
+                onSearchChange: (text) => {
+                  searchTienTrinh({ name: text });
+                },
+                colSpan: 3,
+              },
+              {
+                name: "note",
+                type: "text-editor",
+                label: "Diễn giải",
+                colSpan: 6,
+              },
+              {
+                name: "files",
+                label: "UPLOAD FILE",
+                colSpan: 6,
+                type: "upload-file-detail",
+                templateColumns: "repeat(10, 1fr)",
+                gap: "12px",
+                fields: [
+                  {
+                    type: "input",
+                    name: "type",
+                    label: "Loại",
+                    colSpan: 3,
+                  },
+                  {
+                    type: "input",
+                    name: "note",
+                    label: "Diễn giải",
+                    colSpan: 3,
+                  },
+                ],
+              },
+            ]}
             defaultValues={{
               soluong: {
                 label:
@@ -205,7 +218,6 @@ const CoHoiNewContainer = (props) => {
                   createCoHoi({
                     customer_id: customerId,
                     created_at: format(new Date(), "yyyy-MM-dd"),
-                    files: [],
                     ...data,
                     soluong: data?.soluong?.value,
                     trang_thai_key: data?.trang_thai_key?.value,

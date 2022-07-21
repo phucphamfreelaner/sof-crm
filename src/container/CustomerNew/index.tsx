@@ -196,7 +196,6 @@ const CustomerNewContainer = () => {
   return (
     <>
       <BaseForm
-        width={"100%"}
         gap={theme.spacing(4)}
         templateColumns="repeat(6,1fr)"
         schema={{

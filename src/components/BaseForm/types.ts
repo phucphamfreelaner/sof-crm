@@ -11,6 +11,8 @@ import type { ICollapseFieldsController } from "./controller/CollapseFields";
 
 import type { IIconButtonFieldController } from "./controller/IconButton";
 import type { IRadioController } from "./controller/Radio";
+import type { IUploadFileDetailController } from "./controller/UploadFileDetail";
+import type { IFileInfoController } from "./controller/FileInfo";
 
 export interface IBaseForm {
   id?: string;
@@ -61,7 +63,9 @@ export type IFormControl = IBaseController &
   IArrayFieldsController &
   IIconButtonFieldController &
   ICollapseFieldsController &
-  IRadioController & {
+  IRadioController &
+  IUploadFileDetailController &
+  IFileInfoController & {
     type:
       | "input"
       | "select"
@@ -75,6 +79,8 @@ export type IFormControl = IBaseController &
       | "date-picker"
       | "text-editor"
       | "upload-file"
+      | "upload-file-detail"
+      | "file-info"
       | "icon-button";
     rowSpan?: number;
     colSpan?: number;
