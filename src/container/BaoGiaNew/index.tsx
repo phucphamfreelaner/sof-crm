@@ -329,8 +329,8 @@ function BaoGaiForm(props: IBaoGiaForm) {
   const [getMauInById] = useLazyGetMauInByIdQuery();
 
   return (
-    <UI.Card elevation={10}>
-      <UI.CardContent>
+    <UI.Card>
+      <UI.CardContent sx={{ padding: "14px !important" }}>
         <BaoGiaNewForm
           formRef={elForm}
           key={JSON.stringify(defaultValues)}

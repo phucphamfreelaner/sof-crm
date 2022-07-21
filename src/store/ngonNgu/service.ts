@@ -45,4 +45,5 @@ export const {
   useLazyGetNgonNguListQuery,
   useLazySearchNgonNguQuery,
   useGetNgonNguByCodeQuery,
+  useLazyGetNgonNguByCodeQuery,
 } = ngonNguService;

@@ -249,25 +249,6 @@ const CoHoiDetailsContainer = () => {
                       {"Save"}
                     </LoadingButton>
                   )}
-                  {/* <UI.Button
-                    id="base-form"
-                    component="a"
-                    type="submit"
-                    endIcon={
-                      isView ? (
-                        <FaPencilAlt fontSize="small" />
-                      ) : (
-                        <FaSave fontSize="small" />
-                      )
-                    }
-                    sx={{ m: 1 }}
-                    variant="outlined"
-                    onClick={() => {
-                      setView(!isView);
-                    }}
-                  >
-                    {isView ? "Edit" : "Save"}
-                  </UI.Button> */}
                   <UI.Button
                     endIcon={<BsChevronDown fontSize="small" />}
                     sx={{ m: 1 }}
@@ -283,7 +264,10 @@ const CoHoiDetailsContainer = () => {
               <UI.Grid container spacing={3}>
                 <UI.Grid item xs={12}>
                   <Collapse in={isView}>
-                    <CoHoiBasicDetails rows={rowsData} />
+                    <CoHoiBasicDetails
+                      title="Chi tiết cơ hội"
+                      rows={rowsData}
+                    />
                   </Collapse>
                   <Collapse in={!isView}>
                     <BaseForm

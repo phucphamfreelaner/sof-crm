@@ -73,9 +73,11 @@ function ArrayFields(props: IArrayFieldsController) {
 
   return (
     <VStack justifyContent="flex-end" alignItems="flex-end" spacing="20px">
-      <Typography variant="h6" mr={"auto"}>
-        {label}
-      </Typography>
+      {label && (
+        <Typography variant="h6" mr={"auto"}>
+          {label}
+        </Typography>
+      )}
       {addBtnLabel && handleAddRow && (
         <Button
           onClick={handleAddRow}

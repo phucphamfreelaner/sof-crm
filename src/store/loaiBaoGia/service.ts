@@ -32,5 +32,8 @@ export const loaiBaoGiaService = createApi({
   }),
 });
 
-export const { useLazyGetLoaiBaoGiaListQuery, useGetLoaiBaoGiaByKeyQuery } =
-  loaiBaoGiaService;
+export const {
+  useLazyGetLoaiBaoGiaListQuery,
+  useGetLoaiBaoGiaByKeyQuery,
+  useLazyGetLoaiBaoGiaByKeyQuery,
+} = loaiBaoGiaService;
