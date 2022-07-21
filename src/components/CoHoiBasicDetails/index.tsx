@@ -50,16 +50,16 @@ const PropertyListItem = (props) => {
   );
 };
 
-export const CoHoiBasicDetails = (props) => {
-  const { rows } = props;
+export const CoHoiBasicDetails = (props: { rows: any[]; title: string }) => {
+  const { rows, title } = props;
   const align = true ? "horizontal" : "vertical";
 
   return (
     <UI.Card>
-      <UI.CardHeader title="Chi tiết cơ hội" />
+      <UI.CardHeader title={title} />
       <UI.Divider />
       <PropertyList>
-        {rows.map((row, index) => {
+        {rows.map((row: any, index: number) => {
           return (
             <PropertyListItem
               key={index}
