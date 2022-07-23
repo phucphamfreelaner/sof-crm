@@ -7,8 +7,8 @@ import { useGetCustomerByIdQuery } from "@/store/customer";
 import { values } from "lodash-es";
 
 const tabs = [
-  { label: "Thông tin cơ bản", value: "thong_tin_co_ban" },
-  { label: "Thông tin chi tiết công ty", value: "thong_tin_cong_ty" },
+  { label: "Thông tin", value: "thong_tin_co_ban" },
+  //{ label: "Thông tin chi tiết công ty", value: "thong_tin_cong_ty" },
   { label: "Cơ hội", value: "co_hoi" },
   { label: "Báo giá", value: "bao_gia" },
   { label: "Hợp đồng", value: "hop_dong" },
@@ -60,7 +60,7 @@ function CustomerDetails() {
         py: 8,
       }}
     >
-      <UI.Container maxWidth="xl">
+      <UI.Container>
         <UI.Box mb={4}>
           <UI.Box sx={{ mb: 1 }}>
             <UI.Button

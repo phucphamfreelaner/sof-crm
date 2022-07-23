@@ -56,7 +56,7 @@ export const CustomerBasicDetails = (props) => {
 
   return (
     <>
-      <UI.CardHeader title="Thông tin cơ bản" />
+      <UI.CardHeader title="Thông tin " />
       <UI.Divider />
       <PropertyList>
         {rows.map((row, index) => {
@@ -71,7 +71,7 @@ export const CustomerBasicDetails = (props) => {
           );
         })}
       </PropertyList>
-      <UI.CardActions
+      {/* <UI.CardActions
         sx={{
           flexWrap: "wrap",
           px: 3,
@@ -83,7 +83,7 @@ export const CustomerBasicDetails = (props) => {
           Reset &amp; Send Password
         </UI.Button>
         <UI.Button sx={{ m: 1 }}>Login as Customer</UI.Button>
-      </UI.CardActions>
+      </UI.CardActions> */}
     </>
   );
 };

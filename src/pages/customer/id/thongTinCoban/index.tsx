@@ -234,7 +234,7 @@ function ThongTinCoBanTab() {
           {isView ? "Edit" : "Save"}
         </UI.LoadingButton>
       </UI.HStack>
-      <UI.Card sx={{ width: "60%" }} elevation={10}>
+      <UI.Card sx={{ width: "90%" }} elevation={10}>
         <UI.Grid container spacing={3}>
           <UI.Grid item xs={12}>
             <Collapse in={isView}>
