@@ -216,9 +216,9 @@ function HopDongFormContainer(props: IBaoGiaForm) {
         vat: data?.vat ? 1 : 0,
         created_at: data?.created_at
           ? typeof data?.created_at === "string"
-            ? format(new Date(data?.created_at), "yyyy-mm-dd")
-            : format(data?.created_at, "yyyy-mm-dd")
-          : format(new Date(), "yyyy-mm-dd"),
+            ? format(new Date(data?.created_at), "yyyy-MM-dd")
+            : format(data?.created_at, "yyyy-MM-dd")
+          : format(new Date(), "yyyy-MM-dd"),
       };
       updateHopDong({
         id: data?.id,
@@ -253,9 +253,9 @@ function HopDongFormContainer(props: IBaoGiaForm) {
         vat: data?.vat ? 1 : 0,
         created_at: data?.created_at
           ? typeof data?.created_at === "string"
-            ? format(new Date(data?.created_at), "yyyy-mmm-dd")
-            : format(data?.created_at, "yyyy-mmm-dd")
-          : format(new Date(), "yyyy-mmm-dd"),
+            ? format(new Date(data?.created_at), "yyyy-MM-dd")
+            : format(data?.created_at, "yyyy-MM-dd")
+          : format(new Date(), "yyyy-MM-dd"),
       };
       createHopDong({ payload });
     }
@@ -264,15 +264,14 @@ function HopDongFormContainer(props: IBaoGiaForm) {
   React.useEffect(() => {
     if (isSuccessCreateHopDong) {
       toast.success("Tạo hợp đồng thành công!");
-      navigate(`/hop_dong/${dataHopDongNew?.data?.id}/view`);
+      navigate(`/hop_dong/${dataHopDongNew?.data?.id}`);
     }
   }, [isSuccessCreateHopDong]);
 
   React.useEffect(() => {
     searchNhanVien({
       name: "",
-      chuc_vu_key:
-        "chuc_vu_key=giam-doc,giam-doc-kinh-doanh,giam-doc-dieu-hanh",
+      chuc_vu_key: "",
     });
     searchLoaiHd({ name: "" });
     searchBenHd({ name: "" });
@@ -407,8 +406,7 @@ function HopDongFormContainer(props: IBaoGiaForm) {
             onSearchNhanVien={(name) =>
               searchNhanVien({
                 name: name,
-                chuc_vu_key:
-                  "chuc_vu_key=giam-doc,giam-doc-kinh-doanh,giam-doc-dieu-hanh",
+                chuc_vu_key: "",
               })
             }
             LoaiHdData={LoaiHdData}

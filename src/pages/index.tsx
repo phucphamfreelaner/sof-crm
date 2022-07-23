@@ -52,7 +52,13 @@ function Root() {
           />
         )}
       </UI.CKBox>
-      <UI.CKBox h="100%" bg="white" overflow="auto" flexGrow={1}>
+      <UI.CKBox
+        h="100%"
+        bg="#efefef"
+        overflow="auto"
+        sx={{ margin: " 0 !important" }}
+        flexGrow={1}
+      >
         <TopTab />
         <Outlet />
       </UI.CKBox>
