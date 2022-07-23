@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import * as UI from "@/libs/ui";
 import { FaSave } from "react-icons/fa";
 import { useSearchParams, useNavigate } from "react-router-dom";
@@ -387,10 +387,16 @@ function HopDongFormContainer(props: IBaoGiaForm) {
 
   const elForm = React.useRef<any>();
 
+  const [loadingApi, setLoadingApi] = useState<boolean>(isEdit && !isSuccess);
+
+  useEffect(() => {
+    if (isSuccess) setLoadingApi(false);
+  }, [isSuccess]);
+
   return (
     <UI.Card elevation={10}>
       <UI.CardContent>
-        {(isEdit && !isSuccess) || isFetchingBaoGia || isLoadingBaogia ? (
+        {loadingApi || isFetchingBaoGia || isLoadingBaogia ? (
           <Loading />
         ) : (
           <HopDongNewForm
