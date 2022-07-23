@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import * as UI from "@/libs/ui";
 import { useParams } from "react-router-dom";
 import { useGetHopDongByIdQuery } from "@/store/hopDong";
@@ -47,6 +47,43 @@ function Info() {
   const { data: benHdData, isSuccess: isSuccessBenHd } =
     useSearchBenHdByIdQuery({ name: "" }, { skip: !hopDongData });
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsSuccess(true);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const [isSuccess, setIsSuccess] = useState<boolean>(
+    isSuccessNhanVien &&
+      isSuccessNgonNgu &&
+      isSuccessLoaiTien &&
+      isSuccessHopDong &&
+      isSuccessLoaiHd &&
+      isSuccessMauIn &&
+      isSuccessBenHd
+  );
+
+  useEffect(() => {
+    setIsSuccess(
+      isSuccessNhanVien &&
+        isSuccessNgonNgu &&
+        isSuccessLoaiTien &&
+        isSuccessHopDong &&
+        isSuccessLoaiHd &&
+        isSuccessMauIn &&
+        isSuccessBenHd
+    );
+  }, [
+    isSuccessNhanVien,
+    isSuccessNgonNgu,
+    isSuccessLoaiTien,
+    isSuccessHopDong,
+    isSuccessLoaiHd,
+    isSuccessMauIn,
+    isSuccessBenHd,
+  ]);
+
   return (
     <UI.Card>
       <HopDongFormContainer
@@ -56,18 +93,10 @@ function Info() {
         loaiTienLabel={loaiTienData?.name}
         loaiHdLabel={loaiHdData?.[hopDongData?.loai_hd_key]}
         benHdLabel={benHdData?.[hopDongData?.chiphivanchuyen]}
-        nhanVienLabel={nhanVienData?.name}
+        nhanVienLabel={nhanVienData?.name ? nhanVienData?.name : ""}
         mauInLabel={mauInData?.tieu_de}
         isEdit={true}
-        isSuccess={
-          isSuccessNhanVien &&
-          isSuccessNgonNgu &&
-          isSuccessLoaiTien &&
-          isSuccessHopDong &&
-          isSuccessLoaiHd &&
-          isSuccessMauIn &&
-          isSuccessBenHd
-        }
+        isSuccess={isSuccess}
       />
     </UI.Card>
   );

@@ -109,7 +109,7 @@ const DateTimeController = (props: IUploadImageController) => (
   <Controller
     name={props.name || "name"}
     control={props.control}
-    defaultValue={new Date()}
+    defaultValue={[]}
     render={({ field }) => <UploadImageForm {...props} field={field} />}
   />
 );
