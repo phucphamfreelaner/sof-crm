@@ -469,7 +469,7 @@ function HopDongFormContainer(props: IBaoGiaForm) {
           endIcon={<FaSave />}
           variant="outlined"
         >
-          {id ? "Cập nhật báo giá" : "Lưu báo giá"}
+          {id ? "Cập nhật hợp đồng" : "Lưu hợp đồng"}
         </LoadingButton>
       </UI.CardActions>
     </UI.Card>
