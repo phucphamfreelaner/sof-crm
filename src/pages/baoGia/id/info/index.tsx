@@ -67,10 +67,11 @@ function Info() {
       id={params?.id}
       detailContent={
         <BasicDetails
-          width="90%"
-          title="Thông tin báo giá"
+          sx={{ width: "90%", padding: "20px" }}
+          gap="10px"
           data={baoGiaData}
           labelWidth="120px"
+          templateColumns="repeat(2, 1fr)"
           rows={[
             {
               property: "code",
@@ -131,6 +132,8 @@ function Info() {
             {
               property: "san_pham",
               label: "Sản phẩm",
+              hiddenLabel: true,
+              colSpan: 2,
               renderRow: (value: any) => {
                 return isEmpty(value) ? (
                   <div>Loading...</div>

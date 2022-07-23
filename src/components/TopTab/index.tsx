@@ -18,9 +18,9 @@ function TopTab() {
     {
       label: ({ currentTab }) => (
         <UI.HStack>
-          <AiOutlineUser size="20px" />
+          <AiOutlineUser size="16px" />
           {currentTab !== "/khach_hang" && (
-            <UI.Typography variant="subtitle1">Khách hàng</UI.Typography>
+            <UI.Typography variant="body2">Khách hàng</UI.Typography>
           )}
         </UI.HStack>
       ),
@@ -31,9 +31,9 @@ function TopTab() {
       label: ({ currentTab }) => {
         return (
           <UI.HStack>
-            <FaRegLightbulb size="20px" />
+            <FaRegLightbulb size="16px" />
             {currentTab !== "/co_hoi" && (
-              <UI.Typography variant="subtitle1">Cơ hội</UI.Typography>
+              <UI.Typography variant="body2">Cơ hội</UI.Typography>
             )}
           </UI.HStack>
         );
@@ -44,9 +44,9 @@ function TopTab() {
     {
       label: ({ currentTab }) => (
         <UI.HStack>
-          <AiOutlineFileSync size="20px" />
+          <AiOutlineFileSync size="16px" />
           {currentTab !== "/bao_gia" && (
-            <UI.Typography variant="subtitle1">Báo giá</UI.Typography>
+            <UI.Typography variant="body2">Báo giá</UI.Typography>
           )}
         </UI.HStack>
       ),
@@ -56,9 +56,9 @@ function TopTab() {
     {
       label: ({ currentTab }) => (
         <UI.HStack>
-          <AiOutlineFileDone size="20px" />
+          <AiOutlineFileDone size="16px" />
           {currentTab !== "/hop_dong" && (
-            <UI.Typography variant="subtitle1">Hợp đồng</UI.Typography>
+            <UI.Typography variant="body2">Hợp đồng</UI.Typography>
           )}
         </UI.HStack>
       ),
@@ -78,12 +78,12 @@ function TopTab() {
   }, [pathname]);
 
   return (
-    <>
+    <UI.CKBox bg="white">
       <UI.Tabs
         indicatorColor="primary"
         onChange={handleTabsChange}
         scrollButtons="auto"
-        sx={{ mt: 1, ml: 3 }}
+        sx={{ ml: 2, minHeight: "36px" }}
         textColor="primary"
         value={currentTab}
         variant="scrollable"
@@ -93,11 +93,12 @@ function TopTab() {
             key={tab.value}
             label={tab.label({ currentTab })}
             value={tab.value}
+            sx={{ p: 0, minHeight: "36px" }}
           />
         ))}
       </UI.Tabs>
       <UI.Divider />
-    </>
+    </UI.CKBox>
   );
 }
 

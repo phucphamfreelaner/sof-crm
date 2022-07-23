@@ -9,6 +9,7 @@ import Sidebar from "@/components/Sidebar";
 import MiniSidebar from "@/components/MiniSidebar";
 import { LOCAL_KEY } from "@/constants";
 import TopTab from "@/components/TopTab";
+import { Helmet } from "react-helmet";
 
 function Root() {
   const navigate = useNavigate();
@@ -30,33 +31,47 @@ function Root() {
   }, [pathname]);
 
   return (
-    <UI.HStack w="100vw" h="100vh" overflow="hidden" alignItems="flex-start">
-      <UI.CKBox h="100%" bg="#e6e6e6">
-        {open ? (
-          <Sidebar
-            onBackToAppLibs={() => navigateOutside("/app")}
-            width="250px"
-            onCollapse={() => {
-              setOpen.setFalse();
-              localStorage.setItem(LOCAL_KEY.CUSTOMER_MENU_EXPAND, "0");
-            }}
-          />
-        ) : (
-          <MiniSidebar
-            onBackToAppLibs={() => navigateOutside("/app")}
-            onExpand={() => {
-              setOpen.setTrue();
-              localStorage.setItem(LOCAL_KEY.CUSTOMER_MENU_EXPAND, "1");
-            }}
-            onClickItem={(path) => navigate(path)}
-          />
-        )}
-      </UI.CKBox>
-      <UI.CKBox h="100%" bg="white" overflow="auto" flexGrow={1}>
-        <TopTab />
-        <Outlet />
-      </UI.CKBox>
-    </UI.HStack>
+    <>
+      <Helmet>
+        <link
+          href="https://cdn.jsdelivr.net/npm/suneditor@latest/dist/css/suneditor.min.css"
+          rel="stylesheet"
+        />
+      </Helmet>
+      <UI.HStack
+        spacing={0}
+        w="100vw"
+        h="100vh"
+        overflow="hidden"
+        alignItems="flex-start"
+      >
+        <UI.CKBox h="100%" bg="#e6e6e6">
+          {open ? (
+            <Sidebar
+              onBackToAppLibs={() => navigateOutside("/app")}
+              width="250px"
+              onCollapse={() => {
+                setOpen.setFalse();
+                localStorage.setItem(LOCAL_KEY.CUSTOMER_MENU_EXPAND, "0");
+              }}
+            />
+          ) : (
+            <MiniSidebar
+              onBackToAppLibs={() => navigateOutside("/app")}
+              onExpand={() => {
+                setOpen.setTrue();
+                localStorage.setItem(LOCAL_KEY.CUSTOMER_MENU_EXPAND, "1");
+              }}
+              onClickItem={(path) => navigate(path)}
+            />
+          )}
+        </UI.CKBox>
+        <UI.CKBox h="100%" bg="#f6f7fa" overflow="auto" flexGrow={1}>
+          <TopTab />
+          <Outlet />
+        </UI.CKBox>
+      </UI.HStack>
+    </>
   );
 }
 

@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import { Box, Container } from "@mui/material";
+import * as UI from "@/libs/ui";
 
 function CoHoiPage() {
   return (
@@ -8,17 +8,14 @@ function CoHoiPage() {
       <Helmet>
         <title>Cơ Hội | CRM APP</title>
       </Helmet>
-      <Box
-        component="main"
+      <UI.CKBox
         sx={{
           flexGrow: 1,
           pt: 3,
         }}
       >
-        <Container maxWidth="xl">
-          <Outlet />
-        </Container>
-      </Box>
+        <Outlet />
+      </UI.CKBox>
     </>
   );
 }

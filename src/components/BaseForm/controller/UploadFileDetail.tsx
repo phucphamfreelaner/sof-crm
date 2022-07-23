@@ -61,6 +61,7 @@ function UploadFileDetailForm(props: IUploadFileDetailController) {
         disabled={isDisabled}
         variant="contained"
         component="label"
+        size="small"
       >
         <Typography variant="button">
           {!isLoading ? label : "Loading..."}

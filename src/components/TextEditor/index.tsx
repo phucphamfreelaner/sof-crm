@@ -1,9 +1,11 @@
 import React from "react";
 import "suneditor/dist/css/suneditor.min.css";
-import { Helmet } from "react-helmet";
 import plugins from "suneditor/src/plugins";
+import Box from "@mui/material/Box";
 
 import suneditor from "suneditor";
+import { CSSObject } from "@emotion/react";
+import { Typography } from "@mui/material";
 
 interface ITextEditor {
   id?: string;
@@ -11,45 +13,57 @@ interface ITextEditor {
   defaultValue?: string;
   value?: string;
   isDisabled?: boolean;
+  sx?: CSSObject;
+  height?: string;
+  label?: string;
+  hiddenBorder?: boolean;
+  padding?: string;
+  width?: string;
 }
 
 function TextEditor(props: ITextEditor) {
-  const { id, onChange, defaultValue, value } = props;
+  const {
+    id,
+    onChange,
+    defaultValue,
+    value,
+    sx,
+    height = "150px",
+    label,
+    hiddenBorder,
+    padding = "8px",
+    width = "auto",
+  } = props;
+
   const editor = React.useRef<any>(null);
 
   React.useEffect(() => {
     editor.current = suneditor.create(id, {
+      mode: "balloon",
       plugins: plugins,
-      width: "100%",
-      height: "150px",
+      width,
+      height,
       buttonList: [
+        ["undo", "redo", "font", "fontSize", "formatBlock"],
         [
-          "undo",
-          "redo",
-          "font",
-          "fontSize",
-          "formatBlock",
-          "paragraphStyle",
-          "blockquote",
           "bold",
           "underline",
           "italic",
           "strike",
           "subscript",
           "superscript",
+          "removeFormat",
+        ],
+
+        [
           "fontColor",
           "hiliteColor",
-          "textStyle",
-          "removeFormat",
           "outdent",
           "indent",
           "align",
           "horizontalRule",
           "list",
-          "lineHeight",
           "table",
-          "link",
-          "fullScreen",
         ],
       ],
     });
@@ -71,15 +85,41 @@ function TextEditor(props: ITextEditor) {
   }, [value]);
 
   return (
-    <>
-      <Helmet>
-        <link
-          href="https://cdn.jsdelivr.net/npm/suneditor@latest/dist/css/suneditor.min.css"
-          rel="stylesheet"
-        />
-      </Helmet>
+    <Box
+      sx={{
+        ...sx,
+        ".sun-editor": {
+          borderRadius: "6px",
+          overflow: "hidden",
+          border: "none",
+        },
+        ".sun-editor-editable": {
+          padding,
+        },
+        border: hiddenBorder ? "none" : "1px solid #dadada;",
+        borderRadius: "6px",
+        position: "relative",
+      }}
+    >
+      {label && (
+        <Typography
+          fontWeight={600}
+          color="text.secondary"
+          sx={{
+            background: "white",
+            position: "absolute",
+            top: "-12px",
+            left: "4px",
+            zIndex: 5,
+            padding: "0 6px",
+          }}
+          variant="body2"
+        >
+          {label}
+        </Typography>
+      )}
       <textarea id={id}>{value}</textarea>
-    </>
+    </Box>
   );
 }
 

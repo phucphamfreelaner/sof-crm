@@ -24,7 +24,7 @@ function TextEditorPickerForm(props: ITextEditorController) {
     <Box
       sx={{
         position: "relative",
-        padding: 2,
+        padding: 1,
         border: "1px solid #65748B",
         borderColor: "#d4d8ddb0",
         borderRadius: "8px",
@@ -46,6 +46,7 @@ function TextEditorPickerForm(props: ITextEditorController) {
         id={name}
         value={field?.value}
         onChange={(value) => field?.onChange(value)}
+        hiddenBorder
       />
       <VStack spacing={0} alignItems="flex-start" w="100%">
         {helperText && <Typography variant="caption">{helperText}</Typography>}

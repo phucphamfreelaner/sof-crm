@@ -1,9 +1,13 @@
 import * as UI from "@/libs/ui";
+import { CSSObject } from "@emotion/react";
 import React from "react";
 
-const PropertyList = (props) => {
-  const { children } = props;
-  return <UI.List disablePadding>{children}</UI.List>;
+const PropertyList = (props: any) => {
+  return (
+    <UI.CKGrid boxSizing="border-box" {...props}>
+      {props?.children}
+    </UI.CKGrid>
+  );
 };
 
 const ROW_TYPE = {
@@ -36,38 +40,31 @@ const ROW_TYPE = {
 const PropertyListItem = (props: any) => {
   const {
     align,
-    children,
-    disableGutters,
     row,
     data,
     labelWidth = "40%",
-    ...other
+    colSpan,
+    rowSpan,
+    hiddenLabel,
+    type,
   } = props;
 
-  const ROW_COMPONENT = React.useRef<any>(ROW_TYPE["string"]);
-
-  React.useEffect(() => {
-    if (row?.renderRow) ROW_COMPONENT.current = ROW_TYPE["render"];
-    if (row?.getRowData) ROW_COMPONENT.current = ROW_TYPE["render-async"];
-  }, []);
+  const ROW_COMPONENT = ROW_TYPE?.[type || "string"] || ROW_TYPE["string"];
 
   return (
-    <UI.ListItem
-      sx={{
-        px: disableGutters ? 0 : 3,
-        py: 1.5,
-      }}
-      {...other}
-    >
+    <UI.CKGridItem boxSizing="border-box" colSpan={colSpan} rowSpan={rowSpan}>
       <UI.ListItemText
         disableTypography
         primary={
-          <UI.Typography
-            sx={{ minWidth: align === "vertical" ? "inherit" : 360 }}
-            variant="subtitle2"
-          >
-            {row?.label}
-          </UI.Typography>
+          hiddenLabel ? null : (
+            <UI.Typography
+              color="text.secondary"
+              sx={{ fontWeight: 600 }}
+              variant="subtitle2"
+            >
+              {row?.label}
+            </UI.Typography>
+          )
         }
         secondary={
           <UI.Box
@@ -76,7 +73,7 @@ const PropertyListItem = (props: any) => {
               mt: align === "vertical" ? 0.5 : 0,
             }}
           >
-            <ROW_COMPONENT.current data={data} row={row} />
+            <ROW_COMPONENT data={data} row={row} />
           </UI.Box>
         }
         sx={{
@@ -89,47 +86,52 @@ const PropertyListItem = (props: any) => {
           my: 0,
         }}
       />
-    </UI.ListItem>
+    </UI.CKGridItem>
   );
 };
 const BasicDetails = (props: {
   rows: {
     label: string;
     property?: string;
-    renderRow?: (row?: any, data?: any) => any;
+    renderRow?: (data?: any, row?: any) => any;
     getRowData?: (value?: any, data?: any) => Promise<any>;
     type?: "string" | "render" | "render-async";
+    colSpan?: number;
+    colStart?: number;
+    colEnd?: number;
+    rowSpan?: number;
+    rowStart?: number;
+    rowEnd?: number;
+    hiddenLabel?: boolean;
   }[];
-  title: string;
   width?: string;
   data?: any;
   labelWidth?: string;
+  templateRows?: string;
+  templateColumns?: string;
+  gap?: string;
+  sx?: CSSObject;
+  rowHeight?: string;
 }) => {
-  const { rows, title, width = "100%", data = {}, labelWidth } = props;
+  const { rows, width = "100%", data = {}, labelWidth } = props;
   const align = true ? "horizontal" : "vertical";
 
   return (
-    <UI.Card sx={{ width }}>
-      <UI.CardHeader
-        sx={{ paddingTop: "12px", paddingBottom: "12px" }}
-        title={title}
-      />
-      <UI.Divider />
-      <PropertyList>
-        {rows.map((row: any, index: number) => {
-          return (
-            <PropertyListItem
-              key={index}
-              align={align}
-              divider
-              row={row}
-              data={data}
-              labelWidth={labelWidth}
-            />
-          );
-        })}
-      </PropertyList>
-    </UI.Card>
+    <PropertyList {...props}>
+      {rows.map((row: any, index: number) => {
+        return (
+          <PropertyListItem
+            key={index}
+            align={align}
+            divider
+            row={row}
+            data={data}
+            labelWidth={labelWidth}
+            {...row}
+          />
+        );
+      })}
+    </PropertyList>
   );
 };
 export default BasicDetails;
