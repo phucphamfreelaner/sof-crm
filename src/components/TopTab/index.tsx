@@ -7,6 +7,8 @@ import {
   AiOutlineFileDone,
   AiOutlineFileSync,
 } from "react-icons/ai";
+import { RiTodoLine } from "react-icons/ri";
+
 import { FaRegLightbulb } from "react-icons/fa";
 
 function TopTab() {
@@ -64,6 +66,18 @@ function TopTab() {
       ),
       value: "/hop_dong",
       icon: AiFillPlusCircle,
+    },
+    {
+      label: ({ currentTab }) => (
+        <UI.HStack>
+          <RiTodoLine size="16px" />
+          {currentTab !== "/lich_hen" && (
+            <UI.Typography variant="body2">Lịch hẹn</UI.Typography>
+          )}
+        </UI.HStack>
+      ),
+      value: "/lich_hen",
+      icon: RiTodoLine,
     },
   ];
 

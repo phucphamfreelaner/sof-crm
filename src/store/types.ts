@@ -332,3 +332,23 @@ export interface IBaoGia {
   nhan_vien_nhap: INhanVienNhap;
   loai_tien: ILoaiTien;
 }
+
+export interface ILichHen {
+  id: number;
+  code: string;
+  customer_id: number;
+  nhiem_vu_lich_hen_key?: any;
+  ten: string;
+  diadiem: string;
+  ngaybatdau: string;
+  ngayketthuc: string;
+  loai_lich_hen_key?: any;
+  thoi_diem?: any;
+  nhac_truoc?: any;
+  note: string;
+  created_at: string;
+  updated_at: string;
+  object: string;
+  object_id: number;
+  khach_hang?: IKhachHang;
+}

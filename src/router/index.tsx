@@ -30,6 +30,10 @@ import KhachHangCoHoi from "@/pages/customer/id/coHoi";
 import KhachHangBaoGia from "@/pages/customer/id/baoGia";
 import KhachHangHopDong from "@/pages/customer/id/hopDong";
 
+import KhachHangLichHen from "@/pages/customer/id/lichHen";
+import LichHen from "@/pages/lichHen";
+import LichHenlist from "@/pages/lichHen/list";
+
 function Router() {
   return (
     <BrowserRouter basename="/app/crm">
@@ -47,6 +51,7 @@ function Router() {
               <Route path="co_hoi" element={<KhachHangCoHoi />} />
               <Route path="bao_gia" element={<KhachHangBaoGia />} />
               <Route path="hop_dong" element={<KhachHangHopDong />} />
+              <Route path="lich_hen" element={<KhachHangLichHen />} />
             </Route>
             <Route path="list" element={<Customer />} />
             <Route path="new" element={<CustomerNew />} />
@@ -71,6 +76,9 @@ function Router() {
               <Route index element={<BaoGiaDetailInfo />} />
               <Route path="view" element={<BaoGiaDetailView />} />
             </Route>
+          </Route>
+          <Route path="lich_hen" element={<LichHen />}>
+            <Route index element={<LichHenlist />} />
           </Route>
         </Route>
       </Routes>

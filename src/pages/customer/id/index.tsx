@@ -12,6 +12,8 @@ const tabs = [
   { label: "Cơ hội", value: "co_hoi" },
   { label: "Báo giá", value: "bao_gia" },
   { label: "Hợp đồng", value: "hop_dong" },
+  //{ label: "Lịch hẹn", value: "lich_hen" },
+
   // { label: "Tiến độ sản xuất", value: "tien_do" },
   // { label: "Phiếu thu", value: "phieu_thu" },
   // { label: "Phiếu giao hàng", value: "phieu_giao_hang" },
