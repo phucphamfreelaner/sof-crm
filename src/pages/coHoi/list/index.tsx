@@ -14,7 +14,7 @@ function CoHoiList() {
   const handleFilterChange = debounce(setFilter, 500);
 
   return (
-    <UI.Box>
+    <UI.Box sx={{ p: 3 }}>
       <UI.Grid
         sx={{ mb: 4 }}
         container

@@ -30,12 +30,14 @@ import { tienTrinhService } from "./tienTrinh";
 import { hopDongService } from "./hopDong";
 import { mauInService } from "./mauIn";
 import { loaiHdService } from "./loaiHd";
+import { modalSlice } from "./modal";
 
 // @ts-ignore
 const store: any = configureStore({
   reducer: combineReducers({
     customer: customerSlice.reducer,
     coHoi: coHoiSlice.reducer,
+    modal: modalSlice.reducer,
     [customerService.reducerPath]: customerService.reducer,
     [coHoiService.reducerPath]: coHoiService.reducer,
     [authService.reducerPath]: authService.reducer,

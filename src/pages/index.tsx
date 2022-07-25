@@ -1,15 +1,17 @@
 import React from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
-import * as UI from "@/libs/ui";
 import { useBoolean } from "ahooks";
-import { navigateOutside } from "@/helper";
 import { isNull } from "lodash-es";
+import { Helmet } from "react-helmet";
 
+import { LOCAL_KEY } from "@/constants";
+import { navigateOutside } from "@/helper";
+
+import * as UI from "@/libs/ui";
 import Sidebar from "@/components/Sidebar";
 import MiniSidebar from "@/components/MiniSidebar";
-import { LOCAL_KEY } from "@/constants";
 import TopTab from "@/components/TopTab";
-import { Helmet } from "react-helmet";
+import ModalProvider from "@/modal";
 
 function Root() {
   const navigate = useNavigate();
@@ -66,10 +68,12 @@ function Root() {
             />
           )}
         </UI.CKBox>
-        <UI.CKBox h="100%" bg="#f6f7fa" overflow="auto" flexGrow={1}>
-          <TopTab />
-          <Outlet />
-        </UI.CKBox>
+        <ModalProvider>
+          <UI.CKBox h="100%" bg="#f6f7fa" overflow="auto" flexGrow={1}>
+            <TopTab />
+            <Outlet />
+          </UI.CKBox>
+        </ModalProvider>
       </UI.HStack>
     </>
   );

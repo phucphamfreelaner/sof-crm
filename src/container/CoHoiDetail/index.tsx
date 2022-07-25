@@ -2,13 +2,18 @@ import React from "react";
 import BaseDetail from "@/container/BaseDetail";
 import * as UI from "@/libs/ui";
 import { useBoolean } from "ahooks";
+import { uniqueId } from "lodash-es";
 import {
   AiOutlineSave,
   AiOutlineCopy,
   AiOutlineDelete,
   AiOutlineMail,
   AiOutlineMessage,
+  AiOutlineFolderAdd,
 } from "react-icons/ai";
+
+import { useAppDispatch } from "@/store";
+import { openModalBottom } from "@/store/modal";
 
 import DetailInfo from "@/components/DetailInfo";
 import BasicDetails from "@/components/BasicDetails";
@@ -24,6 +29,8 @@ interface ICoHoiDetail {
 export default function CoHoiDetail(props: ICoHoiDetail) {
   const { coHoiData, isLoadingCoHoi, reloadCoHoi } = props;
   const [isEdit, setEdit] = useBoolean(false);
+  const dispatch = useAppDispatch();
+  const { spacing } = UI.useTheme();
 
   const breadcrumbs = [
     <UI.Typography
@@ -58,6 +65,28 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
           label: "Lưu trữ",
           onClick: () => {
             console.log("data");
+          },
+        },
+        {
+          icon: <AiOutlineFolderAdd />,
+          label: "Thêm mới",
+          onClick: () => {
+            const id = uniqueId();
+            dispatch(
+              openModalBottom({
+                data: {
+                  title: "Thêm cơ hội mới",
+                  height: "600px",
+                  width: "500px",
+                  id: `co-hoi-${id}`,
+                  content: (
+                    <UI.CKBox px={spacing(3)} py={spacing(3.5)}>
+                      <CoHoiForm reloadCoHoi={reloadCoHoi} />
+                    </UI.CKBox>
+                  ),
+                },
+              })
+            );
           },
         },
         {
