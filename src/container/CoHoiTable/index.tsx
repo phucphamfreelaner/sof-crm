@@ -57,7 +57,7 @@ function CoHoiTable(props: ICoHoiTable) {
       }}
       toolbarAction={({ setSelectionModel }) => (
         <UI.HStack>
-          <UI.Button
+          {/* <UI.Button
             disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
             color="error"
             variant="outlined"
@@ -74,7 +74,7 @@ function CoHoiTable(props: ICoHoiTable) {
             }}
           >
             Xóa
-          </UI.Button>
+          </UI.Button> */}
           {isShowKhachHangLink && (
             <UI.Button
               disabled={isEmpty(dataSelected) || dataSelected?.length > 1}

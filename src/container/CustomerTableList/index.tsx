@@ -238,7 +238,7 @@ function CustomerTableListContainer() {
                 }}
                 toolbarAction={({ setSelectionModel }) => (
                   <UI.HStack>
-                    <UI.Button
+                    {/* <UI.Button
                       disabled={isEmpty(dataSelected)}
                       color="error"
                       variant="outlined"
@@ -251,7 +251,7 @@ function CustomerTableListContainer() {
                       }}
                     >
                       Xóa
-                    </UI.Button>
+                    </UI.Button> */}
                     <UI.Button
                       disabled={
                         isEmpty(dataSelected) || dataSelected?.length > 1

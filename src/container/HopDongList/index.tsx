@@ -205,7 +205,7 @@ function HopDongListContainer(props) {
         }}
         toolbarAction={({ setSelectionModel }) => (
           <UI.HStack>
-            <UI.Button
+            {/* <UI.Button
               disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
               color="error"
               variant="outlined"
@@ -222,7 +222,7 @@ function HopDongListContainer(props) {
               }}
             >
               Xóa
-            </UI.Button>
+            </UI.Button> */}
             <UI.Button
               disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
               variant="outlined"
