@@ -10,7 +10,7 @@ import BaseForm from "@/components/BaseForm";
 import { useBoolean, useUpdateEffect } from "ahooks";
 import { AiOutlineCloudUpload, AiOutlineDelete } from "react-icons/ai";
 import { LOCAL_KEY } from "@/constants";
-import { last } from "lodash-es";
+import { isArray, last } from "lodash-es";
 
 export interface IUploadFileDetailController extends IBaseController {
   fields?: (IFormControl | boolean)[];
@@ -46,6 +46,7 @@ function UploadFileDetailForm(props: IUploadFileDetailController) {
 
   const handleChangeFieldValue = (path: number, data: any) => {
     const index = value?.findIndex((x) => x.path === path);
+    console.log("🚀 ~ index", index);
     if (index < 0) return;
     const _data = [...value];
     _data[index] = { ..._data[index], ...data };
@@ -86,7 +87,9 @@ function UploadFileDetailForm(props: IUploadFileDetailController) {
                 }
               )
               .then((res) => {
-                setValue((s) => [...s, ...res?.data?.data]);
+                console.log("🚀 ~ res", res);
+                if (isArray(value)) setValue((s) => [...s, ...res?.data?.data]);
+                else setValue(res?.data?.data);
               })
               .finally(() => setLoading.setFalse());
           }}
