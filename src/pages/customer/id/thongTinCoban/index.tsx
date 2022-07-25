@@ -224,9 +224,9 @@ function ThongTinCoBanTab() {
               updateCustomerByID({
                 ...customer,
                 ...data,
-                quocgia_key: data.quocgia_key.value,
-                thanhpho_key: data.thanhpho_key.value,
-                danh_xung_key: data.danh_xung.value,
+                quocgia_key: data?.quocgia_key?.value,
+                thanhpho_key: data?.thanhpho_key?.value,
+                danh_xung_key: data?.danh_xung?.value,
               });
             })()
           }
