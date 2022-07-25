@@ -61,6 +61,7 @@ function UploadFileDetailForm(props: IUploadFileDetailController) {
         disabled={isDisabled}
         variant="contained"
         component="label"
+        size="small"
       >
         <Typography variant="button">
           {!isLoading ? label : "Loading..."}
@@ -97,13 +98,13 @@ function UploadFileDetailForm(props: IUploadFileDetailController) {
         />
       </Button>
       <VStack w="100%" pt="20px" spacing={"20px"}>
-        {value?.map((item, index: number) => (
+        {value?.map?.((item, index: number) => (
           <BaseForm
             key={index}
             gap={gap}
             templateColumns={templateColumns || "repeat(9, 1fr)"}
             defaultValues={item}
-            watchFields={fields.map((x) => {
+            watchFields={fields?.map?.((x) => {
               //@ts-ignore
               if (typeof x.name === "string") return x.name;
             })}
@@ -146,7 +147,7 @@ function UploadFileDetailForm(props: IUploadFileDetailController) {
   );
 }
 
-const DateTimeController = (props: IUploadFileDetailController) => (
+const UploadFileDetailController = (props: IUploadFileDetailController) => (
   <Controller
     name={props.name || "name"}
     control={props.control}
@@ -155,4 +156,4 @@ const DateTimeController = (props: IUploadFileDetailController) => (
   />
 );
 
-export default DateTimeController;
+export default UploadFileDetailController;
