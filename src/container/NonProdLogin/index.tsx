@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import * as UI from "@/libs/ui";
 import BaseForm from "@/components/BaseForm";
 import { LOCAL_KEY } from "@/constants";
+import Logo from "@/assets/images/logo-capa-group.png";
 
 import { useLazyLoginQuery } from "@/store/auth";
 
@@ -46,6 +47,9 @@ function NonProdLogin(props: INonProdLogin) {
         aria-describedby="modal-modal-description"
       >
         <UI.Box sx={style}>
+          <UI.Box sx={{ maxWidth: "400px", marginBottom: "16px" }}>
+            <img width="100%" src={Logo} />
+          </UI.Box>
           <UI.Typography id="modal-modal-title" variant="h6" component="h2">
             LOGIN NOW!
           </UI.Typography>
