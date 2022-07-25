@@ -107,7 +107,7 @@ function CustomerTableListContainer() {
           <UI.Box sx={{ mb: 4 }}>
             <UI.Grid container justifyContent="space-between" spacing={3}>
               <UI.Grid item>
-                <UI.Typography variant="h4">Danh sách khách hàng</UI.Typography>
+                <UI.Typography variant="h4">Khách hàng</UI.Typography>
               </UI.Grid>
               <UI.Grid item>
                 <UI.Button
