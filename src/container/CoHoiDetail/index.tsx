@@ -198,8 +198,6 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
           }
         />
       }
-    >
-      <div>CoHoiDetail</div>
-    </BaseDetail>
+    />
   );
 }
