@@ -9,13 +9,13 @@ import { useGetLichHenQuery } from "@/store/lichHen";
 
 interface ILichHenTable {
   filter?: any;
+  search?: any;
   customerId?: any;
-  isShowKhachHangLink?: boolean;
   onSortChange?: (orderBy?: any) => any;
 }
 
 function LichHenTable(props: ILichHenTable) {
-  const { filter, customerId, isShowKhachHangLink, onSortChange } = props;
+  const { filter, customerId, search, onSortChange } = props;
   const [limit, setLimit] = React.useState(15);
   const [page, setPage] = React.useState(0);
   const navigate = useNavigate();
@@ -25,6 +25,7 @@ function LichHenTable(props: ILichHenTable) {
       limit,
       page: page + 1,
       filter,
+      search,
       customerId,
     },
     { refetchOnMountOrArgChange: true }
@@ -63,27 +64,27 @@ function LichHenTable(props: ILichHenTable) {
         </UI.HStack>
       )}
       columns={[
-        { field: "id", headerName: "ID", width: 80 },
+        { field: "id", headerName: "ID", width: 100 },
         {
           field: "khach_hang",
           headerName: "Cách gọi khách hàng",
           renderCell: ({ value }) => value?.contact,
-          width: 250,
+          width: 300,
         },
         {
           field: "ten",
           headerName: "Tiêu Đề",
-          width: 150,
+          width: 200,
         },
         {
-          field: "dia_diem",
+          field: "diadiem",
           headerName: "Địa điểm",
-          width: 150,
+          width: 200,
         },
         {
           field: "note",
           headerName: "Diễn giải",
-          width: 130,
+          width: 200,
         },
         {
           field: "ngaybatdau",

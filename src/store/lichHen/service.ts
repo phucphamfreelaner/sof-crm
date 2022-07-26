@@ -16,10 +16,16 @@ export const lichHenService = createApi({
   endpoints: (builder) => ({
     getLichHen: builder.query<
       { data: ILichHen[] },
-      { limit?: number; page?: number; filter?: any; customerId?: any }
+      {
+        limit?: number;
+        page?: number;
+        filter?: any;
+        search?: any;
+        customerId?: any;
+      }
     >({
       transformResponse: (response: any) => response,
-      query: ({ limit, page, filter = {}, customerId }) => ({
+      query: ({ limit, page, filter = {}, search = {}, customerId }) => ({
         method: "GET",
         url: `/lich-hen`,
         params: {
@@ -31,7 +37,7 @@ export const lichHenService = createApi({
             created_at: "desc",
           },
           ...filter,
-          //s: filter,
+          s: search,
         },
       }),
     }),

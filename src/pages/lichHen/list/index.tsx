@@ -9,11 +9,26 @@ import {
 } from "react-icons/ai";
 import LichHenTable from "@/container/LichHenTable";
 import { debounce, isEmpty } from "lodash-es";
+import SearchBar from "@/components/SearchBar";
+import { useLazySearchKhachHangListQuery } from "@/store/khachHang";
 
 function LichHenList() {
   const navigate = useNavigate();
   const [filter, setFilter] = React.useState<any>(null);
+  const [customerId, setCustomerId] = React.useState<any>(null);
+
+  const [search, setSearch] = React.useState<any>(null);
+
   const [key, setKey] = React.useState<any>(null);
+
+  const [
+    searchKhachHang,
+    {
+      data: khachHangData,
+      isLoading: isLoadingKhachHang,
+      isFetching: isFetchingKhachHang,
+    },
+  ] = useLazySearchKhachHangListQuery();
 
   const handleFilterChange = debounce(setFilter, 500);
 
@@ -42,11 +57,75 @@ function LichHenList() {
       <UI.Card>
         <UI.Divider />
         <UI.CardContent>
+          <SearchBar
+            baseSearchOptions={[
+              {
+                name: "khachhang",
+                label: "Tìm kiếm tên khách hàng",
+                type: "autocomplete",
+                colSpan: 8,
+                isLoading: isLoadingKhachHang || isFetchingKhachHang,
+                autocompleteOptions: khachHangData,
+                onSearchChange: (data) => {
+                  searchKhachHang({ name: data ? data : "" });
+                },
+                placeholder: "Tất cả",
+              },
+            ]}
+            handleOnchangeBaseSearch={(data) =>
+              setCustomerId(data?.khachhang?.value)
+            }
+            advanceSearchOptions={[
+              {
+                name: "id",
+                type: "input",
+                label: "Mã lịch hẹn",
+              },
+              {
+                name: "ten",
+                type: "input",
+                label: "Tiêu đề",
+              },
+              {
+                name: "diadiem",
+                type: "input",
+                label: "Địa điểm",
+              },
+              {
+                name: "note",
+                type: "input",
+                label: "Diễn giải",
+              },
+              {
+                name: "ngaybatdau",
+                type: "input",
+                label: "Ngày bắt đầu",
+              },
+              {
+                name: "ngayketthuc",
+                type: "input",
+                label: "Ngày kết thúc",
+              },
+              {
+                name: "created_at",
+                type: "input",
+                label: "Ngày nhập",
+              },
+              {
+                name: "page",
+                type: "input",
+                label: "Số trang",
+              },
+            ]}
+            handleOnchangeAdvanceSearch={setSearch}
+          />
           <LichHenTable
             onSortChange={(orderBy) => {
               setFilter((filter) => ({ ...filter, ...orderBy }));
             }}
             filter={filter}
+            search={search}
+            customerId={customerId}
           />
         </UI.CardContent>
       </UI.Card>
