@@ -62,7 +62,7 @@ const BaseForm = React.forwardRef((props: IBaseForm, ref?: any) => {
     watchFields,
     watchDefaultValueFields,
     onWatchChange,
-    footerStyle,
+    childrenSx,
     sx,
   } = props;
 
@@ -128,7 +128,7 @@ const BaseForm = React.forwardRef((props: IBaseForm, ref?: any) => {
         <GridItem
           rowSpan={childrenRowSpan || 1}
           colSpan={childrenColSpan || 1}
-          sx={footerStyle}
+          sx={childrenSx}
         >
           {children}
         </GridItem>

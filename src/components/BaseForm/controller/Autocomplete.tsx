@@ -46,11 +46,11 @@ function AutocompleteComponent(props: IAutocompleteController) {
   React.useEffect(() => {
     if (isString(field?.value) || isNumber(field?.value)) {
       onGetDataByValue?.(field?.value).then((data) => {
-        setValue({ label: data?.[mapValueKey], value: field?.value });
+        setValue({ label: data?.[mapValueKey] || data, value: field?.value });
         field.onChange({
           name,
           target: {
-            value: { label: data?.[mapValueKey], value: field?.value },
+            value: { label: data?.[mapValueKey] || data, value: field?.value },
           },
         });
       });

@@ -1,12 +1,12 @@
 import React from "react";
 import CoHoiNewContainer from "@/container/CoHoiNew";
 import * as UI from "@/libs/ui";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 
 function CoHoiNew() {
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const customerId = searchParams.get("customerId");
 
   return (
@@ -30,14 +30,16 @@ function CoHoiNew() {
               <UI.Typography variant="h4">Thêm mới cơ hội</UI.Typography>
             </UI.Box>
           </UI.Box>
-          <UI.Divider />
-          <UI.Box sx={{ mt: 3 }}>
+          <UI.Card sx={{ mt: 3, px: 3, py: 5 }}>
             <UI.Grid container spacing={3}>
               <UI.Grid item xs={12}>
-                <CoHoiNewContainer customerId={customerId} />
+                <CoHoiNewContainer
+                  customerId={customerId}
+                  onAfterUpdated={() => navigate(-1)}
+                />
               </UI.Grid>
             </UI.Grid>
-          </UI.Box>
+          </UI.Card>
         </UI.Container>
       </UI.Box>
     </>

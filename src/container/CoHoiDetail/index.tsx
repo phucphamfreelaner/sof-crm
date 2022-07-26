@@ -18,7 +18,7 @@ import { openModalBottom } from "@/store/modal";
 import DetailInfo from "@/components/DetailInfo";
 import BasicDetails from "@/components/BasicDetails";
 import TextEditor from "@/components/TextEditor";
-import CoHoiForm from "@/container/CoHoiForm";
+import CoHoiNew from "@/container/CoHoiNew";
 
 interface ICoHoiDetail {
   coHoiData: any;
@@ -81,7 +81,7 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
                   id: `co-hoi-${id}`,
                   content: (
                     <UI.CKBox px={spacing(3)} py={spacing(3.5)}>
-                      <CoHoiForm reloadCoHoi={reloadCoHoi} />
+                      <CoHoiNew customerId={8736} />
                     </UI.CKBox>
                   ),
                 },
@@ -193,7 +193,7 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
           }
           editContent={
             <UI.CKBox p="26px">
-              <CoHoiForm coHoiData={coHoiData} reloadCoHoi={reloadCoHoi} />
+              <CoHoiNew defaultValues={coHoiData} />
             </UI.CKBox>
           }
         />

@@ -68,6 +68,8 @@ function BaseTable(props: IBaseTable) {
         height,
         width: "100%",
         position: "relative",
+        background: "white",
+        borderRadius: "8px",
       }}
     >
       <DataGrid

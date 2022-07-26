@@ -6,11 +6,12 @@ import TextEditor from "@/components/TextEditor";
 import { Typography, Box, useTheme } from "@mui/material";
 import { VStack } from "@chakra-ui/layout";
 
-export interface ITextEditorController extends IBaseController {}
+export interface ITextEditorController extends IBaseController {
+  id?: string;
+}
 
 function TextEditorPickerForm(props: ITextEditorController) {
   const { palette } = useTheme();
-
   const {
     label,
     name,
@@ -18,7 +19,9 @@ function TextEditorPickerForm(props: ITextEditorController) {
     helperText = "",
     isDisabled,
     field,
+    id,
   } = props;
+  console.log("🚀 ~ id", id);
 
   return (
     <Box
@@ -41,13 +44,15 @@ function TextEditorPickerForm(props: ITextEditorController) {
       >
         {label}
       </Typography>
+
       <TextEditor
         isDisabled={isDisabled}
-        id={name}
+        id={id || name}
         value={field?.value}
         onChange={(value) => field?.onChange(value)}
         hiddenBorder
       />
+
       <VStack spacing={0} alignItems="flex-start" w="100%">
         {helperText && <Typography variant="caption">{helperText}</Typography>}
         {errorMessage && (
