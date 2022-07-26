@@ -9,6 +9,8 @@ import {
   AiOutlineCloseCircle,
   AiOutlineDownCircle,
   AiOutlineEdit,
+  AiOutlineCalendar,
+  AiOutlineFileDone,
 } from "react-icons/ai";
 import { isEmpty } from "lodash-es";
 
@@ -27,11 +29,12 @@ interface IBaseDetail {
   openEdit?: () => any;
   onSave?: (data: any) => any;
   actionMenus?: { label: string; icon: React.ReactNode; onClick?: () => any }[];
+  cuocHopCounter?: number;
+  baoGiaCounter?: number;
 }
 
 function BaseDetail(props: IBaseDetail) {
   const {
-    children,
     headerBreadcrumbs,
     onSendMessage,
     onAddNoted,
@@ -44,6 +47,8 @@ function BaseDetail(props: IBaseDetail) {
     actionMenus,
     detailContent,
     isLoading,
+    cuocHopCounter = 0,
+    baoGiaCounter = 0,
   } = props;
   const { spacing, palette } = UI.useTheme();
 
@@ -139,12 +144,37 @@ function BaseDetail(props: IBaseDetail) {
           <UI.Tabs
             value={value}
             onChange={handleChange}
-            sx={{ ml: 2 }}
             aria-label="basic tabs example"
+            sx={{ paddingLeft: "16px", paddingRight: "6px", paddingY: "4px" }}
           >
             <UI.Tab label="Gửi tin" />
             <UI.Tab label="Ghi chú" />
             <UI.Tab label="Lên công việc" />
+
+            <UI.HStack w="100%" justifyContent="flex-end" spacing={0}>
+              <UI.Button
+                size="small"
+                startIcon={
+                  <UI.Badge badgeContent={4} color="info">
+                    <AiOutlineCalendar size="24px" />
+                  </UI.Badge>
+                }
+                variant="text"
+              >
+                Cuộc họp
+              </UI.Button>
+              <UI.Button
+                size="small"
+                startIcon={
+                  <UI.Badge badgeContent={4} color="secondary">
+                    <AiOutlineFileDone size="24px" />
+                  </UI.Badge>
+                }
+                variant="text"
+              >
+                Báo giá
+              </UI.Button>
+            </UI.HStack>
           </UI.Tabs>
           <TabPanel value={value} index={0}>
             <GuiTinForm onSendMessage={onSendMessage} />
