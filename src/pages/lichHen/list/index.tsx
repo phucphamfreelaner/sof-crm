@@ -48,6 +48,9 @@ function LichHenList() {
             size="small"
             startIcon={<AiFillPlusCircle fontSize="small" />}
             variant="contained"
+            onClick={() => {
+              navigate(`/lich_hen/new`);
+            }}
           >
             Thêm mới
           </UI.Button>

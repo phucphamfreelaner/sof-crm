@@ -33,6 +33,7 @@ import KhachHangHopDong from "@/pages/customer/id/hopDong";
 import KhachHangLichHen from "@/pages/customer/id/lichHen";
 import LichHen from "@/pages/lichHen";
 import LichHenlist from "@/pages/lichHen/list";
+import LichHenNew from "@/pages/lichHen/new";
 
 function Router() {
   return (
@@ -79,6 +80,7 @@ function Router() {
           </Route>
           <Route path="lich_hen" element={<LichHen />}>
             <Route index element={<LichHenlist />} />
+            <Route path="new" element={<LichHenNew />} />
           </Route>
         </Route>
       </Routes>

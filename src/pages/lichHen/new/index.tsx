@@ -3,9 +3,9 @@ import * as UI from "@/libs/ui";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 
-import BaoGiaNew from "@/container/BaoGiaNew";
+import LichHenNew from "@/container/LichHenNew";
 
-function AddBaoGia() {
+function AddLichHen() {
   const navigate = useNavigate();
   return (
     <UI.Box sx={{ mb: 4, width: "100%" }}>
@@ -17,14 +17,14 @@ function AddBaoGia() {
           >
             Quay lại
           </UI.Button>
-          <UI.Typography variant="h4">Thêm mới báo giá</UI.Typography>
+          <UI.Typography variant="h4">Thêm mới lịch hẹn</UI.Typography>
         </UI.Grid>
       </UI.Grid>
       <UI.Box sx={{ mt: 5, width: "100%" }}>
-        <BaoGiaNew />
+        <LichHenNew />
       </UI.Box>
     </UI.Box>
   );
 }
 
-export default AddBaoGia;
+export default AddLichHen;
