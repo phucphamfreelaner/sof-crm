@@ -22,7 +22,15 @@ export const khachHangService = createApi({
         url: `/khach-hang?s[contact]=${name}&limit=10&page=1`,
       }),
     }),
+    getKhachHangById: builder.query<any, { id: any }>({
+      transformResponse: (response: any) => response?.data,
+      query: ({ id }) => ({
+        method: "GET",
+        url: `/khach-hang/${id}`,
+      }),
+    }),
   }),
 });
 
-export const { useLazySearchKhachHangListQuery } = khachHangService;
+export const { useGetKhachHangByIdQuery, useLazySearchKhachHangListQuery } =
+  khachHangService;

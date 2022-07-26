@@ -32,8 +32,6 @@ function LichHenTable(props: ILichHenTable) {
   );
   const [dataSelected, setDataSelected] = React.useState<any>(null);
 
-  console.log(filter);
-
   return (
     <BaseTable
       name="Lịch Hẹn"
@@ -55,9 +53,9 @@ function LichHenTable(props: ILichHenTable) {
             variant="outlined"
             size="small"
             startIcon={<MdOpenInNew size="16" />}
-            // onClick={() => {
-            //   navigate(`/bao_gia/${dataSelected?.[0]?.id}`);
-            // }}
+            onClick={() => {
+              navigate(`/lich_hen/${dataSelected?.[0]?.id}`);
+            }}
           >
             Chi tiết
           </UI.Button>

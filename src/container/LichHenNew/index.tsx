@@ -11,16 +11,17 @@ import {
   useLazyPutLichHenByIdQuery,
 } from "@/store/lichHen";
 import { useLazySearchKhachHangListQuery } from "@/store/khachHang";
+import Loading from "@/components/Loading";
 
 interface ILichHenForm {
   lichHenData?: any;
   id?: any;
+  isSuccess?: boolean;
+  khachHangLabel?: any;
 }
 
 function LichHenForm(props: ILichHenForm) {
-  const { lichHenData, id } = props;
-  const [query] = useSearchParams();
-
+  const { lichHenData, id, isSuccess, khachHangLabel } = props;
   const navigate = useNavigate();
 
   const [
@@ -58,13 +59,23 @@ function LichHenForm(props: ILichHenForm) {
   }, [isSuccessCreateLichHen]);
 
   React.useEffect(() => {
-    if (!lichHenData && khachHangData) {
+    if (!id && khachHangData) {
       setDefaultValue((prev) => ({
         ...prev,
         customer_id: khachHangData?.[0],
       }));
     }
-  }, [lichHenData, khachHangData]);
+
+    if (isSuccess) {
+      setDefaultValue((prev) => ({
+        ...lichHenData,
+        customer_id: {
+          label: khachHangLabel,
+          value: lichHenData?.customer_id,
+        },
+      }));
+    }
+  }, [isSuccess, khachHangData]);
 
   const elForm = React.useRef<any>();
 
@@ -99,14 +110,18 @@ function LichHenForm(props: ILichHenForm) {
   return (
     <UI.Card>
       <UI.CardContent sx={{ padding: "14px !important" }}>
-        <LichHenNewForm
-          formRef={elForm}
-          key={JSON.stringify(defaultValues)}
-          isLoadingKhachHang={isLoadingKhachHang || isFetchingKhachHang}
-          khachHangData={khachHangData}
-          onSearchKhachHang={(name) => searchKhachHang({ name })}
-          defaultValues={defaultValues}
-        />
+        {id && !isSuccess ? (
+          <Loading />
+        ) : (
+          <LichHenNewForm
+            formRef={elForm}
+            key={JSON.stringify(defaultValues)}
+            isLoadingKhachHang={isLoadingKhachHang || isFetchingKhachHang}
+            khachHangData={khachHangData}
+            onSearchKhachHang={(name) => searchKhachHang({ name })}
+            defaultValues={defaultValues}
+          />
+        )}
       </UI.CardContent>
       <UI.CardActions sx={{ justifyContent: "flex-end" }}>
         <LoadingButton
