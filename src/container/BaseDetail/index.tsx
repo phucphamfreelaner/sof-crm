@@ -155,7 +155,7 @@ function BaseDetail(props: IBaseDetail) {
               <UI.Button
                 size="small"
                 startIcon={
-                  <UI.Badge badgeContent={4} color="info">
+                  <UI.Badge badgeContent={cuocHopCounter} color="info">
                     <AiOutlineCalendar size="24px" />
                   </UI.Badge>
                 }
@@ -166,7 +166,7 @@ function BaseDetail(props: IBaseDetail) {
               <UI.Button
                 size="small"
                 startIcon={
-                  <UI.Badge badgeContent={4} color="secondary">
+                  <UI.Badge badgeContent={baoGiaCounter} color="secondary">
                     <AiOutlineFileDone size="24px" />
                   </UI.Badge>
                 }
