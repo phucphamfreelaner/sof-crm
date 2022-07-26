@@ -3,6 +3,7 @@ import BaseDetail from "@/container/BaseDetail";
 import * as UI from "@/libs/ui";
 import { useBoolean } from "ahooks";
 import { uniqueId } from "lodash-es";
+import { format, isValid } from "date-fns";
 import {
   AiOutlineSave,
   AiOutlineCopy,
@@ -12,8 +13,19 @@ import {
   AiOutlineFolderAdd,
 } from "react-icons/ai";
 
+import {
+  MdOutlineCheckBox,
+  MdOutlineCheckBoxOutlineBlank,
+} from "react-icons/md";
+
+import { FiExternalLink } from "react-icons/fi";
+
 import { useAppDispatch } from "@/store";
 import { openModalBottom } from "@/store/modal";
+import { useLazyGetKhachHangByIdQuery } from "@/store/khachHang";
+import { useLazyGetSoLuongByValueQuery } from "@/store/soLuong";
+import { useLazyGetTienTrinhByKeyQuery } from "@/store/tienTrinh";
+import { useLazyGetTrangThaiByKeyQuery } from "@/store/trangThai";
 
 import DetailInfo from "@/components/DetailInfo";
 import BasicDetails from "@/components/BasicDetails";
@@ -30,7 +42,7 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
   const { coHoiData, isLoadingCoHoi, reloadCoHoi } = props;
   const [isEdit, setEdit] = useBoolean(false);
   const dispatch = useAppDispatch();
-  const { spacing } = UI.useTheme();
+  const { spacing, palette } = UI.useTheme();
 
   const breadcrumbs = [
     <UI.Typography
@@ -51,6 +63,10 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
     </UI.Typography>,
   ];
 
+  const [getKhachHangById] = useLazyGetKhachHangByIdQuery();
+  const [getSoLuongByValue] = useLazyGetSoLuongByValueQuery();
+  const [getTienTrinhByKey] = useLazyGetTienTrinhByKeyQuery();
+  const [getTrangThaiByKey] = useLazyGetTrangThaiByKeyQuery();
   return (
     <BaseDetail
       isLoading={isLoadingCoHoi}
@@ -140,34 +156,102 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
                 {
                   property: "customer_id",
                   label: "Khách hàng",
+                  type: "render-async",
+                  getRowData: (id) =>
+                    getKhachHangById({ id })
+                      .unwrap()
+                      .then((res) => res || id),
+                  renderRow: (value) => {
+                    return (
+                      <UI.Link
+                        href={`/app/crm/khach_hang/${value?.id}`}
+                        variant="body2"
+                        target="_blank"
+                      >
+                        {value?.contact} <FiExternalLink />
+                      </UI.Link>
+                    );
+                  },
                 },
                 {
                   property: "soluong",
                   label: "Số lượng",
-                },
-                {
-                  property: "soluong",
-                  label: "Số lượng",
+                  type: "render-async",
+                  getRowData: (name) =>
+                    getSoLuongByValue({ name })
+                      .unwrap()
+                      .then((res) => res?.name)
+                      .catch(() => name),
                 },
                 {
                   property: "tien_trinh_key",
                   label: "Tiến trình",
+                  type: "render-async",
+                  getRowData: (key) =>
+                    getTienTrinhByKey({ key })
+                      .unwrap()
+                      .then((res) => res?.name)
+                      .catch(() => key),
                 },
                 {
                   property: "trang_thai_key",
                   label: "Trạng thái",
+                  type: "render-async",
+                  getRowData: (key) =>
+                    getTrangThaiByKey({ key })
+                      .unwrap()
+                      .then((res) => res?.name)
+                      .catch(() => key),
                 },
                 {
                   property: "da_cham_soc",
                   label: "Chăm sóc",
+                  type: "render",
+                  renderRow: (value) => {
+                    return (
+                      <UI.HStack>
+                        {Boolean(+value) ? (
+                          <MdOutlineCheckBox
+                            size="22px"
+                            color={palette.success.main}
+                          />
+                        ) : (
+                          <MdOutlineCheckBoxOutlineBlank
+                            size="22px"
+                            color={palette.grey[400]}
+                          />
+                        )}
+                      </UI.HStack>
+                    );
+                  },
                 },
                 {
                   property: "created_at",
                   label: "Ngày tạo",
+                  type: "render",
+                  renderRow: (value) => {
+                    return isValid(new Date(value)) ? (
+                      <UI.Typography variant="body2">
+                        {format(new Date(value), "dd-MM-yyyy HH:mm")}
+                      </UI.Typography>
+                    ) : (
+                      value
+                    );
+                  },
                 },
                 {
                   property: "updated_at",
                   label: "Cập nhật",
+                  type: "render",
+                  renderRow: (value) => {
+                    return isValid(new Date(value)) ? (
+                      <UI.Typography variant="body2">
+                        {format(new Date(value), "dd-MM-yyyy HH:mm")}
+                      </UI.Typography>
+                    ) : (
+                      value
+                    );
+                  },
                 },
                 {
                   property: "note",
