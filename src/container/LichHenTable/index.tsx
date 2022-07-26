@@ -42,9 +42,7 @@ function LichHenTable(props: ILichHenTable) {
       isLoading={isLoading || isFetching}
       rows={data?.data || []}
       page={page}
-      rowCount={
-        data?.data?.length > 15 ? data?.data?.length + 1 : data?.data?.length
-      }
+      rowCount={data?.data?.length * 10}
       onPageChange={setPage}
       onSortChange={(mode) => {
         onSortChange({ order_by: { [mode?.[0].field]: mode?.[0]?.sort } });
