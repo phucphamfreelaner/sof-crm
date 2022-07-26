@@ -32,5 +32,8 @@ export const khachHangService = createApi({
   }),
 });
 
-export const { useGetKhachHangByIdQuery, useLazySearchKhachHangListQuery } =
-  khachHangService;
+export const {
+  useGetKhachHangByIdQuery,
+  useLazySearchKhachHangListQuery,
+  useLazyGetKhachHangByIdQuery,
+} = khachHangService;

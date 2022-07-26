@@ -94,7 +94,7 @@ const BasicDetails = (props: {
     label: string;
     property?: string;
     renderRow?: (data?: any, row?: any) => any;
-    getRowData?: (value?: any, data?: any) => Promise<any>;
+    getRowData?: (value?: any, row?: any) => Promise<any>;
     type?: "string" | "render" | "render-async";
     colSpan?: number;
     colStart?: number;

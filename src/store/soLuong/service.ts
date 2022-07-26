@@ -27,6 +27,13 @@ export const soLuongService = createApi({
         url: `/cau-hinh/group/so_luong?s=${name}&take=10`,
       }),
     }),
+    getSoLuongByValue: builder.query({
+      transformResponse: (response: any) => response,
+      query: ({ name }) => ({
+        method: "GET",
+        url: `/cau-hinh/group/so_luong/key/${name}`,
+      }),
+    }),
     getSoLuongOptions: builder.query({
       transformResponse: (response: any) =>
         Object.keys(response).map((key) => {
@@ -45,4 +52,5 @@ export const {
   useLazyGetSoLuongListQuery,
   useLazyGetSoLuongOptionsQuery,
   useLazyGetSoLuongByNameQuery,
+  useLazyGetSoLuongByValueQuery,
 } = soLuongService;
