@@ -20,8 +20,29 @@ export const soLuongService = createApi({
         url: `/cau-hinh/group/so_luong?s=${name}&take=10`,
       }),
     }),
+    getSoLuongByName: builder.query({
+      transformResponse: (response: any) => response,
+      query: ({ name }) => ({
+        method: "GET",
+        url: `/cau-hinh/group/so_luong?s=${name}&take=10`,
+      }),
+    }),
+    getSoLuongOptions: builder.query({
+      transformResponse: (response: any) =>
+        Object.keys(response).map((key) => {
+          return { label: response[key], value: key };
+        }),
+      query: ({ name }) => ({
+        method: "GET",
+        url: `/cau-hinh/group/so_luong?s=${name}&take=10`,
+      }),
+    }),
   }),
 });
 
-export const { useGetSoLuongListQuery, useLazyGetSoLuongListQuery } =
-  soLuongService;
+export const {
+  useGetSoLuongListQuery,
+  useLazyGetSoLuongListQuery,
+  useLazyGetSoLuongOptionsQuery,
+  useLazyGetSoLuongByNameQuery,
+} = soLuongService;

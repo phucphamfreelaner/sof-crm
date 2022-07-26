@@ -13,6 +13,7 @@ import type { IIconButtonFieldController } from "./controller/IconButton";
 import type { IRadioController } from "./controller/Radio";
 import type { IUploadFileDetailController } from "./controller/UploadFileDetail";
 import type { IFileInfoController } from "./controller/FileInfo";
+import type { ITextEditorController } from "./controller/TextEditor";
 
 export interface IBaseForm {
   id?: string;
@@ -36,7 +37,7 @@ export interface IBaseForm {
     setValue: (name: string, value: any, config?: Object) => void
   ) => any;
   withLabel?: boolean;
-  footerStyle?: React.CSSProperties;
+  childrenSx?: React.CSSProperties;
   sx?: CSSObject;
 }
 
@@ -65,7 +66,8 @@ export type IFormControl = IBaseController &
   ICollapseFieldsController &
   IRadioController &
   IUploadFileDetailController &
-  IFileInfoController & {
+  IFileInfoController &
+  ITextEditorController & {
     type:
       | "input"
       | "select"

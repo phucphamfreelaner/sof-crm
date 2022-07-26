@@ -46,7 +46,6 @@ function UploadFileDetailForm(props: IUploadFileDetailController) {
 
   const handleChangeFieldValue = (path: number, data: any) => {
     const index = value?.findIndex((x) => x.path === path);
-    console.log("🚀 ~ index", index);
     if (index < 0) return;
     const _data = [...value];
     _data[index] = { ..._data[index], ...data };
