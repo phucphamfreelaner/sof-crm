@@ -1,31 +1,69 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { useQuill } from "react-quilljs";
-// import "quill/dist/quill.snow.css";
+import { RichTextWrapStyled } from "./styles";
+import "quill/dist/quill.snow.css";
 
 interface ILongText {
   defaultValue?: string;
   onChange?: (value: any) => any;
+  width?: string;
+  height?: string;
 }
 
+const CustomUndo = () => (
+  <svg viewBox="0 0 18 18">
+    <polygon className="ql-fill ql-stroke" points="6 10 4 12 2 10 6 10" />
+    <path
+      className="ql-stroke"
+      d="M8.09,13.91A4.6,4.6,0,0,0,9,14,5,5,0,1,0,4,9"
+    />
+  </svg>
+);
+
+const CustomRedo = () => (
+  <svg viewBox="0 0 18 18">
+    <polygon className="ql-fill ql-stroke" points="12 10 14 12 16 10 12 10" />
+    <path
+      className="ql-stroke"
+      d="M9.91,13.91A4.6,4.6,0,0,1,9,14a5,5,0,1,1,5-5"
+    />
+  </svg>
+);
+
 function LongText(props: ILongText) {
-  const { defaultValue, onChange } = props;
+  const { defaultValue, onChange, width = "100%", height = "100%" } = props;
   const [value, setValue] = React.useState<string>(defaultValue || "");
 
   const modules = {
-    toolbar: [
-      [{ header: "1" }, { header: "2" }, { font: [] }],
-      [{ size: [] }],
-      ["bold", "italic", "underline", "strike", "blockquote"],
-      [
-        { list: "ordered" },
-        { list: "bullet" },
-        { indent: "-1" },
-        { indent: "+1" },
+    history: {
+      delay: 1000,
+      maxStack: 100,
+      userOnly: false,
+    },
+    toolbar: {
+      container: [
+        ["undo"],
+        ["redo"],
+        [{ header: "1" }, { header: "2" }, { font: [] }],
+        [{ size: [] }],
+        ["bold", "italic", "underline", "strike", "blockquote"],
+        [
+          { list: "ordered" },
+          { list: "bullet" },
+          { indent: "-1" },
+          { indent: "+1" },
+        ],
       ],
-      ["link", "image", "video"],
-      ["clean"],
-    ],
+      handlers: {
+        undo: function () {
+          this.quill.history.undo();
+        },
+        redo: function () {
+          this.quill.history.redo();
+        },
+      },
+    },
   };
   const formats = [
     "header",
@@ -39,18 +77,21 @@ function LongText(props: ILongText) {
     "list",
     "bullet",
     "indent",
-    "link",
-    "image",
-    "video",
   ];
 
-  const { quill, quillRef } = useQuill({ modules, formats });
+  const { quill, quillRef, Quill } = useQuill({ modules, formats });
+
+  if (Quill && !quill) {
+    var icons = Quill.import("ui/icons");
+    icons["undo"] = "undo";
+    icons["redo"] = "redo";
+  }
 
   const ReactQuillMemo = React.useMemo(
     () => (
-      <div style={{ width: "100%", height: "100%" }}>
+      <RichTextWrapStyled style={{ width, height }}>
         <div ref={quillRef} />
-      </div>
+      </RichTextWrapStyled>
     ),
     []
   );
