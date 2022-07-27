@@ -31,6 +31,7 @@ import DetailInfo from "@/components/DetailInfo";
 import BasicDetails from "@/components/BasicDetails";
 import TextEditor from "@/components/TextEditor";
 import CoHoiNew from "@/container/CoHoiNew";
+import RichText from "@/components/RichText";
 
 interface ICoHoiDetail {
   coHoiData: any;
@@ -260,16 +261,7 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
                   type: "render",
                   hiddenLabel: true,
                   renderRow: (data) => {
-                    return (
-                      <TextEditor
-                        height="300px"
-                        padding="18px"
-                        sx={{ mt: "16px" }}
-                        id="co-hoi-note"
-                        defaultValue={data}
-                        label="Ghi chú nội bộ"
-                      />
-                    );
+                    return <RichText height="200px" />;
                   },
                 },
               ]}
