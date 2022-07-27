@@ -261,7 +261,14 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
                   type: "render",
                   hiddenLabel: true,
                   renderRow: (data) => {
-                    return <RichText height="200px" />;
+                    return (
+                      <RichText
+                        defaultValue={data}
+                        label="Ghi chú cơ hội"
+                        height="130px"
+                        sx={{ marginTop: "20px" }}
+                      />
+                    );
                   },
                 },
               ]}

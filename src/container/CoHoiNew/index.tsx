@@ -27,6 +27,7 @@ interface ICoHoiNewContainer {
 
 const CoHoiNewContainer = (props: ICoHoiNewContainer) => {
   const { customerId, onAfterUpdated, defaultValues } = props;
+  console.log("🚀 ~ defaultValues", defaultValues, customerId);
 
   const [createCoHoi, { data, isSuccess, isLoading: isLoadingCreate }] =
     useCreateCoHoiMutation();
@@ -93,6 +94,7 @@ const CoHoiNewContainer = (props: ICoHoiNewContainer) => {
       onSubmit={(data) =>
         createCoHoi({
           customer_id: customerId,
+          ...defaultValues,
           ...data,
           soluong: data?.soluong?.value,
           trang_thai_key: data?.trang_thai_key?.value,
@@ -155,13 +157,13 @@ const CoHoiNewContainer = (props: ICoHoiNewContainer) => {
           onSearchChange: (text) => searchTienTrinh({ name: text }),
           colSpan: 3,
         },
-        // {
-        //   name: "note",
-        //   id: "note-modal-co-hoi-new",
-        //   type: "text-editor",
-        //   label: "Diễn giải",
-        //   colSpan: 6,
-        // },
+        {
+          name: "note",
+          id: "note-modal-co-hoi-new",
+          type: "text-editor",
+          label: "Diễn giải",
+          colSpan: 6,
+        },
         {
           name: "files",
           label: "UPLOAD FILE",
@@ -188,6 +190,7 @@ const CoHoiNewContainer = (props: ICoHoiNewContainer) => {
       childrenColSpan={6}
       childrenSx={{ justifyContent: "flex-end", display: "flex" }}
       defaultValues={{
+        name: defaultValues?.name || "",
         note: defaultValues?.note || "",
         soluong: defaultValues?.soluong || soLuongData?.[0],
         trang_thai_key: defaultValues?.trang_thai_key || trangThaiData?.[0],

@@ -2,7 +2,7 @@
 import React from "react";
 import { Controller } from "react-hook-form";
 import { IBaseController } from "../types";
-import TextEditor from "@/components/TextEditor";
+import TextEditor from "@/components/RichText";
 import { Typography, Box, useTheme } from "@mui/material";
 import { VStack } from "@chakra-ui/layout";
 
@@ -12,16 +12,7 @@ export interface ITextEditorController extends IBaseController {
 
 function TextEditorPickerForm(props: ITextEditorController) {
   const { palette } = useTheme();
-  const {
-    label,
-    name,
-    errorMessage,
-    helperText = "",
-    isDisabled,
-    field,
-    id,
-  } = props;
-  console.log("🚀 ~ id", id);
+  const { label, errorMessage, helperText = "", isDisabled, field } = props;
 
   return (
     <Box
@@ -47,10 +38,10 @@ function TextEditorPickerForm(props: ITextEditorController) {
 
       <TextEditor
         isDisabled={isDisabled}
-        id={id || name}
-        value={field?.value}
+        defaultValue={field?.value}
         onChange={(value) => field?.onChange(value)}
-        hiddenBorder
+        isHiddenBorder
+        height="100px"
       />
 
       <VStack spacing={0} alignItems="flex-start" w="100%">
