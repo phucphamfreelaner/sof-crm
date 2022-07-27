@@ -18,6 +18,7 @@ import NhiemVuNewForm from "@/components/NhiemVuNewForm";
 interface INhiemVuForm {
   nhiemVuData?: any;
   id?: any;
+  cohoi_id?: any;
   isSuccess?: boolean;
   khachHangLabel?: any;
   onAddTask?: (data: any) => any;
@@ -25,7 +26,7 @@ interface INhiemVuForm {
 }
 
 function NhiemVuForm(props: INhiemVuForm) {
-  const { nhiemVuData, id, isSuccess, refetchListNhiemVu } = props;
+  const { nhiemVuData, id, cohoi_id, isSuccess, refetchListNhiemVu } = props;
   const navigate = useNavigate();
 
   const [
@@ -81,7 +82,7 @@ function NhiemVuForm(props: INhiemVuForm) {
   React.useEffect(() => {
     if (isSuccessCreateNhiemVu) {
       toast.success("Thêm nhiệm vụ thành công!");
-      navigate(`/nhiem_vu/${dataNhiemVuNew?.data?.id}/view`);
+      refetchListNhiemVu();
     }
   }, [isSuccessCreateNhiemVu]);
 
@@ -124,6 +125,9 @@ function NhiemVuForm(props: INhiemVuForm) {
     console.log(data);
     const payload = {
       ...data,
+      object: "co_hoi",
+      co_hoi_id: cohoi_id,
+      object_id: cohoi_id,
       loai_key: data?.loai_key?.value,
       trangthai: data?.trangthai?.value,
       danh_gia_key: data?.danh_gia_key?.value,

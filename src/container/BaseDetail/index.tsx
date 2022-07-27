@@ -200,13 +200,20 @@ function BaseDetail(props: IBaseDetail) {
             <CongViecForm
               onAddTask={onAddTask}
               id={nhiemVuData?.id}
+              cohoi_id={id}
               nhiemVuData={nhiemVuData}
               isSuccess={isSuccessLoadNhiemVu}
               refetchListNhiemVu={refetch}
             />
           </TabPanel>
           <UI.Divider />
-          <UI.CardContent sx={{ padding: spacing(2) }}>
+          <UI.CardContent
+            sx={{
+              padding: spacing(2),
+              overflowY: "auto !important",
+              overflow: "hidden !important",
+            }}
+          >
             <UI.Typography
               gutterBottom
               sx={{ fontWeight: 600, color: palette.text.secondary }}
@@ -214,21 +221,23 @@ function BaseDetail(props: IBaseDetail) {
             >
               Lịch sử thao tác
             </UI.Typography>
-            {value === 2 && (
-              <CongViecList
-                listNhiemVuData={listNhiemVuData || []}
-                isLoadingListNhiemVu={
-                  isLoadingListNhiemVu || isFetchingListNhiemVu
-                }
-                refetchListNhiemVu={refetch}
-                onEditNhiemVu={async (data) => {
-                  await setNhiemVuData(data);
-                  await setIsSuccessLoadNhiemVu(false);
-                  await debounce(setIsSuccessLoadNhiemVu(true));
-                }}
-              />
-            )}
-            <UI.CKBox overflow="auto">{timelineContent}</UI.CKBox>
+
+            <UI.CKBox overflow="auto">
+              {value === 2 && (
+                <CongViecList
+                  listNhiemVuData={listNhiemVuData || []}
+                  isLoadingListNhiemVu={
+                    isLoadingListNhiemVu || isFetchingListNhiemVu
+                  }
+                  refetchListNhiemVu={refetch}
+                  onEditNhiemVu={async (data) => {
+                    await setNhiemVuData(data);
+                    await setIsSuccessLoadNhiemVu(false);
+                    await debounce(setIsSuccessLoadNhiemVu(true));
+                  }}
+                />
+              )}
+            </UI.CKBox>
           </UI.CardContent>
         </UI.Card>
       </UI.HStack>
