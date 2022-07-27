@@ -32,6 +32,7 @@ import { mauInService } from "./mauIn";
 import { loaiHdService } from "./loaiHd";
 import { modalSlice } from "./modal";
 import { lichHenService } from "./lichHen";
+import { nhiemVuService } from "./nhiemVu";
 
 // @ts-ignore
 const store: any = configureStore({
@@ -63,6 +64,7 @@ const store: any = configureStore({
     [mauInService.reducerPath]: mauInService.reducer,
     [loaiHdService.reducerPath]: loaiHdService.reducer,
     [lichHenService.reducerPath]: lichHenService.reducer,
+    [nhiemVuService.reducerPath]: nhiemVuService.reducer,
   }),
   devTools: true,
 });
