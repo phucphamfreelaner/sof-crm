@@ -260,11 +260,6 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
                   property: "note",
                   label: "Ghi chú",
                   colSpan: 2,
-                  type: "render",
-                  hiddenLabel: true,
-                  renderRow: (data) => {
-                    return <RichText height="200px" />;
-                  },
                 },
               ]}
             />

@@ -216,13 +216,13 @@ const CoHoiNewContainer = (props: ICoHoiNewContainer) => {
           onSearchChange: (text) => searchTienTrinh({ name: text }),
           colSpan: 3,
         },
-        // {
-        //   name: "note",
-        //   id: "note-modal-co-hoi-new",
-        //   type: "text-editor",
-        //   label: "Diễn giải",
-        //   colSpan: 6,
-        // },
+        {
+          name: "note",
+          type: "input",
+          label: "Ghi chú",
+          defaultValues: "",
+          colSpan: 6,
+        },
         {
           name: "files",
           label: "UPLOAD FILE",
