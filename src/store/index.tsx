@@ -27,6 +27,7 @@ import { testService } from "./test";
 import { soLuongService } from "./soLuong";
 import { trangThaiService } from "./trangThai";
 import { tienTrinhService } from "./tienTrinh";
+import { loaiFileService } from "./loaiFile";
 import { hopDongService } from "./hopDong";
 import { mauInService } from "./mauIn";
 import { loaiHdService } from "./loaiHd";
@@ -60,6 +61,7 @@ const store: any = configureStore({
     [soLuongService.reducerPath]: soLuongService.reducer,
     [trangThaiService.reducerPath]: trangThaiService.reducer,
     [tienTrinhService.reducerPath]: tienTrinhService.reducer,
+    [loaiFileService.reducerPath]: loaiFileService.reducer,
     [hopDongService.reducerPath]: hopDongService.reducer,
     [mauInService.reducerPath]: mauInService.reducer,
     [loaiHdService.reducerPath]: loaiHdService.reducer,

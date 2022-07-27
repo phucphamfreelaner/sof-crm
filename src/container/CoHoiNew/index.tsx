@@ -17,6 +17,10 @@ import {
   useLazyGetSoLuongOptionsQuery,
   useLazyGetSoLuongByNameQuery,
 } from "@/store/soLuong";
+import {
+  useLazyGetLoaiFileOptionsQuery,
+  useLazyGetLoaiFileByKeyQuery,
+} from "@/store/loaiFile";
 import { useCreateCoHoiMutation } from "@/store/coHoi";
 
 interface ICoHoiNewContainer {
@@ -61,9 +65,20 @@ const CoHoiNewContainer = (props: ICoHoiNewContainer) => {
     },
   ] = useLazyGetTienTrinhOptionQuery();
 
+  const [
+    searchLoaiFile,
+    {
+      data: loaiFileData,
+      isLoading: isLoadingLoaiFile,
+      isFetching: isFetchingLoaiFile,
+      isSuccess: isSuccessLoaiFile,
+    },
+  ] = useLazyGetLoaiFileOptionsQuery();
+
   const [getSoLuongByName] = useLazyGetSoLuongByNameQuery();
   const [getTrangThaiByKey] = useLazyGetTrangThaiByKeyQuery();
   const [getTienTrinhByKey] = useLazyGetTienTrinhByKeyQuery();
+  const [getLoaiFileByKey] = useLazyGetLoaiFileByKeyQuery();
 
   useEffect(() => {
     if (isSuccess) {
@@ -76,10 +91,14 @@ const CoHoiNewContainer = (props: ICoHoiNewContainer) => {
     searchSoLuong({ name: "" });
     searchTrangThai({ name: "" });
     searchTienTrinh({ name: "" });
+    searchLoaiFile({ name: "" });
   }, []);
 
   const isLoading =
-    isSuccessTienTrinh && isSuccessSoLuong && isSuccessTrangThai;
+    isSuccessTienTrinh &&
+    isSuccessSoLuong &&
+    isSuccessTrangThai &&
+    isSuccessLoaiFile;
 
   return !isLoading ? (
     <UI.CircularProgress />
@@ -171,9 +190,17 @@ const CoHoiNewContainer = (props: ICoHoiNewContainer) => {
           gap: "12px",
           fields: [
             {
-              type: "input",
-              name: "type",
+              name: "loai_file",
+              type: "autocomplete",
               label: "Loại",
+              isLoading: isLoadingLoaiFile || isFetchingLoaiFile,
+              autocompleteOptions: loaiFileData || [],
+              onGetDataByValue: (key) =>
+                key &&
+                getLoaiFileByKey({ key })
+                  .unwrap()
+                  .then((res) => res.name),
+              onSearchChange: (text) => searchLoaiFile({ name: text }),
               colSpan: 3,
             },
             {
