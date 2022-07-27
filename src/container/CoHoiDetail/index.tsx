@@ -1,5 +1,6 @@
 import React from "react";
 import BaseDetail from "@/container/BaseDetail";
+import { useNavigate } from "react-router-dom";
 import * as UI from "@/libs/ui";
 import { useBoolean } from "ahooks";
 import { uniqueId } from "lodash-es";
@@ -40,6 +41,7 @@ interface ICoHoiDetail {
 }
 
 export default function CoHoiDetail(props: ICoHoiDetail) {
+  const navigate = useNavigate();
   const { coHoiData, isLoadingCoHoi, reloadCoHoi } = props;
   const [isEdit, setEdit] = useBoolean(false);
   const dispatch = useAppDispatch();
@@ -269,7 +271,11 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
           }
           editContent={
             <UI.CKBox p="26px">
-              <CoHoiNew defaultValues={coHoiData} />
+              <CoHoiNew
+                defaultValues={coHoiData}
+                isUpdate={true}
+                onAfterUpdated={() => navigate(-1)}
+              />
             </UI.CKBox>
           }
         />
