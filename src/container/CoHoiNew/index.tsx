@@ -17,19 +17,37 @@ import {
   useLazyGetSoLuongOptionsQuery,
   useLazyGetSoLuongByNameQuery,
 } from "@/store/soLuong";
-import { useCreateCoHoiMutation } from "@/store/coHoi";
+import {
+  useLazyGetLoaiFileOptionsQuery,
+  useLazyGetLoaiFileByKeyQuery,
+} from "@/store/loaiFile";
+import {
+  useCreateCoHoiMutation,
+  useUpdateCoHoiByIDMutation,
+} from "@/store/coHoi";
+import { ICoHoi } from "@/types/coHoi";
 
 interface ICoHoiNewContainer {
   customerId?: string | number;
   onAfterUpdated?: (data: any) => any;
-  defaultValues?: any;
+  defaultValues?: ICoHoi;
+  isUpdate?: boolean;
 }
 
 const CoHoiNewContainer = (props: ICoHoiNewContainer) => {
-  const { customerId, onAfterUpdated, defaultValues } = props;
+  const { customerId, onAfterUpdated, defaultValues, isUpdate } = props;
 
   const [createCoHoi, { data, isSuccess, isLoading: isLoadingCreate }] =
     useCreateCoHoiMutation();
+
+  const [
+    updateCoHoi,
+    {
+      data: dataUpdate,
+      isSuccess: isSuccessUpdate,
+      isLoading: isLoadingUpdate,
+    },
+  ] = useUpdateCoHoiByIDMutation();
 
   const theme = UI.useTheme();
   const [
@@ -61,9 +79,20 @@ const CoHoiNewContainer = (props: ICoHoiNewContainer) => {
     },
   ] = useLazyGetTienTrinhOptionQuery();
 
+  const [
+    searchLoaiFile,
+    {
+      data: loaiFileData,
+      isLoading: isLoadingLoaiFile,
+      isFetching: isFetchingLoaiFile,
+      isSuccess: isSuccessLoaiFile,
+    },
+  ] = useLazyGetLoaiFileOptionsQuery();
+
   const [getSoLuongByName] = useLazyGetSoLuongByNameQuery();
   const [getTrangThaiByKey] = useLazyGetTrangThaiByKeyQuery();
   const [getTienTrinhByKey] = useLazyGetTienTrinhByKeyQuery();
+  const [getLoaiFileByKey] = useLazyGetLoaiFileByKeyQuery();
 
   useEffect(() => {
     if (isSuccess) {
@@ -72,14 +101,25 @@ const CoHoiNewContainer = (props: ICoHoiNewContainer) => {
     }
   }, [isSuccess]);
 
+  useEffect(() => {
+    if (isSuccessUpdate) {
+      toast.success("Chỉnh sửa cơ hội thành công");
+      onAfterUpdated?.(dataUpdate);
+    }
+  }, [isSuccessUpdate]);
+
   React.useEffect(() => {
     searchSoLuong({ name: "" });
     searchTrangThai({ name: "" });
     searchTienTrinh({ name: "" });
+    searchLoaiFile({ name: "" });
   }, []);
 
   const isLoading =
-    isSuccessTienTrinh && isSuccessSoLuong && isSuccessTrangThai;
+    isSuccessTienTrinh &&
+    isSuccessSoLuong &&
+    isSuccessTrangThai &&
+    isSuccessLoaiFile;
 
   return !isLoading ? (
     <UI.CircularProgress />
@@ -91,13 +131,34 @@ const CoHoiNewContainer = (props: ICoHoiNewContainer) => {
         name: Yup.string().required("Tên cơ hội không được để trống"),
       }}
       onSubmit={(data) =>
-        createCoHoi({
-          customer_id: customerId,
-          ...data,
-          soluong: data?.soluong?.value,
-          trang_thai_key: data?.trang_thai_key?.value,
-          tien_trinh_key: data?.tien_trinh_key?.value,
-        })
+        isUpdate
+          ? updateCoHoi({
+              id: defaultValues?.id,
+              customer_id: customerId,
+              ...data,
+              files: data?.files.map((file) => {
+                return {
+                  ...file,
+                  type: file?.type?.value,
+                };
+              }),
+              soluong: data?.soluong?.value,
+              trang_thai_key: data?.trang_thai_key?.value,
+              tien_trinh_key: data?.tien_trinh_key?.value,
+            })
+          : createCoHoi({
+              customer_id: customerId,
+              ...data,
+              files: data?.files.map((file) => {
+                return {
+                  ...file,
+                  type: file?.type?.value,
+                };
+              }),
+              soluong: data?.soluong?.value,
+              trang_thai_key: data?.trang_thai_key?.value,
+              tien_trinh_key: data?.tien_trinh_key?.value,
+            })
       }
       fields={[
         {
@@ -155,13 +216,13 @@ const CoHoiNewContainer = (props: ICoHoiNewContainer) => {
           onSearchChange: (text) => searchTienTrinh({ name: text }),
           colSpan: 3,
         },
-        // {
-        //   name: "note",
-        //   id: "note-modal-co-hoi-new",
-        //   type: "text-editor",
-        //   label: "Diễn giải",
-        //   colSpan: 6,
-        // },
+        {
+          name: "note",
+          type: "input",
+          label: "Ghi chú",
+          defaultValues: "",
+          colSpan: 6,
+        },
         {
           name: "files",
           label: "UPLOAD FILE",
@@ -171,9 +232,17 @@ const CoHoiNewContainer = (props: ICoHoiNewContainer) => {
           gap: "12px",
           fields: [
             {
-              type: "input",
               name: "type",
+              type: "autocomplete",
               label: "Loại",
+              isLoading: isLoadingLoaiFile || isFetchingLoaiFile,
+              autocompleteOptions: loaiFileData || [],
+              onGetDataByValue: (key) =>
+                key &&
+                getLoaiFileByKey({ key })
+                  .unwrap()
+                  .then((res) => res.name),
+              onSearchChange: (text) => searchLoaiFile({ name: text }),
               colSpan: 3,
             },
             {
@@ -188,6 +257,7 @@ const CoHoiNewContainer = (props: ICoHoiNewContainer) => {
       childrenColSpan={6}
       childrenSx={{ justifyContent: "flex-end", display: "flex" }}
       defaultValues={{
+        name: defaultValues?.name || "",
         note: defaultValues?.note || "",
         soluong: defaultValues?.soluong || soLuongData?.[0],
         trang_thai_key: defaultValues?.trang_thai_key || trangThaiData?.[0],
@@ -196,7 +266,7 @@ const CoHoiNewContainer = (props: ICoHoiNewContainer) => {
       }}
     >
       <UI.LoadingButton
-        loading={isLoadingCreate}
+        loading={isUpdate ? isLoadingUpdate : isLoadingCreate}
         loadingPosition="end"
         endIcon={<FaSave />}
         variant="outlined"
