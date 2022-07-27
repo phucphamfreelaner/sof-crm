@@ -51,30 +51,34 @@ function NhiemVuNewForm(props: INhiemVuNewForm) {
           label: "Ngày bắt đầu",
           type: "date-picker",
           colSpan: 1,
+          size: "small",
         },
         {
           name: "ngayketthuc",
           label: "Ngày kết thúc",
           type: "date-picker",
           colSpan: 1,
+          size: "small",
         },
         {
           name: "loai_key",
           label: "Loại nhiệm vụ",
           type: "autocomplete",
-          colSpan: 2,
+          colSpan: 1,
           isLoading: isLoadingLoaiNhiemVu,
           autocompleteOptions: loaiNhiemVuData || [],
           onSearchChange: onSearchLoaiNhiemVu,
+          size: "small",
         },
         {
           name: "trangthai",
           label: "Trạng thái nhiệm vụ",
           type: "autocomplete",
-          colSpan: 2,
+          colSpan: 1,
           isLoading: isLoadingTrangThaiNhiemVu,
           autocompleteOptions: trangThaiNhiemVuData || [],
           onSearchChange: onSearchTrangThaiNhiemVu,
+          size: "small",
         },
         {
           name: "danh_gia_key",
@@ -84,6 +88,7 @@ function NhiemVuNewForm(props: INhiemVuNewForm) {
           isLoading: isLoadingDanhGiaNhiemVu,
           autocompleteOptions: danhGiaNhiemVuData || [],
           onSearchChange: onSearchDanhGiaNhiemVu,
+          size: "small",
         },
         {
           name: "ten",
@@ -92,6 +97,7 @@ function NhiemVuNewForm(props: INhiemVuNewForm) {
           colSpan: 2,
           multiline: true,
           rows: 1,
+          size: "small",
         },
         {
           name: "note",
@@ -100,6 +106,7 @@ function NhiemVuNewForm(props: INhiemVuNewForm) {
           colSpan: 2,
           multiline: true,
           rows: 2,
+          size: "small",
         },
       ]}
     />

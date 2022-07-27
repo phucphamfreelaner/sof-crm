@@ -72,6 +72,7 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
   const [getTrangThaiByKey] = useLazyGetTrangThaiByKeyQuery();
   return (
     <BaseDetail
+      id={coHoiData?.id}
       isLoading={isLoadingCoHoi}
       isEdit={isEdit}
       openEdit={setEdit.setTrue}

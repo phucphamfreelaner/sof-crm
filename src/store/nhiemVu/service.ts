@@ -17,10 +17,10 @@ export const nhiemVuService = createApi({
     getNhiemVuCohoi: builder.query<
       { data: INhiemVu[] },
       {
-        cohoi_id?: number;
+        cohoi_id?: any;
       }
     >({
-      transformResponse: (response: any) => response,
+      transformResponse: (response: any) => response?.data,
       query: ({ cohoi_id }) => ({
         method: "GET",
         url: `/nhiem-vu-doi-tuong/co_hoi/${cohoi_id}`,
@@ -35,12 +35,7 @@ export const nhiemVuService = createApi({
       }),
     }),
     getLoaiNhiemVu: builder.query<any, { search?: any }>({
-      transformResponse: (response: any) =>
-        response
-          ? Object.keys(response).map((key) => {
-              return { label: response[key], value: key };
-            })
-          : [],
+      transformResponse: (response: any) => response,
       query: ({ search }) => ({
         method: "GET",
         url: `/cau-hinh/group/loai_nhiem_vu`,
@@ -51,12 +46,7 @@ export const nhiemVuService = createApi({
       }),
     }),
     getDanhGiaNhiemVu: builder.query<any, { search?: any }>({
-      transformResponse: (response: any) =>
-        response
-          ? Object.keys(response).map((key) => {
-              return { label: response[key], value: key };
-            })
-          : [],
+      transformResponse: (response: any) => response,
       query: ({ search }) => ({
         method: "GET",
         url: `/cau-hinh/group/danh_gia_nhiem_vu`,
@@ -67,12 +57,7 @@ export const nhiemVuService = createApi({
       }),
     }),
     getTrangThaiNhiemVu: builder.query<any, { search?: any }>({
-      transformResponse: (response: any) =>
-        response
-          ? Object.keys(response).map((key) => {
-              return { label: response[key], value: key };
-            })
-          : [],
+      transformResponse: (response: any) => response,
       query: ({ search }) => ({
         method: "GET",
         url: `/cau-hinh/group/trang_thai_nhiem_vu`,
@@ -102,6 +87,7 @@ export const nhiemVuService = createApi({
 
 export const {
   useGetNhiemVuCohoiQuery,
+  useLazyGetNhiemVuCohoiQuery,
   useLazyCreateNhiemVuQuery,
   useLazyDeleteNhiemVuQuery,
   useLazyPutNhiemVuByIdQuery,

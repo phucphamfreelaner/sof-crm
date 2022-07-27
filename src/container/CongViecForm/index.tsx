@@ -21,10 +21,11 @@ interface INhiemVuForm {
   isSuccess?: boolean;
   khachHangLabel?: any;
   onAddTask?: (data: any) => any;
+  refetchListNhiemVu?: () => any;
 }
 
 function NhiemVuForm(props: INhiemVuForm) {
-  const { nhiemVuData, id, isSuccess, khachHangLabel } = props;
+  const { nhiemVuData, id, isSuccess, refetchListNhiemVu } = props;
   const navigate = useNavigate();
 
   const [
@@ -85,34 +86,48 @@ function NhiemVuForm(props: INhiemVuForm) {
   }, [isSuccessCreateNhiemVu]);
 
   React.useEffect(() => {
-    if (isSuccess) {
+    if (nhiemVuData) {
       setDefaultValue((prev) => ({
         ...nhiemVuData,
-        customer_id: {
-          label: khachHangLabel,
-          value: nhiemVuData?.customer_id,
+        loai_key: {
+          label: loaiNhiemVuData?.[nhiemVuData?.loai_key],
+          value: nhiemVuData?.loai_key,
+        },
+        trangthai: {
+          label: trangThaiNhiemVuData?.[nhiemVuData?.trangthai],
+          value: nhiemVuData?.trangthai,
+        },
+        danh_gia_key: {
+          label: danhGiaNhiemVuData?.[nhiemVuData?.danh_gia_key],
+          value: nhiemVuData?.danh_gia_key,
         },
       }));
     }
-  }, [isSuccess]);
+  }, [nhiemVuData]);
 
   React.useEffect(() => {
     if (!id && isSuccessLoai && isSuccessDanhGia && isSuccessTrangThai) {
       setDefaultValue((prev) => ({
         ...prev,
-        loai_key: loaiNhiemVuData?.[0],
-        trangthai: trangThaiNhiemVuData?.[0],
-        danh_gia_key: danhGiaNhiemVuData?.[0],
+        loai_key: convertData(loaiNhiemVuData)?.[0],
+        trangthai: convertData(trangThaiNhiemVuData)?.[0],
+        danh_gia_key: convertData(danhGiaNhiemVuData)?.[0],
       }));
     }
   }, [id, isSuccessLoai, isSuccessDanhGia, isSuccessTrangThai]);
 
   const elForm = React.useRef<any>();
 
+  console.log(defaultValues);
+
   const handleSaveNhiemVu = (data: any, id: any) => {
+    console.log(data);
     const payload = {
       ...data,
-      customer_id: data?.customer_id?.value,
+      loai_key: data?.loai_key?.value,
+      trangthai: data?.trangthai?.value,
+      danh_gia_key: data?.danh_gia_key?.value,
+
       ngaybatdau: data?.ngaybatdau
         ? typeof data?.ngaybatdau === "string"
           ? format(new Date(data?.ngaybatdau), "yyyy-MM-dd")
@@ -130,17 +145,25 @@ function NhiemVuForm(props: INhiemVuForm) {
         payload: payload,
       }).finally(() => {
         toast.success("Sửa nhiệm vụ thành công!");
-        navigate(`/nhiem_vu/${data?.id}`);
+        refetchListNhiemVu();
       });
       return;
     }
     createNhiemVu({ payload });
   };
 
+  const convertData = (rawData) => {
+    return rawData
+      ? Object.keys(rawData).map((key) => {
+          return { label: rawData[key], value: key };
+        })
+      : [];
+  };
+
   return (
     <UI.Card>
       <UI.CardContent sx={{ padding: "14px !important" }}>
-        {id && !isSuccess ? (
+        {(id && !isSuccess) || !defaultValues ? (
           <Loading />
         ) : (
           // <NhiemVuNewForm
@@ -152,17 +175,17 @@ function NhiemVuForm(props: INhiemVuForm) {
           //   defaultValues={defaultValues}
           // />
           <NhiemVuNewForm
-            loaiNhiemVuData={loaiNhiemVuData}
+            loaiNhiemVuData={convertData(loaiNhiemVuData)}
             onSearchLoaiNhiemVu={searchLoaiNhiemVu}
             isLoadingLoaiNhiemVu={
               isLoadingLoaiNhiemVuData || isFetchingLoaiNhiemVuData
             }
-            trangThaiNhiemVuData={trangThaiNhiemVuData}
+            trangThaiNhiemVuData={convertData(trangThaiNhiemVuData)}
             onSearchTrangThaiNhiemVu={searchTrangThaiNhiemVu}
             isLoadingTrangThaiNhiemVu={
               isLoadingTrangThaiNhiemVuData || isFetchingTrangThaiNhiemVuData
             }
-            danhGiaNhiemVuData={danhGiaNhiemVuData}
+            danhGiaNhiemVuData={convertData(danhGiaNhiemVuData)}
             onSearchDanhGiaNhiemVu={searchDanhGiaNhiemVu}
             isLoadingDanhGiaNhiemVu={
               isLoadingDanhGiaNhiemVuData || isFetchingDanhGiaNhiemVuData
@@ -180,6 +203,7 @@ function NhiemVuForm(props: INhiemVuForm) {
           }
           endIcon={<FaSave />}
           variant="outlined"
+          size="small"
         >
           {id ? "Cập nhật nhiệm vụ" : "Lưu nhiệm vụ"}
         </LoadingButton>

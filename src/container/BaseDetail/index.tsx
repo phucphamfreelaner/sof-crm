@@ -13,8 +13,12 @@ import {
   AiOutlineFileDone,
 } from "react-icons/ai";
 import { isEmpty } from "lodash-es";
+import CongViecList from "../CongViecList";
+import { useGetNhiemVuCohoiQuery } from "@/store/nhiemVu";
+import { debounce } from "lodash";
 
 interface IBaseDetail {
+  id?: any;
   isLoading?: boolean;
   children?: React.ReactNode;
   headerTitle?: string;
@@ -35,6 +39,7 @@ interface IBaseDetail {
 
 function BaseDetail(props: IBaseDetail) {
   const {
+    id,
     headerBreadcrumbs,
     onSendMessage,
     onAddNoted,
@@ -72,6 +77,15 @@ function BaseDetail(props: IBaseDetail) {
 
   const open = Boolean(anchorEl);
 
+  const {
+    isLoading: isLoadingListNhiemVu,
+    isFetching: isFetchingListNhiemVu,
+    data: listNhiemVuData,
+    refetch,
+  } = useGetNhiemVuCohoiQuery({ cohoi_id: id }, { skip: !id });
+  const [nhiemVuData, setNhiemVuData] = React.useState(null);
+  const [isSuccessLoadNhiemVu, setIsSuccessLoadNhiemVu] = React.useState(false);
+
   return isLoading ? (
     <UI.Center minH="200px">
       <UI.CircularProgress />
@@ -87,9 +101,9 @@ function BaseDetail(props: IBaseDetail) {
       >
         <UI.Card
           sx={{
-            maxWidth: "65vw",
-            minWidth: "65vw",
-            width: "65vw",
+            maxWidth: "60vw",
+            minWidth: "60vw",
+            width: "60vw",
             height: "calc(100vh - 60px)",
           }}
         >
@@ -183,7 +197,13 @@ function BaseDetail(props: IBaseDetail) {
             <GhiChuForm onAddNoted={onAddNoted} />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <CongViecForm onAddTask={onAddTask} />
+            <CongViecForm
+              onAddTask={onAddTask}
+              id={nhiemVuData?.id}
+              nhiemVuData={nhiemVuData}
+              isSuccess={isSuccessLoadNhiemVu}
+              refetchListNhiemVu={refetch}
+            />
           </TabPanel>
           <UI.Divider />
           <UI.CardContent sx={{ padding: spacing(2) }}>
@@ -194,6 +214,20 @@ function BaseDetail(props: IBaseDetail) {
             >
               Lịch sử thao tác
             </UI.Typography>
+            {value === 2 && (
+              <CongViecList
+                listNhiemVuData={listNhiemVuData || []}
+                isLoadingListNhiemVu={
+                  isLoadingListNhiemVu || isFetchingListNhiemVu
+                }
+                refetchListNhiemVu={refetch}
+                onEditNhiemVu={async (data) => {
+                  await setNhiemVuData(data);
+                  await setIsSuccessLoadNhiemVu(false);
+                  await debounce(setIsSuccessLoadNhiemVu(true));
+                }}
+              />
+            )}
             <UI.CKBox overflow="auto">{timelineContent}</UI.CKBox>
           </UI.CardContent>
         </UI.Card>
