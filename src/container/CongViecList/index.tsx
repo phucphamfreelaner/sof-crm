@@ -105,7 +105,7 @@ function CongViecList(props: INhiemVuList) {
                         <UI.Chip
                           sx={{ fontSize: 12 }}
                           label={
-                            trangThaiNhiemVuData
+                            trangThaiNhiemVuData?.[x?.trangthai]
                               ? trangThaiNhiemVuData?.[x?.trangthai]
                               : "Chưa set trạng thái"
                           }

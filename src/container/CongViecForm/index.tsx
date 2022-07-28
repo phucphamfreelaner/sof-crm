@@ -98,16 +98,16 @@ function NhiemVuForm(props: INhiemVuForm) {
       setDefaultValue((prev) => ({
         ...nhiemVuData,
         loai_key: {
-          label: loaiNhiemVuData?.[nhiemVuData?.loai_key],
-          value: nhiemVuData?.loai_key,
+          label: loaiNhiemVuData?.[nhiemVuData?.loai_key] || "",
+          value: nhiemVuData?.loai_key || "",
         },
         trangthai: {
-          label: trangThaiNhiemVuData?.[nhiemVuData?.trangthai],
-          value: nhiemVuData?.trangthai,
+          label: trangThaiNhiemVuData?.[nhiemVuData?.trangthai] || "",
+          value: nhiemVuData?.trangthai || "",
         },
         danh_gia_key: {
-          label: danhGiaNhiemVuData?.[nhiemVuData?.danh_gia_key],
-          value: nhiemVuData?.danh_gia_key,
+          label: danhGiaNhiemVuData?.[nhiemVuData?.danh_gia_key] || "",
+          value: nhiemVuData?.danh_gia_key || "",
         },
       }));
     } else {
@@ -169,7 +169,7 @@ function NhiemVuForm(props: INhiemVuForm) {
         })
       : [];
   };
-
+  console.log(defaultValues);
   return (
     <UI.Card>
       <UI.CardContent sx={{ padding: "14px !important" }}>
