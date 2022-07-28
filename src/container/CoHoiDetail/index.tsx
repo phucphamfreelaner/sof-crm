@@ -33,6 +33,7 @@ import DetailInfo from "@/components/DetailInfo";
 import BasicDetails from "@/components/BasicDetails";
 import CoHoiNew from "@/container/CoHoiForm";
 import RichText from "@/components/RichText";
+import SendEmailForm from "../SendEmailForm";
 
 interface ICoHoiDetail {
   coHoiData: any;
@@ -115,14 +116,29 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
           icon: <AiOutlineCopy />,
           label: "Nhân bản",
           onClick: () => {
-            console.log("data");
+            console.log("");
           },
         },
         {
           icon: <AiOutlineMail />,
           label: "Gửi email",
           onClick: () => {
-            console.log("data");
+            const id = uniqueId();
+            dispatch(
+              openModalBottom({
+                data: {
+                  title: "Gửi email",
+                  height: "620px",
+                  width: "700px",
+                  id: `co-hoi-${id}`,
+                  content: (
+                    <UI.CKBox px={spacing(3)} py={spacing(3.5)}>
+                      <SendEmailForm customerId={coHoiData?.customer_id} />
+                    </UI.CKBox>
+                  ),
+                },
+              })
+            );
           },
         },
         {

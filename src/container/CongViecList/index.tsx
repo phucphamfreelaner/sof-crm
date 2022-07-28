@@ -85,8 +85,6 @@ function CongViecList(props: INhiemVuList) {
     searchTrangThaiNhiemVu({});
   }, []);
 
-  console.log(nhanVienData);
-
   return (
     <>
       {isLoadingListNhiemVu ? (

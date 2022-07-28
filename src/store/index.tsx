@@ -34,7 +34,7 @@ import { loaiHdService } from "./loaiHd";
 import { modalSlice } from "./modal";
 import { lichHenService } from "./lichHen";
 import { nhiemVuService } from "./nhiemVu";
-
+import { mailTemplatesService } from "./mailTemplates";
 // @ts-ignore
 const store: any = configureStore({
   reducer: combineReducers({
@@ -67,6 +67,7 @@ const store: any = configureStore({
     [loaiHdService.reducerPath]: loaiHdService.reducer,
     [lichHenService.reducerPath]: lichHenService.reducer,
     [nhiemVuService.reducerPath]: nhiemVuService.reducer,
+    [mailTemplatesService.reducerPath]: mailTemplatesService.reducer,
   }),
   devTools: true,
 });

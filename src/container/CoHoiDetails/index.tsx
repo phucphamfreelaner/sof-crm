@@ -276,7 +276,6 @@ const CoHoiDetailsContainer = () => {
                       templateColumns="repeat(6,1fr)"
                       defaultValues={coHoi}
                       onSubmit={(value) => {
-                        console.log("submit co hoi details");
                         updateCoHoiByID({
                           ...coHoi,
                           ...value,
