@@ -82,11 +82,11 @@ function NhiemVuForm(props: INhiemVuForm) {
   const [defaultValues, setDefaultValue] = React.useState<any>(null);
 
   React.useEffect(() => {
-    if (isSuccessCreateNhiemVu) {
+    if (dataNhiemVuNew) {
       toast.success("Thêm nhiệm vụ thành công!");
       refetchListNhiemVu();
     }
-  }, [isSuccessCreateNhiemVu]);
+  }, [dataNhiemVuNew]);
 
   React.useEffect(() => {
     if (
