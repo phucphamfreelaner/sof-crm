@@ -25,9 +25,10 @@ function CongViecList(props: INhiemVuList) {
     refetchListNhiemVu,
     onEditNhiemVu,
   } = props;
-  const getDiffTime = (start, end) => {
-    const dateDiff = differenceInDays(new Date(start), new Date(end));
-    const dateDiffStr = formatDistance(new Date(start), new Date(end), {
+  const getDiffTime = (start) => {
+    const dateDiff = differenceInDays(new Date(start), new Date());
+    console.log("smsmsmmsmskdmalskdkljasndm");
+    const dateDiffStr = formatDistance(new Date(start), new Date(), {
       locale: viLocale,
       addSuffix: true,
     });
@@ -95,8 +96,8 @@ function CongViecList(props: INhiemVuList) {
                     </UI.Avatar>
                     <UI.Box>
                       <UI.HStack>
-                        {getDiffTime(x?.ngayketthuc, x?.ngaybatdau)}{" "}
-                        {/* <UI.Typography>Cần làm for Admin</UI.Typography> */}
+                        {getDiffTime(x?.ngaybatdau)}{" "}
+                        <UI.Typography>Cần làm for Admin</UI.Typography>
                       </UI.HStack>
                       <UI.HStack>
                         <UI.Chip
