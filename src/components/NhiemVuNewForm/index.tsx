@@ -37,7 +37,6 @@ function NhiemVuNewForm(props: INhiemVuNewForm) {
     formRef,
   } = props;
 
-  console.log(defaultValues);
   return (
     <BaseForm
       sx={{ width: "100%" }}

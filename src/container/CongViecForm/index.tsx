@@ -89,7 +89,12 @@ function NhiemVuForm(props: INhiemVuForm) {
   }, [isSuccessCreateNhiemVu]);
 
   React.useEffect(() => {
-    if (nhiemVuData) {
+    if (
+      nhiemVuData &&
+      loaiNhiemVuData &&
+      trangThaiNhiemVuData &&
+      danhGiaNhiemVuData
+    ) {
       setDefaultValue((prev) => ({
         ...nhiemVuData,
         loai_key: {
@@ -105,8 +110,10 @@ function NhiemVuForm(props: INhiemVuForm) {
           value: nhiemVuData?.danh_gia_key,
         },
       }));
+    } else {
+      setDefaultValue(null);
     }
-  }, [nhiemVuData]);
+  }, [nhiemVuData, loaiNhiemVuData, trangThaiNhiemVuData, danhGiaNhiemVuData]);
 
   // React.useEffect(() => {
   //   if (!id && isSuccessLoai && isSuccessDanhGia && isSuccessTrangThai) {
@@ -122,7 +129,6 @@ function NhiemVuForm(props: INhiemVuForm) {
   const elForm = React.useRef<any>();
 
   const handleSaveNhiemVu = (data: any, id: any) => {
-    console.log(data);
     const payload = {
       ...data,
       object: "co_hoi",
@@ -179,6 +185,7 @@ function NhiemVuForm(props: INhiemVuForm) {
           //   defaultValues={defaultValues}
           // />
           <NhiemVuNewForm
+            key={JSON.stringify(defaultValues)}
             loaiNhiemVuData={convertData(loaiNhiemVuData)}
             onSearchLoaiNhiemVu={searchLoaiNhiemVu}
             isLoadingLoaiNhiemVu={

@@ -249,9 +249,10 @@ function BaseDetail(props: IBaseDetail) {
                   isLoadingListNhiemVu || isFetchingListNhiemVu
                 }
                 refetchListNhiemVu={refetch}
-                onEditNhiemVu={(data) => {
-                  setNhiemVuData(data);
-                  reloadCongViecForm();
+                onEditNhiemVu={async (data) => {
+                  await setValue(2);
+                  await setNhiemVuData(data);
+                  await reloadCongViecForm();
                 }}
                 onChangeTrangThai={() => {
                   setNhiemVuData(null);
