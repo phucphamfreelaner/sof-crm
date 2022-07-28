@@ -1,5 +1,6 @@
 import React from "react";
 import BaseDetail from "@/container/BaseDetail";
+import { useNavigate } from "react-router-dom";
 import * as UI from "@/libs/ui";
 import { useBoolean } from "ahooks";
 import { uniqueId } from "lodash-es";
@@ -31,8 +32,7 @@ import { useUpdateCoHoiByIDMutation } from "@/store/coHoi";
 import DetailInfo from "@/components/DetailInfo";
 import BasicDetails from "@/components/BasicDetails";
 import CoHoiNew from "@/container/CoHoiForm";
-// import RichText from "@/components/RichText";
-import Comment from "@/components/Comment";
+import RichText from "@/components/RichText";
 
 interface ICoHoiDetail {
   coHoiData: any;
@@ -41,6 +41,7 @@ interface ICoHoiDetail {
 }
 
 export default function CoHoiDetail(props: ICoHoiDetail) {
+  const navigate = useNavigate();
   const { coHoiData, isLoadingCoHoi, reloadCoHoi } = props;
   const [isEdit, setEdit] = useBoolean(false);
   const dispatch = useAppDispatch();
@@ -73,6 +74,7 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
   const [getTrangThaiByKey] = useLazyGetTrangThaiByKeyQuery();
   return (
     <BaseDetail
+      id={coHoiData?.id}
       isLoading={isLoadingCoHoi}
       isEdit={isEdit}
       openEdit={setEdit.setTrue}
@@ -265,7 +267,7 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
                   hiddenLabel: true,
                   renderRow: (data) => {
                     return (
-                      <Comment
+                      <RichText
                         defaultValue={data}
                         label="Ghi chú cơ hội"
                         height={200}
@@ -285,7 +287,10 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
           }
           editContent={
             <UI.CKBox p="26px">
-              <CoHoiNew defaultValues={coHoiData} />
+              <CoHoiNew
+                defaultValues={coHoiData}
+                onAfterUpdated={() => navigate(-1)}
+              />
             </UI.CKBox>
           }
         />

@@ -27,11 +27,13 @@ import { testService } from "./test";
 import { soLuongService } from "./soLuong";
 import { trangThaiService } from "./trangThai";
 import { tienTrinhService } from "./tienTrinh";
+import { loaiFileService } from "./loaiFile";
 import { hopDongService } from "./hopDong";
 import { mauInService } from "./mauIn";
 import { loaiHdService } from "./loaiHd";
 import { modalSlice } from "./modal";
 import { lichHenService } from "./lichHen";
+import { nhiemVuService } from "./nhiemVu";
 
 // @ts-ignore
 const store: any = configureStore({
@@ -59,10 +61,12 @@ const store: any = configureStore({
     [soLuongService.reducerPath]: soLuongService.reducer,
     [trangThaiService.reducerPath]: trangThaiService.reducer,
     [tienTrinhService.reducerPath]: tienTrinhService.reducer,
+    [loaiFileService.reducerPath]: loaiFileService.reducer,
     [hopDongService.reducerPath]: hopDongService.reducer,
     [mauInService.reducerPath]: mauInService.reducer,
     [loaiHdService.reducerPath]: loaiHdService.reducer,
     [lichHenService.reducerPath]: lichHenService.reducer,
+    [nhiemVuService.reducerPath]: nhiemVuService.reducer,
   }),
   devTools: true,
 });

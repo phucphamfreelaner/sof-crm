@@ -22,10 +22,18 @@ export const lichHenService = createApi({
         filter?: any;
         search?: any;
         customerId?: any;
+        object?: any;
       }
     >({
       transformResponse: (response: any) => response,
-      query: ({ limit, page, filter = {}, search = {}, customerId }) => ({
+      query: ({
+        limit,
+        page,
+        filter = {},
+        search = {},
+        customerId,
+        object,
+      }) => ({
         method: "GET",
         url: `/lich-hen`,
         params: {
@@ -33,6 +41,7 @@ export const lichHenService = createApi({
           page,
           with: ["khach_hang"],
           customer_id: customerId,
+          object: object,
           order_by: {
             created_at: "desc",
           },

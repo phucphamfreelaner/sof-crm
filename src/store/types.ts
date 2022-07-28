@@ -352,3 +352,29 @@ export interface ILichHen {
   object_id: number;
   khach_hang?: IKhachHang;
 }
+
+export interface INhiemVu {
+  id: number;
+  nv_id: number;
+  nv_giao_id: number;
+  loai_key?: any;
+  trangthai?: any;
+  ten?: any;
+  file?: any;
+  nhiem_vu?: any;
+  baocao?: any;
+  ngaybatdau?: any;
+  ngayketthuc?: any;
+  ngayhoanthanh?: any;
+  created_at: string;
+  updated_at: string;
+  accept: string;
+  danh_gia_key: string;
+  tu_danh_gia_key?: any;
+  chi_tiet_tu_danh_gia_key?: any;
+  chi_tiet_danh_gia_key?: any;
+  thuong_xuyen: number;
+  object: string;
+  object_id: number;
+  files: any[];
+}
