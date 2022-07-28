@@ -36,8 +36,8 @@ function BottomWindow(props: IBottomWindow) {
 const CardItem = React.memo((props: any) => {
   const { data, onCloseWindow } = props;
 
-  const [height, setHeight] = React.useState(data?.width || 500);
-  const [width, setWidth] = React.useState(data?.height || 400);
+  const [height, setHeight] = React.useState(data?.height || 500);
+  const [width, setWidth] = React.useState(data?.width || 400);
 
   const { palette } = UI.useTheme();
 
@@ -45,8 +45,8 @@ const CardItem = React.memo((props: any) => {
     <UI.Card
       elevation={20}
       sx={{
-        minWidth: width,
         width,
+        minWidth: width,
         maxWidth: width,
         border: `1px solid ${palette.grey[300]}`,
       }}
@@ -94,7 +94,7 @@ const CardItem = React.memo((props: any) => {
         sx={{
           minHeight: `${height} !important`,
           maxHeight: `${height} !important`,
-          height,
+          height: `${height} !important`,
           overflow: "hidden",
           transition: "0.3s",
         }}

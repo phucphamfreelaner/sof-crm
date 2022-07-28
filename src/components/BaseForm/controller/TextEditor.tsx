@@ -41,7 +41,7 @@ function TextEditorPickerForm(props: ITextEditorController) {
         defaultValue={field?.value}
         onChange={(value) => field?.onChange(value)}
         isHiddenBorder
-        height="100px"
+        height={200}
       />
 
       <VStack spacing={0} alignItems="flex-start" w="100%">
