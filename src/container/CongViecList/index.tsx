@@ -10,6 +10,7 @@ import {
   useLazyPutNhiemVuByIdQuery,
   useLazyGetTrangThaiNhiemVuQuery,
 } from "@/store/nhiemVu";
+import { useGetListNhanVienQuery } from "@/store/nhanVien";
 
 interface INhiemVuList {
   listNhiemVuData?: any;
@@ -35,20 +36,20 @@ function CongViecList(props: INhiemVuList) {
     });
     if (dateDiff < 0)
       return (
-        <UI.Typography variant="caption" color="red">
-          {dateDiffStr}
+        <UI.Typography variant="subtitle2" color="red">
+          <b>{dateDiffStr}</b>
         </UI.Typography>
       );
     else if (dateDiff === 0)
       return (
-        <UI.Typography variant="caption" color="#b49b78">
-          {dateDiffStr}
+        <UI.Typography variant="subtitle2" color="#b49b78">
+          <b>{dateDiffStr}</b>
         </UI.Typography>
       );
     else
       return (
-        <UI.Typography variant="caption" color="#309a4b">
-          {dateDiffStr}
+        <UI.Typography variant="subtitle2" color="#309a4b">
+          <b>{dateDiffStr}</b>
         </UI.Typography>
       );
   };
@@ -58,6 +59,16 @@ function CongViecList(props: INhiemVuList) {
 
   const [searchTrangThaiNhiemVu, { data: trangThaiNhiemVuData }] =
     useLazyGetTrangThaiNhiemVuQuery();
+
+  const getInitials = (name = "") =>
+    name
+      .replace(/\s+/, " ")
+      .split(" ")
+      .slice(0, 2)
+      .map((v) => v && v[0].toUpperCase())
+      .join("");
+
+  const { data: nhanVienData } = useGetListNhanVienQuery({});
 
   const handleChangeTrangThai = (data, status) => {
     const payload = {
@@ -73,6 +84,8 @@ function CongViecList(props: INhiemVuList) {
   React.useEffect(() => {
     searchTrangThaiNhiemVu({});
   }, []);
+
+  console.log(nhanVienData);
 
   return (
     <>
@@ -94,12 +107,16 @@ function CongViecList(props: INhiemVuList) {
                       }}
                       src=""
                     >
-                      {"AD"}
+                      {nhanVienData?.[x?.nv_giao_id]
+                        ? getInitials(nhanVienData?.[x?.nv_giao_id])
+                        : "N/A"}
                     </UI.Avatar>
                     <UI.Box>
                       <UI.HStack>
                         {getDiffTime(x?.ngaybatdau)}{" "}
-                        <UI.Typography>Cần làm for Admin</UI.Typography>
+                        <UI.Typography variant="subtitle2">
+                          Cần làm for <b>{nhanVienData?.[x?.nv_giao_id]}</b>
+                        </UI.Typography>
                       </UI.HStack>
                       <UI.HStack>
                         <UI.Chip

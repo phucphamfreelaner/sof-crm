@@ -169,7 +169,6 @@ function NhiemVuForm(props: INhiemVuForm) {
         })
       : [];
   };
-  console.log(defaultValues);
   return (
     <UI.Card>
       <UI.CardContent sx={{ padding: "14px !important" }}>
