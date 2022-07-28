@@ -42,7 +42,7 @@ function NhiemVuNewForm(props: INhiemVuNewForm) {
     <BaseForm
       sx={{ width: "100%" }}
       templateColumns="repeat(2, 1fr)"
-      gap="26px"
+      gap="16px"
       defaultValues={defaultValues}
       ref={formRef}
       fields={[

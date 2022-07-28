@@ -145,7 +145,9 @@ function BaseDetail(props: IBaseDetail) {
             }
           />
           <UI.Divider />
-          <UI.CKBox overflow="auto">{detailContent}</UI.CKBox>
+          <UI.CKBox height="calc(100vh - 130px)" overflow="auto">
+            {detailContent}
+          </UI.CKBox>
         </UI.Card>
 
         <UI.Card
@@ -173,9 +175,11 @@ function BaseDetail(props: IBaseDetail) {
                     <AiOutlineCalendar size="24px" />
                   </UI.Badge>
                 }
+                sx={{ lineHeight: "15px", textAlign: "left" }}
                 variant="text"
               >
-                Cuộc họp
+                Cuộc
+                <br /> họp
               </UI.Button>
               <UI.Button
                 size="small"
@@ -185,8 +189,11 @@ function BaseDetail(props: IBaseDetail) {
                   </UI.Badge>
                 }
                 variant="text"
+                sx={{ lineHeight: "15px", textAlign: "left" }}
               >
-                Báo giá
+                Báo
+                <br />
+                giá
               </UI.Button>
             </UI.HStack>
           </UI.Tabs>
@@ -204,39 +211,40 @@ function BaseDetail(props: IBaseDetail) {
               nhiemVuData={nhiemVuData}
               isSuccess={isSuccessLoadNhiemVu}
               refetchListNhiemVu={refetch}
+              onCancel={() => setValue(-1)}
             />
           </TabPanel>
           <UI.Divider />
           <UI.CardContent
             sx={{
               padding: spacing(2),
-              overflowY: "auto !important",
-              overflow: "hidden !important",
+              overflow: "auto !important",
+              height: "calc(100vh - 150px)",
+              paddingBottom: "30px",
             }}
           >
             <UI.Typography
               gutterBottom
               sx={{ fontWeight: 600, color: palette.text.secondary }}
               variant="body1"
+              textAlign="center"
             >
-              Lịch sử thao tác
+              Hoạt động đã lên kế hoạch
             </UI.Typography>
 
             <UI.CKBox overflow="auto">
-              {value === 2 && (
-                <CongViecList
-                  listNhiemVuData={listNhiemVuData || []}
-                  isLoadingListNhiemVu={
-                    isLoadingListNhiemVu || isFetchingListNhiemVu
-                  }
-                  refetchListNhiemVu={refetch}
-                  onEditNhiemVu={async (data) => {
-                    await setNhiemVuData(data);
-                    await setIsSuccessLoadNhiemVu(false);
-                    await debounce(setIsSuccessLoadNhiemVu(true));
-                  }}
-                />
-              )}
+              <CongViecList
+                listNhiemVuData={listNhiemVuData || []}
+                isLoadingListNhiemVu={
+                  isLoadingListNhiemVu || isFetchingListNhiemVu
+                }
+                refetchListNhiemVu={refetch}
+                onEditNhiemVu={async (data) => {
+                  await setNhiemVuData(data);
+                  await setIsSuccessLoadNhiemVu(false);
+                  await debounce(setIsSuccessLoadNhiemVu(true));
+                }}
+              />
             </UI.CKBox>
           </UI.CardContent>
         </UI.Card>

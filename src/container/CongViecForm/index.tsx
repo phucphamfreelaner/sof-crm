@@ -23,10 +23,12 @@ interface INhiemVuForm {
   khachHangLabel?: any;
   onAddTask?: (data: any) => any;
   refetchListNhiemVu?: () => any;
+  onCancel?: () => any;
 }
 
 function NhiemVuForm(props: INhiemVuForm) {
-  const { nhiemVuData, id, cohoi_id, isSuccess, refetchListNhiemVu } = props;
+  const { nhiemVuData, id, cohoi_id, isSuccess, refetchListNhiemVu, onCancel } =
+    props;
   const navigate = useNavigate();
 
   const [
@@ -119,8 +121,6 @@ function NhiemVuForm(props: INhiemVuForm) {
 
   const elForm = React.useRef<any>();
 
-  console.log(defaultValues);
-
   const handleSaveNhiemVu = (data: any, id: any) => {
     console.log(data);
     const payload = {
@@ -166,7 +166,7 @@ function NhiemVuForm(props: INhiemVuForm) {
 
   return (
     <UI.Card>
-      <UI.CardContent sx={{ padding: "14px !important" }}>
+      <UI.CardContent sx={{ padding: "14px !important", paddingBottom: 0 }}>
         {(id && !isSuccess) || !defaultValues ? (
           <Loading />
         ) : (
@@ -199,7 +199,10 @@ function NhiemVuForm(props: INhiemVuForm) {
           />
         )}
       </UI.CardContent>
-      <UI.CardActions sx={{ justifyContent: "flex-end" }}>
+      <UI.CardActions sx={{ justifyContent: "flex-end", paddingTop: 0 }}>
+        <UI.Button onClick={onCancel} color="inherit">
+          Cancel
+        </UI.Button>
         <LoadingButton
           loading={isLoadingCreateNhiemVu || isLoadingUpdateNhiemVu}
           onClick={() =>

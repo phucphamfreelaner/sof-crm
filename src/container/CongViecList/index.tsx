@@ -32,10 +32,23 @@ function CongViecList(props: INhiemVuList) {
       addSuffix: true,
     });
     if (dateDiff < 0)
-      return <UI.Typography color="red">{dateDiffStr}</UI.Typography>;
+      return (
+        <UI.Typography variant="caption" color="red">
+          {dateDiffStr}
+        </UI.Typography>
+      );
     else if (dateDiff === 0)
-      return <UI.Typography color="#b49b78">{dateDiffStr}</UI.Typography>;
-    else return <UI.Typography color="#309a4b">{dateDiffStr}</UI.Typography>;
+      return (
+        <UI.Typography variant="caption" color="#b49b78">
+          {dateDiffStr}
+        </UI.Typography>
+      );
+    else
+      return (
+        <UI.Typography variant="caption" color="#309a4b">
+          {dateDiffStr}
+        </UI.Typography>
+      );
   };
 
   const [updateNhiemVu, { isLoading: isLoadingUpdateNhiemVu }] =
@@ -68,7 +81,7 @@ function CongViecList(props: INhiemVuList) {
             listNhiemVuData?.map((x: any) => {
               return (
                 <UI.VStack key={x?.id} mb={"10px"}>
-                  <UI.HStack justifyContent={"start"}>
+                  <UI.HStack justifyContent={"flex-start"}>
                     <UI.Avatar
                       sx={{
                         height: 32,
@@ -83,10 +96,11 @@ function CongViecList(props: INhiemVuList) {
                     <UI.Box>
                       <UI.HStack>
                         {getDiffTime(x?.ngayketthuc, x?.ngaybatdau)}{" "}
-                        <UI.Typography>Cần làm for Admin</UI.Typography>
+                        {/* <UI.Typography>Cần làm for Admin</UI.Typography> */}
                       </UI.HStack>
                       <UI.HStack>
                         <UI.Chip
+                          sx={{ fontSize: 12 }}
                           label={
                             trangThaiNhiemVuData
                               ? trangThaiNhiemVuData?.[x?.trangthai]
