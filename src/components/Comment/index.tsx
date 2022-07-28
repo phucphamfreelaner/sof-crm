@@ -46,30 +46,23 @@ function Comment(props: ILongText) {
         width,
         menubar: false,
         statusbar: false,
-        plugins: [
-          "advlist",
-          "autolink",
-          "link",
-          "lists",
-          "charmap",
-          "preview",
-          "anchor",
-          "pagebreak",
-          "searchreplace",
-          "wordcount",
-          "visualblocks",
-          "code",
-          "fullscreen",
-          "insertdatetime",
-          "table",
-          "emoticons",
-        ],
-        toolbar:
-          "undo redo | styles | bold italic underline backcolor | alignleft aligncenter alignright alignjustify | " +
-          "bullist numlist outdent indent | link emoticons preview fullscreen ",
+        skin: "jam",
+        icons: "jam",
+        setup: function (editor) {
+          editor.ui.registry.addButton("sendButton", {
+            text: "Send",
+            icon: "comment",
+            onAction: function (_) {
+              console.log("send =>>>>", editorRef.current.getContent());
+            },
+          });
+        },
+        plugins: ["autolink", "link", "fullscreen", "emoticons"],
+        toolbar: "link emoticons sendButton",
         content_style:
           "body { font-family:Helvetica,Arial,sans-serif; font-size:14px; line-height:0.3rem}",
         toolbar_location: "bottom",
+        toolbar_items_size: "small",
       }}
     />
   );

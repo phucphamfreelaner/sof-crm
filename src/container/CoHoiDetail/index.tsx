@@ -33,7 +33,7 @@ import DetailInfo from "@/components/DetailInfo";
 import BasicDetails from "@/components/BasicDetails";
 import CoHoiNew from "@/container/CoHoiForm";
 import RichText from "@/components/RichText";
-import SendEmailForm from "../SendEmailForm";
+import Comment from "@/components/Comment";
 
 interface ICoHoiDetail {
   coHoiData: any;
@@ -293,6 +293,23 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
                             note: data,
                           });
                         }}
+                        sx={{ marginTop: "20px" }}
+                      />
+                    );
+                  },
+                },
+                {
+                  property: "note",
+                  label: "Ghi chú",
+                  colSpan: 2,
+                  type: "render",
+                  hiddenLabel: true,
+                  renderRow: (data) => {
+                    return (
+                      <Comment
+                        defaultValue={data}
+                        label="Ghi chú cơ hội"
+                        height={120}
                         sx={{ marginTop: "20px" }}
                       />
                     );
