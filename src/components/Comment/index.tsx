@@ -16,7 +16,7 @@ interface ILongText {
   isHiddenBorder?: boolean;
 }
 
-function RichText(props: ILongText) {
+function Comment(props: ILongText) {
   const {
     onBlur,
     onFocus,
@@ -24,7 +24,6 @@ function RichText(props: ILongText) {
     width,
     onChange,
     defaultValue,
-    isDisabled,
   } = props;
   const editorRef = React.useRef(null);
 
@@ -42,7 +41,6 @@ function RichText(props: ILongText) {
       onChange={() => {
         onChange(editorRef.current.getContent());
       }}
-      disabled={isDisabled}
       init={{
         height,
         width,
@@ -77,4 +75,4 @@ function RichText(props: ILongText) {
   );
 }
 
-export default RichText;
+export default Comment;

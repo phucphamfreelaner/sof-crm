@@ -1,5 +1,5 @@
 import React from "react";
-import CoHoiNewContainer from "@/container/CoHoiNew";
+import CoHoiNewContainer from "@/container/CoHoiForm";
 import * as UI from "@/libs/ui";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { AiOutlineArrowLeft } from "react-icons/ai";

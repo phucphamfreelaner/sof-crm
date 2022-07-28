@@ -27,11 +27,11 @@ import { useLazyGetKhachHangByIdQuery } from "@/store/khachHang";
 import { useLazyGetSoLuongByValueQuery } from "@/store/soLuong";
 import { useLazyGetTienTrinhByKeyQuery } from "@/store/tienTrinh";
 import { useLazyGetTrangThaiByKeyQuery } from "@/store/trangThai";
+import { useUpdateCoHoiByIDMutation } from "@/store/coHoi";
 
 import DetailInfo from "@/components/DetailInfo";
 import BasicDetails from "@/components/BasicDetails";
-import TextEditor from "@/components/TextEditor";
-import CoHoiNew from "@/container/CoHoiNew";
+import CoHoiNew from "@/container/CoHoiForm";
 import RichText from "@/components/RichText";
 
 interface ICoHoiDetail {
@@ -46,6 +46,8 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
   const [isEdit, setEdit] = useBoolean(false);
   const dispatch = useAppDispatch();
   const { spacing, palette } = UI.useTheme();
+
+  const [updateCoHoi] = useUpdateCoHoiByIDMutation();
 
   const breadcrumbs = [
     <UI.Typography
@@ -96,12 +98,12 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
               openModalBottom({
                 data: {
                   title: "Thêm cơ hội mới",
-                  height: "600px",
+                  height: "620px",
                   width: "500px",
                   id: `co-hoi-${id}`,
                   content: (
                     <UI.CKBox px={spacing(3)} py={spacing(3.5)}>
-                      <CoHoiNew customerId={8736} />
+                      <CoHoiNew customerId={coHoiData?.customer_id} />
                     </UI.CKBox>
                   ),
                 },
@@ -261,6 +263,24 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
                   property: "note",
                   label: "Ghi chú",
                   colSpan: 2,
+                  type: "render",
+                  hiddenLabel: true,
+                  renderRow: (data) => {
+                    return (
+                      <RichText
+                        defaultValue={data}
+                        label="Ghi chú cơ hội"
+                        height={200}
+                        onBlur={(data) => {
+                          updateCoHoi({
+                            ...coHoiData,
+                            note: data,
+                          });
+                        }}
+                        sx={{ marginTop: "20px" }}
+                      />
+                    );
+                  },
                 },
               ]}
             />
@@ -269,7 +289,6 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
             <UI.CKBox p="26px">
               <CoHoiNew
                 defaultValues={coHoiData}
-                isUpdate={true}
                 onAfterUpdated={() => navigate(-1)}
               />
             </UI.CKBox>
