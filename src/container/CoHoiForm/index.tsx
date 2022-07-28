@@ -166,11 +166,11 @@ const CoHoiNewContainer = (props: ICoHoiNewContainer) => {
         },
         {
           name: "note",
-          id: "note-modal-co-hoi-new",
           type: "text-editor",
           label: "Diễn giải",
           colSpan: 6,
         },
+
         {
           name: "files",
           label: "UPLOAD FILE",

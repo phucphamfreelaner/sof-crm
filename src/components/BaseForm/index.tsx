@@ -24,6 +24,7 @@ import Radio from "./controller/Radio";
 import UploadImage from "./controller/UploadImage";
 import UploadFileDetail from "./controller/UploadFileDetail";
 import FileInfo from "./controller/FileInfo";
+import Comment from "./controller/Comment";
 
 const CONTROLLER: any = {
   input: InputController,
@@ -41,6 +42,7 @@ const CONTROLLER: any = {
   "upload-file": UploadImage,
   "upload-file-detail": UploadFileDetail,
   "file-info": FileInfo,
+  comment: Comment,
 };
 
 const BaseForm = React.forwardRef((props: IBaseForm, ref?: any) => {

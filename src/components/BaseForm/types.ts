@@ -14,6 +14,7 @@ import type { IRadioController } from "./controller/Radio";
 import type { IUploadFileDetailController } from "./controller/UploadFileDetail";
 import type { IFileInfoController } from "./controller/FileInfo";
 import type { ITextEditorController } from "./controller/TextEditor";
+import type { ICommentController } from "./controller/Comment";
 
 export interface IBaseForm {
   id?: string;
@@ -67,7 +68,8 @@ export type IFormControl = IBaseController &
   IRadioController &
   IUploadFileDetailController &
   IFileInfoController &
-  ITextEditorController & {
+  ITextEditorController &
+  ICommentController & {
     type:
       | "input"
       | "select"
@@ -83,6 +85,7 @@ export type IFormControl = IBaseController &
       | "upload-file"
       | "upload-file-detail"
       | "file-info"
+      | "comment"
       | "icon-button";
     rowSpan?: number;
     colSpan?: number;

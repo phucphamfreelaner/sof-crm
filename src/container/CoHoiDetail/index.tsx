@@ -33,7 +33,8 @@ import DetailInfo from "@/components/DetailInfo";
 import BasicDetails from "@/components/BasicDetails";
 import CoHoiNew from "@/container/CoHoiForm";
 import RichText from "@/components/RichText";
-import SendEmailForm from "../SendEmailForm";
+import Comment from "@/components/Comment";
+import SendEmailForm from "@/container/SendEmailForm";
 
 interface ICoHoiDetail {
   coHoiData: any;
