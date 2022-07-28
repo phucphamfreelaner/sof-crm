@@ -86,6 +86,16 @@ function BaseDetail(props: IBaseDetail) {
   const [nhiemVuData, setNhiemVuData] = React.useState(null);
   const [isSuccessLoadNhiemVu, setIsSuccessLoadNhiemVu] = React.useState(false);
 
+  const reloadCongViecForm = () => {
+    setIsSuccessLoadNhiemVu(false);
+    setTimeout(() => {
+      const timer = setTimeout(() => {
+        setIsSuccessLoadNhiemVu(true);
+      }, 500);
+      return () => clearTimeout(timer);
+    });
+  };
+
   return isLoading ? (
     <UI.Center minH="200px">
       <UI.CircularProgress />
@@ -239,10 +249,13 @@ function BaseDetail(props: IBaseDetail) {
                   isLoadingListNhiemVu || isFetchingListNhiemVu
                 }
                 refetchListNhiemVu={refetch}
-                onEditNhiemVu={async (data) => {
-                  await setNhiemVuData(data);
-                  await setIsSuccessLoadNhiemVu(false);
-                  await debounce(setIsSuccessLoadNhiemVu(true));
+                onEditNhiemVu={(data) => {
+                  setNhiemVuData(data);
+                  reloadCongViecForm();
+                }}
+                onChangeTrangThai={() => {
+                  setNhiemVuData(null);
+                  reloadCongViecForm();
                 }}
               />
             </UI.CKBox>

@@ -108,16 +108,16 @@ function NhiemVuForm(props: INhiemVuForm) {
     }
   }, [nhiemVuData]);
 
-  React.useEffect(() => {
-    if (!id && isSuccessLoai && isSuccessDanhGia && isSuccessTrangThai) {
-      setDefaultValue((prev) => ({
-        ...prev,
-        loai_key: convertData(loaiNhiemVuData)?.[0],
-        trangthai: convertData(trangThaiNhiemVuData)?.[0],
-        danh_gia_key: convertData(danhGiaNhiemVuData)?.[0],
-      }));
-    }
-  }, [id, isSuccessLoai, isSuccessDanhGia, isSuccessTrangThai]);
+  // React.useEffect(() => {
+  //   if (!id && isSuccessLoai && isSuccessDanhGia && isSuccessTrangThai) {
+  //     setDefaultValue((prev) => ({
+  //       ...prev,
+  //       loai_key: convertData(loaiNhiemVuData)?.[0],
+  //       trangthai: convertData(trangThaiNhiemVuData)?.[0],
+  //       danh_gia_key: convertData(danhGiaNhiemVuData)?.[0],
+  //     }));
+  //   }
+  // }, [id, isSuccessLoai, isSuccessDanhGia, isSuccessTrangThai]);
 
   const elForm = React.useRef<any>();
 
@@ -166,8 +166,8 @@ function NhiemVuForm(props: INhiemVuForm) {
 
   return (
     <UI.Card>
-      <UI.CardContent sx={{ padding: "14px !important", paddingBottom: 0 }}>
-        {(id && !isSuccess) || !defaultValues ? (
+      <UI.CardContent sx={{ padding: "14px !important" }}>
+        {id && !isSuccess ? (
           <Loading />
         ) : (
           // <NhiemVuNewForm
@@ -212,7 +212,7 @@ function NhiemVuForm(props: INhiemVuForm) {
           variant="outlined"
           size="small"
         >
-          {id ? "Cập nhật nhiệm vụ" : "Lưu nhiệm vụ"}
+          {id ? "Cập nhật nhiệm vụ" : "Tạo mới nhiệm vụ"}
         </LoadingButton>
       </UI.CardActions>
     </UI.Card>

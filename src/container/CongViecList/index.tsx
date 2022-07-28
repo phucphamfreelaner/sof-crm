@@ -16,6 +16,7 @@ interface INhiemVuList {
   isLoadingListNhiemVu?: boolean;
   refetchListNhiemVu?: () => any;
   onEditNhiemVu?: (data: any) => any;
+  onChangeTrangThai?: () => any;
 }
 
 function CongViecList(props: INhiemVuList) {
@@ -24,10 +25,10 @@ function CongViecList(props: INhiemVuList) {
     isLoadingListNhiemVu,
     refetchListNhiemVu,
     onEditNhiemVu,
+    onChangeTrangThai,
   } = props;
   const getDiffTime = (start) => {
     const dateDiff = differenceInDays(new Date(start), new Date());
-    console.log("smsmsmmsmskdmalskdkljasndm");
     const dateDiffStr = formatDistance(new Date(start), new Date(), {
       locale: viLocale,
       addSuffix: true,
@@ -65,6 +66,7 @@ function CongViecList(props: INhiemVuList) {
     };
     updateNhiemVu({ id: data?.id, payload }).finally(() => {
       refetchListNhiemVu();
+      onChangeTrangThai();
     });
   };
 
@@ -105,7 +107,7 @@ function CongViecList(props: INhiemVuList) {
                           label={
                             trangThaiNhiemVuData
                               ? trangThaiNhiemVuData?.[x?.trangthai]
-                              : x?.trangthai
+                              : "Chưa set trạng thái"
                           }
                           size="small"
                         />
