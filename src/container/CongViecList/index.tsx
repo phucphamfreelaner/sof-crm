@@ -5,12 +5,17 @@ import viLocale from "date-fns/locale/vi";
 import { formatDistance, differenceInDays } from "date-fns";
 import { TiTick } from "react-icons/ti";
 import { RiPencilFill } from "react-icons/ri";
-import { MdOutlineCancel } from "react-icons/md";
+import {
+  MdOutlineCancel,
+  MdArrowDropDown,
+  MdOutlineArrowLeft,
+} from "react-icons/md";
 import {
   useLazyPutNhiemVuByIdQuery,
   useLazyGetTrangThaiNhiemVuQuery,
 } from "@/store/nhiemVu";
 import { useGetListNhanVienQuery } from "@/store/nhanVien";
+import { useBoolean } from "ahooks";
 
 interface INhiemVuList {
   listNhiemVuData?: any;
@@ -85,97 +90,129 @@ function CongViecList(props: INhiemVuList) {
     searchTrangThaiNhiemVu({});
   }, []);
 
+  const [isOpen, setOpen] = useBoolean(true);
+
   return (
     <>
       {isLoadingListNhiemVu ? (
         <Loading />
       ) : (
         <UI.VStack alignItems={"start"} mt={2}>
-          {listNhiemVuData &&
-            listNhiemVuData?.map((x: any) => {
-              return (
-                <UI.VStack key={x?.id} mb={"10px"}>
-                  <UI.HStack justifyContent={"flex-start"}>
-                    <UI.Avatar
-                      sx={{
-                        height: 32,
-                        mr: 2,
-                        width: 32,
-                        backgroundColor: "#283da9",
-                      }}
-                      src=""
-                    >
-                      {nhanVienData?.[x?.nv_giao_id]
-                        ? getInitials(nhanVienData?.[x?.nv_giao_id])
-                        : "N/A"}
-                    </UI.Avatar>
-                    <UI.Box>
-                      <UI.HStack>
-                        {getDiffTime(x?.ngaybatdau)}{" "}
-                        <UI.Typography variant="subtitle2">
-                          Cần làm for <b>{nhanVienData?.[x?.nv_giao_id]}</b>
-                        </UI.Typography>
-                      </UI.HStack>
-                      <UI.HStack>
-                        <UI.Chip
-                          sx={{ fontSize: 12 }}
-                          label={
-                            trangThaiNhiemVuData?.[x?.trangthai]
-                              ? trangThaiNhiemVuData?.[x?.trangthai]
-                              : "Chưa set trạng thái"
-                          }
-                          size="small"
-                        />
-                        {x?.ten && (
-                          <UI.Typography variant="subtitle2">
-                            {x?.ten.substring(0, 30)}
-                            {x?.ten?.length > 30 ? "..." : ""}
-                          </UI.Typography>
-                        )}
-                      </UI.HStack>
-                      <UI.HStack spacing={"20px"}>
-                        <UI.IconButton
-                          disabled={x?.trangthai === "da-hoan-thanh"}
-                          size={"small"}
-                          sx={{ cursor: "pointer" }}
-                          onClick={() =>
-                            handleChangeTrangThai(x, "da-hoan-thanh")
-                          }
+          <UI.HStack
+            spacing={"4px"}
+            alignItems="center"
+            justifyContent="center"
+            w="100%"
+          >
+            <UI.Typography
+              gutterBottom
+              sx={{ fontWeight: 600, color: "gray" }}
+              variant="body1"
+              textAlign="center"
+            >
+              Hoạt động đã lên kế hoạch
+            </UI.Typography>
+            <UI.IconButton
+              sx={{ position: "relative", top: "-2px" }}
+              onClick={setOpen.toggle}
+              size="small"
+            >
+              {isOpen ? (
+                <MdArrowDropDown size="28px" color="gray" />
+              ) : (
+                <MdOutlineArrowLeft size="28px" color="gray" />
+              )}
+            </UI.IconButton>
+          </UI.HStack>
+          <UI.Collapse in={isOpen}>
+            <UI.VStack alignItems={"start"}>
+              {listNhiemVuData &&
+                listNhiemVuData?.map((x: any) => {
+                  return (
+                    <UI.VStack key={x?.id} mb={"10px"}>
+                      <UI.HStack justifyContent={"flex-start"}>
+                        <UI.Avatar
+                          sx={{
+                            height: 32,
+                            mr: 2,
+                            width: 32,
+                            backgroundColor: "#283da9",
+                          }}
+                          src=""
                         >
-                          <TiTick />
-                          <UI.Typography ml={1} variant="subtitle2">
-                            Hoàn tất
-                          </UI.Typography>
-                        </UI.IconButton>
-                        <UI.IconButton
-                          size={"small"}
-                          sx={{ cursor: "pointer" }}
-                          onClick={() => onEditNhiemVu(x)}
-                        >
-                          <RiPencilFill />
-                          <UI.Typography ml={1} variant="subtitle2">
-                            Sửa
-                          </UI.Typography>
-                        </UI.IconButton>
-                        <UI.IconButton
-                          disabled={x?.trangthai === "da-huy-nhiem-vu"}
-                          size={"small"}
-                          sx={{ cursor: "pointer" }}
-                          onClick={() =>
-                            handleChangeTrangThai(x, "da-huy-nhiem-vu")
-                          }
-                        >
-                          <MdOutlineCancel />
-                          <UI.Typography ml={1} variant="subtitle2">
-                            Huỷ
-                          </UI.Typography>
-                        </UI.IconButton>
+                          {nhanVienData?.[x?.nv_giao_id]
+                            ? getInitials(nhanVienData?.[x?.nv_giao_id])
+                            : "N/A"}
+                        </UI.Avatar>
+                        <UI.Box>
+                          <UI.HStack>
+                            {getDiffTime(x?.ngaybatdau)}{" "}
+                            <UI.Typography variant="subtitle2">
+                              Cần làm for <b>{nhanVienData?.[x?.nv_giao_id]}</b>
+                            </UI.Typography>
+                          </UI.HStack>
+                          <UI.HStack>
+                            <UI.Chip
+                              sx={{ fontSize: 12 }}
+                              label={
+                                trangThaiNhiemVuData?.[x?.trangthai]
+                                  ? trangThaiNhiemVuData?.[x?.trangthai]
+                                  : "Chưa set trạng thái"
+                              }
+                              size="small"
+                            />
+                            {x?.ten && (
+                              <UI.Typography variant="subtitle2">
+                                {x?.ten.substring(0, 30)}
+                                {x?.ten?.length > 30 ? "..." : ""}
+                              </UI.Typography>
+                            )}
+                          </UI.HStack>
+                          <UI.HStack spacing={"20px"}>
+                            <UI.IconButton
+                              disabled={x?.trangthai === "da-hoan-thanh"}
+                              size={"small"}
+                              sx={{ cursor: "pointer" }}
+                              onClick={() =>
+                                handleChangeTrangThai(x, "da-hoan-thanh")
+                              }
+                            >
+                              <TiTick />
+                              <UI.Typography ml={1} variant="subtitle2">
+                                Hoàn tất
+                              </UI.Typography>
+                            </UI.IconButton>
+                            <UI.IconButton
+                              size={"small"}
+                              sx={{ cursor: "pointer" }}
+                              onClick={() => onEditNhiemVu(x)}
+                            >
+                              <RiPencilFill />
+                              <UI.Typography ml={1} variant="subtitle2">
+                                Sửa
+                              </UI.Typography>
+                            </UI.IconButton>
+                            <UI.IconButton
+                              disabled={x?.trangthai === "da-huy-nhiem-vu"}
+                              size={"small"}
+                              sx={{ cursor: "pointer" }}
+                              onClick={() =>
+                                handleChangeTrangThai(x, "da-huy-nhiem-vu")
+                              }
+                            >
+                              <MdOutlineCancel />
+                              <UI.Typography ml={1} variant="subtitle2">
+                                Huỷ
+                              </UI.Typography>
+                            </UI.IconButton>
+                          </UI.HStack>
+                        </UI.Box>
                       </UI.HStack>
-                    </UI.Box>
-                  </UI.HStack>
-                </UI.VStack>
-              );
-            })}
+                    </UI.VStack>
+                  );
+                })}
+            </UI.VStack>
+          </UI.Collapse>
         </UI.VStack>
       )}
       {/* <UI.CardActions sx={{ justifyContent: "flex-end" }}>

@@ -233,15 +233,6 @@ function BaseDetail(props: IBaseDetail) {
               paddingBottom: "30px",
             }}
           >
-            <UI.Typography
-              gutterBottom
-              sx={{ fontWeight: 600, color: palette.text.secondary }}
-              variant="body1"
-              textAlign="center"
-            >
-              Hoạt động đã lên kế hoạch
-            </UI.Typography>
-
             <UI.CKBox overflow="auto">
               <CongViecList
                 listNhiemVuData={listNhiemVuData || []}
