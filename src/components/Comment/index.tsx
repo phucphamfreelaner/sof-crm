@@ -34,7 +34,7 @@ function Comment(props: ILongText) {
 
   return (
     <CommentStyled>
-      <Avatar src={srcAvatar} />
+      <Avatar src={srcAvatar}>AD</Avatar>
       <Editor
         onInit={(evt, editor) => (editorRef.current = editor)}
         initialValue={defaultValue}

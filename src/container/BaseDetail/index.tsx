@@ -1,6 +1,6 @@
 import React from "react";
 import * as UI from "@/libs/ui";
-import { isEmpty } from "lodash-es";
+import { isEmpty, keyBy } from "lodash-es";
 
 import BaseDetailHeader from "@/components/BaseDetailHeader";
 import GuiTinForm from "@/container/GuiTinForm";
@@ -124,6 +124,54 @@ function BaseDetail(props: IBaseDetail) {
     });
   };
 
+  const TABLE_PANEL = [
+    {
+      value: 0,
+      content: (
+        <GhiChuForm
+          onAddNoted={onAddNoted}
+          coHoiId={id}
+          customerId={customerId}
+          isSuccess={isSuccessLoadCoHoiCSKH}
+          refetchListCoHoiCSKH={refetchListCoHoiCSKH}
+          onReloadForm={() => reloadCoHoiCSKHForm()}
+          onCancel={() => setValue(-1)}
+        />
+      ),
+      height: "calc(100vh - 250px)",
+    },
+    {
+      value: 1,
+      content: (
+        <GhiChuForm
+          onAddNoted={onAddNoted}
+          coHoiId={id}
+          customerId={customerId}
+          isSuccess={isSuccessLoadCoHoiCSKH}
+          refetchListCoHoiCSKH={refetchListCoHoiCSKH}
+          onReloadForm={() => reloadCoHoiCSKHForm()}
+          onCancel={() => setValue(-1)}
+        />
+      ),
+      height: "calc(100vh - 250px)",
+    },
+    {
+      value: 2,
+      content: (
+        <CongViecForm
+          onAddTask={onAddTask}
+          id={nhiemVuData?.id}
+          cohoi_id={id}
+          nhiemVuData={nhiemVuData}
+          isSuccess={isSuccessLoadNhiemVu}
+          refetchListNhiemVu={refetch}
+          onCancel={() => setValue(-1)}
+        />
+      ),
+      height: "calc(100vh - 550px)",
+    },
+  ];
+
   return isLoading ? (
     <UI.Center minH="200px">
       <UI.CircularProgress />
@@ -235,47 +283,21 @@ function BaseDetail(props: IBaseDetail) {
               </UI.Button>
             </UI.HStack>
           </UI.Tabs>
-          <TabPanel value={value} index={0}>
-            <GhiChuForm
-              onAddNoted={onAddNoted}
-              coHoiId={id}
-              customerId={customerId}
-              isSuccess={isSuccessLoadCoHoiCSKH}
-              refetchListCoHoiCSKH={refetchListCoHoiCSKH}
-              onReloadForm={() => reloadCoHoiCSKHForm()}
-              onCancel={() => setValue(-1)}
-            />
-            {/* <GuiTinForm onSendMessage={onSendMessage} /> */}
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <GhiChuForm
-              onAddNoted={onAddNoted}
-              coHoiId={id}
-              customerId={customerId}
-              isSuccess={isSuccessLoadCoHoiCSKH}
-              refetchListCoHoiCSKH={refetchListCoHoiCSKH}
-              onReloadForm={() => reloadCoHoiCSKHForm()}
-              onCancel={() => setValue(-1)}
-            />
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            <CongViecForm
-              onAddTask={onAddTask}
-              id={nhiemVuData?.id}
-              cohoi_id={id}
-              nhiemVuData={nhiemVuData}
-              isSuccess={isSuccessLoadNhiemVu}
-              refetchListNhiemVu={refetch}
-              onCancel={() => setValue(-1)}
-            />
-          </TabPanel>
+          {TABLE_PANEL?.map((x, index) => (
+            <TabPanel value={value} key={index} index={x.value}>
+              {x.content}
+            </TabPanel>
+          ))}
+
           <UI.Divider />
           <UI.CardContent
             sx={{
               padding: spacing(2),
               overflow: "auto !important",
-              height: "calc(100vh - 150px)",
-              paddingBottom: "30px",
+              height:
+                keyBy(TABLE_PANEL, "value")?.[value]?.height ||
+                "calc(100vh - 150px)",
+              paddingBottom: "130px",
             }}
           >
             <UI.CKBox overflow="auto">
