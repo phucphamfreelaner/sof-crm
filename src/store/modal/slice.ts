@@ -1,9 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { isEmpty } from "lodash-es";
 
 export interface modalState {
   name?: string;
   data?: any;
   modalsBottom?: IBottomContent[];
+  isShow?: boolean;
 }
 
 export interface IBottomContent {
@@ -19,6 +21,7 @@ const initialState: modalState = {
   name: "",
   data: null,
   modalsBottom: [],
+  isShow: false,
 };
 
 export const modalSlice = createSlice({
@@ -32,11 +35,13 @@ export const modalSlice = createSlice({
       state.modalsBottom = state.modalsBottom.filter(
         (x) => x.id !== action.payload.id
       );
+      if (isEmpty(state.modalsBottom)) state.isShow = false;
     },
     openModalBottom: (
       state: modalState,
       action: PayloadAction<{ data: IBottomContent }>
     ) => {
+      state.isShow = true;
       state.modalsBottom = [action?.payload?.data, ...state.modalsBottom];
     },
   },
