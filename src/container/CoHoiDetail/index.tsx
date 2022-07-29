@@ -77,6 +77,7 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
   return (
     <BaseDetail
       id={coHoiData?.id}
+      userId={coHoiData?.customer_id}
       isLoading={isLoadingCoHoi}
       isEdit={isEdit}
       openEdit={setEdit.setTrue}
