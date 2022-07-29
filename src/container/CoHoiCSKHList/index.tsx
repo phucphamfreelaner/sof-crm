@@ -1,10 +1,7 @@
-import React from "react";
 import * as UI from "@/libs/ui";
 import Loading from "@/components/Loading";
 import viLocale from "date-fns/locale/vi";
 import { formatDistance, differenceInDays } from "date-fns";
-import { TiTick } from "react-icons/ti";
-import { RiPencilFill } from "react-icons/ri";
 import {
   MdOutlineCancel,
   MdArrowDropDown,
@@ -14,7 +11,6 @@ import {
   useLazyDeleteCoHoiCSKHQuery,
   useLazyPutCoHoiCSKHByIdQuery,
 } from "@/store/coHoiCSKH";
-import { useGetListNhanVienQuery } from "@/store/nhanVien";
 import { useBoolean } from "ahooks";
 
 interface ICoHoiCSKHList {
@@ -62,25 +58,15 @@ function CoHoiCSKHList(props: ICoHoiCSKHList) {
   const [deleteCoHoiCSKH, { isLoading: isLoadingDeleteCoHoiCSKH }] =
     useLazyDeleteCoHoiCSKHQuery();
 
-  const getInitials = (name = "") =>
-    name
-      .replace(/\s+/, " ")
-      .split(" ")
-      .slice(0, 2)
-      .map((v) => v && v[0].toUpperCase())
-      .join("");
-
-  const { data: nhanVienData } = useGetListNhanVienQuery({});
-
-  const handleChangeTrangThai = (data, status) => {
-    const payload = {
-      ...data,
-      trangthai: status,
-    };
-    updateCoHoiCSKH({ id: data?.id, payload }).finally(() => {
-      refetchListCoHoiCSKH();
-    });
-  };
+  // const handleChangeTrangThai = (data, status) => {
+  //   const payload = {
+  //     ...data,
+  //     trangthai: status,
+  //   };
+  //   updateCoHoiCSKH({ id: data?.id, payload }).finally(() => {
+  //     refetchListCoHoiCSKH();
+  //   });
+  // };
   const handleXoaCoHoiCSKH = (data) => {
     deleteCoHoiCSKH({ id: data?.id }).finally(() => {
       refetchListCoHoiCSKH();
@@ -107,7 +93,7 @@ function CoHoiCSKHList(props: ICoHoiCSKHList) {
               variant="body1"
               textAlign="center"
             >
-              Cơ hội chăm sóc khách hàng
+              Lịch sử thao tác
             </UI.Typography>
             <UI.IconButton
               sx={{ position: "relative", top: "-2px" }}
@@ -141,35 +127,13 @@ function CoHoiCSKHList(props: ICoHoiCSKHList) {
                         </UI.Avatar>
                         <UI.Box>
                           <UI.HStack>
-                            {getDiffTime(x?.created_at)}{" "}
-                            <UI.Typography variant="subtitle2">
-                              {x?.noi_dung}
-                            </UI.Typography>
+                            <div
+                              dangerouslySetInnerHTML={{ __html: x?.noi_dung }}
+                            ></div>
                           </UI.HStack>
+                          <UI.HStack>{getDiffTime(x?.created_at)} </UI.HStack>
                           <UI.HStack>
-                            <UI.Chip
-                              sx={{ fontSize: 12 }}
-                              label={
-                                x?.active === 0
-                                  ? "Chưa chăm sóc"
-                                  : "Đã chăm sóc"
-                              }
-                              size="small"
-                            />
-                          </UI.HStack>
-                          <UI.HStack spacing={"20px"}>
-                            <UI.IconButton
-                              disabled={x?.active == 1}
-                              size={"small"}
-                              sx={{ cursor: "pointer" }}
-                              onClick={() => handleChangeTrangThai(x, 0)}
-                            >
-                              <TiTick />
-                              <UI.Typography ml={1} variant="subtitle2">
-                                Đã chăm sóc
-                              </UI.Typography>
-                            </UI.IconButton>
-                            <UI.IconButton
+                            {/* <UI.IconButton
                               size={"small"}
                               sx={{ cursor: "pointer" }}
                               onClick={() => onEditCoHoiCSKH(x)}
@@ -178,7 +142,7 @@ function CoHoiCSKHList(props: ICoHoiCSKHList) {
                               <UI.Typography ml={1} variant="subtitle2">
                                 Sửa
                               </UI.Typography>
-                            </UI.IconButton>
+                            </UI.IconButton> */}
                             <UI.IconButton
                               size={"small"}
                               sx={{ cursor: "pointer" }}
