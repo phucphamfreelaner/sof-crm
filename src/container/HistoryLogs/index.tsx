@@ -9,25 +9,16 @@ import * as UI from "@/libs/ui";
 import { useBoolean } from "ahooks";
 
 import { MdArrowDropDown, MdOutlineArrowLeft } from "react-icons/md";
-import { useGetCoHoiLogQuery } from "@/store/logs";
-
-const activities = [
-  {
-    log: "Stripe charge complete (Charge ID: 5ecb8a6879877087d4aa2690)",
-    date: "subHours(Date.now(), 18).getTime()",
-  },
-  {
-    log: "Order status changed from Pending payment to Completed.",
-    date: "subHours(Date.now(), 21).getTime()",
-  },
-];
+import { useGetLogByUserQuery } from "@/store/activityLogs";
 
 const Logs = (props: any) => {
   const { userId } = props;
   const [isOpen, setOpen] = useBoolean(true);
 
-  const { data: logsData } = useGetCoHoiLogQuery({ userId }, { skip: !userId });
-  console.log("🚀 ~ logsData", logsData);
+  const { data: logsData } = useGetLogByUserQuery(
+    { userId, type: "co_hoi" },
+    { skip: !userId }
+  );
 
   return (
     <UI.VStack alignItems={"start"} mt={2}>
