@@ -1,7 +1,7 @@
 import React from "react";
 import * as UI from "@/libs/ui";
 import { MdClose } from "react-icons/md";
-
+import WindowPopup from "@/components/WindowPopup";
 interface IDrawerBottom {
   composeOpen?: boolean;
   toggleComposeOpen?: () => any;
@@ -9,12 +9,15 @@ interface IDrawerBottom {
   handlePopupClose?: () => any;
   title?: string;
   children?: React.ReactNode;
+  modalsBottom?: any[];
+  onCloseWindow?: (id: any) => any;
 }
 
 function DrawerBottom(props: IDrawerBottom) {
   const {
     composeOpen,
     toggleComposeOpen,
+    modalsBottom,
     handleMinimize,
     handlePopupClose,
     title,
@@ -33,6 +36,11 @@ function DrawerBottom(props: IDrawerBottom) {
         right: "1rem",
         bottom: "1.5rem",
         display: "block",
+        background: "transparent",
+        ".MuiDrawer-paper": {
+          background: "transparent",
+          boxShadow: "none",
+        },
         zIndex: (theme) => `${theme.zIndex.drawer} + 1`,
         "& .MuiDrawer-paper": {
           borderRadius: 1,
@@ -41,47 +49,25 @@ function DrawerBottom(props: IDrawerBottom) {
         },
       }}
     >
-      <UI.Box
-        sx={{
-          px: 4,
-          py: 2.5,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          //   backgroundColor: (theme) =>
-          //     `rgba(${theme.palette.customColors.main}, 0.08)`,
-        }}
+      <UI.HStack
+        alignItems="flex-end"
+        spacing={0}
+        gap="18px"
+        background="transparent"
       >
-        <UI.Typography sx={{ fontWeight: 600, color: "text.secondary" }}>
-          {title}
-        </UI.Typography>
-        <UI.Box sx={{ display: "flex", alignItems: "center" }}>
-          <UI.IconButton
-            sx={{ p: 1, mr: 2, color: "action.active" }}
-            onClick={handleMinimize}
+        {modalsBottom?.map?.((modal) => (
+          <WindowPopup
+            id={modal?.id}
+            width={modal?.width}
+            height={modal?.height}
+            key={modal?.id}
+            title={modal?.title}
+            onClose={modal?.onClose}
           >
-            <MdClose fontSize="small" />
-          </UI.IconButton>
-          <UI.IconButton
-            sx={{ p: 1, color: "action.active" }}
-            onClick={handlePopupClose}
-          >
-            <MdClose fontSize="small" />
-          </UI.IconButton>
-        </UI.Box>
-      </UI.Box>
-      <UI.Box
-        sx={{
-          py: 1,
-          px: 4,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
-        }}
-      >
-        {children}
-      </UI.Box>
+            {modal?.content}
+          </WindowPopup>
+        ))}
+      </UI.HStack>
     </UI.Drawer>
   );
 }

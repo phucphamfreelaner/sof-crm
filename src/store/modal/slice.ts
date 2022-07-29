@@ -15,6 +15,7 @@ export interface IBottomContent {
   width?: string;
   height?: string;
   data?: any;
+  onClose?: (id: string) => any;
 }
 
 const initialState: modalState = {

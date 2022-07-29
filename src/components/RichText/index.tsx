@@ -48,6 +48,8 @@ function RichText(props: ILongText) {
         width,
         menubar: false,
         statusbar: false,
+        skin: "jam",
+        icons: "jam",
         plugins: [
           "advlist",
           "autolink",
@@ -70,7 +72,7 @@ function RichText(props: ILongText) {
           "undo redo | styles | bold italic underline backcolor | alignleft aligncenter alignright alignjustify | " +
           "bullist numlist outdent indent | link emoticons preview fullscreen ",
         content_style:
-          "body { font-family:Helvetica,Arial,sans-serif; font-size:14px; line-height:0.3rem}",
+          "body { font-family:Helvetica,Arial,sans-serif; font-size:14px;}",
         toolbar_location: "bottom",
       }}
     />

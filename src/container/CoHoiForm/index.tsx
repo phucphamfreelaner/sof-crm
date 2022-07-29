@@ -26,10 +26,18 @@ interface ICoHoiNewContainer {
   customerId?: string | number;
   onAfterUpdated?: (data: any) => any;
   defaultValues?: any;
+  gap?: string;
+  size?: "medium" | "small";
 }
 
 const CoHoiNewContainer = (props: ICoHoiNewContainer) => {
-  const { customerId, onAfterUpdated, defaultValues } = props;
+  const {
+    customerId,
+    onAfterUpdated,
+    defaultValues,
+    gap,
+    size = "medium",
+  } = props;
 
   const [createCoHoi, { data, isSuccess, isLoading: isLoadingCreate }] =
     useCreateCoHoiMutation();
@@ -91,7 +99,7 @@ const CoHoiNewContainer = (props: ICoHoiNewContainer) => {
     <UI.CircularProgress />
   ) : (
     <BaseForm
-      gap={theme.spacing(4)}
+      gap={gap || theme.spacing(4)}
       templateColumns="repeat(6,1fr)"
       schema={{
         name: Yup.string().required("Tên cơ hội không được để trống"),
@@ -115,6 +123,7 @@ const CoHoiNewContainer = (props: ICoHoiNewContainer) => {
           label: "Tên cơ hội",
           defaultValues: "",
           colSpan: 3,
+          size,
         },
         {
           name: "soluong",
@@ -133,6 +142,7 @@ const CoHoiNewContainer = (props: ICoHoiNewContainer) => {
             searchSoLuong({ name: text });
           },
           colSpan: 3,
+          size,
         },
         {
           name: "trang_thai_key",
@@ -149,6 +159,7 @@ const CoHoiNewContainer = (props: ICoHoiNewContainer) => {
             searchTrangThai({ name: text });
           },
           colSpan: 3,
+          size,
         },
         {
           name: "tien_trinh_key",
@@ -163,6 +174,7 @@ const CoHoiNewContainer = (props: ICoHoiNewContainer) => {
               .then((res) => res.name),
           onSearchChange: (text) => searchTienTrinh({ name: text }),
           colSpan: 3,
+          size,
         },
         {
           name: "note",
@@ -184,12 +196,14 @@ const CoHoiNewContainer = (props: ICoHoiNewContainer) => {
               name: "type",
               label: "Loại",
               colSpan: 3,
+              size,
             },
             {
               type: "input",
               name: "note",
               label: "Diễn giải",
               colSpan: 3,
+              size,
             },
           ],
         },
