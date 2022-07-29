@@ -153,7 +153,7 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
             dispatch(
               openModalBottom({
                 data: {
-                  title: "Gửi email",
+                  title: "Gửi sms",
                   height: "620px",
                   width: "700px",
                   id: `co-hoi-${id}`,
