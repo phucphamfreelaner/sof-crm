@@ -34,9 +34,11 @@ import BasicDetails from "@/components/BasicDetails";
 import CoHoiNew from "@/container/CoHoiForm";
 import RichText from "@/components/RichText";
 import SendEmailForm from "@/container/SendEmailForm";
+import { ICoHoi } from "@/types/coHoi";
+import SendSmsForm from "../SendSmsForm";
 
 interface ICoHoiDetail {
-  coHoiData: any;
+  coHoiData: ICoHoi;
   isLoadingCoHoi: boolean;
   reloadCoHoi: () => any;
 }
@@ -76,7 +78,7 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
   return (
     <BaseDetail
       id={coHoiData?.id}
-      userId={coHoiData?.customer_id}
+      customerId={coHoiData?.customer_id}
       isLoading={isLoadingCoHoi}
       isEdit={isEdit}
       openEdit={setEdit.setTrue}
@@ -144,7 +146,10 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
                   },
                   content: (
                     <UI.CKBox px={spacing(3)} py={spacing(3.5)}>
-                      <SendEmailForm customerId={coHoiData?.customer_id} />
+                      <SendEmailForm
+                        customerId={coHoiData?.customer_id}
+                        modalId={`gui-mail-${id}`}
+                      />
                     </UI.CKBox>
                   ),
                 },
@@ -156,7 +161,28 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
           icon: <AiOutlineMessage />,
           label: "Gửi SMS",
           onClick: () => {
-            console.log("data");
+            const id = uniqueId();
+            dispatch(
+              openModalBottom({
+                data: {
+                  title: "Gửi sms",
+                  height: "620px",
+                  width: "700px",
+                  id: `gui-sms-${id}`,
+                  onClose: (id) => {
+                    dispatch(closeModalBottom({ id }));
+                  },
+                  content: (
+                    <UI.CKBox px={spacing(3)} py={spacing(3.5)}>
+                      <SendSmsForm
+                        customerId={coHoiData?.customer_id}
+                        modalId={`gui-sms-${id}`}
+                      />
+                    </UI.CKBox>
+                  ),
+                },
+              })
+            );
           },
         },
         {
