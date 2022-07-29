@@ -5,38 +5,40 @@ import toast from "react-hot-toast";
 import * as Yup from "yup";
 import { FaSave } from "react-icons/fa";
 import {
-  useLazySearchmailTemplatesQuery,
-  useLazySendMailTemplateQuery,
-  useLazyViewMailTemplateQuery,
-} from "@/store/mailTemplates";
+  useLazySearchsmsTemplatesQuery,
+  useLazySendSmsTemplateQuery,
+  useLazyViewSmsTemplateQuery,
+} from "@/store/smsTemplates";
 
-interface ISendMailContainer {
+interface ISendSmsContainer {
   customerId?: string | number;
   onAfterUpdated?: (data: any) => any;
   defaultValues?: any;
 }
 
-const SendMailContainer = (props: ISendMailContainer) => {
+const SendSmsContainer = (props: ISendSmsContainer) => {
   const { customerId } = props;
 
   const theme = UI.useTheme();
-  const [searchMailTemplate, { data, isLoading, isFetching, isSuccess }] =
-    useLazySearchmailTemplatesQuery();
+  const [searchSmsTemplate, { data, isLoading, isFetching, isSuccess }] =
+    useLazySearchsmsTemplatesQuery();
 
   const [defaultValues, setDefaultValues] = useState(null);
 
-  const [
-    viewMailTemplate,
-    { isLoading: isLoadingMailTemplate, isFetching: isFetchingMailTemplate },
-  ] = useLazyViewMailTemplateQuery();
+  const [viewSmsTemplate] = useLazyViewSmsTemplateQuery();
 
   const [
     sendSmsTemplate,
-    { data: dataSendSmsTemplate, isSuccess: isSuccessSendMailTemplate },
-  ] = useLazySendMailTemplateQuery();
+    {
+      data: dataSendSmsTemplate,
+      isLoading: isLoadingSendSms,
+      isFetching: isFetchingSendSms,
+      isSuccess: isSuccessSendSmsTemplate,
+    },
+  ] = useLazySendSmsTemplateQuery();
 
   useEffect(() => {
-    searchMailTemplate({ search: { ten: "" } })
+    searchSmsTemplate({ search: { ten: "" } })
       .unwrap()
       .then((res) => {
         setDefaultValues({ template_id: res?.[0] });
@@ -53,10 +55,10 @@ const SendMailContainer = (props: ISendMailContainer) => {
   };
 
   useEffect(() => {
-    if (isSuccessSendMailTemplate && dataSendSmsTemplate) {
+    if (isSuccessSendSmsTemplate) {
       toast.success("Gửi sms thành công");
     }
-  }, [isSuccessSendMailTemplate, dataSendSmsTemplate]);
+  }, [isSuccessSendSmsTemplate]);
 
   return (
     <BaseForm
@@ -65,9 +67,8 @@ const SendMailContainer = (props: ISendMailContainer) => {
       templateColumns="repeat(6,1fr)"
       defaultValues={defaultValues}
       schema={{
-        from: Yup.string().required("Sms gửi không được để trống"),
-        sms: Yup.string().required("Sms nhận không được để trống"),
-        title: Yup.string().required("Tiêu đề không được để trống"),
+        phone: Yup.string().required("Số điện thoại không được để trống"),
+        //template_id: Yup.string().required("Sms template không được để trống"),
         content: Yup.string().required("Nội dung không được để trống"),
       }}
       watchFields={["template_id"]}
@@ -75,15 +76,12 @@ const SendMailContainer = (props: ISendMailContainer) => {
         const template_id = data?.template_id?.value;
         const template_state = data?.template_id;
         if (template_id) {
-          viewMailTemplate({ customerId, template_id })
+          viewSmsTemplate({ customerId, template_id })
             .unwrap()
             .then((res) => {
               setDefaultValues((prevState) => ({
+                ...res,
                 template_id: template_state,
-                content: res?.content,
-                title: res?.title,
-                from: res?.from,
-                sms: res?.from,
               }));
             });
         }
@@ -93,36 +91,22 @@ const SendMailContainer = (props: ISendMailContainer) => {
       }}
       fields={[
         {
-          name: "from",
-          type: "input",
-          label: "Sms gửi",
-          colSpan: 3,
-          size: "small",
-        },
-        {
-          name: "sms",
-          type: "input",
-          label: "Sms nhận",
-          colSpan: 3,
-          size: "small",
-        },
-        {
-          name: "title",
-          type: "input",
-          label: "Tiêu đề",
-          colSpan: 6,
-          size: "small",
-        },
-        {
           name: "template_id",
           type: "autocomplete",
-          label: "Template",
+          label: "SMS template",
           isLoading: isLoading || isFetching,
           autocompleteOptions: data || [],
           onSearchChange: (text) => {
-            searchMailTemplate({ search: { ten: text } });
+            searchSmsTemplate({ search: { ten: text } });
           },
-          colSpan: 6,
+          colSpan: 3,
+          size: "small",
+        },
+        {
+          name: "phone",
+          type: "input",
+          label: "Số điện thoại",
+          colSpan: 3,
           size: "small",
         },
         {
@@ -137,17 +121,17 @@ const SendMailContainer = (props: ISendMailContainer) => {
       childrenSx={{ justifyContent: "flex-end", display: "flex" }}
     >
       <UI.LoadingButton
-        //loading={isLoadingCreate || isLoadingUpdate}
+        loading={isLoadingSendSms || isFetchingSendSms}
         loadingPosition="end"
         endIcon={<FaSave />}
         variant="outlined"
         size="small"
         type="submit"
       >
-        {"Gửi mail"}
+        {"Gửi sms"}
       </UI.LoadingButton>
     </BaseForm>
   );
 };
 
-export default SendMailContainer;
+export default SendSmsContainer;

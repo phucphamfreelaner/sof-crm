@@ -37,7 +37,7 @@ import { nhiemVuService } from "./nhiemVu";
 import { coHoiCSKHService } from "./coHoiCSKH";
 import { mailTemplatesService } from "./mailTemplates";
 import { activityLogsService } from "./activityLogs";
-
+import { smsTemplatesService } from "./smsTemplates";
 // @ts-ignore
 const store: any = configureStore({
   reducer: combineReducers({
@@ -73,6 +73,7 @@ const store: any = configureStore({
     [coHoiCSKHService.reducerPath]: coHoiCSKHService.reducer,
     [mailTemplatesService.reducerPath]: mailTemplatesService.reducer,
     [activityLogsService.reducerPath]: activityLogsService.reducer,
+    [smsTemplatesService.reducerPath]: smsTemplatesService.reducer,
   }),
   devTools: true,
 });

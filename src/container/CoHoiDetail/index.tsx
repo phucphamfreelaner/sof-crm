@@ -36,6 +36,7 @@ import RichText from "@/components/RichText";
 import Comment from "@/components/Comment";
 import SendEmailForm from "@/container/SendEmailForm";
 import { ICoHoi } from "@/types/coHoi";
+import SendSmsForm from "../SendSmsForm";
 
 interface ICoHoiDetail {
   coHoiData: ICoHoi;
@@ -148,7 +149,22 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
           icon: <AiOutlineMessage />,
           label: "Gửi SMS",
           onClick: () => {
-            console.log("data");
+            const id = uniqueId();
+            dispatch(
+              openModalBottom({
+                data: {
+                  title: "Gửi email",
+                  height: "620px",
+                  width: "700px",
+                  id: `co-hoi-${id}`,
+                  content: (
+                    <UI.CKBox px={spacing(3)} py={spacing(3.5)}>
+                      <SendSmsForm customerId={coHoiData?.customer_id} />
+                    </UI.CKBox>
+                  ),
+                },
+              })
+            );
           },
         },
         {
