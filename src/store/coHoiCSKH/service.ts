@@ -14,7 +14,7 @@ export const coHoiCSKHService = createApi({
   }),
   reducerPath: "coHoiCSKHService",
   endpoints: (builder) => ({
-    getCoHoiCSKHCohoi: builder.query<
+    getCoHoiCSKHByCoHoiId: builder.query<
       { data: any[] },
       {
         cohoi_id?: any;
@@ -23,7 +23,7 @@ export const coHoiCSKHService = createApi({
       transformResponse: (response: any) => response?.data,
       query: ({ cohoi_id }) => ({
         method: "GET",
-        url: `/co-hoi-cskh/${cohoi_id}`,
+        url: `/co-hoi-cskh/get-by-co-hoi-id/${cohoi_id}`,
       }),
     }),
     createCoHoiCSKH: builder.query<{ data: any }, { payload: any }>({
@@ -53,8 +53,8 @@ export const coHoiCSKHService = createApi({
 });
 
 export const {
-  useGetCoHoiCSKHCohoiQuery,
-  useLazyGetCoHoiCSKHCohoiQuery,
+  useGetCoHoiCSKHByCoHoiIdQuery,
+  useLazyGetCoHoiCSKHByCoHoiIdQuery,
   useLazyCreateCoHoiCSKHQuery,
   useLazyDeleteCoHoiCSKHQuery,
   useLazyPutCoHoiCSKHByIdQuery,

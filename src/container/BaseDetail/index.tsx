@@ -214,7 +214,13 @@ function BaseDetail(props: IBaseDetail) {
             </UI.HStack>
           </UI.Tabs>
           <TabPanel value={value} index={0}>
-            <GuiTinForm onSendMessage={onSendMessage} />
+            <GhiChuForm
+              onAddNoted={onAddNoted}
+              customerId={customerId}
+              coHoiId={id}
+              onCancel={() => setValue(-1)}
+            />
+            {/* <GuiTinForm onSendMessage={onSendMessage} /> */}
           </TabPanel>
           <TabPanel value={value} index={1}>
             <GhiChuForm
