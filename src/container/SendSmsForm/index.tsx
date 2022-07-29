@@ -14,13 +14,15 @@ import { closeModalBottom, openModalBottom } from "@/store/modal";
 
 interface ISendSmsContainer {
   customerId?: string | number;
-  modalId?: string;
+  modalId?: any;
   onAfterUpdated?: () => any;
   defaultValues?: any;
+  gap?: string;
+  size?: "medium" | "small";
 }
 
 const SendSmsContainer = (props: ISendSmsContainer) => {
-  const { customerId, modalId: id } = props;
+  const { customerId, modalId: id, gap, size } = props;
 
   const theme = UI.useTheme();
   const [searchSmsTemplate, { data, isLoading, isFetching, isSuccess }] =
@@ -68,7 +70,7 @@ const SendSmsContainer = (props: ISendSmsContainer) => {
   return (
     <BaseForm
       key={JSON.stringify(defaultValues)}
-      gap={theme.spacing(4)}
+      gap={gap || theme.spacing(4)}
       templateColumns="repeat(6,1fr)"
       defaultValues={defaultValues}
       schema={{
@@ -105,14 +107,14 @@ const SendSmsContainer = (props: ISendSmsContainer) => {
             searchSmsTemplate({ search: { ten: text } });
           },
           colSpan: 3,
-          size: "small",
+          size,
         },
         {
           name: "phone",
           type: "input",
           label: "Số điện thoại",
           colSpan: 3,
-          size: "small",
+          size,
         },
         {
           name: "content",

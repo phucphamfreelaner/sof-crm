@@ -28,6 +28,7 @@ interface ICoHoiNewContainer {
   defaultValues?: any;
   gap?: string;
   size?: "medium" | "small";
+  modalId?: any;
 }
 
 const CoHoiNewContainer = (props: ICoHoiNewContainer) => {
