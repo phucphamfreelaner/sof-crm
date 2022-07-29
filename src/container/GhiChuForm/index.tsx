@@ -1,26 +1,32 @@
 import React from "react";
-import Comment from "@/components/Comment";
-import {
-  useGetCoHoiCSKHByCoHoiIdQuery,
-  useLazyCreateCoHoiCSKHQuery,
-} from "@/store/coHoiCSKH";
+import { useLazyCreateCoHoiCSKHQuery } from "@/store/coHoiCSKH";
 import * as UI from "@/libs/ui";
-import { FaSave } from "react-icons/fa";
 import toast from "react-hot-toast";
-import CoHoiCSKHList from "../CoHoiCSKHList";
-import CoHoiCSKHForm from "../CoHoiCSKHForm";
+import Comment from "@/components/Comment";
+import Loading from "@/components/Loading";
 
 interface IGhiChuForm {
   onAddNoted?: (data: any) => any;
   coHoiId?: any;
   customerId?: any;
+  isSuccess?: boolean;
+  refetchListCoHoiCSKH?: () => any;
+  onReloadForm?: () => any;
   onCancel?: () => any;
 }
 
 function GhiChuForm(props: IGhiChuForm) {
-  const { onAddNoted, coHoiId, customerId, onCancel } = props;
-  const [coHoiCSKHData, setCoHoiCSKHData] = React.useState(null);
-  const [isEdit, setIsEdit] = React.useState(false);
+  const {
+    onAddNoted,
+    coHoiId,
+    refetchListCoHoiCSKH,
+    customerId,
+    isSuccess,
+    onReloadForm,
+    onCancel,
+  } = props;
+
+  const [defaultValue, setDefaultValue] = React.useState("");
 
   const [
     createCoHoiCSKH,
@@ -31,67 +37,42 @@ function GhiChuForm(props: IGhiChuForm) {
     },
   ] = useLazyCreateCoHoiCSKHQuery();
 
-  const {
-    isLoading: isLoadingListCoHoiCSKH,
-    isFetching: isFetchingListCoHoiCSKH,
-    data: listCoHoiCSKHData,
-    isSuccess: isSuccessListCoHoiCSKHData,
-    refetch,
-  } = useGetCoHoiCSKHByCoHoiIdQuery({ cohoi_id: coHoiId }, { skip: !coHoiId });
-
-  const handleCreateCoHoiCSKH = () => {
+  const handleCreateCoHoiCSKH = (data) => {
     const payload = {
       co_hoi_id: coHoiId,
       customer_id: customerId,
+      noi_dung: data,
     };
-    createCoHoiCSKH({ payload });
+    createCoHoiCSKH({ payload }).finally(() => {
+      toast.success("Thêm ghi chú thành công!");
+      refetchListCoHoiCSKH();
+      onReloadForm();
+      onAddNoted(dataCoHoiCSKHNew);
+    });
   };
-
-  React.useEffect(() => {
-    if (dataCoHoiCSKHNew) {
-      toast.success("Thêm cơ hội CSKH thành công!");
-      refetch();
-    }
-  }, [dataCoHoiCSKHNew]);
 
   return (
     <UI.CKBox overflow="auto">
-      {isEdit ? (
-        <CoHoiCSKHForm
-          id={coHoiCSKHData?.id}
-          cohoi_id={coHoiCSKHData?.co_hoi_id}
-          coHoiCSKHData={coHoiCSKHData}
-          isSuccess={isSuccessListCoHoiCSKHData}
-          refetchListCoHoiCSKH={refetch}
-          onCancel={() => {
-            setIsEdit(false);
-            setCoHoiCSKHData(null);
-          }}
-        />
+      {!isSuccess ? (
+        <Loading />
       ) : (
-        <UI.CardActions sx={{ justifyContent: "flex-start", paddingTop: 0 }}>
-          <UI.LoadingButton
-            loading={false}
-            onClick={handleCreateCoHoiCSKH}
-            endIcon={<FaSave />}
-            variant="outlined"
-            size="small"
+        <UI.Box>
+          <Comment
+            defaultValue={defaultValue}
+            label=""
+            sendMessage={(data) => {
+              handleCreateCoHoiCSKH(data);
+            }}
+          />
+          <UI.CardActions
+            sx={{ justifyContent: "flex-end", paddingTop: 1, paddingRight: 0 }}
           >
-            {"Thêm cơ hội CSKH"}
-          </UI.LoadingButton>
-        </UI.CardActions>
+            <UI.Button onClick={onCancel} color="inherit">
+              Cancel
+            </UI.Button>
+          </UI.CardActions>
+        </UI.Box>
       )}
-      <CoHoiCSKHList
-        listCoHoiCSKHData={listCoHoiCSKHData || []}
-        isLoadingListCoHoiCSKH={
-          isLoadingListCoHoiCSKH || isFetchingListCoHoiCSKH
-        }
-        refetchListCoHoiCSKH={refetch}
-        onEditCoHoiCSKH={async (data) => {
-          setIsEdit(true);
-          setCoHoiCSKHData(data);
-        }}
-      />
     </UI.CKBox>
   );
 }

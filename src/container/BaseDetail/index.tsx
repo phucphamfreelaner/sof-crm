@@ -18,6 +18,8 @@ import CongViecList from "@/container/CongViecList";
 import HistoryLogs from "@/container/HistoryLogs";
 
 import { useGetNhiemVuCohoiQuery } from "@/store/nhiemVu";
+import CoHoiCSKHList from "../CoHoiCSKHList";
+import { useGetCoHoiCSKHByCoHoiIdQuery } from "@/store/coHoiCSKH";
 
 interface IBaseDetail {
   id?: any;
@@ -84,6 +86,14 @@ function BaseDetail(props: IBaseDetail) {
   const open = Boolean(anchorEl);
 
   const {
+    isLoading: isLoadingListCoHoiCSKH,
+    isFetching: isFetchingListCoHoiCSKH,
+    data: listCoHoiCSKHData,
+    isSuccess: isSuccessListCoHoiCSKHData,
+    refetch: refetchListCoHoiCSKH,
+  } = useGetCoHoiCSKHByCoHoiIdQuery({ cohoi_id: id }, { skip: !id });
+
+  const {
     isLoading: isLoadingListNhiemVu,
     isFetching: isFetchingListNhiemVu,
     data: listNhiemVuData,
@@ -91,12 +101,24 @@ function BaseDetail(props: IBaseDetail) {
   } = useGetNhiemVuCohoiQuery({ cohoi_id: id }, { skip: !id });
   const [nhiemVuData, setNhiemVuData] = React.useState(null);
   const [isSuccessLoadNhiemVu, setIsSuccessLoadNhiemVu] = React.useState(false);
+  const [isSuccessLoadCoHoiCSKH, setIsSuccessLoadCoHoiCSKH] =
+    React.useState(true);
 
   const reloadCongViecForm = () => {
     setIsSuccessLoadNhiemVu(false);
     setTimeout(() => {
       const timer = setTimeout(() => {
         setIsSuccessLoadNhiemVu(true);
+      }, 500);
+      return () => clearTimeout(timer);
+    });
+  };
+
+  const reloadCoHoiCSKHForm = () => {
+    setIsSuccessLoadCoHoiCSKH(false);
+    setTimeout(() => {
+      const timer = setTimeout(() => {
+        setIsSuccessLoadCoHoiCSKH(true);
       }, 500);
       return () => clearTimeout(timer);
     });
@@ -216,8 +238,11 @@ function BaseDetail(props: IBaseDetail) {
           <TabPanel value={value} index={0}>
             <GhiChuForm
               onAddNoted={onAddNoted}
-              customerId={customerId}
               coHoiId={id}
+              customerId={customerId}
+              isSuccess={isSuccessLoadCoHoiCSKH}
+              refetchListCoHoiCSKH={refetchListCoHoiCSKH}
+              onReloadForm={() => reloadCoHoiCSKHForm()}
               onCancel={() => setValue(-1)}
             />
             {/* <GuiTinForm onSendMessage={onSendMessage} /> */}
@@ -225,8 +250,11 @@ function BaseDetail(props: IBaseDetail) {
           <TabPanel value={value} index={1}>
             <GhiChuForm
               onAddNoted={onAddNoted}
-              customerId={customerId}
               coHoiId={id}
+              customerId={customerId}
+              isSuccess={isSuccessLoadCoHoiCSKH}
+              refetchListCoHoiCSKH={refetchListCoHoiCSKH}
+              onReloadForm={() => reloadCoHoiCSKHForm()}
               onCancel={() => setValue(-1)}
             />
           </TabPanel>
@@ -267,7 +295,17 @@ function BaseDetail(props: IBaseDetail) {
                   reloadCongViecForm();
                 }}
               />
-              <HistoryLogs userId={userId} />
+              <CoHoiCSKHList
+                listCoHoiCSKHData={listCoHoiCSKHData || []}
+                isLoadingListCoHoiCSKH={
+                  isLoadingListCoHoiCSKH || isFetchingListCoHoiCSKH
+                }
+                refetchListCoHoiCSKH={refetchListCoHoiCSKH}
+                // onEditCoHoiCSKH={async (data) => {
+                //   setValue(1);
+                // }}
+              />
+              {/* <HistoryLogs userId={userId} /> */}
             </UI.CKBox>
           </UI.CardContent>
         </UI.Card>
