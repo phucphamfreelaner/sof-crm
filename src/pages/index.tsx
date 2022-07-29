@@ -68,13 +68,13 @@ function Root() {
             />
           )}
         </UI.CKBox>
-        <ModalProvider>
-          <UI.CKBox h="100%" bg="#f6f7fa" overflow="auto" flexGrow={1}>
-            <TopTab />
-            <Outlet />
-          </UI.CKBox>
-        </ModalProvider>
+
+        <UI.CKBox h="100%" bg="#f6f7fa" overflow="auto" flexGrow={1}>
+          <TopTab />
+          <Outlet />
+        </UI.CKBox>
       </UI.HStack>
+      <ModalProvider />
     </>
   );
 }

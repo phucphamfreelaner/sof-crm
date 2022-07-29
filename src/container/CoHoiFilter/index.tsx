@@ -82,7 +82,7 @@ function CoHoiFilter(props: ICoHoiFilter) {
       <UI.HStack alignItems="center" w="100%">
         <BaseForm
           templateColumns="repeat(12, 1fr)"
-          columnGap="24px"
+          columnGap="22px"
           watchFields={["code", "name", "customer_id"]}
           onWatchChange={onWatchChange}
           fields={[
@@ -92,6 +92,7 @@ function CoHoiFilter(props: ICoHoiFilter) {
               type: "input",
               colSpan: 6,
               placeholder: "Nhập tên cơ hội",
+              size: "small",
             },
             {
               name: "customer_id",
@@ -102,6 +103,7 @@ function CoHoiFilter(props: ICoHoiFilter) {
               autocompleteOptions: khachHangData,
               onSearchChange: handleSearchKhachHang,
               placeholder: "Tất cả",
+              size: "small",
             },
             {
               name: "code",
@@ -109,6 +111,7 @@ function CoHoiFilter(props: ICoHoiFilter) {
               type: "input",
               colSpan: 3,
               placeholder: "Nhập mã cơ hội",
+              size: "small",
             },
           ]}
         ></BaseForm>
@@ -116,78 +119,84 @@ function CoHoiFilter(props: ICoHoiFilter) {
           <AiOutlineReload />
         </UI.IconButton>
       </UI.HStack>
-      <UI.HStack sx={{ width: "100%" }} mt={16} mb={16}>
-        <UI.Typography fontStyle={"italic"}>Tìm kiếm nâng cao</UI.Typography>
-        <UI.Box
-          sx={{ cursor: "pointer" }}
+      <UI.CKBox py="10px" sx={{ width: "100%" }}>
+        <UI.Typography
           onClick={(val) => {
             setExpanded(!expanded);
           }}
+          variant="body2"
+          fontStyle={"italic"}
+          sx={{ textDecoration: "underline", cursor: "pointer" }}
         >
-          <UI.IconButton aria-label="show" size="large">
-            {expanded ? <RiArrowUpSFill /> : <IoMdArrowDropdown />}
-          </UI.IconButton>
-        </UI.Box>
-      </UI.HStack>
+          Tìm kiếm nâng cao
+        </UI.Typography>
+      </UI.CKBox>
       <Collapse in={expanded}>
-        <BaseForm
-          templateColumns="repeat(12, 1fr)"
-          columnGap="24px"
-          watchFields={[
-            "phone",
-            "email",
-            "trang_thai_key",
-            "tien_trinh_key",
-            "nhan_vien_nhap",
-          ]}
-          onWatchChange={onWatchChange}
-          fields={[
-            {
-              name: "phone",
-              label: "Phone",
-              type: "input",
-              colSpan: 3,
-              placeholder: "Nhập phone",
-            },
-            {
-              name: "email",
-              label: "Email",
-              type: "input",
-              colSpan: 3,
-              placeholder: "Nhập email",
-            },
-            {
-              name: "trang_thai_key",
-              label: "Trạng thái",
-              type: "autocomplete",
-              colSpan: 2,
-              isLoading: isLoadingTrangThai || isFetchingTrangThai,
-              autocompleteOptions: trangThaiData,
-              onSearchChange: handleSearchTrangThai,
-              placeholder: "Tất cả",
-            },
-            {
-              name: "tien_trinh_key",
-              label: "Tiến trình",
-              type: "autocomplete",
-              colSpan: 2,
-              isLoading: isLoadingTienTrinh || isFetchingTienTrinh,
-              autocompleteOptions: tienTrinhData,
-              onSearchChange: handleSearchTienTrinh,
-              placeholder: "Tất cả",
-            },
-            {
-              name: "nhan_vien_nhap",
-              label: "Nhân viên nhập",
-              type: "autocomplete",
-              colSpan: 2,
-              autocompleteOptions: nhanVienData,
-              isLoading: isLoadingNhanVien || isFetchingNhanVien,
-              onSearchChange: handleSearchNhanVien,
-              placeholder: "Tất cả",
-            },
-          ]}
-        ></BaseForm>
+        <UI.CKBox sx={{ paddingX: "14px", paddingTop: "8px" }}>
+          <BaseForm
+            templateColumns="repeat(12, 1fr)"
+            columnGap="24px"
+            watchFields={[
+              "phone",
+              "email",
+              "trang_thai_key",
+              "tien_trinh_key",
+              "nhan_vien_nhap",
+            ]}
+            onWatchChange={onWatchChange}
+            fields={[
+              {
+                name: "phone",
+                label: "Phone",
+                type: "input",
+                colSpan: 3,
+                placeholder: "Nhập phone",
+                size: "small",
+              },
+              {
+                name: "email",
+                label: "Email",
+                type: "input",
+                colSpan: 3,
+                placeholder: "Nhập email",
+                size: "small",
+              },
+              {
+                name: "trang_thai_key",
+                label: "Trạng thái",
+                type: "autocomplete",
+                colSpan: 2,
+                isLoading: isLoadingTrangThai || isFetchingTrangThai,
+                autocompleteOptions: trangThaiData,
+                onSearchChange: handleSearchTrangThai,
+                placeholder: "Tất cả",
+                size: "small",
+              },
+              {
+                name: "tien_trinh_key",
+                label: "Tiến trình",
+                type: "autocomplete",
+                colSpan: 2,
+                isLoading: isLoadingTienTrinh || isFetchingTienTrinh,
+                autocompleteOptions: tienTrinhData,
+                onSearchChange: handleSearchTienTrinh,
+                placeholder: "Tất cả",
+                size: "small",
+              },
+              {
+                name: "nhan_vien_nhap",
+                label: "Nhân viên nhập",
+                type: "autocomplete",
+                colSpan: 2,
+                autocompleteOptions: nhanVienData,
+                isLoading: isLoadingNhanVien || isFetchingNhanVien,
+                onSearchChange: handleSearchNhanVien,
+                placeholder: "Tất cả",
+                size: "small",
+              },
+            ]}
+          ></BaseForm>
+        </UI.CKBox>
       </Collapse>
     </UI.Stack>
   );

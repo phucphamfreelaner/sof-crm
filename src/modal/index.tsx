@@ -1,17 +1,17 @@
 import React from "react";
-import BottomWindow from "@/components/BottomWindow";
+import DrawerBottom from "@/components/DrawerBottom";
 import { useAppSelector, useAppDispatch } from "@/store";
 import { closeModalBottom } from "@/store/modal";
 
 function ModalProvider(props: any) {
   const dispatch = useAppDispatch();
   const modalsBottom = useAppSelector((s) => s.modal.modalsBottom);
+  const isShowBottomDraw = useAppSelector((s) => s.modal.isShow);
   return (
     <>
-      {props?.children}
-      <BottomWindow
-        onCloseWindow={(id) => dispatch(closeModalBottom({ id }))}
-        modals={modalsBottom}
+      <DrawerBottom
+        modalsBottom={modalsBottom}
+        composeOpen={isShowBottomDraw}
       />
     </>
   );

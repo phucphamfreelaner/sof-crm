@@ -115,6 +115,8 @@ function BaseTable(props: IBaseTable) {
         onPageChange={onPageChange}
         onSortModelChange={onSortChange}
         checkboxSelection
+        rowHeight={45}
+        headerHeight={42}
         components={{
           Toolbar: () => (
             <CustomToolbar>
@@ -133,6 +135,10 @@ function BaseTable(props: IBaseTable) {
           },
           ".MuiDataGrid-cell": {
             borderBottom: "1px solid #eeeef9",
+          },
+          ".MuiDataGrid-footerContainer": {
+            height: "42px",
+            minHeight: "42px",
           },
         }}
         columns={columns}

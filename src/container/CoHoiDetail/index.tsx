@@ -22,7 +22,7 @@ import {
 import { FiExternalLink } from "react-icons/fi";
 
 import { useAppDispatch } from "@/store";
-import { openModalBottom } from "@/store/modal";
+import { openModalBottom, closeModalBottom } from "@/store/modal";
 import { useLazyGetKhachHangByIdQuery } from "@/store/khachHang";
 import { useLazyGetSoLuongByValueQuery } from "@/store/soLuong";
 import { useLazyGetTienTrinhByKeyQuery } from "@/store/tienTrinh";
@@ -33,9 +33,9 @@ import DetailInfo from "@/components/DetailInfo";
 import BasicDetails from "@/components/BasicDetails";
 import CoHoiNew from "@/container/CoHoiForm";
 import RichText from "@/components/RichText";
-import Comment from "@/components/Comment";
 import SendEmailForm from "@/container/SendEmailForm";
 import { ICoHoi } from "@/types/coHoi";
+import SendSmsForm from "../SendSmsForm";
 
 interface ICoHoiDetail {
   coHoiData: ICoHoi;
@@ -102,14 +102,21 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
               openModalBottom({
                 data: {
                   title: "Thêm cơ hội mới",
-                  height: "620px",
+                  height: "800px",
                   width: "500px",
                   id: `co-hoi-${id}`,
-                  content: (
-                    <UI.CKBox px={spacing(3)} py={spacing(3.5)}>
-                      <CoHoiNew customerId={coHoiData?.customer_id} />
-                    </UI.CKBox>
-                  ),
+                  // onClose: (id) => {
+                  //   dispatch(closeModalBottom({ id }));
+                  // },
+                  // content: (
+                  //   <UI.CKBox px={spacing(2)} py={spacing(2.5)}>
+                  //     <CoHoiNew
+                  //       gap="14px"
+                  //       size="small"
+                  //       customerId={coHoiData?.customer_id}
+                  //     />
+                  //   </UI.CKBox>
+                  // ),
                 },
               })
             );
@@ -133,10 +140,16 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
                   title: "Gửi email",
                   height: "620px",
                   width: "700px",
-                  id: `co-hoi-${id}`,
+                  id: `email-${id}`,
+                  onClose: (id) => {
+                    dispatch(closeModalBottom({ id }));
+                  },
                   content: (
                     <UI.CKBox px={spacing(3)} py={spacing(3.5)}>
-                      <SendEmailForm customerId={coHoiData?.customer_id} />
+                      <SendEmailForm
+                        customerId={coHoiData?.customer_id}
+                        modalId={`gui-mail-${id}`}
+                      />
                     </UI.CKBox>
                   ),
                 },
@@ -148,7 +161,28 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
           icon: <AiOutlineMessage />,
           label: "Gửi SMS",
           onClick: () => {
-            console.log("data");
+            const id = uniqueId();
+            dispatch(
+              openModalBottom({
+                data: {
+                  title: "Gửi sms",
+                  height: "620px",
+                  width: "700px",
+                  id: `gui-sms-${id}`,
+                  onClose: (id) => {
+                    dispatch(closeModalBottom({ id }));
+                  },
+                  content: (
+                    <UI.CKBox px={spacing(3)} py={spacing(3.5)}>
+                      <SendSmsForm
+                        customerId={coHoiData?.customer_id}
+                        modalId={`gui-sms-${id}`}
+                      />
+                    </UI.CKBox>
+                  ),
+                },
+              })
+            );
           },
         },
         {
