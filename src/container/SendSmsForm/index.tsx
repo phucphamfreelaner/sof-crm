@@ -9,7 +9,6 @@ import {
   useLazySendMailTemplateQuery,
   useLazyViewMailTemplateQuery,
 } from "@/store/mailTemplates";
-import Loading from "@/components/Loading";
 
 interface ISendMailContainer {
   customerId?: string | number;
@@ -32,12 +31,8 @@ const SendMailContainer = (props: ISendMailContainer) => {
   ] = useLazyViewMailTemplateQuery();
 
   const [
-    sendEmailTemplate,
-    {
-      isLoading: isLoadingSendEmail,
-      isFetching: isFetchingSendEmal,
-      isSuccess: isSuccessSendMailTemplate,
-    },
+    sendSmsTemplate,
+    { data: dataSendSmsTemplate, isSuccess: isSuccessSendMailTemplate },
   ] = useLazySendMailTemplateQuery();
 
   useEffect(() => {
@@ -48,23 +43,20 @@ const SendMailContainer = (props: ISendMailContainer) => {
       });
   }, []);
 
-  useEffect(() => {}, [customerId]);
-
-  const hanleSendEmail = (data) => {
+  const hanleSendSms = (data) => {
     const payload = {
       ...data,
-
       template_id: data?.template_id?.value,
       customer_id: customerId,
     };
-    sendEmailTemplate({ customerId, payload });
+    sendSmsTemplate({ customerId, payload });
   };
 
   useEffect(() => {
-    if (isSuccessSendMailTemplate) {
-      toast.success("Gửi email thành công");
+    if (isSuccessSendMailTemplate && dataSendSmsTemplate) {
+      toast.success("Gửi sms thành công");
     }
-  }, [isSuccessSendMailTemplate]);
+  }, [isSuccessSendMailTemplate, dataSendSmsTemplate]);
 
   return (
     <BaseForm
@@ -73,8 +65,8 @@ const SendMailContainer = (props: ISendMailContainer) => {
       templateColumns="repeat(6,1fr)"
       defaultValues={defaultValues}
       schema={{
-        from: Yup.string().required("Email gửi không được để trống"),
-        email: Yup.string().required("Email nhận không được để trống"),
+        from: Yup.string().required("Sms gửi không được để trống"),
+        sms: Yup.string().required("Sms nhận không được để trống"),
         title: Yup.string().required("Tiêu đề không được để trống"),
         content: Yup.string().required("Nội dung không được để trống"),
       }}
@@ -87,27 +79,30 @@ const SendMailContainer = (props: ISendMailContainer) => {
             .unwrap()
             .then((res) => {
               setDefaultValues((prevState) => ({
-                ...res,
                 template_id: template_state,
+                content: res?.content,
+                title: res?.title,
+                from: res?.from,
+                sms: res?.from,
               }));
             });
         }
       }}
       onSubmit={(data) => {
-        hanleSendEmail(data);
+        hanleSendSms(data);
       }}
       fields={[
         {
           name: "from",
           type: "input",
-          label: "Email gửi",
+          label: "Sms gửi",
           colSpan: 3,
           size: "small",
         },
         {
-          name: "email",
+          name: "sms",
           type: "input",
-          label: "Email nhận",
+          label: "Sms nhận",
           colSpan: 3,
           size: "small",
         },
@@ -142,7 +137,7 @@ const SendMailContainer = (props: ISendMailContainer) => {
       childrenSx={{ justifyContent: "flex-end", display: "flex" }}
     >
       <UI.LoadingButton
-        loading={isLoadingSendEmail || isFetchingSendEmal}
+        //loading={isLoadingCreate || isLoadingUpdate}
         loadingPosition="end"
         endIcon={<FaSave />}
         variant="outlined"
