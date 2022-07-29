@@ -16,7 +16,9 @@ interface IBottomWindow {
 function BottomWindow(props: IBottomWindow) {
   const { modals, onCloseWindow } = props;
 
-  return isEmpty(modals) ? null : (
+  return isEmpty(modals) ? (
+    <></>
+  ) : (
     <UI.HStack
       alignItems="flex-end"
       p={10}
@@ -26,7 +28,7 @@ function BottomWindow(props: IBottomWindow) {
       right={0}
       sx={{ transition: "0.3s" }}
     >
-      {modals.map((x) => (
+      {modals?.map?.((x) => (
         <CardItem onCloseWindow={onCloseWindow} data={x} key={x.id} />
       ))}
     </UI.HStack>
