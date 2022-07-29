@@ -35,6 +35,8 @@ import { modalSlice } from "./modal";
 import { lichHenService } from "./lichHen";
 import { nhiemVuService } from "./nhiemVu";
 import { mailTemplatesService } from "./mailTemplates";
+import { logService } from "./logs";
+
 // @ts-ignore
 const store: any = configureStore({
   reducer: combineReducers({
@@ -68,6 +70,7 @@ const store: any = configureStore({
     [lichHenService.reducerPath]: lichHenService.reducer,
     [nhiemVuService.reducerPath]: nhiemVuService.reducer,
     [mailTemplatesService.reducerPath]: mailTemplatesService.reducer,
+    [logService.reducerPath]: logService.reducer,
   }),
   devTools: true,
 });
