@@ -14,40 +14,36 @@ function CoHoiList() {
   const handleFilterChange = debounce(setFilter, 500);
 
   return (
-    <UI.Box sx={{ p: 3 }}>
-      <UI.Grid
-        sx={{ mb: 4 }}
-        container
-        justifyContent="space-between"
-        spacing={3}
-      >
+    <UI.Box sx={{ px: 3 }}>
+      <UI.Grid sx={{ mb: 1 }} container justifyContent="space-between">
         <UI.Grid item>
           <UI.Typography variant="h4">Cơ Hội</UI.Typography>
         </UI.Grid>
       </UI.Grid>
 
       <UI.Card>
-        <UI.Divider />
-        <UI.CardContent>
-          <CoHoiFilter
-            key={key}
-            onReload={() => {
-              setFilter(null);
-              setKey((s) => s + 1);
-            }}
-            onWatchChange={(filterData) => {
-              handleFilterChange({
-                name: filterData?.name,
-                code: filterData?.code,
-                customer_id: filterData?.customer_id?.value,
-                phone: filterData?.phone,
-                email: filterData?.email,
-                trang_thai_key: filterData?.trang_thai_key?.value,
-                tien_trinh_key: filterData?.tien_trinh_key?.value,
-                nhan_vien_nhap: filterData?.nhan_vien_nhap?.value,
-              });
-            }}
-          />
+        <UI.Box>
+          <UI.CKBox paddingTop="26px" paddingX="24px">
+            <CoHoiFilter
+              key={key}
+              onReload={() => {
+                setFilter(null);
+                setKey((s) => s + 1);
+              }}
+              onWatchChange={(filterData) => {
+                handleFilterChange({
+                  name: filterData?.name,
+                  code: filterData?.code,
+                  customer_id: filterData?.customer_id?.value,
+                  phone: filterData?.phone,
+                  email: filterData?.email,
+                  trang_thai_key: filterData?.trang_thai_key?.value,
+                  tien_trinh_key: filterData?.tien_trinh_key?.value,
+                  nhan_vien_nhap: filterData?.nhan_vien_nhap?.value,
+                });
+              }}
+            />
+          </UI.CKBox>
           <CoHoiTable
             onSortChange={(orderBy) => {
               setFilter((filter) => ({ ...filter, ...orderBy }));
@@ -55,7 +51,7 @@ function CoHoiList() {
             isShowKhachHangLink
             filter={filter}
           />
-        </UI.CardContent>
+        </UI.Box>
       </UI.Card>
     </UI.Box>
   );

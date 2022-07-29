@@ -55,6 +55,7 @@ function CoHoiTable(props: ICoHoiTable) {
       onSortChange={(mode) => {
         onSortChange({ order_by: { [mode?.[0].field]: mode?.[0]?.sort } });
       }}
+      height="calc(100vh - 270px)"
       toolbarAction={({ setSelectionModel }) => (
         <UI.HStack>
           {/* <UI.Button
