@@ -21,6 +21,7 @@ import { useGetNhiemVuCohoiQuery } from "@/store/nhiemVu";
 
 interface IBaseDetail {
   id?: any;
+  customerId?: any;
   isLoading?: boolean;
   children?: React.ReactNode;
   headerTitle?: string;
@@ -43,6 +44,7 @@ interface IBaseDetail {
 function BaseDetail(props: IBaseDetail) {
   const {
     id,
+    customerId,
     headerBreadcrumbs,
     onSendMessage,
     onAddNoted,
@@ -212,10 +214,21 @@ function BaseDetail(props: IBaseDetail) {
             </UI.HStack>
           </UI.Tabs>
           <TabPanel value={value} index={0}>
-            <GuiTinForm onSendMessage={onSendMessage} />
+            <GhiChuForm
+              onAddNoted={onAddNoted}
+              customerId={customerId}
+              coHoiId={id}
+              onCancel={() => setValue(-1)}
+            />
+            {/* <GuiTinForm onSendMessage={onSendMessage} /> */}
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <GhiChuForm onAddNoted={onAddNoted} />
+            <GhiChuForm
+              onAddNoted={onAddNoted}
+              customerId={customerId}
+              coHoiId={id}
+              onCancel={() => setValue(-1)}
+            />
           </TabPanel>
           <TabPanel value={value} index={2}>
             <CongViecForm

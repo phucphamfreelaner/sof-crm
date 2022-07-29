@@ -34,6 +34,7 @@ import { loaiHdService } from "./loaiHd";
 import { modalSlice } from "./modal";
 import { lichHenService } from "./lichHen";
 import { nhiemVuService } from "./nhiemVu";
+import { coHoiCSKHService } from "./coHoiCSKH";
 import { mailTemplatesService } from "./mailTemplates";
 import { activityLogsService } from "./activityLogs";
 
@@ -69,6 +70,7 @@ const store: any = configureStore({
     [loaiHdService.reducerPath]: loaiHdService.reducer,
     [lichHenService.reducerPath]: lichHenService.reducer,
     [nhiemVuService.reducerPath]: nhiemVuService.reducer,
+    [coHoiCSKHService.reducerPath]: coHoiCSKHService.reducer,
     [mailTemplatesService.reducerPath]: mailTemplatesService.reducer,
     [activityLogsService.reducerPath]: activityLogsService.reducer,
   }),

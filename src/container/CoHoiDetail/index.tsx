@@ -35,9 +35,10 @@ import CoHoiNew from "@/container/CoHoiForm";
 import RichText from "@/components/RichText";
 import Comment from "@/components/Comment";
 import SendEmailForm from "@/container/SendEmailForm";
+import { ICoHoi } from "@/types/coHoi";
 
 interface ICoHoiDetail {
-  coHoiData: any;
+  coHoiData: ICoHoi;
   isLoadingCoHoi: boolean;
   reloadCoHoi: () => any;
 }
@@ -77,7 +78,7 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
   return (
     <BaseDetail
       id={coHoiData?.id}
-      userId={coHoiData?.customer_id}
+      customerId={coHoiData?.customer_id}
       isLoading={isLoadingCoHoi}
       isEdit={isEdit}
       openEdit={setEdit.setTrue}
