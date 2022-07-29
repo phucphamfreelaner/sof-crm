@@ -28,8 +28,12 @@ function BottomWindow(props: IBottomWindow) {
       right={0}
       sx={{ transition: "0.3s" }}
     >
-      {modals?.map?.((x) => (
-        <CardItem onCloseWindow={onCloseWindow} data={x} key={x.id} />
+      {modals?.map?.((x, index) => (
+        <CardItem
+          onCloseWindow={onCloseWindow}
+          data={x}
+          key={x?.id + index * 10}
+        />
       ))}
     </UI.HStack>
   );

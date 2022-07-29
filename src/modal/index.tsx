@@ -8,7 +8,6 @@ function ModalProvider(props: any) {
   const modalsBottom = useAppSelector((s) => s.modal.modalsBottom);
   return (
     <>
-      {props?.children}
       <BottomWindow
         onCloseWindow={(id) => dispatch(closeModalBottom({ id }))}
         modals={modalsBottom}
