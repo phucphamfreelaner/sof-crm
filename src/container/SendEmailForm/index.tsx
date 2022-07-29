@@ -9,20 +9,22 @@ import {
   useLazySendMailTemplateQuery,
   useLazyViewMailTemplateQuery,
 } from "@/store/mailTemplates";
-import Loading from "@/components/Loading";
-
+import { useAppDispatch } from "@/store";
+import { closeModalBottom } from "@/store/modal";
 interface ISendMailContainer {
   customerId?: string | number;
   onAfterUpdated?: (data: any) => any;
   defaultValues?: any;
+  modalId?: string;
 }
 
 const SendMailContainer = (props: ISendMailContainer) => {
-  const { customerId } = props;
+  const { customerId, modalId: id } = props;
 
   const theme = UI.useTheme();
   const [searchMailTemplate, { data, isLoading, isFetching, isSuccess }] =
     useLazySearchmailTemplatesQuery();
+  const dispatch = useAppDispatch();
 
   const [defaultValues, setDefaultValues] = useState(null);
 
@@ -63,6 +65,7 @@ const SendMailContainer = (props: ISendMailContainer) => {
   useEffect(() => {
     if (isSuccessSendMailTemplate) {
       toast.success("Gửi email thành công");
+      dispatch(closeModalBottom({ id }));
     }
   }, [isSuccessSendMailTemplate]);
 

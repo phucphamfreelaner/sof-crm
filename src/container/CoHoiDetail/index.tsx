@@ -22,7 +22,7 @@ import {
 import { FiExternalLink } from "react-icons/fi";
 
 import { useAppDispatch } from "@/store";
-import { openModalBottom } from "@/store/modal";
+import { closeModalBottom, openModalBottom } from "@/store/modal";
 import { useLazyGetKhachHangByIdQuery } from "@/store/khachHang";
 import { useLazyGetSoLuongByValueQuery } from "@/store/soLuong";
 import { useLazyGetTienTrinhByKeyQuery } from "@/store/tienTrinh";
@@ -134,10 +134,13 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
                   title: "Gửi email",
                   height: "620px",
                   width: "700px",
-                  id: `co-hoi-${id}`,
+                  id: `gui-mail-${id}`,
                   content: (
                     <UI.CKBox px={spacing(3)} py={spacing(3.5)}>
-                      <SendEmailForm customerId={coHoiData?.customer_id} />
+                      <SendEmailForm
+                        customerId={coHoiData?.customer_id}
+                        modalId={`gui-mail-${id}`}
+                      />
                     </UI.CKBox>
                   ),
                 },
@@ -156,10 +159,13 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
                   title: "Gửi sms",
                   height: "620px",
                   width: "700px",
-                  id: `co-hoi-${id}`,
+                  id: `gui-sms-${id}`,
                   content: (
                     <UI.CKBox px={spacing(3)} py={spacing(3.5)}>
-                      <SendSmsForm customerId={coHoiData?.customer_id} />
+                      <SendSmsForm
+                        customerId={coHoiData?.customer_id}
+                        modalId={`gui-sms-${id}`}
+                      />
                     </UI.CKBox>
                   ),
                 },

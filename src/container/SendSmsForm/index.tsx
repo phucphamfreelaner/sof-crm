@@ -9,15 +9,18 @@ import {
   useLazySendSmsTemplateQuery,
   useLazyViewSmsTemplateQuery,
 } from "@/store/smsTemplates";
+import { useAppDispatch } from "@/store";
+import { closeModalBottom, openModalBottom } from "@/store/modal";
 
 interface ISendSmsContainer {
   customerId?: string | number;
-  onAfterUpdated?: (data: any) => any;
+  modalId?: string;
+  onAfterUpdated?: () => any;
   defaultValues?: any;
 }
 
 const SendSmsContainer = (props: ISendSmsContainer) => {
-  const { customerId } = props;
+  const { customerId, modalId: id } = props;
 
   const theme = UI.useTheme();
   const [searchSmsTemplate, { data, isLoading, isFetching, isSuccess }] =
@@ -53,10 +56,12 @@ const SendSmsContainer = (props: ISendSmsContainer) => {
     };
     sendSmsTemplate({ customerId, payload });
   };
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (isSuccessSendSmsTemplate) {
       toast.success("Gửi sms thành công");
+      dispatch(closeModalBottom({ id }));
     }
   }, [isSuccessSendSmsTemplate]);
 
