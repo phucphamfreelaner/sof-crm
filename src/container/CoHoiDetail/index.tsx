@@ -105,18 +105,18 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
                   height: "800px",
                   width: "500px",
                   id: `co-hoi-${id}`,
-                  onClose: (id) => {
-                    dispatch(closeModalBottom({ id }));
-                  },
-                  content: (
-                    <UI.CKBox px={spacing(2)} py={spacing(2.5)}>
-                      <CoHoiNew
-                        gap="14px"
-                        size="small"
-                        customerId={coHoiData?.customer_id}
-                      />
-                    </UI.CKBox>
-                  ),
+                  // onClose: (id) => {
+                  //   dispatch(closeModalBottom({ id }));
+                  // },
+                  // content: (
+                  //   <UI.CKBox px={spacing(2)} py={spacing(2.5)}>
+                  //     <CoHoiNew
+                  //       gap="14px"
+                  //       size="small"
+                  //       customerId={coHoiData?.customer_id}
+                  //     />
+                  //   </UI.CKBox>
+                  // ),
                 },
               })
             );
