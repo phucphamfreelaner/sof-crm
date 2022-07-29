@@ -15,11 +15,13 @@ interface ISendMailContainer {
   customerId?: string | number;
   onAfterUpdated?: (data: any) => any;
   defaultValues?: any;
-  modalId?: string;
+  modalId?: any;
+  gap?: string;
+  size?: "medium" | "small";
 }
 
 const SendMailContainer = (props: ISendMailContainer) => {
-  const { customerId, modalId: id } = props;
+  const { customerId, modalId: id, gap, size } = props;
 
   const theme = UI.useTheme();
   const [searchMailTemplate, { data, isLoading, isFetching, isSuccess }] =
@@ -72,7 +74,7 @@ const SendMailContainer = (props: ISendMailContainer) => {
   return (
     <BaseForm
       key={JSON.stringify(defaultValues)}
-      gap={theme.spacing(4)}
+      gap={gap || theme.spacing(4)}
       templateColumns="repeat(6,1fr)"
       defaultValues={defaultValues}
       schema={{
@@ -105,21 +107,21 @@ const SendMailContainer = (props: ISendMailContainer) => {
           type: "input",
           label: "Email gửi",
           colSpan: 3,
-          size: "small",
+          size,
         },
         {
           name: "email",
           type: "input",
           label: "Email nhận",
           colSpan: 3,
-          size: "small",
+          size,
         },
         {
           name: "title",
           type: "input",
           label: "Tiêu đề",
           colSpan: 6,
-          size: "small",
+          size,
         },
         {
           name: "template_id",
@@ -131,7 +133,7 @@ const SendMailContainer = (props: ISendMailContainer) => {
             searchMailTemplate({ search: { ten: text } });
           },
           colSpan: 6,
-          size: "small",
+          size,
         },
         {
           name: "content",

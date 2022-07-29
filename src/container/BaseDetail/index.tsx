@@ -301,11 +301,7 @@ function BaseDetail(props: IBaseDetail) {
                   isLoadingListCoHoiCSKH || isFetchingListCoHoiCSKH
                 }
                 refetchListCoHoiCSKH={refetchListCoHoiCSKH}
-                // onEditCoHoiCSKH={async (data) => {
-                //   setValue(1);
-                // }}
               />
-              {/* <HistoryLogs userId={userId} /> */}
             </UI.CKBox>
           </UI.CardContent>
         </UI.Card>

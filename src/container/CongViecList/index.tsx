@@ -130,7 +130,7 @@ function CongViecList(props: INhiemVuList) {
                 listNhiemVuData?.map((x: any) => {
                   return (
                     <UI.VStack key={x?.id} mb={"10px"}>
-                      <UI.HStack justifyContent={"flex-start"}>
+                      <UI.HStack alignItems={"flex-start"}>
                         <UI.Avatar
                           sx={{
                             height: 32,

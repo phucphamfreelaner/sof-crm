@@ -1,7 +1,9 @@
 import React from "react";
 import * as UI from "@/libs/ui";
-import { MdClose } from "react-icons/md";
 import WindowPopup from "@/components/WindowPopup";
+import { closeModalBottom } from "@/store/modal";
+import { useAppDispatch } from "@/store";
+
 interface IDrawerBottom {
   composeOpen?: boolean;
   toggleComposeOpen?: () => any;
@@ -14,15 +16,8 @@ interface IDrawerBottom {
 }
 
 function DrawerBottom(props: IDrawerBottom) {
-  const {
-    composeOpen,
-    toggleComposeOpen,
-    modalsBottom,
-    handleMinimize,
-    handlePopupClose,
-    title,
-    children,
-  } = props;
+  const dispatch = useAppDispatch();
+  const { composeOpen, toggleComposeOpen, modalsBottom } = props;
   return (
     <UI.Drawer
       hideBackdrop
@@ -57,15 +52,12 @@ function DrawerBottom(props: IDrawerBottom) {
       >
         {modalsBottom?.map?.((modal) => (
           <WindowPopup
-            id={modal?.id}
-            width={modal?.width}
-            height={modal?.height}
+            onClose={(id) => {
+              dispatch(closeModalBottom({ id }));
+            }}
             key={modal?.id}
-            title={modal?.title}
-            onClose={modal?.onClose}
-          >
-            {modal?.content}
-          </WindowPopup>
+            {...modal}
+          />
         ))}
       </UI.HStack>
     </UI.Drawer>

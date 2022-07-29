@@ -29,7 +29,6 @@ interface INhiemVuForm {
 function NhiemVuForm(props: INhiemVuForm) {
   const { nhiemVuData, id, cohoi_id, isSuccess, refetchListNhiemVu, onCancel } =
     props;
-  const navigate = useNavigate();
 
   const [
     searchLoaiNhiemVu,
@@ -206,7 +205,7 @@ function NhiemVuForm(props: INhiemVuForm) {
         )}
       </UI.CardContent>
       <UI.CardActions sx={{ justifyContent: "flex-end", paddingTop: 0 }}>
-        <UI.Button onClick={onCancel} color="inherit">
+        <UI.Button size="small" onClick={onCancel} color="inherit">
           Cancel
         </UI.Button>
         <LoadingButton

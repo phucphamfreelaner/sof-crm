@@ -80,7 +80,7 @@ function CoHoiCSKHList(props: ICoHoiCSKHList) {
       {isLoadingListCoHoiCSKH ? (
         <Loading />
       ) : (
-        <UI.VStack alignItems={"start"} mt={2}>
+        <UI.VStack w="100%" alignItems={"start"} mt={2}>
           <UI.HStack
             spacing={"4px"}
             alignItems="center"
@@ -107,13 +107,18 @@ function CoHoiCSKHList(props: ICoHoiCSKHList) {
               )}
             </UI.IconButton>
           </UI.HStack>
-          <UI.Collapse in={isOpen}>
-            <UI.VStack alignItems={"start"}>
+          <UI.Collapse sx={{ width: "100%" }} in={isOpen}>
+            <UI.VStack w="100%" alignItems={"start"}>
               {listCoHoiCSKHData &&
                 listCoHoiCSKHData?.map((x: any) => {
                   return (
-                    <UI.VStack key={x?.id} mb={"10px"}>
-                      <UI.HStack justifyContent={"flex-start"}>
+                    <UI.VStack
+                      alignItems="flex-start"
+                      w="100%"
+                      key={x?.id}
+                      mb={"10px"}
+                    >
+                      <UI.HStack w="100%" alignItems={"flex-start"}>
                         <UI.Avatar
                           sx={{
                             height: 32,
@@ -123,38 +128,26 @@ function CoHoiCSKHList(props: ICoHoiCSKHList) {
                           }}
                           src=""
                         >
-                          {"A"}
+                          AD
                         </UI.Avatar>
-                        <UI.Box>
-                          <UI.HStack>
-                            <div
+                        <UI.HStack justifyContent="space-between" w="100%">
+                          <UI.CKBox>
+                            <UI.CKBox>{getDiffTime(x?.created_at)} </UI.CKBox>
+                            <UI.CKBox
+                              sx={{ p: { padding: 0, margin: 0 } }}
                               dangerouslySetInnerHTML={{ __html: x?.noi_dung }}
-                            ></div>
-                          </UI.HStack>
-                          <UI.HStack>{getDiffTime(x?.created_at)} </UI.HStack>
-                          <UI.HStack>
-                            {/* <UI.IconButton
-                              size={"small"}
-                              sx={{ cursor: "pointer" }}
-                              onClick={() => onEditCoHoiCSKH(x)}
-                            >
-                              <RiPencilFill />
-                              <UI.Typography ml={1} variant="subtitle2">
-                                Sửa
-                              </UI.Typography>
-                            </UI.IconButton> */}
-                            <UI.IconButton
-                              size={"small"}
-                              sx={{ cursor: "pointer" }}
-                              onClick={() => handleXoaCoHoiCSKH(x)}
-                            >
-                              <MdOutlineCancel />
-                              <UI.Typography ml={1} variant="subtitle2">
-                                Xoá
-                              </UI.Typography>
-                            </UI.IconButton>
-                          </UI.HStack>
-                        </UI.Box>
+                            ></UI.CKBox>
+                          </UI.CKBox>
+
+                          <UI.Button
+                            size={"small"}
+                            sx={{ cursor: "pointer" }}
+                            onClick={() => handleXoaCoHoiCSKH(x)}
+                            startIcon={<MdOutlineCancel />}
+                          >
+                            Xoá
+                          </UI.Button>
+                        </UI.HStack>
                       </UI.HStack>
                     </UI.VStack>
                   );

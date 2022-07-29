@@ -56,7 +56,7 @@ function GhiChuForm(props: IGhiChuForm) {
       {!isSuccess ? (
         <Loading />
       ) : (
-        <UI.Box>
+        <UI.CKBox position="relative">
           <Comment
             defaultValue={defaultValue}
             label=""
@@ -64,14 +64,7 @@ function GhiChuForm(props: IGhiChuForm) {
               handleCreateCoHoiCSKH(data);
             }}
           />
-          <UI.CardActions
-            sx={{ justifyContent: "flex-end", paddingTop: 1, paddingRight: 0 }}
-          >
-            <UI.Button onClick={onCancel} color="inherit">
-              Cancel
-            </UI.Button>
-          </UI.CardActions>
-        </UI.Box>
+        </UI.CKBox>
       )}
     </UI.CKBox>
   );

@@ -67,7 +67,7 @@ function Comment(props: ILongText) {
           plugins: ["autolink", "link", "fullscreen", "emoticons"],
           toolbar: "link emoticons | sendButton",
           content_style:
-            "body { font-family:Helvetica,Arial,sans-serif; font-size:14px; line-height:0.3rem}",
+            "body { font-family:Helvetica,Arial,sans-serif; font-size:14px;}",
           toolbar_location: "bottom",
           toolbar_items_size: "small",
         }}

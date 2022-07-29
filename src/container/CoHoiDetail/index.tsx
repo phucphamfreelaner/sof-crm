@@ -33,7 +33,6 @@ import DetailInfo from "@/components/DetailInfo";
 import BasicDetails from "@/components/BasicDetails";
 import CoHoiNew from "@/container/CoHoiForm";
 import RichText from "@/components/RichText";
-import SendEmailForm from "@/container/SendEmailForm";
 import { ICoHoi } from "@/types/coHoi";
 import SendSmsForm from "../SendSmsForm";
 
@@ -48,7 +47,7 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
   const { coHoiData, isLoadingCoHoi, reloadCoHoi } = props;
   const [isEdit, setEdit] = useBoolean(false);
   const dispatch = useAppDispatch();
-  const { spacing, palette } = UI.useTheme();
+  const { palette } = UI.useTheme();
 
   const [updateCoHoi] = useUpdateCoHoiByIDMutation();
 
@@ -105,18 +104,8 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
                   height: "800px",
                   width: "500px",
                   id: `co-hoi-${id}`,
-                  // onClose: (id) => {
-                  //   dispatch(closeModalBottom({ id }));
-                  // },
-                  // content: (
-                  //   <UI.CKBox px={spacing(2)} py={spacing(2.5)}>
-                  //     <CoHoiNew
-                  //       gap="14px"
-                  //       size="small"
-                  //       customerId={coHoiData?.customer_id}
-                  //     />
-                  //   </UI.CKBox>
-                  // ),
+                  type: "co-hoi-new",
+                  customerId: coHoiData?.customer_id,
                 },
               })
             );
@@ -138,20 +127,11 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
               openModalBottom({
                 data: {
                   title: "Gửi email",
-                  height: "620px",
-                  width: "700px",
+                  height: "800px",
+                  width: "500px",
                   id: `email-${id}`,
-                  onClose: (id) => {
-                    dispatch(closeModalBottom({ id }));
-                  },
-                  content: (
-                    <UI.CKBox px={spacing(3)} py={spacing(3.5)}>
-                      <SendEmailForm
-                        customerId={coHoiData?.customer_id}
-                        modalId={`gui-mail-${id}`}
-                      />
-                    </UI.CKBox>
-                  ),
+                  type: "email-new",
+                  customerId: coHoiData?.customer_id,
                 },
               })
             );
@@ -167,19 +147,10 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
                 data: {
                   title: "Gửi sms",
                   height: "620px",
-                  width: "700px",
+                  width: "500px",
                   id: `gui-sms-${id}`,
-                  onClose: (id) => {
-                    dispatch(closeModalBottom({ id }));
-                  },
-                  content: (
-                    <UI.CKBox px={spacing(3)} py={spacing(3.5)}>
-                      <SendSmsForm
-                        customerId={coHoiData?.customer_id}
-                        modalId={`gui-sms-${id}`}
-                      />
-                    </UI.CKBox>
-                  ),
+                  type: "sms-new",
+                  customerId: coHoiData?.customer_id,
                 },
               })
             );
