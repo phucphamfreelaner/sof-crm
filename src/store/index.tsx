@@ -36,6 +36,8 @@ import { lichHenService } from "./lichHen";
 import { nhiemVuService } from "./nhiemVu";
 import { coHoiCSKHService } from "./coHoiCSKH";
 import { mailTemplatesService } from "./mailTemplates";
+import { activityLogsService } from "./activityLogs";
+
 // @ts-ignore
 const store: any = configureStore({
   reducer: combineReducers({
@@ -70,6 +72,7 @@ const store: any = configureStore({
     [nhiemVuService.reducerPath]: nhiemVuService.reducer,
     [coHoiCSKHService.reducerPath]: coHoiCSKHService.reducer,
     [mailTemplatesService.reducerPath]: mailTemplatesService.reducer,
+    [activityLogsService.reducerPath]: activityLogsService.reducer,
   }),
   devTools: true,
 });

@@ -1,5 +1,6 @@
 import React from "react";
 import * as UI from "@/libs/ui";
+import { isEmpty } from "lodash-es";
 
 import BaseDetailHeader from "@/components/BaseDetailHeader";
 import GuiTinForm from "@/container/GuiTinForm";
@@ -12,10 +13,11 @@ import {
   AiOutlineCalendar,
   AiOutlineFileDone,
 } from "react-icons/ai";
-import { isEmpty } from "lodash-es";
-import CongViecList from "../CongViecList";
+
+import CongViecList from "@/container/CongViecList";
+import HistoryLogs from "@/container/HistoryLogs";
+
 import { useGetNhiemVuCohoiQuery } from "@/store/nhiemVu";
-import { debounce } from "lodash";
 
 interface IBaseDetail {
   id?: any;
@@ -36,6 +38,7 @@ interface IBaseDetail {
   actionMenus?: { label: string; icon: React.ReactNode; onClick?: () => any }[];
   cuocHopCounter?: number;
   baoGiaCounter?: number;
+  userId?: string;
 }
 
 function BaseDetail(props: IBaseDetail) {
@@ -56,6 +59,7 @@ function BaseDetail(props: IBaseDetail) {
     isLoading,
     cuocHopCounter = 0,
     baoGiaCounter = 0,
+    userId,
   } = props;
   const { spacing, palette } = UI.useTheme();
 
@@ -240,15 +244,6 @@ function BaseDetail(props: IBaseDetail) {
               paddingBottom: "30px",
             }}
           >
-            <UI.Typography
-              gutterBottom
-              sx={{ fontWeight: 600, color: palette.text.secondary }}
-              variant="body1"
-              textAlign="center"
-            >
-              Hoạt động đã lên kế hoạch
-            </UI.Typography>
-
             <UI.CKBox overflow="auto">
               <CongViecList
                 listNhiemVuData={listNhiemVuData || []}
@@ -266,6 +261,7 @@ function BaseDetail(props: IBaseDetail) {
                   reloadCongViecForm();
                 }}
               />
+              <HistoryLogs userId={userId} />
             </UI.CKBox>
           </UI.CardContent>
         </UI.Card>
