@@ -34,13 +34,13 @@ function RichText(props: ILongText) {
       initialValue={defaultValue}
       apiKey="8wkmfe63h3pr6iwfenx4kaq3vcmwff0p260561zuu6sxhm6a"
       onBlur={() => {
-        onBlur(editorRef.current.getContent());
+        onBlur?.(editorRef.current.getContent());
       }}
       onFocus={() => {
-        onFocus(editorRef.current.getContent());
+        onFocus?.(editorRef.current.getContent());
       }}
       onChange={() => {
-        onChange(editorRef.current.getContent());
+        onChange?.(editorRef.current.getContent());
       }}
       disabled={isDisabled}
       init={{
