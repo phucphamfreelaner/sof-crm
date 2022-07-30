@@ -43,7 +43,7 @@ function CoHoiTable(props: ICoHoiTable) {
 
   return (
     <BaseTable
-      name="Báo giá"
+      name="Cơ hội"
       pageSize={limit || 15}
       onPageSizeChange={(pageSize) => pageSize && setLimit(pageSize)}
       onSelectedChange={setDataSelected}

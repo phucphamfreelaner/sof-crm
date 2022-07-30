@@ -61,6 +61,7 @@ function BaoGiaTable(props: IBaoGiaTable) {
       onSortChange={(mode) => {
         onSortChange({ order_by: { [mode?.[0].field]: mode?.[0]?.sort } });
       }}
+      height="calc(100vh - 220px)"
       toolbarAction={({ setSelectionModel }) => (
         <UI.HStack>
           {/* <UI.Button

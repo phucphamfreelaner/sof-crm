@@ -74,6 +74,7 @@ function BaoGiaFilter(props: IBaoGiaFilter) {
             autocompleteOptions: khachHangData,
             onSearchChange: handleSearchKhachHang,
             placeholder: "Tất cả",
+            size: "small",
           },
           {
             name: "code",
@@ -81,6 +82,7 @@ function BaoGiaFilter(props: IBaoGiaFilter) {
             type: "input",
             colSpan: 2,
             placeholder: "Nhập mã báo giá",
+            size: "small",
           },
 
           {
@@ -92,6 +94,7 @@ function BaoGiaFilter(props: IBaoGiaFilter) {
             isLoading: isLoadingLoaiTien || isFetchingLoaiTien,
             onSearchChange: handleSearchLoaiTien,
             placeholder: "Tất cả",
+            size: "small",
           },
           {
             name: "created_by",
@@ -102,6 +105,7 @@ function BaoGiaFilter(props: IBaoGiaFilter) {
             isLoading: isLoadingNhanVien || isFetchingNhanVien,
             onSearchChange: handleSearchNhanVien,
             placeholder: "Tất cả",
+            size: "small",
           },
         ]}
       ></BaseForm>

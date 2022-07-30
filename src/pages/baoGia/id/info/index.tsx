@@ -1,6 +1,6 @@
 import React from "react";
 import BaoGiaForm from "@/container/BaoGiaNew";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetBaoGiaByIdQuery } from "@/store/baoGia";
 
 import { useGetCoHoiByIdQuery } from "@/store/coHoi";
@@ -18,19 +18,28 @@ import {
 } from "@/store/loaiTien";
 import { useLazyGetCongTyByIdQuery } from "@/store/congTy";
 import { useLazyGetMauInByIdQuery } from "@/store/mauIn";
+import * as UI from "@/libs/ui";
 
 import DetailInfo from "@/components/DetailInfo";
 import BasicDetails from "@/components/BasicDetails";
 import BaseTableDense from "@/components/BaseTableDense";
 import { isEmpty } from "lodash-es";
+import { useBoolean } from "ahooks";
+import BaseDetail from "@/container/BaseDetailContainer";
+import RichText from "@/components/RichText";
 
 function Info() {
   const params = useParams();
-  const { data: baoGiaData, isSuccess: isSuccessBaoGia } =
-    useGetBaoGiaByIdQuery(
-      { id: params?.id },
-      { skip: !params?.id, refetchOnMountOrArgChange: true }
-    );
+  const [isEdit, setEdit] = useBoolean(false);
+
+  const {
+    data: baoGiaData,
+    isSuccess: isSuccessBaoGia,
+    isLoading: isLoadingBaoGia,
+  } = useGetBaoGiaByIdQuery(
+    { id: params?.id },
+    { skip: !params?.id, refetchOnMountOrArgChange: true }
+  );
 
   const { data: coHoiData, isSuccess: isSuccessCoHoi } = useGetCoHoiByIdQuery(
     { id: baoGiaData?.cohoi_id },
@@ -60,15 +69,42 @@ function Info() {
   const [getNgonNguByCode] = useLazyGetNgonNguByCodeQuery();
   const [getLoaiTienByKey] = useLazyGetLoaiTienByKeyQuery();
   const [getMauInById] = useLazyGetMauInByIdQuery();
+  const navigate = useNavigate();
+
+  const breadcrumbs = [
+    <UI.Typography
+      sx={{ cursor: "pointer", fontWeight: 600 }}
+      variant="body1"
+      key="1"
+      color="inherit"
+      onClick={() => navigate("/bao_gia")}
+    >
+      Báo giá
+    </UI.Typography>,
+    <UI.Typography
+      sx={{ cursor: "pointer", fontWeight: 600 }}
+      variant="body1"
+      key="3"
+      color="text.primary"
+    >
+      {coHoiData?.name}
+    </UI.Typography>,
+  ];
 
   return (
-    <DetailInfo
-      title={baoGiaData?.name}
-      id={params?.id}
+    <BaseDetail
+      id={coHoiData?.id}
+      customerId={coHoiData?.customer_id}
+      isLoading={isLoadingBaoGia}
+      isEdit={isEdit}
+      openEdit={setEdit.setTrue}
+      closeEdit={setEdit.setFalse}
+      headerTitle="Cơ hội"
+      headerBreadcrumbs={breadcrumbs}
       detailContent={
         <BasicDetails
-          sx={{ width: "90%", padding: "20px" }}
-          gap="10px"
+          sx={{ padding: "20px" }}
+          gap="20px"
           data={baoGiaData}
           labelWidth="120px"
           templateColumns="repeat(2, 1fr)"
@@ -82,16 +118,13 @@ function Info() {
               label: "Điều khoản",
             },
             {
-              property: "note",
-              label: "Ghi chú",
-            },
-            {
               property: "name",
               label: "Cơ hội",
             },
             {
               property: "company_id",
               label: "Công ty",
+              type: "render-async",
               getRowData: (id: string) =>
                 getCongTyById({ id })
                   .unwrap()
@@ -100,6 +133,7 @@ function Info() {
             {
               property: "loai_bao_gia_key",
               label: "Loại báo giá",
+              type: "render-async",
               getRowData: (value: string) =>
                 getLoaiBaoBiaByKey({ value })
                   .unwrap()
@@ -108,6 +142,7 @@ function Info() {
             {
               property: "ngon_ngu_key",
               label: "Ngôn ngữ",
+              type: "render-async",
               getRowData: (code: string) =>
                 getNgonNguByCode({ code })
                   .unwrap()
@@ -116,6 +151,7 @@ function Info() {
             {
               property: "loai_tien_key",
               label: "Loại tiền",
+              type: "render-async",
               getRowData: (value: string) =>
                 getLoaiTienByKey({ value })
                   .unwrap()
@@ -124,6 +160,7 @@ function Info() {
             {
               property: "template_id",
               label: "Mẫu",
+              type: "render-async",
               getRowData: (id: string) =>
                 getMauInById({ id })
                   .unwrap()
@@ -134,6 +171,7 @@ function Info() {
               label: "Sản phẩm",
               hiddenLabel: true,
               colSpan: 2,
+              type: "render",
               renderRow: (value: any) => {
                 return isEmpty(value) ? (
                   <div>Loading...</div>
@@ -171,24 +209,24 @@ function Info() {
                 );
               },
             },
+            {
+              property: "note",
+              label: "Ghi chú",
+              colSpan: 2,
+              type: "render",
+              hiddenLabel: true,
+              renderRow: (data) => {
+                return (
+                  <RichText
+                    defaultValue={data}
+                    label="Ghi chú báo giá"
+                    height={200}
+                    sx={{ marginTop: "20px" }}
+                  />
+                );
+              },
+            },
           ]}
-        />
-      }
-      editContent={
-        <BaoGiaForm
-          id={params?.id}
-          coHoiLabel={coHoiData?.name}
-          baoGiaData={baoGiaData}
-          loaiBaoGiaLabel={loaiBaoGiaData?.name}
-          ngonNguLabel={ngonNguData?.ten}
-          loaiTienLabel={loaiTienData?.name}
-          isSuccess={
-            isSuccessBaoGia &&
-            isSuccessCoHoi &&
-            isSuccessLoaiBaoGia &&
-            isSuccessNgonNgu &&
-            isSuccessLoaiTien
-          }
         />
       }
     />

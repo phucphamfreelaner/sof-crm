@@ -1,21 +1,22 @@
 import { Outlet } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import * as UI from "@/libs/ui";
+import { Box, Container } from "@mui/material";
 
 function CoHoiPage() {
   return (
     <>
       <Helmet>
-        <title>Cơ Hội | CRM APP</title>
+        <title>Cơ hội | CRM APP</title>
       </Helmet>
-      <UI.CKBox
+      <Box
+        component="main"
         sx={{
           flexGrow: 1,
-          pt: 3,
+          px: 3,
         }}
       >
         <Outlet />
-      </UI.CKBox>
+      </Box>
     </>
   );
 }

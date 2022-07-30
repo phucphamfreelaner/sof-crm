@@ -12,12 +12,10 @@ function CoHoiPage() {
         component="main"
         sx={{
           flexGrow: 1,
-          pt: 3,
+          px: 3,
         }}
       >
-        <Container maxWidth="xl">
-          <Outlet />
-        </Container>
+        <Outlet />
       </Box>
     </>
   );
