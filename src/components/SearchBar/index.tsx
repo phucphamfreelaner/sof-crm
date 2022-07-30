@@ -30,8 +30,7 @@ function SearchBar(props: ISearhBar) {
           alignItems: "center",
           display: "flex",
           flexWrap: "wrap",
-          m: -1.5,
-          p: 3,
+          px: 2,
         }}
       >
         <BaseForm
@@ -46,31 +45,34 @@ function SearchBar(props: ISearhBar) {
           })}
           fields={baseSearchOptions}
         ></BaseForm>
-        <UI.HStack sx={{ width: "100%" }} mt={16} mb={16}>
-          <UI.Typography fontStyle={"italic"}>Tìm kiếm nâng cao</UI.Typography>
-          <UI.Box
-            sx={{ cursor: "pointer" }}
+        <UI.HStack
+          sx={{ width: "100%", pt: theme.spacing(1), textDecor: "underline" }}
+        >
+          <UI.Typography
             onClick={(val) => {
               setExpanded(!expanded);
             }}
+            fontStyle={"italic"}
+            variant="body2"
+            sx={{ cursor: "pointer" }}
           >
-            <UI.IconButton aria-label="show" size="large">
-              {expanded ? <RiArrowUpSFill /> : <IoMdArrowDropdown />}
-            </UI.IconButton>
-          </UI.Box>
+            Tìm kiếm nâng cao
+          </UI.Typography>
         </UI.HStack>
         <UI.Collapse in={expanded}>
-          <BaseForm
-            gap={theme.spacing(2)}
-            templateColumns="repeat(6,1fr)"
-            onWatchChange={debounce((val) => {
-              handleOnchangeAdvanceSearch(val);
-            }, 1000)}
-            watchFields={advanceSearchOptions.map((item) => {
-              return item.name;
-            })}
-            fields={advanceSearchOptions}
-          ></BaseForm>
+          <UI.CKBox sx={{ py: theme.spacing(2) }}>
+            <BaseForm
+              gap={theme.spacing(2)}
+              templateColumns="repeat(6,1fr)"
+              onWatchChange={debounce((val) => {
+                handleOnchangeAdvanceSearch(val);
+              }, 1000)}
+              watchFields={advanceSearchOptions.map((item) => {
+                return item.name;
+              })}
+              fields={advanceSearchOptions}
+            ></BaseForm>
+          </UI.CKBox>
         </UI.Collapse>
       </UI.Box>
     </>
