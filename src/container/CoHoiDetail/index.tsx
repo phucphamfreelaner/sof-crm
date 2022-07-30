@@ -1,5 +1,5 @@
 import React from "react";
-import BaseDetail from "@/container/BaseDetail";
+import BaseDetail from "@/container/BaseDetailContainer";
 import { useNavigate } from "react-router-dom";
 import * as UI from "@/libs/ui";
 import { useBoolean } from "ahooks";
@@ -35,6 +35,16 @@ import CoHoiNew from "@/container/CoHoiForm";
 import RichText from "@/components/RichText";
 import { ICoHoi } from "@/types/coHoi";
 import SendSmsForm from "../SendSmsForm";
+import {
+  useGetCoHoiCSKHByCoHoiIdQuery,
+  useCreateCoHoiCSKHMutation,
+} from "@/store/coHoiCSKH";
+
+import {
+  useCreateNhiemVuMutation,
+  useGetNhiemVuCohoiQuery,
+  usePutNhiemVuByIdMutation,
+} from "@/store/nhiemVu";
 
 interface ICoHoiDetail {
   coHoiData: ICoHoi;
@@ -57,6 +67,7 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
       variant="body1"
       key="1"
       color="inherit"
+      onClick={() => navigate("/co_hoi")}
     >
       Cơ hội
     </UI.Typography>,
@@ -74,6 +85,36 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
   const [getSoLuongByValue] = useLazyGetSoLuongByValueQuery();
   const [getTienTrinhByKey] = useLazyGetTienTrinhByKeyQuery();
   const [getTrangThaiByKey] = useLazyGetTrangThaiByKeyQuery();
+
+  const {
+    isLoading: isLoadingNote,
+    isFetching: isFetchingNote,
+    data: dataNote,
+    refetch: reloadListNote,
+  } = useGetCoHoiCSKHByCoHoiIdQuery(
+    { cohoi_id: coHoiData?.id },
+    { skip: !coHoiData?.id }
+  );
+
+  const [createCoHoiCSKH, { isLoading: isLoadingCreateNote }] =
+    useCreateCoHoiCSKHMutation();
+
+  const {
+    isLoading: isLoadingNhiemVu,
+    isFetching: isFetchingNhiemVu,
+    data: dataNhiemVu,
+    refetch: reloadNhiemVu,
+  } = useGetNhiemVuCohoiQuery(
+    { cohoi_id: coHoiData?.id },
+    { skip: !coHoiData?.id }
+  );
+
+  const [createNhiemVu, { isLoading: isLoadingCreateNhiemVu }] =
+    useCreateNhiemVuMutation();
+
+  const [updateNhiemVu, { isLoading: isLoadingUpdateNhiemVu }] =
+    usePutNhiemVuByIdMutation();
+
   return (
     <BaseDetail
       id={coHoiData?.id}
@@ -318,6 +359,23 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
             </UI.CKBox>
           }
         />
+      }
+      onCreateNote={(data: any) => createCoHoiCSKH(data).unwrap()}
+      onUpdateNote={(data: any) => {}}
+      isLoadingNote={isLoadingNote || isFetchingNote || isLoadingCreateNote}
+      dataNote={dataNote || []}
+      reloadListNote={reloadListNote}
+      onCreateMessage={(data: any) => createCoHoiCSKH(data).unwrap()}
+      onUpdateMessage={(data: any) => {}}
+      isLoadingMessage={isLoadingNote || isFetchingNote || isLoadingCreateNote}
+      reloadListMessage={reloadListNote}
+      dataMessage={dataNote || []}
+      dataTask={dataNhiemVu}
+      onCreateTask={(data: any) => createNhiemVu(data).unwrap()}
+      onUpdateTask={(data) => updateNhiemVu(data).unwrap()}
+      reloadListTask={reloadNhiemVu}
+      isLoadingTask={
+        isLoadingNhiemVu || isFetchingNhiemVu || isLoadingCreateNhiemVu
       }
     />
   );

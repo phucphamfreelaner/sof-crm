@@ -32,7 +32,6 @@ function NhiemVuNewForm(props: INhiemVuNewForm) {
     danhGiaNhiemVuData,
     onSearchDanhGiaNhiemVu,
     isLoadingDanhGiaNhiemVu,
-
     defaultValues,
     formRef,
   } = props;

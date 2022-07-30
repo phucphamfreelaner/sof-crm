@@ -26,7 +26,7 @@ export const coHoiCSKHService = createApi({
         url: `/co-hoi-cskh/get-by-co-hoi-id/${cohoi_id}`,
       }),
     }),
-    createCoHoiCSKH: builder.query<{ data: any }, { payload: any }>({
+    createCoHoiCSKH: builder.mutation<{ data: any }, { payload: any }>({
       transformResponse: (response: any) => response,
       query: ({ payload }) => ({
         method: "POST",
@@ -55,7 +55,7 @@ export const coHoiCSKHService = createApi({
 export const {
   useGetCoHoiCSKHByCoHoiIdQuery,
   useLazyGetCoHoiCSKHByCoHoiIdQuery,
-  useLazyCreateCoHoiCSKHQuery,
+  useCreateCoHoiCSKHMutation,
   useLazyDeleteCoHoiCSKHQuery,
   useLazyPutCoHoiCSKHByIdQuery,
 } = coHoiCSKHService;

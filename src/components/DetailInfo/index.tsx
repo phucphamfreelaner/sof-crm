@@ -1,12 +1,5 @@
 import React from "react";
 import * as UI from "@/libs/ui";
-import {
-  AiOutlineEdit,
-  AiOutlineSave,
-  AiOutlineDownCircle,
-  AiOutlineCloseCircle,
-} from "react-icons/ai";
-import { useBoolean } from "ahooks";
 
 interface IDetailInfo {
   id?: string;
@@ -17,7 +10,7 @@ interface IDetailInfo {
   isOpen?: boolean;
 }
 function DetailInfo(props: IDetailInfo) {
-  const { editContent, detailContent, onSave, isOpen } = props;
+  const { editContent, detailContent, isOpen } = props;
   return (
     <UI.Box>
       <UI.Grid container spacing={3}>
