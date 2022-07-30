@@ -26,7 +26,7 @@ export const nhiemVuService = createApi({
         url: `/nhiem-vu-doi-tuong/co_hoi/${cohoi_id}`,
       }),
     }),
-    createNhiemVu: builder.query<{ data: any }, { payload: any }>({
+    createNhiemVu: builder.mutation<{ data: any }, { payload: any }>({
       transformResponse: (response: any) => response,
       query: ({ payload }) => ({
         method: "POST",
@@ -67,7 +67,7 @@ export const nhiemVuService = createApi({
         },
       }),
     }),
-    putNhiemVuById: builder.query<any, { id: any; payload: any }>({
+    putNhiemVuById: builder.mutation<any, { id: any; payload: any }>({
       transformResponse: (response: any) => response?.data,
       query: ({ id, payload }) => ({
         method: "PUT",
@@ -88,9 +88,9 @@ export const nhiemVuService = createApi({
 export const {
   useGetNhiemVuCohoiQuery,
   useLazyGetNhiemVuCohoiQuery,
-  useLazyCreateNhiemVuQuery,
+  useCreateNhiemVuMutation,
   useLazyDeleteNhiemVuQuery,
-  useLazyPutNhiemVuByIdQuery,
+  usePutNhiemVuByIdMutation,
   useGetLoaiNhiemVuQuery,
   useLazyGetLoaiNhiemVuQuery,
   useLazyGetDanhGiaNhiemVuQuery,

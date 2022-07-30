@@ -10,10 +10,7 @@ import {
   MdArrowDropDown,
   MdOutlineArrowLeft,
 } from "react-icons/md";
-import {
-  useLazyPutNhiemVuByIdQuery,
-  useLazyGetTrangThaiNhiemVuQuery,
-} from "@/store/nhiemVu";
+import { useLazyGetTrangThaiNhiemVuQuery } from "@/store/nhiemVu";
 import { useGetListNhanVienQuery } from "@/store/nhanVien";
 import { useBoolean } from "ahooks";
 
@@ -21,8 +18,8 @@ interface INhiemVuList {
   listNhiemVuData?: any;
   isLoadingListNhiemVu?: boolean;
   refetchListNhiemVu?: () => any;
-  onEditNhiemVu?: (data: any) => any;
-  onChangeTrangThai?: () => any;
+  onUpdateTask?: (data: any) => any;
+  onSelectedTask?: (task: any) => any;
 }
 
 function CongViecList(props: INhiemVuList) {
@@ -30,10 +27,11 @@ function CongViecList(props: INhiemVuList) {
     listNhiemVuData,
     isLoadingListNhiemVu,
     refetchListNhiemVu,
-    onEditNhiemVu,
-    onChangeTrangThai,
+    onSelectedTask,
+    onUpdateTask,
   } = props;
-  const getDiffTime = (start) => {
+
+  const getDiffTime = (start: any) => {
     const dateDiff = differenceInDays(new Date(start), new Date());
     const dateDiffStr = formatDistance(new Date(start), new Date(), {
       locale: viLocale,
@@ -41,13 +39,13 @@ function CongViecList(props: INhiemVuList) {
     });
     if (dateDiff < 0)
       return (
-        <UI.Typography variant="subtitle2" color="red">
+        <UI.Typography variant="body2" color="red">
           <b>{dateDiffStr}</b>
         </UI.Typography>
       );
     else if (dateDiff === 0)
       return (
-        <UI.Typography variant="subtitle2" color="#b49b78">
+        <UI.Typography variant="body2" color="#b49b78">
           <b>{dateDiffStr}</b>
         </UI.Typography>
       );
@@ -58,9 +56,6 @@ function CongViecList(props: INhiemVuList) {
         </UI.Typography>
       );
   };
-
-  const [updateNhiemVu, { isLoading: isLoadingUpdateNhiemVu }] =
-    useLazyPutNhiemVuByIdQuery();
 
   const [searchTrangThaiNhiemVu, { data: trangThaiNhiemVuData }] =
     useLazyGetTrangThaiNhiemVuQuery();
@@ -80,9 +75,8 @@ function CongViecList(props: INhiemVuList) {
       ...data,
       trangthai: status,
     };
-    updateNhiemVu({ id: data?.id, payload }).finally(() => {
+    onUpdateTask({ id: data?.id, payload }).finally(() => {
       refetchListNhiemVu();
-      onChangeTrangThai();
     });
   };
 
@@ -185,7 +179,7 @@ function CongViecList(props: INhiemVuList) {
                             <UI.IconButton
                               size={"small"}
                               sx={{ cursor: "pointer" }}
-                              onClick={() => onEditNhiemVu(x)}
+                              onClick={() => onSelectedTask(x)}
                             >
                               <RiPencilFill />
                               <UI.Typography ml={1} variant="subtitle2">

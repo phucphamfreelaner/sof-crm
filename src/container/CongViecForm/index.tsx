@@ -6,8 +6,6 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { toast } from "react-hot-toast";
 import { format } from "date-fns";
 import {
-  useLazyCreateNhiemVuQuery,
-  useLazyPutNhiemVuByIdQuery,
   useLazyGetLoaiNhiemVuQuery,
   useLazyGetDanhGiaNhiemVuQuery,
   useLazyGetTrangThaiNhiemVuQuery,
@@ -24,11 +22,22 @@ interface INhiemVuForm {
   onAddTask?: (data: any) => any;
   refetchListNhiemVu?: () => any;
   onCancel?: () => any;
+  onCreateTask?: (data: any) => any;
+  onUpdateTask?: (data: any) => any;
+  isLoadingTask?: boolean;
 }
 
 function NhiemVuForm(props: INhiemVuForm) {
-  const { nhiemVuData, id, cohoi_id, isSuccess, refetchListNhiemVu, onCancel } =
-    props;
+  const {
+    nhiemVuData,
+    id,
+    cohoi_id,
+    refetchListNhiemVu,
+    onCancel,
+    onCreateTask,
+    onUpdateTask,
+    isLoadingTask,
+  } = props;
 
   const [
     searchLoaiNhiemVu,
@@ -36,7 +45,6 @@ function NhiemVuForm(props: INhiemVuForm) {
       data: loaiNhiemVuData,
       isLoading: isLoadingLoaiNhiemVuData,
       isFetching: isFetchingLoaiNhiemVuData,
-      isSuccess: isSuccessLoai,
     },
   ] = useLazyGetLoaiNhiemVuQuery();
 
@@ -45,7 +53,6 @@ function NhiemVuForm(props: INhiemVuForm) {
     {
       data: danhGiaNhiemVuData,
       isLoading: isLoadingDanhGiaNhiemVuData,
-      isSuccess: isSuccessDanhGia,
       isFetching: isFetchingDanhGiaNhiemVuData,
     },
   ] = useLazyGetDanhGiaNhiemVuQuery();
@@ -56,21 +63,8 @@ function NhiemVuForm(props: INhiemVuForm) {
       data: trangThaiNhiemVuData,
       isLoading: isLoadingTrangThaiNhiemVuData,
       isFetching: isFetchingTrangThaiNhiemVuData,
-      isSuccess: isSuccessTrangThai,
     },
   ] = useLazyGetTrangThaiNhiemVuQuery();
-
-  const [
-    createNhiemVu,
-    {
-      data: dataNhiemVuNew,
-      isLoading: isLoadingCreateNhiemVu,
-      isSuccess: isSuccessCreateNhiemVu,
-    },
-  ] = useLazyCreateNhiemVuQuery();
-
-  const [updateNhiemVu, { isLoading: isLoadingUpdateNhiemVu }] =
-    useLazyPutNhiemVuByIdQuery();
 
   React.useEffect(() => {
     searchLoaiNhiemVu({});
@@ -79,13 +73,6 @@ function NhiemVuForm(props: INhiemVuForm) {
   }, []);
 
   const [defaultValues, setDefaultValue] = React.useState<any>(null);
-
-  React.useEffect(() => {
-    if (dataNhiemVuNew) {
-      toast.success("Thêm nhiệm vụ thành công!");
-      refetchListNhiemVu();
-    }
-  }, [dataNhiemVuNew]);
 
   React.useEffect(() => {
     if (
@@ -114,17 +101,6 @@ function NhiemVuForm(props: INhiemVuForm) {
     }
   }, [nhiemVuData, loaiNhiemVuData, trangThaiNhiemVuData, danhGiaNhiemVuData]);
 
-  // React.useEffect(() => {
-  //   if (!id && isSuccessLoai && isSuccessDanhGia && isSuccessTrangThai) {
-  //     setDefaultValue((prev) => ({
-  //       ...prev,
-  //       loai_key: convertData(loaiNhiemVuData)?.[0],
-  //       trangthai: convertData(trangThaiNhiemVuData)?.[0],
-  //       danh_gia_key: convertData(danhGiaNhiemVuData)?.[0],
-  //     }));
-  //   }
-  // }, [id, isSuccessLoai, isSuccessDanhGia, isSuccessTrangThai]);
-
   const elForm = React.useRef<any>();
 
   const handleSaveNhiemVu = (data: any, id: any) => {
@@ -149,7 +125,7 @@ function NhiemVuForm(props: INhiemVuForm) {
         : format(new Date(), "yyyy-MM-dd"),
     };
     if (id) {
-      updateNhiemVu({
+      onUpdateTask({
         id: data?.id,
         payload: payload,
       }).finally(() => {
@@ -157,8 +133,12 @@ function NhiemVuForm(props: INhiemVuForm) {
         refetchListNhiemVu();
       });
       return;
+    } else {
+      onCreateTask({ payload }).finally(() => {
+        toast.success("Thêm nhiệm vụ thành công!");
+        refetchListNhiemVu();
+      });
     }
-    createNhiemVu({ payload });
   };
 
   const convertData = (rawData) => {
@@ -171,45 +151,33 @@ function NhiemVuForm(props: INhiemVuForm) {
   return (
     <UI.Card>
       <UI.CardContent sx={{ padding: "14px !important" }}>
-        {id && !isSuccess ? (
-          <Loading />
-        ) : (
-          // <NhiemVuNewForm
-          //   formRef={elForm}
-          //   key={JSON.stringify(defaultValues)}
-          //   isLoadingKhachHang={isLoadingKhachHang || isFetchingKhachHang}
-          //   khachHangData={khachHangData}
-          //   onSearchKhachHang={(name) => searchKhachHang({ name })}
-          //   defaultValues={defaultValues}
-          // />
-          <NhiemVuNewForm
-            key={JSON.stringify(defaultValues)}
-            loaiNhiemVuData={convertData(loaiNhiemVuData)}
-            onSearchLoaiNhiemVu={searchLoaiNhiemVu}
-            isLoadingLoaiNhiemVu={
-              isLoadingLoaiNhiemVuData || isFetchingLoaiNhiemVuData
-            }
-            trangThaiNhiemVuData={convertData(trangThaiNhiemVuData)}
-            onSearchTrangThaiNhiemVu={searchTrangThaiNhiemVu}
-            isLoadingTrangThaiNhiemVu={
-              isLoadingTrangThaiNhiemVuData || isFetchingTrangThaiNhiemVuData
-            }
-            danhGiaNhiemVuData={convertData(danhGiaNhiemVuData)}
-            onSearchDanhGiaNhiemVu={searchDanhGiaNhiemVu}
-            isLoadingDanhGiaNhiemVu={
-              isLoadingDanhGiaNhiemVuData || isFetchingDanhGiaNhiemVuData
-            }
-            defaultValues={defaultValues}
-            formRef={elForm}
-          />
-        )}
+        <NhiemVuNewForm
+          key={JSON.stringify(defaultValues)}
+          loaiNhiemVuData={convertData(loaiNhiemVuData)}
+          onSearchLoaiNhiemVu={searchLoaiNhiemVu}
+          isLoadingLoaiNhiemVu={
+            isLoadingLoaiNhiemVuData || isFetchingLoaiNhiemVuData
+          }
+          trangThaiNhiemVuData={convertData(trangThaiNhiemVuData)}
+          onSearchTrangThaiNhiemVu={searchTrangThaiNhiemVu}
+          isLoadingTrangThaiNhiemVu={
+            isLoadingTrangThaiNhiemVuData || isFetchingTrangThaiNhiemVuData
+          }
+          danhGiaNhiemVuData={convertData(danhGiaNhiemVuData)}
+          onSearchDanhGiaNhiemVu={searchDanhGiaNhiemVu}
+          isLoadingDanhGiaNhiemVu={
+            isLoadingDanhGiaNhiemVuData || isFetchingDanhGiaNhiemVuData
+          }
+          defaultValues={defaultValues}
+          formRef={elForm}
+        />
       </UI.CardContent>
       <UI.CardActions sx={{ justifyContent: "flex-end", paddingTop: 0 }}>
         <UI.Button size="small" onClick={onCancel} color="inherit">
           Cancel
         </UI.Button>
         <LoadingButton
-          loading={isLoadingCreateNhiemVu || isLoadingUpdateNhiemVu}
+          loading={isLoadingTask}
           onClick={() =>
             elForm.current.handleSubmit((data) => handleSaveNhiemVu(data, id))()
           }

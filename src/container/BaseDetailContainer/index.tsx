@@ -19,8 +19,6 @@ import HistoryLogs from "@/container/HistoryLogs";
 
 import { useGetNhiemVuCohoiQuery } from "@/store/nhiemVu";
 import CoHoiCSKHList from "../CoHoiCSKHList";
-import { useGetCoHoiCSKHByCoHoiIdQuery } from "@/store/coHoiCSKH";
-
 interface IBaseDetail {
   id?: any;
   customerId?: any;
@@ -28,19 +26,34 @@ interface IBaseDetail {
   children?: React.ReactNode;
   headerTitle?: string;
   headerBreadcrumbs?: any;
-  timelineContent?: React.ReactNode;
   detailContent?: React.ReactNode;
-  onSendMessage?: (data: any) => any;
-  onAddNoted?: (data: any) => any;
-  onAddTask?: (data: any) => any;
-  isEdit?: boolean;
-  closeEdit?: () => any;
-  openEdit?: () => any;
-  onSave?: (data: any) => any;
+
   actionMenus?: { label: string; icon: React.ReactNode; onClick?: () => any }[];
   cuocHopCounter?: number;
   baoGiaCounter?: number;
   userId?: string;
+
+  isEdit?: boolean;
+  openEdit?: () => any;
+  closeEdit?: () => any;
+
+  onCreateNote?: (data?: any) => any;
+  onUpdateNote?: (data?: any) => any;
+  isLoadingNote?: boolean;
+  reloadListNote?: () => any;
+  dataNote?: any;
+
+  onCreateMessage?: (data?: any) => any;
+  onUpdateMessage?: (data?: any) => any;
+  isLoadingMessage?: boolean;
+  reloadListMessage?: () => any;
+  dataMessage?: any;
+
+  onCreateTask?: (data?: any) => any;
+  onUpdateTask?: (data?: any) => any;
+  isLoadingTask?: boolean;
+  reloadListTask?: () => any;
+  dataTask?: any;
 }
 
 function BaseDetail(props: IBaseDetail) {
@@ -48,28 +61,36 @@ function BaseDetail(props: IBaseDetail) {
     id,
     customerId,
     headerBreadcrumbs,
-    onSendMessage,
-    onAddNoted,
-    onAddTask,
-    timelineContent,
-    isEdit,
-    openEdit,
-    closeEdit,
-    onSave,
     actionMenus,
     detailContent,
     isLoading,
     cuocHopCounter = 0,
     baoGiaCounter = 0,
-    userId,
+    isEdit,
+    openEdit,
+    closeEdit,
+    onCreateNote,
+    onUpdateNote,
+    isLoadingNote,
+    dataNote,
+    reloadListNote,
+    onCreateMessage,
+    onUpdateMessage,
+    isLoadingMessage,
+    reloadListMessage,
+    dataMessage,
+    dataTask,
+    onCreateTask,
+    onUpdateTask,
+    reloadListTask,
+    isLoadingTask,
   } = props;
+
   const { spacing, palette } = UI.useTheme();
 
-  const [value, setValue] = React.useState(-1);
+  const [tabIndex, setTabIndex] = React.useState(-1);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
+  const handleChangeTab = (__, newValue: number) => setTabIndex(newValue);
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
@@ -84,88 +105,54 @@ function BaseDetail(props: IBaseDetail) {
   };
 
   const open = Boolean(anchorEl);
-
-  const {
-    isLoading: isLoadingListCoHoiCSKH,
-    isFetching: isFetchingListCoHoiCSKH,
-    data: listCoHoiCSKHData,
-    isSuccess: isSuccessListCoHoiCSKHData,
-    refetch: refetchListCoHoiCSKH,
-  } = useGetCoHoiCSKHByCoHoiIdQuery({ cohoi_id: id }, { skip: !id });
-
-  const {
-    isLoading: isLoadingListNhiemVu,
-    isFetching: isFetchingListNhiemVu,
-    data: listNhiemVuData,
-    refetch,
-  } = useGetNhiemVuCohoiQuery({ cohoi_id: id }, { skip: !id });
-  const [nhiemVuData, setNhiemVuData] = React.useState(null);
-  const [isSuccessLoadNhiemVu, setIsSuccessLoadNhiemVu] = React.useState(false);
-  const [isSuccessLoadCoHoiCSKH, setIsSuccessLoadCoHoiCSKH] =
-    React.useState(true);
-
-  const reloadCongViecForm = () => {
-    setIsSuccessLoadNhiemVu(false);
-    setTimeout(() => {
-      const timer = setTimeout(() => {
-        setIsSuccessLoadNhiemVu(true);
-      }, 500);
-      return () => clearTimeout(timer);
-    });
-  };
-
-  const reloadCoHoiCSKHForm = () => {
-    setIsSuccessLoadCoHoiCSKH(false);
-    setTimeout(() => {
-      const timer = setTimeout(() => {
-        setIsSuccessLoadCoHoiCSKH(true);
-      }, 500);
-      return () => clearTimeout(timer);
-    });
-  };
+  const [nhiemVuSelected, setNhiemVuSelected] = React.useState<any>(null);
 
   const TABLE_PANEL = [
     {
-      value: 0,
+      tabIndex: 0,
       content: (
         <GhiChuForm
-          onAddNoted={onAddNoted}
           coHoiId={id}
           customerId={customerId}
-          isSuccess={isSuccessLoadCoHoiCSKH}
-          refetchListCoHoiCSKH={refetchListCoHoiCSKH}
-          onReloadForm={() => reloadCoHoiCSKHForm()}
-          onCancel={() => setValue(-1)}
+          onCreateNote={onCreateMessage}
+          onUpdateNote={onUpdateMessage}
+          isLoadingNote={isLoadingMessage}
+          reloadListNote={reloadListMessage}
+          onReloadForm={() => reloadListNote()}
         />
       ),
       height: "calc(100vh - 250px)",
     },
     {
-      value: 1,
+      tabIndex: 1,
       content: (
         <GhiChuForm
-          onAddNoted={onAddNoted}
           coHoiId={id}
           customerId={customerId}
-          isSuccess={isSuccessLoadCoHoiCSKH}
-          refetchListCoHoiCSKH={refetchListCoHoiCSKH}
-          onReloadForm={() => reloadCoHoiCSKHForm()}
-          onCancel={() => setValue(-1)}
+          onCreateNote={onCreateNote}
+          onUpdateNote={onUpdateNote}
+          isLoadingNote={isLoadingNote}
+          reloadListNote={reloadListNote}
+          onReloadForm={() => reloadListNote()}
         />
       ),
       height: "calc(100vh - 250px)",
     },
     {
-      value: 2,
+      tabIndex: 2,
       content: (
         <CongViecForm
-          onAddTask={onAddTask}
-          id={nhiemVuData?.id}
+          id={nhiemVuSelected?.id}
           cohoi_id={id}
-          nhiemVuData={nhiemVuData}
-          isSuccess={isSuccessLoadNhiemVu}
-          refetchListNhiemVu={refetch}
-          onCancel={() => setValue(-1)}
+          nhiemVuData={nhiemVuSelected}
+          refetchListNhiemVu={reloadListTask}
+          onCancel={() => {
+            setTabIndex(-1);
+            setNhiemVuSelected(null);
+          }}
+          onCreateTask={onCreateTask}
+          onUpdateTask={onUpdateTask}
+          isLoadingTask={isLoadingTask}
         />
       ),
       height: "calc(100vh - 550px)",
@@ -244,8 +231,8 @@ function BaseDetail(props: IBaseDetail) {
           }}
         >
           <UI.Tabs
-            value={value}
-            onChange={handleChange}
+            value={tabIndex}
+            onChange={handleChangeTab}
             aria-label="basic tabs example"
             sx={{ paddingLeft: "16px", paddingRight: "6px", paddingY: "4px" }}
           >
@@ -284,7 +271,7 @@ function BaseDetail(props: IBaseDetail) {
             </UI.HStack>
           </UI.Tabs>
           {TABLE_PANEL?.map((x, index) => (
-            <TabPanel value={value} key={index} index={x.value}>
+            <TabPanel tabIndex={tabIndex} key={index} index={x.tabIndex}>
               {x.content}
             </TabPanel>
           ))}
@@ -295,34 +282,26 @@ function BaseDetail(props: IBaseDetail) {
               padding: spacing(2),
               overflow: "auto !important",
               height:
-                keyBy(TABLE_PANEL, "value")?.[value]?.height ||
+                keyBy(TABLE_PANEL, "tabIndex")?.[tabIndex]?.height ||
                 "calc(100vh - 150px)",
               paddingBottom: "130px",
             }}
           >
             <UI.CKBox overflow="auto">
               <CongViecList
-                listNhiemVuData={listNhiemVuData || []}
-                isLoadingListNhiemVu={
-                  isLoadingListNhiemVu || isFetchingListNhiemVu
-                }
-                refetchListNhiemVu={refetch}
-                onEditNhiemVu={async (data) => {
-                  await setValue(2);
-                  await setNhiemVuData(data);
-                  await reloadCongViecForm();
-                }}
-                onChangeTrangThai={() => {
-                  setNhiemVuData(null);
-                  reloadCongViecForm();
+                listNhiemVuData={dataTask || []}
+                isLoadingListNhiemVu={isLoadingTask}
+                refetchListNhiemVu={reloadListTask}
+                onUpdateTask={onUpdateTask}
+                onSelectedTask={(task) => {
+                  setNhiemVuSelected(task);
+                  setTabIndex(2);
                 }}
               />
               <CoHoiCSKHList
-                listCoHoiCSKHData={listCoHoiCSKHData || []}
-                isLoadingListCoHoiCSKH={
-                  isLoadingListCoHoiCSKH || isFetchingListCoHoiCSKH
-                }
-                refetchListCoHoiCSKH={refetchListCoHoiCSKH}
+                listCoHoiCSKHData={dataNote || []}
+                isLoadingListCoHoiCSKH={isLoadingNote}
+                refetchListCoHoiCSKH={reloadListNote}
               />
             </UI.CKBox>
           </UI.CardContent>
@@ -374,17 +353,17 @@ function BaseDetail(props: IBaseDetail) {
 }
 
 function TabPanel(props: any) {
-  const { children, value, index, ...other } = props;
+  const { children, tabIndex, index, ...other } = props;
 
   return (
     <div
       role="tabpanel"
-      hidden={value !== index}
+      hidden={tabIndex !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && <UI.Box sx={{ p: 2 }}>{children}</UI.Box>}
+      {tabIndex === index && <UI.Box sx={{ p: 2 }}>{children}</UI.Box>}
     </div>
   );
 }
