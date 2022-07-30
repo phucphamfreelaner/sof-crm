@@ -6,18 +6,16 @@ function HopDongPage() {
   return (
     <>
       <Helmet>
-        <title>Hợp Đồng | CRM APP</title>
+        <title>Khách hàng | CRM APP</title>
       </Helmet>
       <Box
         component="main"
         sx={{
           flexGrow: 1,
-          py: 3,
+          px: 3,
         }}
       >
-        <Container maxWidth="xl">
-          <Outlet />
-        </Container>
+        <Outlet />
       </Box>
     </>
   );
