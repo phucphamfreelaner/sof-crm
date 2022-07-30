@@ -167,7 +167,6 @@ function BaseDetail(props: IBaseDetail) {
     <UI.VStack w="100%" h="calc(100vh - 60px)" bg="#f6f7fa">
       <UI.HStack
         alignItems="flex-start"
-        px={spacing(2)}
         pt={spacing(2)}
         spacing={spacing(2)}
         w="100%"
@@ -251,22 +250,7 @@ function BaseDetail(props: IBaseDetail) {
                 sx={{ lineHeight: "15px", textAlign: "left" }}
                 variant="text"
               >
-                Cuộc
-                <br /> họp
-              </UI.Button>
-              <UI.Button
-                size="small"
-                startIcon={
-                  <UI.Badge badgeContent={baoGiaCounter} color="secondary">
-                    <AiOutlineFileDone size="24px" />
-                  </UI.Badge>
-                }
-                variant="text"
-                sx={{ lineHeight: "15px", textAlign: "left" }}
-              >
-                Báo
-                <br />
-                giá
+                Cuộc họp
               </UI.Button>
             </UI.HStack>
           </UI.Tabs>

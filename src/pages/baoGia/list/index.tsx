@@ -1,12 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import * as UI from "@/libs/ui";
-import {
-  AiFillPlusCircle,
-  AiOutlineUpload,
-  AiOutlineDownload,
-  AiOutlineUser,
-} from "react-icons/ai";
+import { AiFillPlusCircle } from "react-icons/ai";
 import BaoGiaTable from "@/container/BaoGiaTable";
 import BaoGiaFilter from "@/container/BaoGiaFilter";
 import { debounce, isEmpty } from "lodash-es";
@@ -20,30 +15,14 @@ function BaoGiaList() {
 
   return (
     <UI.Box>
-      <UI.Grid
-        sx={{ mb: 4 }}
-        container
-        justifyContent="space-between"
-        spacing={3}
-      >
+      <UI.Grid sx={{ py: 1 }} container justifyContent="space-between">
         <UI.Grid item>
-          <UI.Typography variant="h4">Báo Giá</UI.Typography>
-        </UI.Grid>
-        <UI.Grid item>
-          <UI.Button
-            onClick={() => navigate("/bao_gia/new")}
-            size="small"
-            startIcon={<AiFillPlusCircle fontSize="small" />}
-            variant="contained"
-          >
-            Thêm mới
-          </UI.Button>
+          <UI.Typography variant="h4">Báo giá</UI.Typography>
         </UI.Grid>
       </UI.Grid>
 
       <UI.Card>
-        <UI.Divider />
-        <UI.CardContent>
+        <UI.CKBox paddingTop="26px" paddingX="24px" paddingBottom="4px">
           <BaoGiaFilter
             key={key}
             onReload={() => {
@@ -59,14 +38,14 @@ function BaoGiaList() {
               });
             }}
           />
-          <BaoGiaTable
-            onSortChange={(orderBy) => {
-              setFilter((filter) => ({ ...filter, ...orderBy }));
-            }}
-            isShowKhachHangLink
-            filter={filter}
-          />
-        </UI.CardContent>
+        </UI.CKBox>
+        <BaoGiaTable
+          onSortChange={(orderBy) => {
+            setFilter((filter) => ({ ...filter, ...orderBy }));
+          }}
+          isShowKhachHangLink
+          filter={filter}
+        />
       </UI.Card>
     </UI.Box>
   );

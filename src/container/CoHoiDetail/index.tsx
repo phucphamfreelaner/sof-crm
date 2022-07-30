@@ -34,7 +34,6 @@ import BasicDetails from "@/components/BasicDetails";
 import CoHoiNew from "@/container/CoHoiForm";
 import RichText from "@/components/RichText";
 import { ICoHoi } from "@/types/coHoi";
-import SendSmsForm from "../SendSmsForm";
 import {
   useGetCoHoiCSKHByCoHoiIdQuery,
   useCreateCoHoiCSKHMutation,

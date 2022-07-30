@@ -18,8 +18,8 @@ function BaseTable(props: IBaseTable) {
       paginationMode="server"
       loading={isLoading}
       rows={rows}
-      headerHeight={50}
-      rowHeight={50}
+      headerHeight={42}
+      rowHeight={42}
       hideFooterPagination
       hideFooterSelectedRowCount
       sx={{

@@ -14,8 +14,8 @@ function CoHoiList() {
   const handleFilterChange = debounce(setFilter, 500);
 
   return (
-    <UI.Box sx={{ px: 3 }}>
-      <UI.Grid sx={{ mb: 1 }} container justifyContent="space-between">
+    <UI.Box>
+      <UI.Grid sx={{ py: 1 }} container justifyContent="space-between">
         <UI.Grid item>
           <UI.Typography variant="h4">Cơ Hội</UI.Typography>
         </UI.Grid>
@@ -23,7 +23,7 @@ function CoHoiList() {
 
       <UI.Card>
         <UI.Box>
-          <UI.CKBox paddingTop="26px" paddingX="24px">
+          <UI.CKBox paddingTop="26px" paddingX="24px" paddingBottom="4px">
             <CoHoiFilter
               key={key}
               onReload={() => {
