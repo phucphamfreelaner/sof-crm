@@ -11,27 +11,17 @@ import HopDongListContainer from "@/container/HopDongList";
 function HopDongList() {
   const navigate = useNavigate();
   return (
-    <UI.Box
-      sx={{
-        flexGrow: 1,
-      }}
-    >
-      <UI.Grid
-        sx={{ mb: 4 }}
-        container
-        justifyContent="space-between"
-        spacing={3}
-      >
+    <UI.Box>
+      <UI.Grid sx={{ py: 1 }} container justifyContent="space-between">
         <UI.Grid item>
-          <UI.Typography variant="h4">Danh Sách Hợp Đồng</UI.Typography>
+          <UI.Typography variant="h4">Hợp Đồng</UI.Typography>
         </UI.Grid>
       </UI.Grid>
 
       <UI.Card>
-        <UI.Divider />
-        <UI.CardContent>
+        <UI.CKBox>
           <HopDongListContainer />
-        </UI.CardContent>
+        </UI.CKBox>
       </UI.Card>
     </UI.Box>
   );

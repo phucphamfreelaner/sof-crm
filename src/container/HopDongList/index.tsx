@@ -27,36 +27,43 @@ const advanceSearchOptions = [
     label: "Số HĐ",
     name: "code",
     type: "input",
+    size: "small",
   },
   {
     label: "Loại HĐ",
     name: "loai_hd_key",
     type: "input",
+    size: "small",
   },
   {
     label: "Còn Lại",
     name: "so_tien_con_lai",
     type: "input",
+    size: "small",
   },
   {
     label: "Đã Thu",
     name: "so_tien_da_thu",
     type: "input",
+    size: "small",
   },
   {
     label: "Tiền Gốc",
     name: "thanh_tien_goc",
     type: "input",
+    size: "small",
   },
   {
     label: "Tiền Hàng",
     name: "tong_tien",
     type: "input",
+    size: "small",
   },
   {
     label: "VAT",
     name: "vat",
     type: "select",
+    size: "small",
     selectOptions: [
       {
         label: "Có",
@@ -72,26 +79,31 @@ const advanceSearchOptions = [
     label: "Tổng Tiền",
     name: "tong_tien_vat",
     type: "input",
+    size: "small",
   },
   {
     label: "Kinh Doanh",
     name: "customer_id",
     type: "input",
+    size: "small",
   },
   {
     label: "Ngày Nhập",
     name: "created_at",
     type: "input",
+    size: "small",
   },
   {
     label: "Điện Thoại",
     name: "phone",
     type: "input",
+    size: "small",
   },
   {
     label: "Ngày Ký",
     name: "ngayky",
     type: "input",
+    size: "small",
   },
 ];
 
@@ -178,6 +190,7 @@ function HopDongListContainer(props) {
                 searchHopDong({ name: data ? data : "" });
               },
               placeholder: "Tất cả",
+              size: "small",
             },
           ]}
           advanceSearchOptions={advanceSearchOptions}
@@ -203,6 +216,7 @@ function HopDongListContainer(props) {
             order_by: `order_by[${mode?.[0]?.field}]=${mode?.[0]?.sort}`,
           }));
         }}
+        height="calc(100vh - 330px)"
         toolbarAction={({ setSelectionModel }) => (
           <UI.HStack>
             {/* <UI.Button
