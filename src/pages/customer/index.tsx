@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet";
 import { Outlet } from "react-router-dom";
+import { Box } from "@mui/material";
 
 function ProductRoot() {
   return (
@@ -7,7 +8,15 @@ function ProductRoot() {
       <Helmet>
         <title>Khách hàng | CRM APP</title>
       </Helmet>
-      <Outlet />
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          px: 3,
+        }}
+      >
+        <Outlet />
+      </Box>
     </>
   );
 }

@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import { Box, Container } from "@mui/material";
+import { Box } from "@mui/material";
 
 function CoHoiPage() {
   return (

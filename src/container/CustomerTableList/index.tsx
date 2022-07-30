@@ -47,7 +47,7 @@ function CustomerTableListContainer() {
     { refetchOnMountOrArgChange: true }
   );
 
-  const handleOnchangeBaseSearch = (data) => {
+  const handleOnchangeBaseSearch = (data: any) => {
     setFilters((prevState) => ({
       ...prevState,
       query: data?.customer_id?.label ? data?.customer_id?.label : "",
@@ -90,248 +90,221 @@ function CustomerTableListContainer() {
   const [dataSelected, setDataSelected] = useState<any>(null);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
-  // useEffect(()=>{
-  //   searchKhachHang({name: ""})
-  // },[])
+  const { spacing } = UI.useTheme();
 
   return (
-    <>
-      <UI.Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          py: 3,
-        }}
-      >
-        <UI.Container maxWidth="xl">
-          <UI.Box sx={{ mb: 4 }}>
-            <UI.Grid container justifyContent="space-between" spacing={3}>
-              <UI.Grid item>
-                <UI.Typography variant="h4">Khách hàng</UI.Typography>
-              </UI.Grid>
-              <UI.Grid item>
+    <UI.Box>
+      <UI.Box>
+        <UI.HStack
+          w="100%"
+          py={spacing(1)}
+          justifyContent="space-between"
+          spacing={3}
+        >
+          <UI.Grid item>
+            <UI.Typography variant="h4">Khách hàng</UI.Typography>
+          </UI.Grid>
+          <UI.Grid item>
+            <UI.Button
+              size="small"
+              startIcon={<AiFillPlusCircle fontSize="small" />}
+              variant="contained"
+              onClick={() => {
+                navigate(`/khach_hang/new`);
+              }}
+            >
+              Thêm mới
+            </UI.Button>
+          </UI.Grid>
+        </UI.HStack>
+      </UI.Box>
+      <UI.Card>
+        <SearchBar
+          baseSearchOptions={[
+            {
+              name: "customer_id",
+              label: "Tìm kiếm tên khách hàng",
+              type: "autocomplete",
+              colSpan: 8,
+              isLoading: isLoadingKhachHang || isFetchingKhachHang,
+              autocompleteOptions: khachHangData,
+              onSearchChange: (data) => {
+                searchKhachHang({ name: data || "" });
+              },
+              placeholder: "Tất cả",
+              size: "small",
+            },
+          ]}
+          advanceSearchOptions={[
+            {
+              name: "phone",
+              type: "input",
+              label: "Di động",
+              size: "small",
+            },
+            {
+              name: "email",
+              type: "input",
+              label: "Email",
+              size: "small",
+            },
+            {
+              name: "code",
+              type: "input",
+              label: "Mã khách hàng",
+              size: "small",
+            },
+            {
+              name: "create_by",
+              type: "input",
+              label: "Nhân viên nhập",
+              size: "small",
+            },
+            {
+              name: "phone2",
+              type: "input",
+              label: "Điện thoại bàn",
+              size: "small",
+            },
+            {
+              name: "note",
+              type: "input",
+              label: "Ghi chú",
+              size: "small",
+            },
+            {
+              type: "select",
+              name: "da_cham_soc",
+              label: "Chăm sóc",
+              size: "small",
+              selectOptions: [
+                {
+                  label: "Đã chăm sóc",
+                  value: "1",
+                },
+                {
+                  label: "Chưa chăm sóc",
+                  value: "0",
+                },
+              ],
+            },
+            {
+              name: "page",
+              type: "input",
+              label: "Số trang",
+              size: "small",
+            },
+          ]}
+          handleOnchangeBaseSearch={handleOnchangeBaseSearch}
+          handleOnchangeAdvanceSearch={handleOnchangeAdvanceSearch}
+        />
+        <DeleteCustomerModal
+          open={openDeleteModal}
+          customers={dataSelected}
+          onClose={() => {
+            setOpenDeleteModal(false);
+            setDataSelected([]);
+          }}
+          refetch={refetch}
+        />
+
+        {isFetching ? (
+          <Loading />
+        ) : (
+          <BaseTable
+            name="Khách Hàng"
+            pageSize={rowsPerPage || 15}
+            onPageSizeChange={(newSize) => {
+              newSize == 0 ? setRowsPerPage(15) : setRowsPerPage(newSize);
+            }}
+            isLoading={isLoading || isFetching}
+            rows={data?.data || []}
+            page={page}
+            onSelectedChange={setDataSelected}
+            rowCount={totalPages}
+            onPageChange={setPage}
+            height="calc(100vh - 330px)"
+            onSortChange={(mode) => {
+              setFilters((prevState) => ({
+                ...prevState,
+                order_by: `order_by[${mode?.[0]?.field}]=${mode?.[0]?.sort}`,
+              }));
+            }}
+            toolbarAction={({ setSelectionModel }) => (
+              <UI.HStack>
                 <UI.Button
+                  disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+                  variant="outlined"
                   size="small"
-                  startIcon={<AiFillPlusCircle fontSize="small" />}
-                  variant="contained"
+                  startIcon={<MdOpenInNew size="16" />}
                   onClick={() => {
-                    navigate(`/khach_hang/new`);
+                    navigate(`/khach_hang/${dataSelected?.[0]?.id}`);
                   }}
                 >
-                  Thêm mới
+                  Chi tiết
                 </UI.Button>
-              </UI.Grid>
-            </UI.Grid>
-          </UI.Box>
-          <UI.Card>
-            <UI.Divider />
-            <SearchBar
-              baseSearchOptions={[
-                {
-                  name: "customer_id",
-                  label: "Tìm kiếm tên khách hàng",
-                  type: "autocomplete",
-                  colSpan: 8,
-                  isLoading: isLoadingKhachHang || isFetchingKhachHang,
-                  autocompleteOptions: khachHangData,
-                  onSearchChange: (data) => {
-                    searchKhachHang({ name: data ? data : "" });
-                  },
-                  placeholder: "Tất cả",
-                },
-              ]}
-              advanceSearchOptions={[
-                {
-                  name: "code",
-                  type: "input",
-                  label: "Mã khách hàng",
-                },
-                {
-                  name: "phone",
-                  type: "input",
-                  label: "Di động",
-                },
-                {
-                  name: "email",
-                  type: "input",
-                  label: "Email",
-                },
-                {
-                  name: "create_by",
-                  type: "input",
-                  label: "Nhân viên nhập",
-                },
-                {
-                  name: "phone2",
-                  type: "input",
-                  label: "Điện thoại bàn",
-                },
-                {
-                  name: "note",
-                  type: "input",
-                  label: "Ghi chú",
-                },
-                {
-                  type: "select",
-                  name: "da_cham_soc",
-                  label: "Chăm sóc",
-                  selectOptions: [
-                    {
-                      label: "Đã chăm sóc",
-                      value: "1",
-                    },
-                    {
-                      label: "Chưa chăm sóc",
-                      value: "0",
-                    },
-                  ],
-                },
-                {
-                  name: "page",
-                  type: "input",
-                  label: "Số trang",
-                },
-              ]}
-              handleOnchangeBaseSearch={handleOnchangeBaseSearch}
-              handleOnchangeAdvanceSearch={handleOnchangeAdvanceSearch}
-            />
-            <DeleteCustomerModal
-              open={openDeleteModal}
-              customers={dataSelected}
-              onClose={() => {
-                setOpenDeleteModal(false);
-                setDataSelected([]);
-              }}
-              refetch={refetch}
-            />
-
-            {isFetching ? (
-              <Loading />
-            ) : (
-              // <CustomerListTable
-              //   customers={data?.data ? data.data : []}
-              //   refetch={refetch}
-              //   customersCount={totalPages}
-              //   onPageChange={handlePageChange}
-              //   onRowsPerPageChange={handleRowsPerPageChange}
-              //   rowsPerPage={rowsPerPage}
-              //   page={page}
-              // />
-
-              <BaseTable
-                name="Khách Hàng"
-                pageSize={rowsPerPage || 15}
-                onPageSizeChange={(newSize) => {
-                  newSize == 0 ? setRowsPerPage(15) : setRowsPerPage(newSize);
-                }}
-                isLoading={isLoading || isFetching}
-                rows={data?.data || []}
-                page={page}
-                onSelectedChange={setDataSelected}
-                rowCount={totalPages}
-                onPageChange={setPage}
-                onSortChange={(mode) => {
-                  setFilters((prevState) => ({
-                    ...prevState,
-                    order_by: `order_by[${mode?.[0]?.field}]=${mode?.[0]?.sort}`,
-                  }));
-                }}
-                toolbarAction={({ setSelectionModel }) => (
-                  <UI.HStack>
-                    {/* <UI.Button
-                      disabled={isEmpty(dataSelected)}
-                      color="error"
-                      variant="outlined"
-                      size="small"
-                      startIcon={<AiOutlineDelete size="16" />}
-                      onClick={() => {
-                        setOpenDeleteModal(true);
-                        // setDataSelected([]);
-                        // setSelectionModel([]);
-                      }}
-                    >
-                      Xóa
-                    </UI.Button> */}
-                    <UI.Button
-                      disabled={
-                        isEmpty(dataSelected) || dataSelected?.length > 1
-                      }
-                      variant="outlined"
-                      size="small"
-                      startIcon={<MdOpenInNew size="16" />}
-                      onClick={() => {
-                        navigate(`/khach_hang/${dataSelected?.[0]?.id}`);
-                      }}
-                    >
-                      Chi tiết
-                    </UI.Button>
-                  </UI.HStack>
-                )}
-                columns={[
-                  { field: "code", headerName: "Mã Khách hàng", width: 130 },
-                  {
-                    field: "contact",
-                    headerName: "Cách gọi KH",
-                    width: 350,
-                  },
-                  {
-                    field: "phone",
-                    headerName: "Di động",
-                    width: 150,
-                  },
-                  {
-                    field: "email",
-                    headerName: "Email",
-                    width: 150,
-                  },
-                  {
-                    field: "user_tao",
-                    headerName: "NV nhập",
-                    width: 150,
-                    renderCell: ({ value }) => value?.name,
-                  },
-                  {
-                    field: "created_at",
-                    headerName: "Ngày nhập",
-                    width: 150,
-                    renderCell: ({ value }) =>
-                      format(new Date(value), "dd MMM yyyy"),
-                  },
-                  {
-                    field: "address",
-                    headerName: "Địa chỉ",
-                    width: 350,
-                  },
-                  {
-                    field: "note",
-                    headerName: "Ghi chú",
-                    width: 150,
-                    renderCell: ({ value }) => value?.name,
-                  },
-                  {
-                    field: "da_cham_soc",
-                    headerName: "Đã chăm sóc",
-                    width: 150,
-                    renderCell: ({ value }) => {
-                      if (value === 0)
-                        return <MdCancel color={"red"} fontSize={"15px"} />;
-                      else {
-                        return (
-                          <AiFillCheckCircle
-                            color={"green"}
-                            fontSize={"15px"}
-                          />
-                        );
-                      }
-                    },
-                  },
-                ]}
-              />
+              </UI.HStack>
             )}
-          </UI.Card>
-        </UI.Container>
-      </UI.Box>
-    </>
+            columns={[
+              { field: "code", headerName: "Mã Khách hàng", width: 130 },
+              {
+                field: "contact",
+                headerName: "Cách gọi KH",
+                width: 350,
+              },
+              {
+                field: "phone",
+                headerName: "Di động",
+                width: 150,
+              },
+              {
+                field: "email",
+                headerName: "Email",
+                width: 150,
+              },
+              {
+                field: "user_tao",
+                headerName: "NV nhập",
+                width: 150,
+                renderCell: ({ value }) => value?.name,
+              },
+              {
+                field: "created_at",
+                headerName: "Ngày nhập",
+                width: 150,
+                renderCell: ({ value }) =>
+                  format(new Date(value), "dd MMM yyyy"),
+              },
+              {
+                field: "address",
+                headerName: "Địa chỉ",
+                width: 350,
+              },
+              {
+                field: "note",
+                headerName: "Ghi chú",
+                width: 150,
+                renderCell: ({ value }) => value?.name,
+              },
+              {
+                field: "da_cham_soc",
+                headerName: "Đã chăm sóc",
+                width: 150,
+                renderCell: ({ value }) => {
+                  if (value === 0)
+                    return <MdCancel color={"red"} fontSize={"15px"} />;
+                  else {
+                    return (
+                      <AiFillCheckCircle color={"green"} fontSize={"15px"} />
+                    );
+                  }
+                },
+              },
+            ]}
+          />
+        )}
+      </UI.Card>
+    </UI.Box>
   );
 }
 
