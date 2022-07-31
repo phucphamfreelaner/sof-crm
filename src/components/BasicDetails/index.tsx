@@ -18,7 +18,7 @@ const ROW_TYPE = {
   ),
   render: ({ data, row }) => (
     <UI.Typography sx={{ width: "100%" }} variant="body2">
-      {row?.renderRow?.(data?.[row?.property], row)}
+      {row?.renderRow?.(data?.[row?.property], data)}
     </UI.Typography>
   ),
   "render-async": ({ data, row }) => {
@@ -31,7 +31,7 @@ const ROW_TYPE = {
 
     return (
       <UI.Typography sx={{ width: "100%" }} variant="body2">
-        {row?.renderRow?.(value, row) || value}
+        {row?.renderRow?.(value, row, data) || value}
       </UI.Typography>
     );
   },
@@ -43,8 +43,13 @@ const PropertyListItem = (props: any) => {
     row,
     data,
     labelWidth = "40%",
+    valueWidth,
     colSpan,
+    colStart,
+    colEnd,
     rowSpan,
+    rowStart,
+    rowEnd,
     hiddenLabel,
     type,
   } = props;
@@ -52,40 +57,43 @@ const PropertyListItem = (props: any) => {
   const ROW_COMPONENT = ROW_TYPE?.[type || "string"] || ROW_TYPE["string"];
 
   return (
-    <UI.CKGridItem boxSizing="border-box" colSpan={colSpan} rowSpan={rowSpan}>
-      <UI.ListItemText
-        disableTypography
-        primary={
-          hiddenLabel ? null : (
+    <UI.CKGridItem
+      boxSizing="border-box"
+      colEnd={colEnd}
+      colStart={colStart}
+      colSpan={colSpan}
+      rowSpan={rowSpan}
+      rowEnd={rowEnd}
+      rowStart={rowStart}
+    >
+      <UI.HStack
+        justifyContent={
+          align === "right"
+            ? "flex-end"
+            : align === "center"
+            ? "center"
+            : "flex-start"
+        }
+      >
+        {row?.label && !hiddenLabel && (
+          <UI.CKBox w={labelWidth}>
             <UI.Typography
               color="text.secondary"
-              sx={{ fontWeight: 600 }}
+              sx={{ fontWeight: 600, textAlign: align }}
               variant="subtitle2"
             >
               {row?.label}
             </UI.Typography>
-          )
-        }
-        secondary={
-          <UI.Box
-            sx={{
-              flex: 1,
-              mt: align === "vertical" ? 0.5 : 0,
-            }}
-          >
-            <ROW_COMPONENT data={data} row={row} />
-          </UI.Box>
-        }
-        sx={{
-          ".MuiTypography-subtitle2": {
-            minWidth: labelWidth,
-            width: labelWidth,
-          },
-          display: "flex",
-          flexDirection: align === "vertical" ? "column" : "row",
-          my: 0,
-        }}
-      />
+          </UI.CKBox>
+        )}
+        <UI.CKBox
+          w={valueWidth}
+          sx={{ textAlign: align }}
+          flex={["right", "center"].includes(align) ? "none" : 1}
+        >
+          <ROW_COMPONENT data={data} row={row} />
+        </UI.CKBox>
+      </UI.HStack>
     </UI.CKGridItem>
   );
 };
@@ -103,6 +111,9 @@ const BasicDetails = (props: {
     rowStart?: number;
     rowEnd?: number;
     hiddenLabel?: boolean;
+    labelWidth?: string;
+    valueWidth?: string;
+    align?: "center" | "left" | "right";
   }[];
   width?: string;
   data?: any;
@@ -112,8 +123,9 @@ const BasicDetails = (props: {
   gap?: string;
   sx?: CSSObject;
   rowHeight?: string;
+  valueWidth?: string;
 }) => {
-  const { rows, width = "100%", data = {}, labelWidth } = props;
+  const { rows, width = "100%", data = {}, labelWidth, valueWidth } = props;
   const align = true ? "horizontal" : "vertical";
 
   return (
@@ -126,7 +138,8 @@ const BasicDetails = (props: {
             divider
             row={row}
             data={data}
-            labelWidth={labelWidth}
+            labelWidth={row?.labelWidth || labelWidth}
+            valueWidth={row?.valueWidth || valueWidth}
             {...row}
           />
         );

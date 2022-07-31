@@ -27,6 +27,7 @@ import BasicDetails from "@/components/BasicDetails";
 import ProductTableDense from "@/components/ProductTableDense";
 import BaseDetail from "@/container/BaseDetailContainer";
 import RichText from "@/components/RichText";
+import numeral from "numeral";
 
 function Info() {
   const params = useParams();
@@ -126,7 +127,7 @@ function Info() {
           detailContent={
             <BasicDetails
               sx={{ padding: "20px" }}
-              gap="20px"
+              gap="16px"
               data={baoGiaData}
               labelWidth="120px"
               templateColumns="repeat(2, 1fr)"
@@ -199,6 +200,127 @@ function Info() {
                       <UI.Skeleton width="100%" />
                     ) : (
                       <ProductTableDense value={value} />
+                    );
+                  },
+                },
+                {
+                  property: "san_pham",
+                  label: "TỔNG GIÁ TRỊ SẢN PHẨM",
+                  labelWidth: "250px",
+                  valueWidth: "200px",
+                  type: "render",
+                  align: "right",
+                  colSpan: 1,
+                  colStart: 2,
+                  renderRow: (value) => {
+                    const total = (value as any[])?.reduce((total, x) => {
+                      return total + x?.thanh_tien;
+                    }, 0);
+                    return numeral(total).format("0,0");
+                  },
+                },
+                {
+                  property: "ty_gia",
+                  label: "TỶ GIÁ (QUỐC GIA)",
+                  align: "right",
+                  labelWidth: "250px",
+                  valueWidth: "200px",
+                  type: "render",
+                  colSpan: 1,
+                  colStart: 2,
+                  renderRow: (value) => {
+                    return numeral(value).format("0,0") + " VND";
+                  },
+                },
+                {
+                  property: "san_pham",
+                  label: "TỔNG GIÁ TRỊ SẢN PHẨM (VND)",
+                  labelWidth: "250px",
+                  valueWidth: "200px",
+                  align: "right",
+                  type: "render",
+                  colSpan: 1,
+                  colStart: 2,
+                  renderRow: (value, data) => {
+                    const total =
+                      (value as any[])?.reduce((total, x) => {
+                        return total + x?.thanh_tien;
+                      }, 0) * data?.ty_gia;
+                    return numeral(total).format("0,0") + " VND";
+                  },
+                },
+                {
+                  property: "san_pham",
+                  label: "PHÍ DỊCH VỤ (3%)",
+                  labelWidth: "250px",
+                  valueWidth: "200px",
+                  align: "right",
+                  type: "render",
+                  colSpan: 1,
+                  colStart: 2,
+                  renderRow: (value, data) => {
+                    const total =
+                      (value as any[])?.reduce((total, x) => {
+                        return total + x?.thanh_tien;
+                      }, 0) *
+                      data?.ty_gia *
+                      0.03;
+                    return numeral(total).format("0,0") + " VND";
+                  },
+                },
+                {
+                  property: "phu_thu",
+                  label: "PHỤ THU",
+                  labelWidth: "250px",
+                  valueWidth: "200px",
+                  align: "right",
+                  type: "render",
+                  colSpan: 1,
+                  colStart: 2,
+                  renderRow: (value) => {
+                    return numeral(value).format("0,0") + " VND";
+                  },
+                },
+                {
+                  property: "tong_tien",
+                  label: "TỔNG ĐƠN HÀNG",
+                  labelWidth: "250px",
+                  valueWidth: "200px",
+                  align: "right",
+                  type: "render",
+                  colSpan: 1,
+                  colStart: 2,
+                  renderRow: (value) => {
+                    return numeral(value).format("0,0") + " VND";
+                  },
+                },
+                {
+                  property: "datcoc",
+                  label: "ĐẶT CỌC (80-100%)",
+                  labelWidth: "250px",
+                  valueWidth: "200px",
+                  align: "right",
+                  type: "render",
+                  colSpan: 1,
+                  colStart: 2,
+                  renderRow: (value) => {
+                    return value + " %";
+                  },
+                },
+                {
+                  property: "tong_tien",
+                  label: "CÒN LẠI: TỔNG GIÁ TRỊ",
+                  labelWidth: "250px",
+                  valueWidth: "200px",
+                  align: "right",
+                  type: "render",
+                  colSpan: 1,
+                  colStart: 2,
+                  renderRow: (value, data) => {
+                    return (
+                      numeral(value * ((100 - data.datcoc) / 100)).format(
+                        "0,0"
+                      ) + " VND"
                     );
                   },
                 },
