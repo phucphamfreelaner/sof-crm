@@ -30,5 +30,8 @@ export const donViTinhService = createApi({
   }),
 });
 
-export const { useLazySearchDonViTinhQuery, useLazyGetDonViTinhByKeyQuery } =
-  donViTinhService;
+export const {
+  useLazySearchDonViTinhQuery,
+  useLazyGetDonViTinhByKeyQuery,
+  useGetDonViTinhByKeyQuery,
+} = donViTinhService;

@@ -3,7 +3,7 @@ import * as UI from "@/libs/ui";
 import { useBoolean } from "ahooks";
 import { format, isValid } from "date-fns";
 import numeral from "numeral";
-import { isNumber, uniqueId } from "lodash-es";
+import { isEmpty, isNumber, uniqueId } from "lodash-es";
 
 import { useParams, useNavigate } from "react-router-dom";
 import { useGetHopDongByIdQuery } from "@/store/hopDong";
@@ -20,6 +20,7 @@ import {
 } from "@/store/loaiHd";
 import { useGetMauInByIdQuery } from "@/store/mauIn";
 import { useLazyGetKhachHangByIdQuery } from "@/store/khachHang";
+import { useLazyGetSanPhamByIdQuery } from "@/store/sanPham";
 
 import BaseDetail from "@/container/BaseDetailContainer";
 import BasicDetails from "@/components/BasicDetails";
@@ -36,6 +37,12 @@ import {
 import { openModalBottom } from "@/store/modal";
 import { useAppDispatch } from "@/store";
 import DetailInfo from "@/components/DetailInfo";
+import BaseTableDense from "@/components/BaseTableDense";
+import {
+  CurrencyType,
+  ProductName,
+  UnitName,
+} from "@/components/TableCellRender";
 
 function Info() {
   const params = useParams();
@@ -139,6 +146,7 @@ function Info() {
   const [getKhachHangById] = useLazyGetKhachHangByIdQuery();
   const [getNhanVienById] = useLazyGetNhanVienByIdQuery();
   const [getLoaiHopDongByCode] = useLazyGetLoaiHdByCodeQuery();
+  const [getSanPhamById] = useLazyGetSanPhamByIdQuery();
 
   const dispatch = useAppDispatch();
 
@@ -350,6 +358,95 @@ function Info() {
                       </UI.Typography>
                     ) : (
                       value
+                    );
+                  },
+                },
+                {
+                  property: "san_pham",
+                  label: "Sản phẩm",
+                  hiddenLabel: true,
+                  colSpan: 2,
+                  type: "render",
+                  renderRow: (value: any) => {
+                    return isEmpty(value) ? (
+                      <div>Loading...</div>
+                    ) : (
+                      <BaseTableDense
+                        rows={value}
+                        columns={[
+                          {
+                            field: "product_id",
+                            headerName: "Tên sản phẩm",
+                            flex: 1,
+                            width: 200,
+                            renderCell: ({ value }) => {
+                              return <ProductName id={value} />;
+                            },
+                          },
+                          {
+                            field: "don_gia",
+                            headerName: "Đơn giá",
+                            width: 100,
+                            align: "center",
+                            headerAlign: "center",
+                          },
+                          {
+                            field: "so_luong",
+                            headerName: "Số lượng",
+                            width: 100,
+                            align: "center",
+                            headerAlign: "center",
+                          },
+                          {
+                            field: "loai_tien_key",
+                            headerName: "Loại tiền",
+                            width: 100,
+                            align: "center",
+                            headerAlign: "center",
+                            renderCell: ({ value }) => {
+                              return <CurrencyType code={value} />;
+                            },
+                          },
+                          {
+                            field: "don_vi_key",
+                            headerName: "Đơn vị tính",
+                            width: 100,
+                            align: "center",
+                            headerAlign: "center",
+                            renderCell: ({ value }) => {
+                              return <UnitName code={value} />;
+                            },
+                          },
+                          {
+                            field: "thanh_tien",
+                            headerName: "Thành tiền",
+                            align: "center",
+                            headerAlign: "center",
+                            width: 120,
+                          },
+                          {
+                            field: "thue",
+                            headerName: "Thuế, phí",
+                            align: "center",
+                            width: 120,
+                            headerAlign: "center",
+                          },
+                          {
+                            field: "tong_tien",
+                            headerName: "Tổng tiền",
+                            align: "center",
+                            headerAlign: "center",
+                            width: 120,
+                            renderCell: ({ row }) => {
+                              return (
+                                <UI.Typography variant="body2">
+                                  {row?.thanh_tien + row?.thue}
+                                </UI.Typography>
+                              );
+                            },
+                          },
+                        ]}
+                      />
                     );
                   },
                 },
