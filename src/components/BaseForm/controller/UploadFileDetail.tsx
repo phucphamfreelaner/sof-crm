@@ -153,7 +153,7 @@ const UploadFileDetailController = (props: IUploadFileDetailController) => (
   <Controller
     name={props.name || "name"}
     control={props.control}
-    defaultValue={new Date()}
+    defaultValue={[]}
     render={({ field }) => <UploadFileDetailForm {...props} field={field} />}
   />
 );

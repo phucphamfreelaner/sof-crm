@@ -25,9 +25,9 @@ export const smsTemplatesService = createApi({
     }),
     viewSmsTemplate: builder.query({
       transformResponse: (response: any) => response?.data,
-      query: ({ customerId, template_id }) => ({
+      query: ({ objectId, recordId, template_id }) => ({
         method: "GET",
-        url: `/khach-hang/${customerId}/view-sms`,
+        url: `/${objectId}/${recordId}/view-sms`,
         params: {
           template_id: template_id,
         },
@@ -35,9 +35,9 @@ export const smsTemplatesService = createApi({
     }),
     sendSmsTemplate: builder.query({
       transformResponse: (response: any) => response?.data,
-      query: ({ customerId, payload }) => ({
+      query: ({ objectId, recordId, payload }) => ({
         method: "POST",
-        url: `/khach-hang/${customerId}/send-sms`,
+        url: `/${objectId}/${recordId}/send-sms`,
         data: payload,
       }),
     }),
