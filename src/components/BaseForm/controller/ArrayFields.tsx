@@ -5,7 +5,7 @@ import { IBaseController, IFormControl, TSetValue } from "../types";
 import { AiFillPlusCircle } from "react-icons/ai";
 
 import BaseForm from "@/components/BaseForm";
-import { VStack } from "@chakra-ui/layout";
+import { HStack, VStack, Stack } from "@chakra-ui/layout";
 import { AiOutlineDelete } from "react-icons/ai";
 import produce from "immer";
 
@@ -19,6 +19,7 @@ export interface IArrayFieldsController extends IBaseController {
   onWatchChange?: (value: any) => any;
   addBtnLabel?: string;
   label?: string;
+  direction?: "column" | "row";
 }
 
 function ArrayFields(props: IArrayFieldsController) {
@@ -32,6 +33,7 @@ function ArrayFields(props: IArrayFieldsController) {
     onWatchChange,
     addBtnLabel,
     label,
+    direction,
   } = props;
   const { palette } = useTheme();
   const [value, setValue] = React.useState<any[]>(field?.value || []);
@@ -83,11 +85,18 @@ function ArrayFields(props: IArrayFieldsController) {
           onClick={handleAddRow}
           startIcon={<AiFillPlusCircle />}
           variant="contained"
+          size="small"
         >
           {addBtnLabel || "Thêm"}
         </Button>
       )}
-      <VStack spacing="18px">
+      <Stack
+        w="100%"
+        direction={direction}
+        flexWrap="wrap"
+        spacing={0}
+        gap="10px"
+      >
         {value?.map((x: any) => (
           <Box
             key={x._id}
@@ -95,15 +104,16 @@ function ArrayFields(props: IArrayFieldsController) {
               borderColor: palette.grey[200],
               borderWidth: "1px",
               borderStyle: "solid",
-              pt: 2,
+              py: 2,
               px: 2,
               borderRadius: "12px",
+              minWidth: "200px",
             }}
           >
             <BaseForm
               key={x._id}
               gap={gap}
-              templateColumns={templateColumns || "repeat(24, 1fr)"}
+              templateColumns={templateColumns || "repeat(1, 1fr)"}
               defaultValues={x}
               watchFields={fields.map((x) => {
                 //@ts-ignore
@@ -116,12 +126,10 @@ function ArrayFields(props: IArrayFieldsController) {
               fields={[
                 ...fields,
                 {
-                  name: "add",
-                  label: "aaa",
+                  name: "delete",
                   type: "icon-button",
                   icon: <AiOutlineDelete />,
-                  btnSize: "large",
-                  colSpan: 1,
+                  btnSize: "small",
                   color: "error",
                   onClick: () => handleRemoveRow(x._id),
                 },
@@ -129,7 +137,7 @@ function ArrayFields(props: IArrayFieldsController) {
             ></BaseForm>
           </Box>
         ))}
-      </VStack>
+      </Stack>
     </VStack>
   );
 }

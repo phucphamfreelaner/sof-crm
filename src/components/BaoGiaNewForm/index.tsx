@@ -92,11 +92,31 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
   const [tgGiaoHang, setTgGiaoHang] = React.useState("15-20");
   const theme = UI.useTheme();
 
+  const calcTotal = (fromEl: any) => {
+    const sl = +fromEl.getValues("so_luong");
+    const don_gia = +fromEl.getValues("don_gia");
+    const thue = +fromEl.getValues("thue");
+    const phu_thu = +fromEl.getValues("phu_thu");
+    const phi_khac = +fromEl.getValues("phi_khac");
+
+    fromEl.setValue("thanh_tien", don_gia * sl + thue + phu_thu + phi_khac);
+
+    const sanPham = formRef?.current?.getValues("san_pham");
+    const tong = formRef?.current?.setValue(
+      "tong_gia_tri",
+      (sanPham as any[]).reduce(
+        (total, x) =>
+          total + x?.don_gia * x?.so_luong + x?.thue + x?.phu_thu + x?.phi_khac,
+        0
+      )
+    );
+  };
+
   return (
     <BaseForm
       sx={{ width: "100%" }}
       templateColumns="repeat(6, 1fr)"
-      gap={gap || theme.spacing(4)}
+      gap={gap || theme.spacing(2)}
       defaultValues={defaultValues}
       watchFields={["thong_tin_chung"]}
       onWatchChange={(data) => {
@@ -120,6 +140,8 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           gap: "12px",
           onAddRow: onAddSanPham,
           addBtnLabel: "Thêm sản phẩm",
+          direction: "row",
+          templateColumns: "repeat(1, 1fr)",
           fields: [
             {
               name: "product_id",
@@ -129,25 +151,28 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               onSearchChange: onSearchSanPham,
               mapValueKey: "name",
               onGetDataByValue: (id) => getSanPhamById(id),
-              colSpan: 3,
+              size,
+              colSpan: 1,
+            },
+            {
+              name: "src",
+              label: "Đường dẫn",
+              type: "input",
+              colSpan: 1,
               size,
             },
             {
-              name: "chat_lieu_key",
-              label: "Chất liệu",
-              type: "autocomplete",
-              autocompleteOptions: chatLieuData,
-              onSearchChange: onSearchChatLieu,
-              onGetDataByValue: (key: any) => getChatLieuByKey(key),
-              mapValueKey: "name",
-              colSpan: 4,
+              name: "nganh_hang",
+              label: "Ngành hàng",
+              type: "input",
+              colSpan: 1,
               size,
             },
             {
               name: "don_vi_key",
               label: "Đơn vị tính",
               type: "autocomplete",
-              colSpan: 3,
+              colSpan: 1,
               size,
               autocompleteOptions: donViTinhData,
               onSearchChange: onSearchDonViTinh,
@@ -159,11 +184,21 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               label: "Số lượng",
               type: "input",
               textType: "number",
-              colSpan: 3,
+              colSpan: 1,
               size,
-              onValueChange: (data, fromEl) => {
-                const sl = +fromEl.getValues("thanh_tien");
-                fromEl.setValue("thanh_tien", +data * sl);
+              onValueChange: (__, fromEl) => {
+                calcTotal(fromEl);
+              },
+            },
+            {
+              name: "don_gia",
+              label: "Đơn giá",
+              type: "input-mask",
+              textType: "number",
+              colSpan: 1,
+              size,
+              onValueChange: (__, fromEl) => {
+                calcTotal(fromEl);
               },
             },
             {
@@ -171,103 +206,159 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               label: "Thuế",
               type: "input-mask",
               textType: "number",
-              colSpan: 3,
+              colSpan: 1,
               size,
-            },
-            {
-              name: "phi_chuyen_noi_dia",
-              label: "Phí VC nộ địa",
-              type: "input-mask",
-              textType: "number",
-              colSpan: 3,
-              size,
-            },
-            {
-              name: "phi_mua_ho",
-              label: "Phí mua hộ",
-              type: "input-mask",
-              textType: "number",
-              colSpan: 3,
-              size,
-            },
-            {
-              name: "phi_khac",
-              label: "Phí khác",
-              type: "input-mask",
-              textType: "number",
-              colSpan: 2,
-              size,
-            },
-            {
-              name: "ty_gia",
-              label: "Tỷ giá",
-              type: "input-mask",
-              textType: "number",
-              colSpan: 3,
-              size,
-            },
-            {
-              name: "thanh_tien_chua_phu_thu",
-              label: "Tổng đơn(chưa ship, phụ thu)",
-              type: "input-mask",
-              textType: "number",
-              colSpan: 3,
-              size,
-            },
-            {
-              name: "dat_coc",
-              label: "Đặt cọc",
-              type: "input-mask",
-              textType: "number",
-              colSpan: 3,
-              size,
+              onValueChange: (__, fromEl) => {
+                calcTotal(fromEl);
+              },
             },
             {
               name: "phu_thu",
               label: "Phụ thu",
               type: "input-mask",
               textType: "number",
-              colSpan: 3,
+              colSpan: 1,
+              size,
+              onValueChange: (__, fromEl) => {
+                calcTotal(fromEl);
+              },
+            },
+
+            {
+              name: "phi_khac",
+              label: "Phí khác",
+              type: "input-mask",
+              textType: "number",
+              colSpan: 1,
+              size,
+              onValueChange: (__, fromEl) => {
+                calcTotal(fromEl);
+              },
+            },
+
+            {
+              name: "thanh_tien",
+              label: "Tổng đơn",
+              type: "input-mask",
+              textType: "number",
+              colSpan: 1,
               size,
             },
 
             {
-              name: "don_gia",
-              label: "Đơn giá",
-              type: "input-mask",
-              textType: "number",
-              colSpan: 3,
-              size,
-              onValueChange: (data, fromEl) => {
-                const sl = +fromEl.getValues("so_luong");
-                fromEl.setValue("thanh_tien", +data * sl);
-              },
-            },
-            {
-              name: "thanh_tien",
-              label: "Thành tiền",
-              type: "input-mask",
-              textType: "number",
-              colSpan: 3,
-              size,
-            },
-            {
-              name: "tong_thanh_tien",
-              label: "Tổng thành tiền",
-              type: "input-mask",
-              textType: "number",
-              colSpan: 3,
-              size,
-            },
-            {
               name: "note",
               label: "Ghi chú",
               type: "input",
-              colSpan: 2,
+              multiline: true,
+              rows: 2,
+              colSpan: 1,
               size,
             },
           ],
         },
+        {
+          name: "tong_gia_tri",
+          label: "TỔNG GIÁ TRỊ SẢN PHẨM",
+          onValueChange(data, { setValue, getValues }) {
+            const tyGia = +getValues("ty_gia");
+            const phuThu = +getValues("phu_thu");
+            const datCoc = +getValues("datcoc") || 0;
+            setValue("tong_gia_tri_vnd", data * tyGia);
+            setValue("phi_dich_vu", data * tyGia * 0.03);
+            setValue(
+              "tong_don_hang",
+              data * tyGia + data * tyGia * 0.03 + phuThu
+            );
+            setValue(
+              "tong_gia_tri_con_lai",
+              (data * tyGia + data * tyGia * 0.03 + phuThu) * (datCoc / 100)
+            );
+          },
+          textType: "number",
+          type: "input-mask",
+          colSpan: 2,
+          colStart: 5,
+          size,
+        },
+        {
+          name: "ty_gia",
+          label: "TỶ GIÁ (QUỐC GIA)",
+          type: "input-mask",
+          textType: "number",
+          colSpan: 2,
+          colStart: 5,
+          size,
+        },
+        {
+          name: "tong_gia_tri_vnd",
+          label: "TỔNG GIÁ TRỊ SẢN PHẨM (VND)",
+          textType: "number",
+          type: "input-mask",
+          colSpan: 2,
+          colStart: 5,
+          size,
+        },
+        {
+          name: "phi_dich_vu",
+          label: "PHÍ DỊCH VỤ (3%)",
+          textType: "number",
+          type: "input-mask",
+          colSpan: 2,
+          colStart: 5,
+          size,
+        },
+        {
+          name: "phu_thu",
+          label: "PHỤ THU",
+          textType: "number",
+          type: "input-mask",
+          colSpan: 2,
+          colStart: 5,
+          size,
+          onValueChange(phuThu, { setValue, getValues }) {
+            const tyGia = +getValues("ty_gia");
+            const tongGiaTri = +getValues("tong_gia_tri") || 0;
+            const datCoc = +getValues("datcoc") || 0;
+            setValue("tong_gia_tri_vnd", tongGiaTri * tyGia);
+            setValue("phi_dich_vu", tongGiaTri * tyGia * 0.03);
+            setValue(
+              "tong_don_hang",
+              tongGiaTri * tyGia + tongGiaTri * tyGia * 0.03 + phuThu
+            );
+            setValue(
+              "tong_gia_tri_con_lai",
+              (tongGiaTri * tyGia + tongGiaTri * tyGia * 0.03 + phuThu) *
+                (datCoc / 100)
+            );
+          },
+        },
+        {
+          name: "tong_don_hang",
+          label: "TỔNG ĐƠN HÀNG",
+          textType: "number",
+          type: "input-mask",
+          colSpan: 2,
+          colStart: 5,
+          size,
+        },
+        {
+          name: "datcoc",
+          label: "ĐẶT CỌC (80-100%)",
+          type: "input",
+          colSpan: 2,
+          colStart: 5,
+          size,
+        },
+        {
+          name: "tong_gia_tri_con_lai",
+          label: "CÒN LẠI: TỔNG GIÁ TRỊ",
+          textType: "number",
+          type: "input-mask",
+          colSpan: 2,
+          colStart: 5,
+          size,
+        },
+
         {
           name: "thong_tin_chung",
           label: "Thông tin chung",
@@ -342,6 +433,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
             },
           ],
         },
+
         {
           name: "dieukhoan",
           label: "Các điều khoản khác",
