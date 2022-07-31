@@ -8,7 +8,7 @@ export const ProductName = ({ id }: { id: string }) => {
   return isLoading ? (
     <UI.Skeleton width="100%" />
   ) : (
-    <UI.Typography variant="body2">{data?.name}</UI.Typography>
+    <UI.Typography variant="caption">{data?.name}</UI.Typography>
   );
 };
 
@@ -20,7 +20,7 @@ export const UnitName = ({ code }: { code: string }) => {
   return isLoading ? (
     <UI.Skeleton width="100%" />
   ) : (
-    <UI.Typography variant="body2">{data?.name}</UI.Typography>
+    <UI.Typography variant="caption">{data?.name}</UI.Typography>
   );
 };
 
@@ -32,6 +32,6 @@ export const CurrencyType = ({ code }: { code: string }) => {
   return isLoading ? (
     <UI.Skeleton width="100%" />
   ) : (
-    <UI.Typography variant="body2">{data?.name}</UI.Typography>
+    <UI.Typography variant="caption">{data?.name}</UI.Typography>
   );
 };
