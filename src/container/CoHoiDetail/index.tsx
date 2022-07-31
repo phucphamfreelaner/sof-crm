@@ -45,8 +45,6 @@ import {
   usePutNhiemVuByIdMutation,
 } from "@/store/nhiemVu";
 
-import { useLazyGetNhanVienByIdQuery } from "@/store/nhanVien";
-
 interface ICoHoiDetail {
   coHoiData: ICoHoi;
   isLoadingCoHoi: boolean;

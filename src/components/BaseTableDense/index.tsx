@@ -34,6 +34,10 @@ function BaseTable(props: IBaseTable) {
         ".MuiDataGrid-cell": {
           borderBottom: "1px solid #eeeef9",
         },
+        ".MuiDataGrid-columnHeaderTitle": {
+          fontSize: 11,
+          fontWeight: 600,
+        },
       }}
       columns={columns}
     />
