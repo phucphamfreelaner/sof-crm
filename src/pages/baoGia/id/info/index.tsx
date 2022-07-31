@@ -111,7 +111,21 @@ function Info() {
           isOpen={isEdit}
           editContent={
             <UI.CKBox p="26px">
-              <BaoGiaForm />
+              <BaoGiaForm
+                id={params?.id}
+                coHoiLabel={coHoiData?.name}
+                baoGiaData={baoGiaData}
+                loaiBaoGiaLabel={loaiBaoGiaData?.name}
+                ngonNguLabel={ngonNguData?.ten}
+                loaiTienLabel={loaiTienData?.name}
+                isSuccess={
+                  isSuccessBaoGia &&
+                  isSuccessCoHoi &&
+                  isSuccessLoaiBaoGia &&
+                  isSuccessNgonNgu &&
+                  isSuccessLoaiTien
+                }
+              />
             </UI.CKBox>
           }
           detailContent={
