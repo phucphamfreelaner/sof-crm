@@ -28,11 +28,7 @@ import ProductTableDense from "@/components/ProductTableDense";
 import BaseDetail from "@/container/BaseDetailContainer";
 import RichText from "@/components/RichText";
 import numeral from "numeral";
-import {
-  CurrencyType,
-  ProductName,
-  UnitName,
-} from "@/components/TableCellRender";
+
 import { useAppDispatch } from "@/store";
 import {
   AiOutlineFolderAdd,
@@ -235,6 +231,7 @@ function Info() {
           editContent={
             <UI.CKBox p="26px">
               <BaoGiaForm
+                size="small"
                 id={params?.id}
                 coHoiLabel={coHoiData?.name}
                 baoGiaData={baoGiaData}

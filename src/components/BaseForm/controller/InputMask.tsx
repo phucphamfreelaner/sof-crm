@@ -48,7 +48,6 @@ const NumberFormatCustom = React.forwardRef<
         });
       }}
       thousandSeparator=","
-      suffix=" đ"
     />
   );
 });
