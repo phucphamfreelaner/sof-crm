@@ -26,11 +26,12 @@ function RichText(props: ILongText) {
     defaultValue,
     isDisabled,
     label,
+    sx,
   } = props;
   const editorRef = React.useRef(null);
 
   return (
-    <Box sx={{ width: "100%", position: "relative" }}>
+    <Box sx={{ width: "100%", position: "relative", ...sx }}>
       {label && (
         <Typography
           top="0px"

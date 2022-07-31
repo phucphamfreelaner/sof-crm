@@ -22,15 +22,19 @@ export const nhanVienService = createApi({
     getListNhanVien: builder.query({
       transformResponse: (response: any) =>
         Object.assign({}, ...response?.data?.map((p) => ({ [p.id]: p.name }))),
-      //response?.data.map((x) => {return {label: x.name, value: x.id}}),
-      //response?.data?.reduce((ac,{["Name Test"]:x,...rest}) => (ac[x] = rest,ac),{})
-
       query: () => ({
         method: "GET",
         url: `/nhan-vien?take=1000`,
       }),
     }),
     searchNhanVienByCode: builder.query<any, { id: any }>({
+      transformResponse: (response: any) => response?.data,
+      query: ({ id }) => ({
+        method: "GET",
+        url: `/nhan-vien/${id}`,
+      }),
+    }),
+    getNhanVienById: builder.query<any, { id: any }>({
       transformResponse: (response: any) => response?.data,
       query: ({ id }) => ({
         method: "GET",
@@ -45,4 +49,5 @@ export const {
   useSearchNhanVienQuery,
   useSearchNhanVienByCodeQuery,
   useGetListNhanVienQuery,
+  useLazyGetNhanVienByIdQuery,
 } = nhanVienService;

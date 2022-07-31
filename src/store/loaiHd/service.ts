@@ -13,7 +13,6 @@ export const loaiHdService = createApi({
   endpoints: (builder) => ({
     searchloaiHd: builder.query({
       transformResponse: (response: any) =>
-        //response?.data.map((x) => ({ label: x.name, value: x.id })),
         Object.keys(response).map((key) => ({
           label: response?.[key],
           value: key,
@@ -29,6 +28,13 @@ export const loaiHdService = createApi({
       query: ({ name }) => ({
         method: "GET",
         url: `/cau-hinh/group/loai_hd?take=10&s=${name}`,
+      }),
+    }),
+    getLoaiHdByCode: builder.query({
+      transformResponse: (response: any) => response,
+      query: ({ code }) => ({
+        method: "GET",
+        url: `/cau-hinh/group/loai_hd/key/${code}`,
       }),
     }),
     searchBenHd: builder.query({
@@ -58,4 +64,6 @@ export const {
   useGetLoaiHdByIdQuery,
   useSearchloaiHdQuery,
   useLazySearchBenHdQuery,
+  useLazyGetLoaiHdByIdQuery,
+  useLazyGetLoaiHdByCodeQuery,
 } = loaiHdService;

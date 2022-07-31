@@ -190,7 +190,6 @@ function HopDongFormContainer(props: IBaoGiaForm) {
     useLazyPutHopDongByIdQuery();
 
   const handleSaveHopDong = (data: any, id: any) => {
-    console.log("🚀 ~ data", data);
     if (id) {
       const san_pham = data?.san_pham.map((x: any, index: number) => ({
         ...hopDongData?.san_pham?.[index],
@@ -393,8 +392,8 @@ function HopDongFormContainer(props: IBaoGiaForm) {
   }, [isSuccess]);
 
   return (
-    <UI.Card elevation={10}>
-      <UI.CardContent>
+    <UI.CKBox>
+      <UI.CKBox>
         {loadingApi || isFetchingBaoGia || isLoadingBaogia ? (
           <Loading />
         ) : (
@@ -457,8 +456,8 @@ function HopDongFormContainer(props: IBaoGiaForm) {
             defaultValues={defaultValues}
           />
         )}
-      </UI.CardContent>
-      <UI.CardActions sx={{ justifyContent: "flex-end" }}>
+      </UI.CKBox>
+      <UI.CKBox sx={{ justifyContent: "flex-end" }}>
         <LoadingButton
           loading={isLoadingCreateHopDong || isLoadingUpdateHopDong}
           onClick={() =>
@@ -469,8 +468,8 @@ function HopDongFormContainer(props: IBaoGiaForm) {
         >
           {id ? "Cập nhật hợp đồng" : "Lưu hợp đồng"}
         </LoadingButton>
-      </UI.CardActions>
-    </UI.Card>
+      </UI.CKBox>
+    </UI.CKBox>
   );
 }
 

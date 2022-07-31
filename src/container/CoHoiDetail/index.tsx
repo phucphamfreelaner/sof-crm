@@ -45,6 +45,8 @@ import {
   usePutNhiemVuByIdMutation,
 } from "@/store/nhiemVu";
 
+import { useLazyGetNhanVienByIdQuery } from "@/store/nhanVien";
+
 interface ICoHoiDetail {
   coHoiData: ICoHoi;
   isLoadingCoHoi: boolean;
@@ -125,13 +127,13 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
       headerTitle="Cơ hội"
       headerBreadcrumbs={breadcrumbs}
       actionMenus={[
-        {
-          icon: <AiOutlineSave />,
-          label: "Lưu trữ",
-          onClick: () => {
-            console.log("data");
-          },
-        },
+        // {
+        //   icon: <AiOutlineSave />,
+        //   label: "Lưu trữ",
+        //   onClick: () => {
+        //     console.log("data");
+        //   },
+        // },
         {
           icon: <AiOutlineFolderAdd />,
           label: "Thêm mới",
@@ -151,13 +153,13 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
             );
           },
         },
-        {
-          icon: <AiOutlineCopy />,
-          label: "Nhân bản",
-          onClick: () => {
-            console.log("");
-          },
-        },
+        // {
+        //   icon: <AiOutlineCopy />,
+        //   label: "Nhân bản",
+        //   onClick: () => {
+        //     console.log("");
+        //   },
+        // },
         {
           icon: <AiOutlineMail />,
           label: "Gửi email",
@@ -196,13 +198,13 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
             );
           },
         },
-        {
-          icon: <AiOutlineDelete />,
-          label: "Xóa bỏ",
-          onClick: () => {
-            console.log("data");
-          },
-        },
+        // {
+        //   icon: <AiOutlineDelete />,
+        //   label: "Xóa bỏ",
+        //   onClick: () => {
+        //     console.log("data");
+        //   },
+        // },
       ]}
       detailContent={
         <DetailInfo
