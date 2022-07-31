@@ -25,9 +25,9 @@ export const mailTemplatesService = createApi({
     }),
     viewMailTemplate: builder.query({
       transformResponse: (response: any) => response?.data,
-      query: ({ customerId, template_id }) => ({
+      query: ({ objectId, recordId, template_id }) => ({
         method: "GET",
-        url: `/khach-hang/${customerId}/view-mail`,
+        url: `/${objectId}/${recordId}/view-mail`,
         params: {
           template_id: template_id,
         },
@@ -35,9 +35,9 @@ export const mailTemplatesService = createApi({
     }),
     sendMailTemplate: builder.query({
       transformResponse: (response: any) => response?.data,
-      query: ({ customerId, payload }) => ({
+      query: ({ objectId, recordId, payload }) => ({
         method: "POST",
-        url: `/khach-hang/${customerId}/send-mail`,
+        url: `/${objectId}/${recordId}/send-mail`,
         data: payload,
       }),
     }),

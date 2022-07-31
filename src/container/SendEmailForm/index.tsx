@@ -12,16 +12,27 @@ import {
 import { useAppDispatch } from "@/store";
 import { closeModalBottom } from "@/store/modal";
 interface ISendMailContainer {
-  customerId?: string | number;
+  recordId?: string | number;
+  objectId?: string | number;
   onAfterUpdated?: (data: any) => any;
   defaultValues?: any;
   modalId?: any;
   gap?: string;
   size?: "medium" | "small";
+  isUploadFile?: boolean;
+  file?: any;
 }
 
 const SendMailContainer = (props: ISendMailContainer) => {
-  const { customerId, modalId: id, gap, size } = props;
+  const {
+    objectId,
+    recordId,
+    modalId: id,
+    gap,
+    size,
+    isUploadFile,
+    file,
+  } = props;
 
   const theme = UI.useTheme();
   const [searchMailTemplate, { data, isLoading, isFetching, isSuccess }] =
@@ -52,16 +63,15 @@ const SendMailContainer = (props: ISendMailContainer) => {
       });
   }, []);
 
-  useEffect(() => {}, [customerId]);
-
   const hanleSendEmail = (data) => {
     const payload = {
+      file: file,
+      files: [],
       ...data,
-
       template_id: data?.template_id?.value,
-      customer_id: customerId,
+      customer_id: recordId,
     };
-    sendEmailTemplate({ customerId, payload });
+    sendEmailTemplate({ objectId, recordId, payload });
   };
 
   useEffect(() => {
@@ -88,7 +98,7 @@ const SendMailContainer = (props: ISendMailContainer) => {
         const template_id = data?.template_id?.value;
         const template_state = data?.template_id;
         if (template_id) {
-          viewMailTemplate({ customerId, template_id })
+          viewMailTemplate({ objectId, recordId, template_id })
             .unwrap()
             .then((res) => {
               setDefaultValues((prevState) => ({
@@ -142,6 +152,32 @@ const SendMailContainer = (props: ISendMailContainer) => {
           label: "Nội dung",
           colSpan: 6,
         },
+        isUploadFile
+          ? {
+              name: "files",
+              label: "UPLOAD FILE",
+              colSpan: 6,
+              type: "upload-file-detail",
+              templateColumns: "repeat(10, 1fr)",
+              gap: "12px",
+              fields: [
+                {
+                  type: "input",
+                  name: "type",
+                  label: "Loại",
+                  colSpan: 3,
+                  size,
+                },
+                {
+                  type: "input",
+                  name: "note",
+                  label: "Diễn giải",
+                  colSpan: 3,
+                  size,
+                },
+              ],
+            }
+          : undefined,
       ]}
       childrenColSpan={6}
       childrenSx={{ justifyContent: "flex-end", display: "flex" }}

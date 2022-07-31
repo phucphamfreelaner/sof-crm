@@ -9,6 +9,7 @@ import { useBoolean } from "ahooks";
 import CoHoiNew from "@/container/CoHoiForm";
 import SendEmailForm from "@/container/SendEmailForm";
 import SendSmsForm from "@/container/SendSmsForm";
+import BaoGiaNew from "@/container/BaoGiaNew";
 
 interface IWindowPopup {
   id: number | string;
@@ -36,19 +37,31 @@ function WindowPopup(props: IWindowPopup) {
         customerId={other?.customerId}
       />
     ),
+    "bao-gia-new": (
+      <BaoGiaNew
+        gap="14px"
+        size="small"
+        modalId={id}
+        customerId={other?.customerId}
+      />
+    ),
     "email-new": (
       <SendEmailForm
         gap="16px"
         size="small"
-        customerId={other?.customerId}
+        recordId={other?.recordId}
+        objectId={other?.objectId}
+        isUploadFile={other?.isUploadFile}
         modalId={id}
+        file={other?.file}
       />
     ),
     "sms-new": (
       <SendSmsForm
         gap="16px"
         size="small"
-        customerId={other?.customerId}
+        recordId={other?.recordId}
+        objectId={other?.objectId}
         modalId={id}
       />
     ),

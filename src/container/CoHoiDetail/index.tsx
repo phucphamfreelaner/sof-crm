@@ -171,7 +171,8 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
                   width: "500px",
                   id: `email-${id}`,
                   type: "email-new",
-                  customerId: coHoiData?.customer_id,
+                  recordId: coHoiData?.customer_id,
+                  objectId: "khach-hang",
                 },
               })
             );
@@ -190,7 +191,8 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
                   width: "500px",
                   id: `gui-sms-${id}`,
                   type: "sms-new",
-                  customerId: coHoiData?.customer_id,
+                  recordId: coHoiData?.customer_id,
+                  objectId: "khach-hang",
                 },
               })
             );

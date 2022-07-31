@@ -46,6 +46,10 @@ interface IBaoGiaForm {
   ngonNguLabel?: string;
   loaiTienLabel?: string;
   mauInLabel?: string;
+  gap?: string;
+  size?: "medium" | "small";
+  modalId?: any;
+  customerId?: any;
 }
 
 function BaoGaiForm(props: IBaoGiaForm) {
@@ -57,6 +61,9 @@ function BaoGaiForm(props: IBaoGiaForm) {
     loaiBaoGiaLabel,
     ngonNguLabel,
     loaiTienLabel,
+    gap,
+    size = "medium",
+    customerId,
   } = props;
   const [query] = useSearchParams();
 
@@ -172,7 +179,10 @@ function BaoGaiForm(props: IBaoGiaForm) {
 
   React.useEffect(() => {
     searchCty({ name: "" });
-    searchCoHoi({ name: "", customerId: +query.get("customerId") });
+    searchCoHoi({
+      name: "",
+      customerId: +(query.get("customerId") || customerId),
+    });
     searchLoaiBaoGiaData({ name: "" });
     searchNgonNgu({ name: "" });
     searchLoaiTien({ name: "" });
@@ -294,7 +304,8 @@ function BaoGaiForm(props: IBaoGiaForm) {
     const payload = {
       ...data,
       san_pham,
-      customer_id: +query.get("customerId") || baoGiaData?.customer_id,
+      customer_id:
+        +query.get("customerId") || baoGiaData?.customer_id || customerId,
       ngon_ngu_key: data?.ngon_ngu_key?.value,
       loai_tien_key: data?.loai_tien_key?.value,
       loai_bao_gia: data?.loai_bao_gia?.value,
@@ -332,6 +343,8 @@ function BaoGaiForm(props: IBaoGiaForm) {
     <UI.Card>
       <UI.CardContent sx={{ padding: "14px !important" }}>
         <BaoGiaNewForm
+          gap={gap}
+          size={size}
           formRef={elForm}
           key={JSON.stringify(defaultValues)}
           isLoadingSearchCompany={isLoadingCompany || isFetchingCompany}
@@ -342,7 +355,10 @@ function BaoGaiForm(props: IBaoGiaForm) {
           onSearchCoHoi={(name) =>
             searchCoHoi({
               name,
-              customerId: +query.get("customerId") || +baoGiaData?.customer_id,
+              customerId:
+                +query.get("customerId") ||
+                +baoGiaData?.customer_id ||
+                customerId,
             })
           }
           loaiBaoGiaData={loaiBaoGiaData}

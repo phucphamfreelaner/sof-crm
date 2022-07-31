@@ -3,7 +3,7 @@ import { isEmpty } from "lodash-es";
 import { useBoolean } from "ahooks";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { useGetBaoGiaByIdQuery } from "@/store/baoGia";
+import { useGetBaoGiaByIdQuery, useGetViewBaoGiaQuery } from "@/store/baoGia";
 import { useGetCoHoiByIdQuery } from "@/store/coHoi";
 import {
   useGetLoaiBaoGiaByKeyQuery,
@@ -28,10 +28,24 @@ import ProductTableDense from "@/components/ProductTableDense";
 import BaseDetail from "@/container/BaseDetailContainer";
 import RichText from "@/components/RichText";
 import numeral from "numeral";
+import {
+  CurrencyType,
+  ProductName,
+  UnitName,
+} from "@/components/TableCellRender";
+import { useAppDispatch } from "@/store";
+import {
+  AiOutlineFolderAdd,
+  AiOutlineMail,
+  AiOutlineMessage,
+} from "react-icons/ai";
+import { uniqueId } from "lodash-es";
+import { openModalBottom } from "@/store/modal";
 
 function Info() {
   const params = useParams();
   const [isEdit, setEdit] = useBoolean(false);
+  const dispatch = useAppDispatch();
 
   const {
     data: baoGiaData,
@@ -92,6 +106,11 @@ function Info() {
     </UI.Typography>,
   ];
 
+  const { data: fileViewBaoGia } = useGetViewBaoGiaQuery(
+    { id: baoGiaData?.id },
+    { skip: !baoGiaData?.id }
+  );
+
   return (
     <BaseDetail
       id={coHoiData?.id}
@@ -102,6 +121,76 @@ function Info() {
       closeEdit={setEdit.setFalse}
       headerTitle="Cơ hội"
       headerBreadcrumbs={breadcrumbs}
+      actionMenus={[
+        // {
+        //   icon: <AiOutlineSave />,
+        //   label: "Lưu trữ",
+        //   onClick: () => {
+        //     console.log("data");
+        //   },
+        // },
+        {
+          icon: <AiOutlineFolderAdd />,
+          label: "Thêm mới",
+          onClick: () => {
+            const id = uniqueId();
+            dispatch(
+              openModalBottom({
+                data: {
+                  title: "Thêm báo giá mới",
+                  height: "1000px",
+                  width: "1500px",
+                  id: `bao-gia-${id}`,
+                  type: "bao-gia-new",
+                  customerId: coHoiData?.customer_id,
+                },
+              })
+            );
+          },
+        },
+        {
+          icon: <AiOutlineMail />,
+          label: "Gửi email",
+          onClick: () => {
+            const id = uniqueId();
+            dispatch(
+              openModalBottom({
+                data: {
+                  title: "Gửi email",
+                  height: "800px",
+                  width: "500px",
+                  id: `email-${id}`,
+                  type: "email-new",
+                  recordId: baoGiaData?.id,
+                  objectId: "bao-gia",
+                  isUploadFile: true,
+                  file: fileViewBaoGia,
+                },
+              })
+            );
+          },
+        },
+        {
+          icon: <AiOutlineMessage />,
+          label: "Gửi SMS",
+          onClick: () => {
+            const id = uniqueId();
+            dispatch(
+              openModalBottom({
+                data: {
+                  title: "Gửi sms",
+                  height: "620px",
+                  width: "500px",
+                  id: `gui-sms-${id}`,
+                  type: "sms-new",
+                  recordId: baoGiaData?.id,
+                  objectId: "bao-gia",
+                },
+              })
+            );
+          },
+        },
+      ]}
       detailContent={
         <DetailInfo
           isOpen={isEdit}

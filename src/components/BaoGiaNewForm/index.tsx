@@ -3,6 +3,8 @@ import * as UI from "@/libs/ui";
 import BaseForm from "@/components/BaseForm";
 import { useBoolean } from "ahooks";
 interface IBaoGiaNewForm {
+  gap?: string;
+  size?: "medium" | "small";
   companyData?: any;
   onSearchCompany?: (text: any) => any;
   isLoadingSearchCompany?: boolean;
@@ -81,17 +83,20 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
     getDonViTinhByKey,
     getCongTyById,
     getMauInById,
+    gap,
+    size = "medium",
   } = props;
 
   const [isVAT, setIsVAT] = useBoolean(false);
   const [isShipFee, setIsShipFee] = useBoolean(false);
   const [tgGiaoHang, setTgGiaoHang] = React.useState("15-20");
+  const theme = UI.useTheme();
 
   return (
     <BaseForm
       sx={{ width: "100%" }}
       templateColumns="repeat(6, 1fr)"
-      gap="26px"
+      gap={gap || theme.spacing(4)}
       defaultValues={defaultValues}
       watchFields={["thong_tin_chung"]}
       onWatchChange={(data) => {
@@ -109,6 +114,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
         {
           name: "san_pham",
           colSpan: 6,
+          size,
           type: "array-fields",
           label: "",
           gap: "12px",
@@ -124,6 +130,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               mapValueKey: "name",
               onGetDataByValue: (id) => getSanPhamById(id),
               colSpan: 3,
+              size,
             },
             {
               name: "chat_lieu_key",
@@ -134,12 +141,14 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               onGetDataByValue: (key: any) => getChatLieuByKey(key),
               mapValueKey: "name",
               colSpan: 4,
+              size,
             },
             {
               name: "don_vi_key",
               label: "Đơn vị tính",
               type: "autocomplete",
               colSpan: 3,
+              size,
               autocompleteOptions: donViTinhData,
               onSearchChange: onSearchDonViTinh,
               onGetDataByValue: (key: any) => getDonViTinhByKey(key),
@@ -151,6 +160,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               type: "input",
               textType: "number",
               colSpan: 3,
+              size,
               onValueChange: (data, fromEl) => {
                 const sl = +fromEl.getValues("thanh_tien");
                 fromEl.setValue("thanh_tien", +data * sl);
@@ -162,6 +172,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               type: "input-mask",
               textType: "number",
               colSpan: 3,
+              size,
             },
             {
               name: "phi_chuyen_noi_dia",
@@ -169,6 +180,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               type: "input-mask",
               textType: "number",
               colSpan: 3,
+              size,
             },
             {
               name: "phi_mua_ho",
@@ -176,6 +188,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               type: "input-mask",
               textType: "number",
               colSpan: 3,
+              size,
             },
             {
               name: "phi_khac",
@@ -183,6 +196,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               type: "input-mask",
               textType: "number",
               colSpan: 2,
+              size,
             },
             {
               name: "ty_gia",
@@ -190,6 +204,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               type: "input-mask",
               textType: "number",
               colSpan: 3,
+              size,
             },
             {
               name: "thanh_tien_chua_phu_thu",
@@ -197,6 +212,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               type: "input-mask",
               textType: "number",
               colSpan: 3,
+              size,
             },
             {
               name: "dat_coc",
@@ -204,6 +220,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               type: "input-mask",
               textType: "number",
               colSpan: 3,
+              size,
             },
             {
               name: "phu_thu",
@@ -211,6 +228,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               type: "input-mask",
               textType: "number",
               colSpan: 3,
+              size,
             },
 
             {
@@ -219,6 +237,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               type: "input-mask",
               textType: "number",
               colSpan: 3,
+              size,
               onValueChange: (data, fromEl) => {
                 const sl = +fromEl.getValues("so_luong");
                 fromEl.setValue("thanh_tien", +data * sl);
@@ -230,6 +249,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               type: "input-mask",
               textType: "number",
               colSpan: 3,
+              size,
             },
             {
               name: "tong_thanh_tien",
@@ -237,12 +257,14 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               type: "input-mask",
               textType: "number",
               colSpan: 3,
+              size,
             },
             {
               name: "note",
               label: "Ghi chú",
               type: "input",
               colSpan: 2,
+              size,
             },
           ],
         },
@@ -251,6 +273,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           label: "Thông tin chung",
           type: "collapse-fields",
           colSpan: 6,
+          size,
           gap: "10px",
           templateColumns: "repeat(6, 1fr)",
           templateRows: "repeat(2, 1fr)",
@@ -260,6 +283,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               label: "chu_thich",
               type: "label",
               colSpan: 3,
+              size,
               rowSpan: 2,
               labelContent: (
                 <UI.VStack alignItems="flex-start" w="100%">
@@ -285,18 +309,21 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               label: "Ngày báo giá",
               type: "date-picker",
               colSpan: 1,
+              size,
             },
             {
               name: "time",
               label: "TG giao hàng",
               type: "input",
               colSpan: 1,
+              size,
             },
             {
               name: "datcoc",
               label: "Đặt cọc (%)",
               type: "input",
               colSpan: 1,
+              size,
               textType: "number",
             },
             {
@@ -304,12 +331,14 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               label: "Thuế VAT",
               type: "checkbox",
               colSpan: 1,
+              size,
             },
             {
               name: "phi_giao_hang",
               label: "Giao hàng có tính thuế",
               type: "checkbox",
               colSpan: 2,
+              size,
             },
           ],
         },
@@ -318,6 +347,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           label: "Các điều khoản khác",
           type: "input",
           colSpan: 3,
+          size,
           multiline: true,
           rows: 4,
         },
@@ -326,6 +356,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           label: "Ghi chú",
           type: "input",
           colSpan: 3,
+          size,
           multiline: true,
           rows: 4,
         },
@@ -334,6 +365,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           label: "Công ty",
           type: "autocomplete",
           colSpan: 2,
+          size,
           isLoading: isLoadingSearchCompany,
           autocompleteOptions: companyData || [],
           onSearchChange: onSearchCompany,
@@ -345,6 +377,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           label: "Cơ hội",
           type: "autocomplete",
           colSpan: 2,
+          size,
           isLoading: isLoadingSearchCoHoi,
           autocompleteOptions: coHoiData || [],
           onSearchChange: onSearchCoHoi,
@@ -354,6 +387,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           label: "Loại báo giá",
           type: "autocomplete",
           colSpan: 2,
+          size,
           isLoading: isLoadingLoaiBaoGia,
           autocompleteOptions: loaiBaoGiaData || [],
           onSearchChange: onSearchLoaiBaoGia,
@@ -363,6 +397,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           label: "Ngôn ngữ",
           type: "autocomplete",
           colSpan: 2,
+          size,
           isLoading: isLoadingNgonNgu,
           autocompleteOptions: ngonNguData || [],
           onSearchChange: onSearchNgonNgu,
@@ -372,6 +407,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           label: "Loại tiền",
           type: "autocomplete",
           colSpan: 2,
+          size,
           isLoading: isLoadingLoaiTien,
           autocompleteOptions: loaiTienData || [],
           onSearchChange: onSearchLoaiTien,
@@ -381,6 +417,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           label: "Mẫu",
           type: "autocomplete",
           colSpan: 2,
+          size,
           isLoading: isLoadingMauIn,
           autocompleteOptions: mauInData || [],
           onSearchChange: onSearchMauIn,
