@@ -29,5 +29,8 @@ export const sanPhamService = createApi({
   }),
 });
 
-export const { useLazySearchSanPhamQuery, useLazyGetSanPhamByIdQuery } =
-  sanPhamService;
+export const {
+  useLazySearchSanPhamQuery,
+  useLazyGetSanPhamByIdQuery,
+  useGetSanPhamByIdQuery,
+} = sanPhamService;
