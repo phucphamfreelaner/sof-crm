@@ -29,6 +29,13 @@ export const loaiBaoGiaService = createApi({
         url: `/cau-hinh/group/loai_bao_gia/key/${value}`,
       }),
     }),
+    getLoaiBaoGiaByCode: builder.query<any, { value: string }>({
+      transformResponse: (response: any) => response,
+      query: ({ value }) => ({
+        method: "GET",
+        url: `/cau-hinh/group/loai_bao_gia/key/${value}`,
+      }),
+    }),
   }),
 });
 

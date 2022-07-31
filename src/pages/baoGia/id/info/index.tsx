@@ -1,8 +1,9 @@
 import React from "react";
-import BaoGiaForm from "@/container/BaoGiaNew";
+import { isEmpty } from "lodash-es";
+import { useBoolean } from "ahooks";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetBaoGiaByIdQuery } from "@/store/baoGia";
 
+import { useGetBaoGiaByIdQuery } from "@/store/baoGia";
 import { useGetCoHoiByIdQuery } from "@/store/coHoi";
 import {
   useGetLoaiBaoGiaByKeyQuery,
@@ -18,13 +19,12 @@ import {
 } from "@/store/loaiTien";
 import { useLazyGetCongTyByIdQuery } from "@/store/congTy";
 import { useLazyGetMauInByIdQuery } from "@/store/mauIn";
-import * as UI from "@/libs/ui";
 
+import * as UI from "@/libs/ui";
+import BaoGiaForm from "@/container/BaoGiaNew";
 import DetailInfo from "@/components/DetailInfo";
 import BasicDetails from "@/components/BasicDetails";
 import BaseTableDense from "@/components/BaseTableDense";
-import { isEmpty } from "lodash-es";
-import { useBoolean } from "ahooks";
 import BaseDetail from "@/container/BaseDetailContainer";
 import RichText from "@/components/RichText";
 import {
@@ -107,177 +107,201 @@ function Info() {
       headerTitle="Cơ hội"
       headerBreadcrumbs={breadcrumbs}
       detailContent={
-        <BasicDetails
-          sx={{ padding: "20px" }}
-          gap="20px"
-          data={baoGiaData}
-          labelWidth="120px"
-          templateColumns="repeat(2, 1fr)"
-          rows={[
-            {
-              property: "code",
-              label: "Code",
-            },
-            {
-              property: "dieukhoan",
-              label: "Điều khoản",
-            },
-            {
-              property: "name",
-              label: "Cơ hội",
-            },
-            {
-              property: "company_id",
-              label: "Công ty",
-              type: "render-async",
-              getRowData: (id: string) =>
-                getCongTyById({ id })
-                  .unwrap()
-                  .then((res) => res?.ten),
-            },
-            {
-              property: "loai_bao_gia_key",
-              label: "Loại báo giá",
-              type: "render-async",
-              getRowData: (value: string) =>
-                getLoaiBaoBiaByKey({ value })
-                  .unwrap()
-                  .then((res) => res?.name),
-            },
-            {
-              property: "ngon_ngu_key",
-              label: "Ngôn ngữ",
-              type: "render-async",
-              getRowData: (code: string) =>
-                getNgonNguByCode({ code })
-                  .unwrap()
-                  .then((res) => res?.ten),
-            },
-            {
-              property: "loai_tien_key",
-              label: "Loại tiền",
-              type: "render-async",
-              getRowData: (value: string) =>
-                getLoaiTienByKey({ value })
-                  .unwrap()
-                  .then((res) => res?.name),
-            },
-            {
-              property: "template_id",
-              label: "Mẫu",
-              type: "render-async",
-              getRowData: (id: string) =>
-                getMauInById({ id })
-                  .unwrap()
-                  .then((res) => res?.tieu_de),
-            },
-            {
-              property: "san_pham",
-              label: "Sản phẩm",
-              hiddenLabel: true,
-              colSpan: 2,
-              type: "render",
-              renderRow: (value: any) => {
-                return isEmpty(value) ? (
-                  <div>Loading...</div>
-                ) : (
-                  <BaseTableDense
-                    rows={value}
-                    columns={[
-                      {
-                        field: "product_id",
-                        headerName: "Tên sản phẩm",
-                        flex: 1,
-                        width: 200,
-                        renderCell: ({ value }) => {
-                          return <ProductName id={value} />;
-                        },
-                      },
-                      {
-                        field: "don_gia",
-                        headerName: "Đơn giá",
-                        width: 100,
-                        align: "center",
-                        headerAlign: "center",
-                      },
-                      {
-                        field: "so_luong",
-                        headerName: "Số lượng",
-                        width: 100,
-                        align: "center",
-                        headerAlign: "center",
-                      },
-                      {
-                        field: "loai_tien_key",
-                        headerName: "Loại tiền",
-                        width: 100,
-                        align: "center",
-                        headerAlign: "center",
-                        renderCell: ({ value }) => {
-                          return <CurrencyType code={value} />;
-                        },
-                      },
-                      {
-                        field: "don_vi_key",
-                        headerName: "Đơn vị tính",
-                        width: 100,
-                        align: "center",
-                        headerAlign: "center",
-                        renderCell: ({ value }) => {
-                          return <UnitName code={value} />;
-                        },
-                      },
-                      {
-                        field: "thanh_tien",
-                        headerName: "Thành tiền",
-                        align: "center",
-                        headerAlign: "center",
-                        width: 120,
-                      },
-                      {
-                        field: "thue",
-                        headerName: "Thuế, phí",
-                        align: "center",
-                        width: 120,
-                        headerAlign: "center",
-                      },
-                      {
-                        field: "tong_tien",
-                        headerName: "Tổng tiền",
-                        align: "center",
-                        headerAlign: "center",
-                        width: 120,
-                        renderCell: ({ row }) => {
-                          return (
-                            <UI.Typography variant="body2">
-                              {row?.thanh_tien + row?.thue}
-                            </UI.Typography>
-                          );
-                        },
-                      },
-                    ]}
-                  />
-                );
-              },
-            },
-            {
-              property: "note",
-              label: "Ghi chú",
-              colSpan: 2,
-              type: "render",
-              hiddenLabel: true,
-              renderRow: (data) => {
-                return (
-                  <RichText
-                    defaultValue={data}
-                    label="Ghi chú báo giá"
-                    height={200}
-                    sx={{ marginTop: "20px" }}
-                  />
-                );
-              },
-            },
-          ]}
+        <DetailInfo
+          isOpen={isEdit}
+          editContent={
+            <UI.CKBox p="26px">
+              <BaoGiaForm
+                id={params?.id}
+                coHoiLabel={coHoiData?.name}
+                baoGiaData={baoGiaData}
+                loaiBaoGiaLabel={loaiBaoGiaData?.name}
+                ngonNguLabel={ngonNguData?.ten}
+                loaiTienLabel={loaiTienData?.name}
+                isSuccess={
+                  isSuccessBaoGia &&
+                  isSuccessCoHoi &&
+                  isSuccessLoaiBaoGia &&
+                  isSuccessNgonNgu &&
+                  isSuccessLoaiTien
+                }
+              />
+            </UI.CKBox>
+          }
+          detailContent={
+            <BasicDetails
+              sx={{ padding: "20px" }}
+              gap="20px"
+              data={baoGiaData}
+              labelWidth="120px"
+              templateColumns="repeat(2, 1fr)"
+              rows={[
+                {
+                  property: "code",
+                  label: "Code",
+                },
+                {
+                  property: "dieukhoan",
+                  label: "Điều khoản",
+                },
+                {
+                  property: "name",
+                  label: "Cơ hội",
+                },
+                {
+                  property: "company_id",
+                  label: "Công ty",
+                  type: "render-async",
+                  getRowData: (id: string) =>
+                    getCongTyById({ id })
+                      .unwrap()
+                      .then((res) => res?.ten),
+                },
+                {
+                  property: "loai_bao_gia_key",
+                  label: "Loại báo giá",
+                  type: "render-async",
+                  getRowData: (value: string) =>
+                    getLoaiBaoBiaByKey({ value })
+                      .unwrap()
+                      .then((res) => res?.name),
+                },
+                {
+                  property: "ngon_ngu_key",
+                  label: "Ngôn ngữ",
+                  type: "render-async",
+                  getRowData: (code: string) =>
+                    getNgonNguByCode({ code })
+                      .unwrap()
+                      .then((res) => res?.ten),
+                },
+                {
+                  property: "loai_tien_key",
+                  label: "Loại tiền",
+                  type: "render-async",
+                  getRowData: (value: string) =>
+                    getLoaiTienByKey({ value })
+                      .unwrap()
+                      .then((res) => res?.name),
+                },
+                {
+                  property: "template_id",
+                  label: "Mẫu",
+                  type: "render-async",
+                  getRowData: (id: string) =>
+                    getMauInById({ id })
+                      .unwrap()
+                      .then((res) => res?.tieu_de),
+                },
+                {
+                  property: "san_pham",
+                  label: "Sản phẩm",
+                  hiddenLabel: true,
+                  colSpan: 2,
+                  type: "render",
+                  renderRow: (value: any) => {
+                    return isEmpty(value) ? (
+                      <div>Loading...</div>
+                    ) : (
+                      <BaseTableDense
+                        rows={value}
+                        columns={[
+                          {
+                            field: "product_id",
+                            headerName: "Tên sản phẩm",
+                            flex: 1,
+                            width: 200,
+                            renderCell: ({ value }) => {
+                              return <ProductName id={value} />;
+                            },
+                          },
+                          {
+                            field: "don_gia",
+                            headerName: "Đơn giá",
+                            width: 100,
+                            align: "center",
+                            headerAlign: "center",
+                          },
+                          {
+                            field: "so_luong",
+                            headerName: "Số lượng",
+                            width: 100,
+                            align: "center",
+                            headerAlign: "center",
+                          },
+                          {
+                            field: "loai_tien_key",
+                            headerName: "Loại tiền",
+                            width: 100,
+                            align: "center",
+                            headerAlign: "center",
+                            renderCell: ({ value }) => {
+                              return <CurrencyType code={value} />;
+                            },
+                          },
+                          {
+                            field: "don_vi_key",
+                            headerName: "Đơn vị tính",
+                            width: 100,
+                            align: "center",
+                            headerAlign: "center",
+                            renderCell: ({ value }) => {
+                              return <UnitName code={value} />;
+                            },
+                          },
+                          {
+                            field: "thanh_tien",
+                            headerName: "Thành tiền",
+                            align: "center",
+                            headerAlign: "center",
+                            width: 120,
+                          },
+                          {
+                            field: "thue",
+                            headerName: "Thuế, phí",
+                            align: "center",
+                            width: 120,
+                            headerAlign: "center",
+                          },
+                          {
+                            field: "tong_tien",
+                            headerName: "Tổng tiền",
+                            align: "center",
+                            headerAlign: "center",
+                            width: 120,
+                            renderCell: ({ row }) => {
+                              return (
+                                <UI.Typography variant="body2">
+                                  {row?.thanh_tien + row?.thue}
+                                </UI.Typography>
+                              );
+                            },
+                          },
+                        ]}
+                      />
+                    );
+                  },
+                },
+                {
+                  property: "note",
+                  label: "Ghi chú",
+                  colSpan: 2,
+                  type: "render",
+                  hiddenLabel: true,
+                  renderRow: (data) => {
+                    return (
+                      <RichText
+                        defaultValue={data}
+                        label="Ghi chú báo giá"
+                        height={200}
+                        sx={{ marginTop: "20px" }}
+                      />
+                    );
+                  },
+                },
+              ]}
+            />
+          }
         />
       }
     />
