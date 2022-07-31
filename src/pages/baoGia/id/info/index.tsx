@@ -41,6 +41,15 @@ import {
 } from "react-icons/ai";
 import { uniqueId } from "lodash-es";
 import { openModalBottom } from "@/store/modal";
+import {
+  useCreateCoHoiCSKHMutation,
+  useGetCoHoiCSKHByCoHoiIdQuery,
+} from "@/store/coHoiCSKH";
+import {
+  useCreateNhiemVuMutation,
+  useGetNhiemVuCohoiQuery,
+  usePutNhiemVuByIdMutation,
+} from "@/store/nhiemVu";
 
 function Info() {
   const params = useParams();
@@ -110,6 +119,35 @@ function Info() {
     { id: baoGiaData?.id },
     { skip: !baoGiaData?.id }
   );
+
+  const [createCoHoiCSKH, { isLoading: isLoadingCreateNote }] =
+    useCreateCoHoiCSKHMutation();
+
+  const {
+    isLoading: isLoadingNote,
+    isFetching: isFetchingNote,
+    data: dataNote,
+    refetch: reloadListNote,
+  } = useGetCoHoiCSKHByCoHoiIdQuery(
+    { cohoi_id: baoGiaData?.cohoi_id },
+    { skip: !baoGiaData?.cohoi_id }
+  );
+
+  const {
+    isLoading: isLoadingNhiemVu,
+    isFetching: isFetchingNhiemVu,
+    data: dataNhiemVu,
+    refetch: reloadNhiemVu,
+  } = useGetNhiemVuCohoiQuery(
+    { cohoi_id: baoGiaData?.cohoi_id },
+    { skip: !baoGiaData?.cohoi_id }
+  );
+
+  const [createNhiemVu, { isLoading: isLoadingCreateNhiemVu }] =
+    useCreateNhiemVuMutation();
+
+  const [updateNhiemVu, { isLoading: isLoadingUpdateNhiemVu }] =
+    usePutNhiemVuByIdMutation();
 
   return (
     <BaseDetail
@@ -434,6 +472,23 @@ function Info() {
             />
           }
         />
+      }
+      onCreateNote={(data: any) => createCoHoiCSKH(data).unwrap()}
+      onUpdateNote={(data: any) => {}}
+      isLoadingNote={isLoadingNote || isFetchingNote || isLoadingCreateNote}
+      dataNote={dataNote || []}
+      reloadListNote={reloadListNote}
+      onCreateMessage={(data: any) => createCoHoiCSKH(data).unwrap()}
+      onUpdateMessage={(data: any) => {}}
+      isLoadingMessage={isLoadingNote || isFetchingNote || isLoadingCreateNote}
+      reloadListMessage={reloadListNote}
+      dataMessage={dataNote || []}
+      dataTask={dataNhiemVu}
+      onCreateTask={(data: any) => createNhiemVu(data).unwrap()}
+      onUpdateTask={(data) => updateNhiemVu(data).unwrap()}
+      reloadListTask={reloadNhiemVu}
+      isLoadingTask={
+        isLoadingNhiemVu || isFetchingNhiemVu || isLoadingCreateNhiemVu
       }
     />
   );
