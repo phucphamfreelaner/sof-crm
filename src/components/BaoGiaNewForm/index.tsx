@@ -93,23 +93,13 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
   const theme = UI.useTheme();
 
   const calcTotal = (fromEl: any) => {
-    const sl = +fromEl.getValues("so_luong");
-    const don_gia = +fromEl.getValues("don_gia");
-    const thue = +fromEl.getValues("thue");
-    const phu_thu = +fromEl.getValues("phu_thu");
-    const phi_khac = +fromEl.getValues("phi_khac");
+    const sl = +fromEl.getValues("so_luong") || 0;
+    const don_gia = +fromEl.getValues("don_gia") || 0;
+    const thue = +fromEl.getValues("thue") || 0;
+    const phu_thu = +fromEl.getValues("phu_thu") || 0;
+    const phi_khac = +fromEl.getValues("phi_khac") || 0;
 
     fromEl.setValue("thanh_tien", don_gia * sl + thue + phu_thu + phi_khac);
-
-    const sanPham = formRef?.current?.getValues("san_pham");
-    const tong = formRef?.current?.setValue(
-      "tong_gia_tri",
-      (sanPham as any[]).reduce(
-        (total, x) =>
-          total + x?.don_gia * x?.so_luong + x?.thue + x?.phu_thu + x?.phi_khac,
-        0
-      )
-    );
   };
 
   return (
@@ -118,7 +108,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
       templateColumns="repeat(6, 1fr)"
       gap={gap || theme.spacing(2)}
       defaultValues={defaultValues}
-      watchFields={["thong_tin_chung"]}
+      watchFields={["thong_tin_chung", "san_pham"]}
       onWatchChange={(data) => {
         if (data?.thong_tin_chung?.vat) setIsVAT.setTrue();
         else setIsVAT.setFalse();
@@ -128,6 +118,21 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
 
         if (data?.thong_tin_chung?.["time"])
           setTgGiaoHang(data?.thong_tin_chung?.["time"]);
+
+        const sanPham = data?.["san_pham"] || [];
+
+        formRef?.current?.setValue(
+          "tong_gia_tri",
+          (sanPham as any[]).reduce(
+            (total, x) =>
+              total +
+              (+x?.don_gia || 0) * (+x?.so_luong || 1) +
+              (+x?.thue || 0) +
+              (+x?.phu_thu || 0) +
+              (+x?.phi_khac || 0),
+            0
+          )
+        );
       }}
       ref={formRef}
       fields={[
@@ -259,19 +264,20 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
         {
           name: "tong_gia_tri",
           label: "TỔNG GIÁ TRỊ SẢN PHẨM",
-          onValueChange(data, { setValue, getValues }) {
-            const tyGia = +getValues("ty_gia");
-            const phuThu = +getValues("phu_thu");
+          onValueChange(tongGiaTri, { setValue, getValues }) {
+            const tyGia = +getValues("ty_gia") || 0;
+            const phuThu = +getValues("phu_thu") || 0;
             const datCoc = +getValues("datcoc") || 0;
-            setValue("tong_gia_tri_vnd", data * tyGia);
-            setValue("phi_dich_vu", data * tyGia * 0.03);
+            setValue("tong_gia_tri_vnd", +tongGiaTri * tyGia);
+            setValue("phi_dich_vu", +tongGiaTri * tyGia * 0.03);
             setValue(
               "tong_don_hang",
-              data * tyGia + data * tyGia * 0.03 + phuThu
+              tongGiaTri * tyGia + +tongGiaTri * tyGia * 0.03 + phuThu
             );
             setValue(
               "tong_gia_tri_con_lai",
-              (data * tyGia + data * tyGia * 0.03 + phuThu) * (datCoc / 100)
+              (tongGiaTri * tyGia + +tongGiaTri * tyGia * 0.03 + phuThu) *
+                (datCoc / 100)
             );
           },
           textType: "number",
@@ -288,6 +294,22 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           colSpan: 2,
           colStart: 5,
           size,
+          onValueChange(tyGia, { setValue, getValues }) {
+            const tongGiaTri = +getValues("tong_gia_tri") || 0;
+            const phuThu = +getValues("phu_thu") || 0;
+            const datCoc = +getValues("datcoc") || 0;
+            setValue("tong_gia_tri_vnd", tongGiaTri * tyGia);
+            setValue("phi_dich_vu", tongGiaTri * tyGia * 0.03);
+            setValue(
+              "tong_don_hang",
+              tongGiaTri * tyGia + tongGiaTri * tyGia * 0.03 + phuThu
+            );
+            setValue(
+              "tong_gia_tri_con_lai",
+              (tongGiaTri * tyGia + tongGiaTri * tyGia * 0.03 + phuThu) *
+                (datCoc / 100)
+            );
+          },
         },
         {
           name: "tong_gia_tri_vnd",
@@ -318,16 +340,18 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           onValueChange(phuThu, { setValue, getValues }) {
             const tyGia = +getValues("ty_gia");
             const tongGiaTri = +getValues("tong_gia_tri") || 0;
+
             const datCoc = +getValues("datcoc") || 0;
             setValue("tong_gia_tri_vnd", tongGiaTri * tyGia);
             setValue("phi_dich_vu", tongGiaTri * tyGia * 0.03);
+
             setValue(
               "tong_don_hang",
-              tongGiaTri * tyGia + tongGiaTri * tyGia * 0.03 + phuThu
+              tongGiaTri * tyGia + tongGiaTri * tyGia * 0.03 + +phuThu
             );
             setValue(
               "tong_gia_tri_con_lai",
-              (tongGiaTri * tyGia + tongGiaTri * tyGia * 0.03 + phuThu) *
+              (tongGiaTri * tyGia + tongGiaTri * tyGia * 0.03 + +phuThu) *
                 (datCoc / 100)
             );
           },
@@ -345,9 +369,14 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           name: "datcoc",
           label: "ĐẶT CỌC (80-100%)",
           type: "input",
+          textType: "number",
           colSpan: 2,
           colStart: 5,
           size,
+          onValueChange(datCoc, { setValue, getValues }) {
+            const tongDonHang = +getValues("tong_don_hang") || 0;
+            setValue("tong_gia_tri_con_lai", tongDonHang * (datCoc / 100));
+          },
         },
         {
           name: "tong_gia_tri_con_lai",
