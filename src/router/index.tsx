@@ -36,6 +36,7 @@ import LichHenlist from "@/pages/lichHen/list";
 import LichHenNew from "@/pages/lichHen/new";
 import LichHenDetail from "@/pages/lichHen/id";
 import LichHenDetailInfo from "@/pages/lichHen/id/info";
+import Calendar from "@/pages/calendar";
 
 function Router() {
   return (
@@ -87,6 +88,7 @@ function Router() {
               <Route index element={<LichHenDetailInfo />} />
             </Route>
           </Route>
+          <Route path="calendar" element={<Calendar />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>

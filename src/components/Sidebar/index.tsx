@@ -1,6 +1,6 @@
 import * as UI from "@/libs/ui";
 import { BiTask } from "react-icons/bi";
-import { AiOutlineAppstore } from "react-icons/ai";
+import { AiOutlineAppstore, AiOutlineCalendar } from "react-icons/ai";
 import { HiChevronDoubleLeft } from "react-icons/hi";
 
 import { DashboardSidebarSection } from "./SidebarSection";
@@ -21,6 +21,11 @@ const sections = [
         title: "CRM",
         icon: <BiTask width={20} />,
         path: "/",
+      },
+      {
+        title: "Calendar",
+        icon: <AiOutlineCalendar width={20} />,
+        path: "/calendar",
       },
     ],
   },
