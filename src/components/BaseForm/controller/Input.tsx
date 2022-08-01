@@ -47,8 +47,8 @@ function InputForm(props: IInputController) {
     <TextField
       {...field}
       onChange={(e) => {
-        field.onChange(e);
-        onValueChange(e.target.value, { setValue, getValues });
+        field.onChange?.(e);
+        onValueChange?.(e.target.value, { setValue, getValues });
       }}
       fullWidth
       variant="outlined"

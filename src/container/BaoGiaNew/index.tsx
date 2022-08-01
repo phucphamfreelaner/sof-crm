@@ -212,7 +212,7 @@ function BaoGaiForm(props: IBaoGiaForm) {
       isSuccessDonViTinh &&
       !id
     ) {
-      setDefaultValue((value) => ({
+      setDefaultValue((value: any) => ({
         ...value,
         loai_tien_key: loaiTienData?.[0],
         loai_bao_gia: loaiBaoGiaData?.[0],
@@ -232,10 +232,11 @@ function BaoGaiForm(props: IBaoGiaForm) {
             chat_lieu_key: chatLieuData?.[0],
             don_vi_key: donViTinhData?.[0],
             so_luong: 1,
-            don_gia_von: "",
-            don_gia: "",
-            thanh_tien: "",
-            ghi_chu: "",
+            don_gia: 0,
+            thue: 0,
+            phu_thu: 0,
+            phi_khac: 0,
+            thanh_tien: 0,
           },
         ],
       }));
