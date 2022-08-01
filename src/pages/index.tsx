@@ -64,7 +64,7 @@ function Root() {
                 setOpen.setTrue();
                 localStorage.setItem(LOCAL_KEY.CUSTOMER_MENU_EXPAND, "1");
               }}
-              onClickItem={(path) => navigate(path)}
+              onClickItem={navigate}
             />
           )}
         </UI.CKBox>

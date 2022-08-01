@@ -1,7 +1,7 @@
 import * as UI from "@/libs/ui";
 import { HiChevronDoubleRight } from "react-icons/hi";
 import { BiTask } from "react-icons/bi";
-import { AiOutlineAppstore } from "react-icons/ai";
+import { AiOutlineAppstore, AiOutlineCalendar } from "react-icons/ai";
 
 import SidebarItem from "./SidebarItem";
 import { Link } from "react-router-dom";
@@ -44,8 +44,12 @@ function Minibar({
           <HiChevronDoubleRight fontSize="22px" />
         </UI.IconButton>
         <SidebarItem
-          onClickItem={onClickItem}
+          onClickItem={() => onClickItem?.("/")}
           icon={<BiTask fontSize="22px" />}
+        />
+        <SidebarItem
+          onClickItem={() => onClickItem?.("/calendar")}
+          icon={<AiOutlineCalendar fontSize="22px" />}
         />
       </UI.VStack>
       <UI.Box p={spacing(2)}>

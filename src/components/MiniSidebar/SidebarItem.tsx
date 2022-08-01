@@ -4,7 +4,7 @@ import * as UI from "@/libs/ui";
 interface ISidebarItem {
   icon?: React.ReactNode;
   subMenu?: ISubMenu[];
-  onClickItem?: (path: string) => any;
+  onClickItem?: () => any;
 }
 
 interface ISubMenu {
@@ -21,6 +21,7 @@ function SidebarItem(props: ISidebarItem) {
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
+    onClickItem?.();
   };
 
   const handleClose = () => {
@@ -33,7 +34,7 @@ function SidebarItem(props: ISidebarItem) {
         sx={{ width: "60px" }}
         aria-describedby={id}
         onClick={handleClick}
-        onMouseEnter={handleClick}
+        // onMouseEnter={handleClick}
       >
         {icon}
       </UI.IconButton>
