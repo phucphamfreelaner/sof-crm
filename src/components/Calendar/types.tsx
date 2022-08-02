@@ -74,9 +74,7 @@ export type CalendarStoreType = {
 
 export type CalendarType = {
   calendarApi: any;
-  dispatch: any;
-  store: CalendarStoreType;
-  direction: "ltr" | "rtl";
+  events?: any;
   calendarsColor: CalendarColors;
   setCalendarApi: (val: any) => void;
   handleLeftSidebarToggle: () => void;
@@ -86,14 +84,14 @@ export type CalendarType = {
 };
 
 export type SidebarLeftType = {
-  mdAbove: boolean;
-  dispatch: any;
-  leftSidebarWidth: number;
-  leftSidebarOpen: boolean;
+  mdAbove?: boolean;
+  dispatch?: any;
+  leftSidebarWidth?: number;
+  leftSidebarOpen?: boolean;
   store: CalendarStoreType;
   calendarsColor: CalendarColors;
-  handleLeftSidebarToggle: () => void;
-  handleAddEventSidebarToggle: () => void;
+  handleLeftSidebarToggle?: () => void;
+  handleAddEventSidebarToggle?: () => void;
   handleAllCalendars: (val: boolean) => void;
   handleSelectEvent: (event: null | EventType) => void;
   handleCalendarsUpdate: (val: CalendarFiltersType) => void;

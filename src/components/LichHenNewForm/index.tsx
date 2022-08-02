@@ -8,6 +8,7 @@ interface ILichHenNewForm {
   isLoadingKhachHang?: boolean;
   defaultValues?: any;
   formRef?: any;
+  size?: "medium" | "small";
 }
 
 function LichHenNewForm(props: ILichHenNewForm) {
@@ -17,6 +18,7 @@ function LichHenNewForm(props: ILichHenNewForm) {
     isLoadingKhachHang,
     defaultValues,
     formRef,
+    size,
   } = props;
 
   return (
@@ -42,46 +44,52 @@ function LichHenNewForm(props: ILichHenNewForm) {
           name: "customer_id",
           label: "Khách hàng",
           type: "autocomplete",
-          colSpan: 2,
+          colSpan: 6,
           isLoading: isLoadingKhachHang,
           autocompleteOptions: khachHangData || [],
           onSearchChange: onSearchKhachHang,
+          size,
         },
         {
           name: "ngaybatdau",
           label: "Ngày bắt đầu",
           type: "date-picker",
-          colSpan: 2,
+          colSpan: 3,
+          size,
         },
         {
           name: "ngayketthuc",
           label: "Ngày kết thúc",
           type: "date-picker",
-          colSpan: 2,
+          colSpan: 3,
+          size,
         },
         {
           name: "ten",
           label: "Tiêu đề",
           type: "input",
-          colSpan: 2,
+          colSpan: 3,
           multiline: true,
           rows: 4,
+          size,
         },
         {
           name: "diadiem",
           label: "Địa điểm",
           type: "input",
-          colSpan: 2,
+          colSpan: 3,
           multiline: true,
           rows: 4,
+          size,
         },
         {
           name: "note",
           label: "Diễn giải",
           type: "input",
-          colSpan: 2,
+          colSpan: 6,
           multiline: true,
           rows: 4,
+          size,
         },
       ]}
     />

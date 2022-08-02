@@ -38,7 +38,7 @@ import { coHoiCSKHService } from "./coHoiCSKH";
 import { mailTemplatesService } from "./mailTemplates";
 import { activityLogsService } from "./activityLogs";
 import { smsTemplatesService } from "./smsTemplates";
-import { appCalendarSlice } from "./calendar";
+import { appCalendarSlice, calendarService } from "./calendar";
 
 // @ts-ignore
 const store: any = configureStore({
@@ -47,6 +47,7 @@ const store: any = configureStore({
     coHoi: coHoiSlice.reducer,
     modal: modalSlice.reducer,
     calendar: appCalendarSlice.reducer,
+    [calendarService.reducerPath]: calendarService.reducer,
     [customerService.reducerPath]: customerService.reducer,
     [coHoiService.reducerPath]: coHoiService.reducer,
     [authService.reducerPath]: authService.reducer,

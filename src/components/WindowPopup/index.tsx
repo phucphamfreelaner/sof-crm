@@ -10,6 +10,7 @@ import CoHoiNew from "@/container/CoHoiForm";
 import SendEmailForm from "@/container/SendEmailForm";
 import SendSmsForm from "@/container/SendSmsForm";
 import BaoGiaNew from "@/container/BaoGiaNew";
+import LichHenNew from "@/container/LichHenNew";
 
 interface IWindowPopup {
   id: number | string;
@@ -65,6 +66,7 @@ function WindowPopup(props: IWindowPopup) {
         modalId={id}
       />
     ),
+    "event-new": <LichHenNew elevation={0} size="small" />,
   };
   const COMPONENT = CONTENT?.[type] || <></>;
 
