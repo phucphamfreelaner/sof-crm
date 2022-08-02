@@ -18,10 +18,12 @@ interface ILichHenForm {
   id?: any;
   isSuccess?: boolean;
   khachHangLabel?: any;
+  size?: "small" | "medium";
+  elevation?: number;
 }
 
 function LichHenForm(props: ILichHenForm) {
-  const { lichHenData, id, isSuccess, khachHangLabel } = props;
+  const { lichHenData, id, isSuccess, khachHangLabel, size, elevation } = props;
   const navigate = useNavigate();
 
   const [
@@ -108,12 +110,13 @@ function LichHenForm(props: ILichHenForm) {
   };
 
   return (
-    <UI.Card>
+    <UI.Card elevation={elevation}>
       <UI.CardContent sx={{ padding: "14px !important" }}>
         {id && !isSuccess ? (
           <Loading />
         ) : (
           <LichHenNewForm
+            size={size}
             formRef={elForm}
             key={JSON.stringify(defaultValues)}
             isLoadingKhachHang={isLoadingKhachHang || isFetchingKhachHang}

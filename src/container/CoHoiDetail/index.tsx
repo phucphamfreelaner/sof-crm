@@ -22,7 +22,7 @@ import {
 import { FiExternalLink } from "react-icons/fi";
 
 import { useAppDispatch } from "@/store";
-import { openModalBottom, closeModalBottom } from "@/store/modal";
+import { openModalBottom } from "@/store/modal";
 import { useLazyGetKhachHangByIdQuery } from "@/store/khachHang";
 import { useLazyGetSoLuongByValueQuery } from "@/store/soLuong";
 import { useLazyGetTienTrinhByKeyQuery } from "@/store/tienTrinh";

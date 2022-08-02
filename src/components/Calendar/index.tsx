@@ -31,9 +31,7 @@ const blankEvent = {
 const Calendar = (props: CalendarType) => {
   // ** Props
   const {
-    store,
-    dispatch,
-    direction,
+    events,
     updateEvent,
     calendarApi,
     calendarsColor,
@@ -53,10 +51,10 @@ const Calendar = (props: CalendarType) => {
     }
   }, [calendarApi, setCalendarApi]);
 
-  if (store) {
+  if (events) {
     // ** calendarOptions(Props)
     const calendarOptions = {
-      events: store.events.length ? store.events : [],
+      events: events.length ? events : [],
       plugins: [interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin],
       initialView: "dayGridMonth",
       locales: [viLocale],
@@ -111,7 +109,6 @@ const Calendar = (props: CalendarType) => {
       },
 
       eventClick({ event: clickedEvent }: any) {
-        dispatch(handleSelectEvent(clickedEvent));
         handleAddEventSidebarToggle();
 
         // * Only grab required field otherwise it goes in infinity loop
@@ -146,22 +143,15 @@ const Calendar = (props: CalendarType) => {
       ? Docs: https://fullcalendar.io/docs/eventDrop
       ? We can use `eventDragStop` but it doesn't return updated event so we have to use `eventDrop` which returns updated event
     */
-      eventDrop({ event: droppedEvent }: any) {
-        dispatch(updateEvent(droppedEvent));
-      },
+      eventDrop({ event: droppedEvent }: any) {},
 
       /*
       Handle event resize
       ? Docs: https://fullcalendar.io/docs/eventResize
     */
-      eventResize({ event: resizedEvent }: any) {
-        dispatch(updateEvent(resizedEvent));
-      },
+      eventResize({ event: resizedEvent }: any) {},
 
       ref: calendarRef,
-
-      // Get direction from app state (store)
-      direction,
     };
 
     // @ts-ignore
