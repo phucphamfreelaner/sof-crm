@@ -5,7 +5,7 @@ import { LOCAL_KEY } from "@/constants";
 
 const OBJECT_LABEL = {
   co_hoi: "Cơ hội",
-  customer: "Khách hàng",
+  customers: "Khách hàng",
 };
 
 export const calendarService = createApi({
@@ -36,7 +36,7 @@ export const calendarService = createApi({
         url: `/lich-hen/${object}`,
       }),
     }),
-    getEvents: builder.query<any, any>({
+    getEvents: builder.query<any, { object: string[] }>({
       transformResponse: (response: any) =>
         response.data?.map((x: any) => ({
           ...x,
@@ -49,9 +49,12 @@ export const calendarService = createApi({
             calendar: OBJECT_LABEL?.[x.object],
           },
         })),
-      query: ({}) => ({
+      query: ({ object }) => ({
         method: "GET",
         url: `/lich-hen?limit=1000`,
+        params: {
+          object: object?.join(","),
+        },
       }),
     }),
   }),
@@ -61,4 +64,7 @@ export const {
   useGetEventsByObjIdQuery,
   useGetEventsByObjQuery,
   useGetEventsQuery,
+  useLazyGetEventsQuery,
+  useLazyGetEventsByObjIdQuery,
+  useLazyGetEventsByObjQuery,
 } = calendarService;

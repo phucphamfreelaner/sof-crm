@@ -54,6 +54,7 @@ interface IBaseDetail {
   isLoadingTask?: boolean;
   reloadListTask?: () => any;
   dataTask?: any;
+  onClickCalendar?: () => any;
 }
 
 function BaseDetail(props: IBaseDetail) {
@@ -84,6 +85,7 @@ function BaseDetail(props: IBaseDetail) {
     onUpdateTask,
     reloadListTask,
     isLoadingTask,
+    onClickCalendar,
   } = props;
 
   const { spacing, palette } = UI.useTheme();
@@ -249,6 +251,7 @@ function BaseDetail(props: IBaseDetail) {
                 }
                 sx={{ lineHeight: "15px", textAlign: "left" }}
                 variant="text"
+                onClick={onClickCalendar}
               >
                 Cuộc họp
               </UI.Button>

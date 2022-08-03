@@ -1,23 +1,20 @@
 import React from "react";
 import * as UI from "@/libs/ui";
 import { CalendarPicker } from "@mui/x-date-pickers/CalendarPicker";
+import { keys } from "lodash-es";
 
 const TYPES = [
   {
-    label: "Tất cả",
-    name: "all",
-  },
-  {
     label: "Cơ hội",
-    name: "co_hoi",
+    value: "co_hoi",
   },
   {
     label: "Báo giá",
-    name: "bao_gia",
+    value: "bao_gia",
   },
   {
     label: "Hợp đồng",
-    name: "co_hoi",
+    value: "hop_dong",
   },
 ];
 
@@ -30,11 +27,48 @@ const USERS = [
 
 interface ICalendarSidebar {
   onAddEvent?: () => any;
+  object?: string[];
+  onChangeSelect?: (data: any) => any;
 }
 
 function CalendarSidebar(props: ICalendarSidebar) {
-  const { onAddEvent } = props;
+  const { onAddEvent, object, onChangeSelect } = props;
+
   const [date, setDate] = React.useState<Date | null>(new Date());
+
+  const [checked, setChecked] = React.useState<any>({});
+
+  const handleChange = (event: any) => {
+    const nextState = {
+      ...checked,
+      [event.target.name]: event.target.checked,
+    };
+
+    const nextKeys = keys(nextState).reduce((res, x) => {
+      if (nextState?.[x]) res.push(x);
+      return res;
+    }, []);
+
+    onChangeSelect?.(nextKeys);
+    setChecked?.(nextState);
+  };
+
+  React.useEffect(() => {
+    setChecked(
+      object?.reduce((res, x) => {
+        res[x] = true;
+        return res;
+      }, {})
+    );
+  }, [object]);
+
+  // const handleCheckAll = (event: any) => {
+  //   if (event.target.checked) {
+  //     onChangeSelect?.(["co_hoi", "bao_gia", "hop_dong"]);
+  //   }
+  // };
+
+  const isCheckAll = !object;
 
   return (
     <UI.VStack
@@ -63,27 +97,20 @@ function CalendarSidebar(props: ICalendarSidebar) {
       <UI.CKBox sx={{ with: "100%" }} p="10px">
         <UI.FormControl sx={{ with: "100%" }}>
           <UI.FormLabel component="legend">Phân loại công việc</UI.FormLabel>
-          <UI.FormGroup>
+          <UI.FormGroup key={JSON.stringify(checked)}>
+            <UI.FormControlLabel
+              control={<UI.Checkbox name={"all"} />}
+              label="Tất cả"
+              // onChange={handleCheckAll}
+              checked={isCheckAll}
+            />
             {TYPES?.map((x, i) => (
               <UI.FormControlLabel
                 key={i}
-                control={<UI.Checkbox name={x.name} />}
+                control={<UI.Checkbox name={x.value} />}
                 label={x.label}
-              />
-            ))}
-          </UI.FormGroup>
-        </UI.FormControl>
-      </UI.CKBox>
-
-      <UI.CKBox p="10px">
-        <UI.FormControl>
-          <UI.FormLabel component="legend">Người tham dự</UI.FormLabel>
-          <UI.FormGroup>
-            {USERS?.map((x, i) => (
-              <UI.FormControlLabel
-                key={i}
-                control={<UI.Checkbox name={x.name} />}
-                label={x.label}
+                onChange={handleChange}
+                checked={checked?.[x.value]}
               />
             ))}
           </UI.FormGroup>

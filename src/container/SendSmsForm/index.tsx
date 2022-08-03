@@ -27,7 +27,7 @@ const SendSmsContainer = (props: ISendSmsContainer) => {
   const { objectId, recordId, modalId: id, gap, size } = props;
 
   const theme = UI.useTheme();
-  const [searchSmsTemplate, { data, isLoading, isFetching, isSuccess }] =
+  const [searchSmsTemplate, { data, isLoading, isFetching }] =
     useLazySearchsmsTemplatesQuery();
 
   const [defaultValues, setDefaultValues] = useState(null);
@@ -37,7 +37,6 @@ const SendSmsContainer = (props: ISendSmsContainer) => {
   const [
     sendSmsTemplate,
     {
-      data: dataSendSmsTemplate,
       isLoading: isLoadingSendSms,
       isFetching: isFetchingSendSms,
       isSuccess: isSuccessSendSmsTemplate,

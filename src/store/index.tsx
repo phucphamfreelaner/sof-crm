@@ -80,6 +80,10 @@ const store: any = configureStore({
     [smsTemplatesService.reducerPath]: smsTemplatesService.reducer,
   }),
   devTools: true,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export type AppDispatch = typeof store.dispatch;

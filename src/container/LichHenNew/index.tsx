@@ -20,10 +20,23 @@ interface ILichHenForm {
   khachHangLabel?: any;
   size?: "small" | "medium";
   elevation?: number;
+  object?: "customers" | "co_hoi" | "bao_gia" | "hop_dong";
+  onAfterCreate?: (data: any) => any;
+  onAfterUpdate?: (data: any) => any;
 }
 
 function LichHenForm(props: ILichHenForm) {
-  const { lichHenData, id, isSuccess, khachHangLabel, size, elevation } = props;
+  const {
+    lichHenData,
+    id,
+    isSuccess,
+    khachHangLabel,
+    size,
+    elevation,
+    object,
+    onAfterCreate,
+    onAfterUpdate,
+  } = props;
   const navigate = useNavigate();
 
   const [
@@ -37,11 +50,7 @@ function LichHenForm(props: ILichHenForm) {
 
   const [
     createLichHen,
-    {
-      data: dataLichHenNew,
-      isLoading: isLoadingCreateLichHen,
-      isSuccess: isSuccessCreateLichHen,
-    },
+    { isLoading: isLoadingCreateLichHen, isSuccess: isSuccessCreateLichHen },
   ] = useLazyCreateLichHenQuery();
 
   const [updateLichHen, { isLoading: isLoadingUpdateLichHen }] =
@@ -52,13 +61,6 @@ function LichHenForm(props: ILichHenForm) {
   }, []);
 
   const [defaultValues, setDefaultValue] = React.useState<any>(null);
-
-  React.useEffect(() => {
-    if (isSuccessCreateLichHen) {
-      toast.success("Thêm lịch hẹn thành công!");
-      navigate(`/lich_hen/${dataLichHenNew?.data?.id}/view`);
-    }
-  }, [isSuccessCreateLichHen]);
 
   React.useEffect(() => {
     if (!id && khachHangData) {
@@ -100,13 +102,20 @@ function LichHenForm(props: ILichHenForm) {
       updateLichHen({
         id: data?.id,
         payload: payload,
-      }).finally(() => {
-        toast.success("Sửa lịch hẹn thành công!");
-        navigate(`/lich_hen/${data?.id}`);
-      });
+      })
+        .unwrap()
+        .then((res) => {
+          toast.success("Sửa lịch hẹn thành công!");
+          onAfterUpdate?.(res);
+        });
       return;
     }
-    createLichHen({ payload });
+    createLichHen({ payload: { ...payload, object } })
+      .unwrap()
+      .then((res) => {
+        toast.success("Thêm lịch hẹn thành công!");
+        onAfterCreate?.(res);
+      });
   };
 
   return (

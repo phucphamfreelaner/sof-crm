@@ -73,14 +73,14 @@ export type CalendarStoreType = {
 };
 
 export type CalendarType = {
-  calendarApi: any;
+  calendarApi?: any;
   events?: any;
-  calendarsColor: CalendarColors;
-  setCalendarApi: (val: any) => void;
-  handleLeftSidebarToggle: () => void;
-  updateEvent: (event: EventType) => void;
-  handleAddEventSidebarToggle: () => void;
-  handleSelectEvent: (event: EventType) => void;
+  calendarsColor?: CalendarColors;
+  setCalendarApi?: (val: any) => void;
+  handleLeftSidebarToggle?: () => void;
+  updateEvent?: (event: EventType) => void;
+  handleAddEventSidebarToggle?: () => void;
+  handleSelectEvent?: (event: EventType) => void;
 };
 
 export type SidebarLeftType = {

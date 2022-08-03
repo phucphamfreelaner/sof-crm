@@ -155,6 +155,7 @@ function Info() {
       closeEdit={setEdit.setFalse}
       headerTitle="Cơ hội"
       headerBreadcrumbs={breadcrumbs}
+      onClickCalendar={() => navigate("/calendar?object[0]=bao_gia")}
       actionMenus={[
         // {
         //   icon: <AiOutlineSave />,
