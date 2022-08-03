@@ -104,7 +104,7 @@ function CongViecList(props: INhiemVuList) {
               variant="body1"
               textAlign="center"
             >
-              Hoạt động đã lên kế hoạch
+              Nhiệm vụ
             </UI.Typography>
             <UI.IconButton
               sx={{ position: "relative", top: "-2px" }}

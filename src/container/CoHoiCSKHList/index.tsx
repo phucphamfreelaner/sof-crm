@@ -93,7 +93,7 @@ function CoHoiCSKHList(props: ICoHoiCSKHList) {
               variant="body1"
               textAlign="center"
             >
-              Lịch sử thao tác
+              Chăm sóc
             </UI.Typography>
             <UI.IconButton
               sx={{ position: "relative", top: "-2px" }}
