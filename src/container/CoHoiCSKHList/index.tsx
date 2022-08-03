@@ -5,7 +5,7 @@ import { formatDistance, differenceInDays } from "date-fns";
 import {
   MdOutlineCancel,
   MdArrowDropDown,
-  MdOutlineArrowLeft,
+  MdOutlineArrowRight,
 } from "react-icons/md";
 import {
   useLazyDeleteCoHoiCSKHQuery,
@@ -84,17 +84,9 @@ function CoHoiCSKHList(props: ICoHoiCSKHList) {
           <UI.HStack
             spacing={"4px"}
             alignItems="center"
-            justifyContent="center"
+            justifyContent="start"
             w="100%"
           >
-            <UI.Typography
-              gutterBottom
-              sx={{ fontWeight: 600, color: "gray" }}
-              variant="body1"
-              textAlign="center"
-            >
-              Lịch sử thao tác
-            </UI.Typography>
             <UI.IconButton
               sx={{ position: "relative", top: "-2px" }}
               onClick={setOpen.toggle}
@@ -103,9 +95,17 @@ function CoHoiCSKHList(props: ICoHoiCSKHList) {
               {isOpen ? (
                 <MdArrowDropDown size="28px" color="gray" />
               ) : (
-                <MdOutlineArrowLeft size="28px" color="gray" />
+                <MdOutlineArrowRight size="28px" color="gray" />
               )}
             </UI.IconButton>
+            <UI.Typography
+              gutterBottom
+              sx={{ fontWeight: 600, color: "gray" }}
+              variant="body1"
+              textAlign="center"
+            >
+              Chăm sóc
+            </UI.Typography>
           </UI.HStack>
           <UI.Collapse sx={{ width: "100%" }} in={isOpen}>
             <UI.VStack w="100%" alignItems={"start"}>
