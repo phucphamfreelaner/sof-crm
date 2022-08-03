@@ -8,7 +8,7 @@ import { RiPencilFill } from "react-icons/ri";
 import {
   MdOutlineCancel,
   MdArrowDropDown,
-  MdOutlineArrowLeft,
+  MdOutlineArrowRight,
 } from "react-icons/md";
 import { useLazyGetTrangThaiNhiemVuQuery } from "@/store/nhiemVu";
 import { useGetListNhanVienQuery } from "@/store/nhanVien";
@@ -95,17 +95,9 @@ function CongViecList(props: INhiemVuList) {
           <UI.HStack
             spacing={"4px"}
             alignItems="center"
-            justifyContent="center"
+            justifyContent="start"
             w="100%"
           >
-            <UI.Typography
-              gutterBottom
-              sx={{ fontWeight: 600, color: "gray" }}
-              variant="body1"
-              textAlign="center"
-            >
-              Nhiệm vụ
-            </UI.Typography>
             <UI.IconButton
               sx={{ position: "relative", top: "-2px" }}
               onClick={setOpen.toggle}
@@ -114,9 +106,17 @@ function CongViecList(props: INhiemVuList) {
               {isOpen ? (
                 <MdArrowDropDown size="28px" color="gray" />
               ) : (
-                <MdOutlineArrowLeft size="28px" color="gray" />
+                <MdOutlineArrowRight size="28px" color="gray" />
               )}
             </UI.IconButton>
+            <UI.Typography
+              gutterBottom
+              sx={{ fontWeight: 600, color: "gray" }}
+              variant="body1"
+              textAlign="center"
+            >
+              Nhiệm vụ
+            </UI.Typography>
           </UI.HStack>
           <UI.Collapse in={isOpen}>
             <UI.VStack alignItems={"start"}>
