@@ -114,21 +114,6 @@ function BaseDetail(props: IBaseDetail) {
         <GhiChuForm
           coHoiId={id}
           customerId={customerId}
-          onCreateNote={onCreateMessage}
-          onUpdateNote={onUpdateMessage}
-          isLoadingNote={isLoadingMessage}
-          reloadListNote={reloadListMessage}
-          onReloadForm={() => reloadListNote()}
-        />
-      ),
-      height: "calc(100vh - 250px)",
-    },
-    {
-      tabIndex: 1,
-      content: (
-        <GhiChuForm
-          coHoiId={id}
-          customerId={customerId}
           onCreateNote={onCreateNote}
           onUpdateNote={onUpdateNote}
           isLoadingNote={isLoadingNote}
@@ -139,7 +124,7 @@ function BaseDetail(props: IBaseDetail) {
       height: "calc(100vh - 250px)",
     },
     {
-      tabIndex: 2,
+      tabIndex: 1,
       content: (
         <CongViecForm
           id={nhiemVuSelected?.id}
@@ -235,8 +220,7 @@ function BaseDetail(props: IBaseDetail) {
             aria-label="basic tabs example"
             sx={{ paddingLeft: "16px", paddingRight: "6px", paddingY: "4px" }}
           >
-            <UI.Tab label="Gửi tin" />
-            <UI.Tab label="Ghi chú" />
+            <UI.Tab label="Chăm sóc" />
             <UI.Tab label="Lên công việc" />
 
             <UI.HStack w="100%" justifyContent="flex-end" spacing={0}>
@@ -279,7 +263,7 @@ function BaseDetail(props: IBaseDetail) {
                 onUpdateTask={onUpdateTask}
                 onSelectedTask={(task) => {
                   setNhiemVuSelected(task);
-                  setTabIndex(2);
+                  setTabIndex(1);
                 }}
               />
               <CoHoiCSKHList
