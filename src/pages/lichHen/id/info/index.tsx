@@ -20,31 +20,6 @@ function Info() {
     useGetKhachHangByIdQuery({ id: data?.customer_id }, { skip: !data });
 
   return (
-    // <DetailInfo
-    //   title={data?.khach_hang?.contact}
-    //   id={params?.id}
-    //   detailContent={
-    //     <BasicDetails
-    //       sx={{ width: "90%", padding: "20px" }}
-    //       gap="10px"
-    //       data={data}
-    //       labelWidth="120px"
-    //       templateColumns="repeat(2, 1fr)"
-    //       rows={[
-    //         {
-    //           property: "code",
-    //           label: "Code",
-    //         },
-    //       ]}
-    //     />
-    //   }
-    //   editContent={
-    //     <LichHenForm
-    //       id={params?.id}
-    //       lichHenData={data}
-    //     />
-    //   }
-    // />
     <LichHenForm
       id={params?.id}
       lichHenData={data}

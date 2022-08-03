@@ -1,7 +1,7 @@
-import { useState } from "react";
+import React from "react";
 import { isEmpty, uniqueId } from "lodash-es";
 import * as UI from "@/libs/ui";
-
+import { useQueryParams } from "@/hooks";
 import { useGetEventsQuery } from "@/store/calendar";
 
 import Calendar from "@/components/Calendar";
@@ -18,18 +18,19 @@ const calendarsColor: any = {
 };
 
 const AppCalendar = () => {
-  const [calendarApi, setCalendarApi] = useState<null | any>(null);
-  const [leftSidebarOpen, setLeftSidebarOpen] = useState<boolean>(false);
   const [addEventSidebarOpen, setAddEventSidebarOpen] =
-    useState<boolean>(false);
-
-  const handleLeftSidebarToggle = () => setLeftSidebarOpen(!leftSidebarOpen);
+    React.useState<boolean>(false);
 
   const handleAddEventSidebarToggle = () =>
     setAddEventSidebarOpen(!addEventSidebarOpen);
 
-  const { data: dataEvents } = useGetEventsQuery({});
   const dispatch = useAppDispatch();
+
+  const [queryParams, setQueryParams] = useQueryParams();
+
+  const { data: dataEvents, refetch } = useGetEventsQuery({
+    object: queryParams?.object,
+  });
 
   const handleAddEvent = () => {
     const id = uniqueId();
@@ -42,6 +43,9 @@ const AppCalendar = () => {
           id: `event-${id}`,
           type: "event-new",
           customerId: "1111",
+          onAfterCreate: () => {
+            refetch();
+          },
         },
       })
     );
@@ -61,22 +65,29 @@ const AppCalendar = () => {
           backgroundColor: "background.paper",
         }}
       >
-        {!isEmpty(dataEvents) && (
+        {isEmpty(dataEvents) ? (
+          <UI.Center>
+            <UI.Typography variant="h6">Không có lịch trình!</UI.Typography>
+          </UI.Center>
+        ) : (
           <Calendar
             events={dataEvents}
             updateEvent={() => {}}
-            calendarApi={calendarApi}
             calendarsColor={calendarsColor}
-            setCalendarApi={setCalendarApi}
             handleSelectEvent={(data) => {
               console.log("🚀 ~ handleSelectEvent", data);
             }}
-            handleLeftSidebarToggle={handleLeftSidebarToggle}
             handleAddEventSidebarToggle={handleAddEventSidebarToggle}
           />
         )}
       </UI.Card>
-      <CalendarSidebar onAddEvent={handleAddEvent} />
+      <CalendarSidebar
+        object={queryParams?.object}
+        onChangeSelect={(data) => {
+          setQueryParams({ ...queryParams, object: data });
+        }}
+        onAddEvent={handleAddEvent}
+      />
     </CalendarWrapper>
   );
 };

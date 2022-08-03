@@ -23,7 +23,17 @@ interface IWindowPopup {
 }
 
 function WindowPopup(props: IWindowPopup) {
-  const { title, onClose, children, id, width, height, type, ...other } = props;
+  const {
+    title,
+    onClose,
+    children,
+    id,
+    width,
+    height,
+    type,
+    onAfterCreate,
+    ...other
+  } = props;
   const { palette } = UI.useTheme();
   const [isOpen, setOpen] = useBoolean(true);
   const handleMinimize = () => {
@@ -66,7 +76,14 @@ function WindowPopup(props: IWindowPopup) {
         modalId={id}
       />
     ),
-    "event-new": <LichHenNew elevation={0} size="small" />,
+    "event-new": (
+      <LichHenNew
+        object="customers"
+        elevation={0}
+        size="small"
+        onAfterCreate={onAfterCreate}
+      />
+    ),
   };
   const COMPONENT = CONTENT?.[type] || <></>;
 

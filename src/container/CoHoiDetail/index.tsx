@@ -124,6 +124,7 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
       closeEdit={setEdit.setFalse}
       headerTitle="Cơ hội"
       headerBreadcrumbs={breadcrumbs}
+      onClickCalendar={() => navigate("/calendar?object[0]=co_hoi")}
       actionMenus={[
         // {
         //   icon: <AiOutlineSave />,
