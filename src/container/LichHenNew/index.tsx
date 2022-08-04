@@ -115,6 +115,7 @@ function LichHenForm(props: ILichHenForm) {
       .then((res) => {
         toast.success("Thêm lịch hẹn thành công!");
         onAfterCreate?.(res);
+        navigate(-1);
       });
   };
 

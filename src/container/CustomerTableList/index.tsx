@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import * as UI from "@/libs/ui";
 import {
   AiFillPlusCircle,
-  AiOutlineDelete,
+  AiOutlineWhatsApp,
   AiFillCheckCircle,
 } from "react-icons/ai";
 import { useGetCustomerListQuery } from "@/store/customer";
@@ -242,6 +242,17 @@ function CustomerTableListContainer() {
                   }}
                 >
                   Chi tiết
+                </UI.Button>
+                <UI.Button
+                  disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+                  variant="outlined"
+                  size="small"
+                  startIcon={<AiOutlineWhatsApp size="16" />}
+                  onClick={() => {
+                    navigate(`/lich_hen?customerId=${dataSelected?.[0]?.id}`);
+                  }}
+                >
+                  Xem lịch hẹn
                 </UI.Button>
               </UI.HStack>
             )}

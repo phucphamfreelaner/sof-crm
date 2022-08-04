@@ -11,9 +11,11 @@ import LichHenTable from "@/container/LichHenTable";
 import { debounce, isEmpty } from "lodash-es";
 import SearchBar from "@/components/SearchBar";
 import { useLazySearchKhachHangListQuery } from "@/store/khachHang";
+import { useSearchParams } from "react-router-dom";
 
 function LichHenList() {
   const navigate = useNavigate();
+  const [query] = useSearchParams();
   const [filter, setFilter] = React.useState<any>(null);
   const [customerId, setCustomerId] = React.useState<any>(null);
 
@@ -60,75 +62,78 @@ function LichHenList() {
       <UI.Card>
         <UI.Divider />
         <UI.CardContent>
-          <SearchBar
-            baseSearchOptions={[
-              {
-                name: "khachhang",
-                label: "Tìm kiếm tên khách hàng",
-                type: "autocomplete",
-                colSpan: 8,
-                isLoading: isLoadingKhachHang || isFetchingKhachHang,
-                autocompleteOptions: khachHangData,
-                onSearchChange: (data) => {
-                  searchKhachHang({ name: data ? data : "" });
+          {!query.get("customerId") && (
+            <SearchBar
+              baseSearchOptions={[
+                {
+                  name: "khachhang",
+                  label: "Tìm kiếm tên khách hàng",
+                  type: "autocomplete",
+                  colSpan: 8,
+                  isLoading: isLoadingKhachHang || isFetchingKhachHang,
+                  autocompleteOptions: khachHangData,
+                  onSearchChange: (data) => {
+                    searchKhachHang({ name: data ? data : "" });
+                  },
+                  placeholder: "Tất cả",
                 },
-                placeholder: "Tất cả",
-              },
-            ]}
-            handleOnchangeBaseSearch={(data) =>
-              setCustomerId(data?.khachhang?.value)
-            }
-            advanceSearchOptions={[
-              {
-                name: "id",
-                type: "input",
-                label: "Mã lịch hẹn",
-              },
-              {
-                name: "ten",
-                type: "input",
-                label: "Tiêu đề",
-              },
-              {
-                name: "diadiem",
-                type: "input",
-                label: "Địa điểm",
-              },
-              {
-                name: "note",
-                type: "input",
-                label: "Diễn giải",
-              },
-              {
-                name: "ngaybatdau",
-                type: "input",
-                label: "Ngày bắt đầu",
-              },
-              {
-                name: "ngayketthuc",
-                type: "input",
-                label: "Ngày kết thúc",
-              },
-              {
-                name: "created_at",
-                type: "input",
-                label: "Ngày nhập",
-              },
-              {
-                name: "page",
-                type: "input",
-                label: "Số trang",
-              },
-            ]}
-            handleOnchangeAdvanceSearch={setSearch}
-          />
+              ]}
+              handleOnchangeBaseSearch={(data) =>
+                setCustomerId(data?.khachhang?.value)
+              }
+              advanceSearchOptions={[
+                {
+                  name: "id",
+                  type: "input",
+                  label: "Mã lịch hẹn",
+                },
+                {
+                  name: "ten",
+                  type: "input",
+                  label: "Tiêu đề",
+                },
+                {
+                  name: "diadiem",
+                  type: "input",
+                  label: "Địa điểm",
+                },
+                {
+                  name: "note",
+                  type: "input",
+                  label: "Diễn giải",
+                },
+                {
+                  name: "ngaybatdau",
+                  type: "input",
+                  label: "Ngày bắt đầu",
+                },
+                {
+                  name: "ngayketthuc",
+                  type: "input",
+                  label: "Ngày kết thúc",
+                },
+                {
+                  name: "created_at",
+                  type: "input",
+                  label: "Ngày nhập",
+                },
+                {
+                  name: "page",
+                  type: "input",
+                  label: "Số trang",
+                },
+              ]}
+              handleOnchangeAdvanceSearch={setSearch}
+            />
+          )}
+
           <LichHenTable
             onSortChange={(orderBy) => {
               setFilter((filter) => ({ ...filter, ...orderBy }));
             }}
             filter={filter}
             search={search}
-            customerId={customerId}
+            customerId={query.get("customerId") || customerId}
           />
         </UI.CardContent>
       </UI.Card>
