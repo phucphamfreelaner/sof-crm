@@ -1,6 +1,10 @@
 import React from "react";
 import BaseTableDense from "@/components/BaseTableDense";
-import { CurrencyType, ProductName, UnitName } from "../TableCellRender";
+import {
+  CurrencyType,
+  ProductName,
+  UnitName,
+} from "@/components/TableCellRender";
 import * as UI from "@/libs/ui";
 import { FiExternalLink } from "react-icons/fi";
 import numeral from "numeral";
@@ -11,8 +15,14 @@ function ProductTableDense({ value }: { value: any }) {
       rows={value}
       columns={[
         {
-          field: "product_id",
+          field: "ten_san_pham",
           headerName: "Tên sản phẩm",
+          flex: 1,
+          minWidth: 120,
+        },
+        {
+          field: "product_id",
+          headerName: "Ngành hàng",
           flex: 1,
           minWidth: 120,
           renderCell: ({ value }) => {

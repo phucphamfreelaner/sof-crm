@@ -25,6 +25,7 @@ import UploadImage from "./controller/UploadImage";
 import UploadFileDetail from "./controller/UploadFileDetail";
 import FileInfo from "./controller/FileInfo";
 import Comment from "./controller/Comment";
+import TableEditController from "./controller/TableEdit";
 
 const CONTROLLER: any = {
   input: InputController,
@@ -43,6 +44,7 @@ const CONTROLLER: any = {
   "upload-file-detail": UploadFileDetail,
   "file-info": FileInfo,
   comment: Comment,
+  "table-edit": TableEditController,
 };
 
 const BaseForm = React.forwardRef((props: IBaseForm, ref?: any) => {
