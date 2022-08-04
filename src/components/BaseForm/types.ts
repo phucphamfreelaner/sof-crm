@@ -15,6 +15,7 @@ import type { IUploadFileDetailController } from "./controller/UploadFileDetail"
 import type { IFileInfoController } from "./controller/FileInfo";
 import type { ITextEditorController } from "./controller/TextEditor";
 import type { ICommentController } from "./controller/Comment";
+import type { ITableEditController } from "./controller/TableEdit";
 
 export interface IBaseForm {
   id?: string;
@@ -69,7 +70,8 @@ export type IFormControl = IBaseController &
   IUploadFileDetailController &
   IFileInfoController &
   ITextEditorController &
-  ICommentController & {
+  ICommentController &
+  ITableEditController & {
     type:
       | "input"
       | "select"

@@ -14,9 +14,8 @@ function TableEditForm(props: ITableEditController) {
 
   return (
     <DataGrid
-      rowHeight={45}
-      headerHeight={45}
-      hideFooterSelectedRowCount
+      headerHeight={42}
+      rowHeight={42}
       hideFooter
       hideFooterPagination
       autoHeight
@@ -28,6 +27,23 @@ function TableEditForm(props: ITableEditController) {
       rows={field?.value || []}
       columns={tableEditColumns || []}
       experimentalFeatures={{ newEditingApi: true }}
+      sx={{
+        ".MuiDataGrid-columnHeaders": {
+          background: "#F3F4F6",
+          textTransform: "uppercase",
+        },
+        boxShadow: 2,
+        "& .MuiDataGrid-cell:hover": {
+          color: "primary.main",
+        },
+        ".MuiDataGrid-cell": {
+          borderBottom: "1px solid #eeeef9",
+        },
+        ".MuiDataGrid-columnHeaderTitle": {
+          fontSize: 11,
+          fontWeight: 600,
+        },
+      }}
       processRowUpdate={(newRow, oldRow) => {
         const data = keyBy(field?.value, "id") as any;
         data[oldRow?.id] = newRow;

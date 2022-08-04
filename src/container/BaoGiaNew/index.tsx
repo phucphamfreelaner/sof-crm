@@ -257,11 +257,7 @@ function BaoGaiForm(props: IBaoGiaForm) {
     if (isSuccess && baoGiaData) {
       const defaultValue = {
         ...baoGiaData,
-        san_pham: baoGiaData?.san_pham?.map?.((x: any) => ({
-          ...x,
-          _id: x.id,
-        })),
-
+        san_pham: baoGiaData?.san_pham,
         cohoi_id: {
           value: baoGiaData?.cohoi_id,
           label: coHoiLabel,
@@ -297,9 +293,9 @@ function BaoGaiForm(props: IBaoGiaForm) {
     const san_pham = data?.san_pham.map((x: any, index: number) => ({
       ...baoGiaData?.san_pham?.[index],
       ...x,
-      chat_lieu_key: x?.chat_lieu_key?.value,
-      don_vi_key: x?.don_vi_key?.value,
-      product_id: x?.product_id?.value,
+      chat_lieu_key: x?.chat_lieu_key,
+      don_vi_key: x?.don_vi_key,
+      product_id: x?.product_id,
       baogia_id: +id,
     }));
     const payload = {
@@ -389,8 +385,7 @@ function BaoGaiForm(props: IBaoGiaForm) {
           }
           getCongTyById={(id: any) => getCongTyById({ id }).unwrap()}
           getMauInById={(id: any) => getMauInById({ id }).unwrap()}
-          onAddSanPham={(index) => ({
-            _id: index,
+          onAddSanPham={() => ({
             product_id: sanPhamData?.[0],
             chat_lieu_key: chatLieuData?.[0],
             don_vi_key: donViTinhData?.[0],
