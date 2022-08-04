@@ -1,18 +1,16 @@
 import React from "react";
 import BaseTable from "@/components/BaseTable";
-import numeral from "numeral";
 import * as UI from "@/libs/ui";
 import { AiOutlineUser } from "react-icons/ai";
 import { isEmpty } from "lodash-es";
-import {
-  AiOutlineEdit,
-  AiOutlineDelete,
-  AiOutlineFileAdd,
-} from "react-icons/ai";
+import { AiOutlineMail, AiOutlineMessage } from "react-icons/ai";
 import { MdOpenInNew } from "react-icons/md";
+import { uniqueId } from "lodash-es";
+import { openModalBottom } from "@/store/modal";
 
 import { useGetCoHoiListQuery, useLazyDeleteCoHoiQuery } from "@/store/coHoi";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "@/store";
 
 interface ICoHoiTable {
   filter?: any;
@@ -22,6 +20,8 @@ interface ICoHoiTable {
 }
 
 function CoHoiTable(props: ICoHoiTable) {
+  const dispatch = useAppDispatch();
+
   const { filter, customerId, isShowKhachHangLink, onSortChange } = props;
   const [limit, setLimit] = React.useState(15);
   const [page, setPage] = React.useState(0);
@@ -101,6 +101,56 @@ function CoHoiTable(props: ICoHoiTable) {
             }}
           >
             Chi tiết
+          </UI.Button>
+          <UI.Button
+            disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+            variant="outlined"
+            size="small"
+            startIcon={<AiOutlineMail size="16" />}
+            onClick={() => {
+              const id = uniqueId();
+              dispatch(
+                openModalBottom({
+                  data: {
+                    title: "Gửi email",
+                    height: "800px",
+                    width: "500px",
+                    id: `email-${id}`,
+                    type: "email-new",
+                    recordId: dataSelected?.[0]?.customer_id,
+                    customerId: dataSelected?.[0]?.customer_id,
+                    objectId: "khach-hang",
+                  },
+                })
+              );
+            }}
+          >
+            Gửi email
+          </UI.Button>
+          <UI.Button
+            disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+            variant="outlined"
+            size="small"
+            startIcon={<AiOutlineMessage size="16" />}
+            onClick={() => {
+              const id = uniqueId();
+              dispatch(
+                openModalBottom({
+                  data: {
+                    title: "Gửi sms",
+                    height: "620px",
+                    width: "500px",
+                    id: `gui-sms-${id}`,
+                    type: "sms-new",
+                    recordId: dataSelected?.[0]?.customer_id,
+                    customerId: dataSelected?.[0]?.customer_id,
+                    objectId: "khach-hang",
+                  },
+                })
+              );
+            }}
+          >
+            Gửi sms
           </UI.Button>
         </UI.HStack>
       )}

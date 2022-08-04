@@ -14,8 +14,8 @@ import { closeModalBottom, openModalBottom } from "@/store/modal";
 
 interface ISendSmsContainer {
   recordId?: string | number;
+  customerId?: string | number;
   objectId?: string | number;
-
   modalId?: any;
   onAfterUpdated?: () => any;
   defaultValues?: any;
@@ -24,7 +24,7 @@ interface ISendSmsContainer {
 }
 
 const SendSmsContainer = (props: ISendSmsContainer) => {
-  const { objectId, recordId, modalId: id, gap, size } = props;
+  const { objectId, recordId, customerId, modalId: id, gap, size } = props;
 
   const theme = UI.useTheme();
   const [searchSmsTemplate, { data, isLoading, isFetching }] =
@@ -55,7 +55,7 @@ const SendSmsContainer = (props: ISendSmsContainer) => {
     const payload = {
       ...data,
       template_id: data?.template_id?.value,
-      customer_id: recordId,
+      customer_id: customerId,
     };
     sendSmsTemplate({ objectId, recordId, payload });
   };

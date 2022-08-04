@@ -10,15 +10,18 @@ import {
 } from "react-icons/ai";
 import { isEmpty } from "lodash-es";
 import {
-  AiOutlineEdit,
-  AiOutlineDelete,
+  AiOutlineMessage,
+  AiOutlineMail,
   AiOutlineFileAdd,
 } from "react-icons/ai";
 import { MdOpenInNew } from "react-icons/md";
-
 import { useLazyDeleteBaoGiaQuery } from "@/store/baoGia";
 import { useNavigate } from "react-router-dom";
 import { LOCAL_KEY } from "@/constants";
+import { uniqueId } from "lodash-es";
+import { openModalBottom } from "@/store/modal";
+import { useAppDispatch } from "@/store";
+import { useLazyGetViewBaoGiaQuery } from "@/store/baoGia";
 
 interface IBaoGiaTable {
   filter?: any;
@@ -28,6 +31,8 @@ interface IBaoGiaTable {
 }
 
 function BaoGiaTable(props: IBaoGiaTable) {
+  const dispatch = useAppDispatch();
+
   const { filter, customerId, isShowKhachHangLink, onSortChange } = props;
   const [limit, setLimit] = React.useState(15);
   const [page, setPage] = React.useState(0);
@@ -46,6 +51,8 @@ function BaoGiaTable(props: IBaoGiaTable) {
   const [dataSelected, setDataSelected] = React.useState<any>(null);
 
   const [deleteBaoGia] = useLazyDeleteBaoGiaQuery();
+
+  const [getViewBaoGia, { data: fileViewBaoGia }] = useLazyGetViewBaoGiaQuery();
 
   return (
     <BaseTable
@@ -146,6 +153,62 @@ function BaoGiaTable(props: IBaoGiaTable) {
             startIcon={<AiOutlineFileAdd size="16" />}
           >
             Tạo hợp đồng
+          </UI.Button>
+          <UI.Button
+            disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+            variant="outlined"
+            size="small"
+            startIcon={<AiOutlineMail size="16" />}
+            onClick={() => {
+              const id = uniqueId();
+              getViewBaoGia({ id: dataSelected?.[0]?.id })
+                .unwrap()
+                .then((res) => {
+                  dispatch(
+                    openModalBottom({
+                      data: {
+                        title: "Gửi email",
+                        height: "800px",
+                        width: "500px",
+                        id: `email-${id}`,
+                        type: "email-new",
+                        customerId: dataSelected?.[0]?.customer_id,
+                        recordId: dataSelected?.[0]?.id,
+                        objectId: "bao-gia",
+                        isUploadFile: true,
+                        file: res,
+                      },
+                    })
+                  );
+                });
+            }}
+          >
+            Gửi email
+          </UI.Button>
+          <UI.Button
+            disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+            variant="outlined"
+            size="small"
+            startIcon={<AiOutlineMessage size="16" />}
+            onClick={() => {
+              const id = uniqueId();
+              dispatch(
+                openModalBottom({
+                  data: {
+                    title: "Gửi sms",
+                    height: "620px",
+                    width: "500px",
+                    id: `gui-sms-${id}`,
+                    type: "sms-new",
+                    customerId: dataSelected?.[0]?.customer_id,
+                    recordId: dataSelected?.[0]?.id,
+                    objectId: "bao-gia",
+                  },
+                })
+              );
+            }}
+          >
+            Gửi sms
           </UI.Button>
         </UI.HStack>
       )}

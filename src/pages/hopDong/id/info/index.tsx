@@ -176,6 +176,8 @@ function Info() {
                   id: `email-${id}`,
                   type: "email-new",
                   customerId: hopDongData?.customer_id,
+                  recordId: hopDongData?.id,
+                  objectId: "hop-dong",
                 },
               })
             );
@@ -195,6 +197,8 @@ function Info() {
                   id: `gui-sms-${id}`,
                   type: "sms-new",
                   customerId: hopDongData?.customer_id,
+                  recordId: hopDongData?.id,
+                  objectId: "hop-dong",
                 },
               })
             );

@@ -13,6 +13,7 @@ import { useAppDispatch } from "@/store";
 import { closeModalBottom } from "@/store/modal";
 interface ISendMailContainer {
   recordId?: string | number;
+  customerId?: string | number;
   objectId?: string | number;
   onAfterUpdated?: (data: any) => any;
   defaultValues?: any;
@@ -27,6 +28,7 @@ const SendMailContainer = (props: ISendMailContainer) => {
   const {
     objectId,
     recordId,
+    customerId,
     modalId: id,
     gap,
     size,
@@ -69,7 +71,7 @@ const SendMailContainer = (props: ISendMailContainer) => {
       files: [],
       ...data,
       template_id: data?.template_id?.value,
-      customer_id: recordId,
+      customer_id: customerId,
     };
     sendEmailTemplate({ objectId, recordId, payload });
   };

@@ -61,6 +61,7 @@ function WindowPopup(props: IWindowPopup) {
         gap="16px"
         size="small"
         recordId={other?.recordId}
+        customerId={other?.customerId}
         objectId={other?.objectId}
         isUploadFile={other?.isUploadFile}
         modalId={id}
@@ -71,6 +72,7 @@ function WindowPopup(props: IWindowPopup) {
       <SendSmsForm
         gap="16px"
         size="small"
+        customerId={other?.customerId}
         recordId={other?.recordId}
         objectId={other?.objectId}
         modalId={id}

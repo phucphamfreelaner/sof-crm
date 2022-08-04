@@ -13,7 +13,8 @@ import {
   AiOutlineDownload,
   AiOutlinePrinter,
   AiOutlineUser,
-  AiOutlineDelete,
+  AiOutlineMessage,
+  AiOutlineMail,
 } from "react-icons/ai";
 import { IoMdCreate } from "react-icons/io";
 import { format } from "date-fns";
@@ -21,6 +22,10 @@ import SearchBar from "@/components/SearchBar";
 import BaseTable from "@/components/BaseTable";
 import { isEmpty } from "lodash-es";
 import { LOCAL_KEY } from "@/constants";
+import { uniqueId } from "lodash-es";
+import { openModalBottom } from "@/store/modal";
+import { useAppDispatch } from "@/store";
+import { useLazyGetViewBaoGiaQuery } from "@/store/baoGia";
 
 const advanceSearchOptions = [
   {
@@ -108,6 +113,8 @@ const advanceSearchOptions = [
 ];
 
 function HopDongListContainer(props) {
+  const dispatch = useAppDispatch();
+  const [getViewBaoGia, { data: fileViewBaoGia }] = useLazyGetViewBaoGiaQuery();
   const navigate = useNavigate();
   const { customerId, isHiddenKhachHang, isHiddenSearchBar } = props;
   const [page, setPage] = useState(0);
@@ -304,6 +311,62 @@ function HopDongListContainer(props) {
               }}
             >
               Tải xuống
+            </UI.Button>
+            <UI.Button
+              disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+              variant="outlined"
+              size="small"
+              startIcon={<AiOutlineMail size="16" />}
+              onClick={() => {
+                const id = uniqueId();
+                getViewBaoGia({ id: dataSelected?.[0]?.id })
+                  .unwrap()
+                  .then((res) => {
+                    dispatch(
+                      openModalBottom({
+                        data: {
+                          title: "Gửi email",
+                          height: "800px",
+                          width: "500px",
+                          id: `email-${id}`,
+                          type: "email-new",
+                          customerId: dataSelected?.[0]?.baogia?.customer_id,
+                          recordId: dataSelected?.[0]?.id,
+                          objectId: "hop-dong",
+                          isUploadFile: true,
+                          file: res,
+                        },
+                      })
+                    );
+                  });
+              }}
+            >
+              Gửi email
+            </UI.Button>
+            <UI.Button
+              disabled={isEmpty(dataSelected) || dataSelected?.length > 1}
+              variant="outlined"
+              size="small"
+              startIcon={<AiOutlineMessage size="16" />}
+              onClick={() => {
+                const id = uniqueId();
+                dispatch(
+                  openModalBottom({
+                    data: {
+                      title: "Gửi sms",
+                      height: "620px",
+                      width: "500px",
+                      id: `gui-sms-${id}`,
+                      type: "sms-new",
+                      customerId: dataSelected?.[0]?.baogia?.customer_id,
+                      recordId: dataSelected?.[0]?.id,
+                      objectId: "hop-dong",
+                    },
+                  })
+                );
+              }}
+            >
+              Gửi sms
             </UI.Button>
           </UI.HStack>
         )}

@@ -81,6 +81,7 @@ export const {
   useGetBaoGiaQuery,
   useLazyCreateBaoGiaQuery,
   useGetViewBaoGiaQuery,
+  useLazyGetViewBaoGiaQuery,
   useLazyDeleteBaoGiaQuery,
   useGetBaoGiaByIdQuery,
   useLazyPutBaoGiaByIdQuery,

@@ -197,6 +197,7 @@ function Info() {
                   id: `email-${id}`,
                   type: "email-new",
                   recordId: baoGiaData?.id,
+                  customerId: baoGiaData?.customer_id,
                   objectId: "bao-gia",
                   isUploadFile: true,
                   file: fileViewBaoGia,
@@ -219,6 +220,7 @@ function Info() {
                   id: `gui-sms-${id}`,
                   type: "sms-new",
                   recordId: baoGiaData?.id,
+                  customerId: baoGiaData?.customer_id,
                   objectId: "bao-gia",
                 },
               })

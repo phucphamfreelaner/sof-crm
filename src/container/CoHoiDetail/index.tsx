@@ -173,6 +173,7 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
                   id: `email-${id}`,
                   type: "email-new",
                   recordId: coHoiData?.customer_id,
+                  customerId: coHoiData?.customer_id,
                   objectId: "khach-hang",
                 },
               })
@@ -193,6 +194,7 @@ export default function CoHoiDetail(props: ICoHoiDetail) {
                   id: `gui-sms-${id}`,
                   type: "sms-new",
                   recordId: coHoiData?.customer_id,
+                  customerId: coHoiData?.customer_id,
                   objectId: "khach-hang",
                 },
               })
