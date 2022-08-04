@@ -86,7 +86,8 @@ export type IFormControl = IBaseController &
       | "upload-file-detail"
       | "file-info"
       | "comment"
-      | "icon-button";
+      | "icon-button"
+      | "table-edit";
     rowSpan?: number;
     colSpan?: number;
   };
