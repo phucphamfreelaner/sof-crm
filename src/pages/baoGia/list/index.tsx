@@ -19,6 +19,18 @@ function BaoGiaList() {
         <UI.Grid item>
           <UI.Typography variant="h4">Báo giá</UI.Typography>
         </UI.Grid>
+        <UI.Grid item>
+          <UI.Button
+            size="small"
+            startIcon={<AiFillPlusCircle fontSize="small" />}
+            variant="contained"
+            onClick={() => {
+              navigate(`/bao_gia/new?customerId=1`);
+            }}
+          >
+            Thêm mới
+          </UI.Button>
+        </UI.Grid>
       </UI.Grid>
 
       <UI.Card>

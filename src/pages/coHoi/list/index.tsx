@@ -19,6 +19,18 @@ function CoHoiList() {
         <UI.Grid item>
           <UI.Typography variant="h4">Cơ Hội</UI.Typography>
         </UI.Grid>
+        <UI.Grid item>
+          <UI.Button
+            size="small"
+            startIcon={<AiFillPlusCircle fontSize="small" />}
+            variant="contained"
+            onClick={() => {
+              navigate(`/co_hoi/new?customerId=1`);
+            }}
+          >
+            Thêm mới
+          </UI.Button>
+        </UI.Grid>
       </UI.Grid>
 
       <UI.Card>

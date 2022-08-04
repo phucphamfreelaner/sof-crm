@@ -16,6 +16,18 @@ function HopDongList() {
         <UI.Grid item>
           <UI.Typography variant="h4">Hợp Đồng</UI.Typography>
         </UI.Grid>
+        <UI.Grid item>
+          <UI.Button
+            size="small"
+            startIcon={<AiFillPlusCircle fontSize="small" />}
+            variant="contained"
+            onClick={() => {
+              navigate(`/hop_dong/new?baogia_id=1`);
+            }}
+          >
+            Thêm mới
+          </UI.Button>
+        </UI.Grid>
       </UI.Grid>
 
       <UI.Card>
