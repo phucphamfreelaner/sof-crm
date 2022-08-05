@@ -6,8 +6,10 @@ import {
   CurrencyType,
   ProductName,
   UnitName,
+  NganhHangSelectCell,
+  DonViTinhSelectCell,
+  LoaiTienSelectCell,
 } from "@/components/TableCellRender";
-import { FiExternalLink } from "react-icons/fi";
 import numeral from "numeral";
 import { CSSObject } from "@emotion/react";
 
@@ -36,7 +38,7 @@ interface IBaoGiaNewForm {
   isLoadingLoaiTien?: boolean;
 
   defaultValues?: any;
-  onAddSanPham?: (index: any) => any;
+  onAddSanPham?: () => any;
 
   formRef?: any;
 
@@ -223,6 +225,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           name: "san_pham",
           label: "Sản phẩm",
           type: "table-edit",
+          onTableEditAddRow: () => onAddSanPham?.(),
           tableEditColumns: [
             {
               field: "ten_san_pham",
@@ -235,7 +238,11 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               field: "product_id",
               headerName: "Ngành hàng",
               flex: 1,
-              minWidth: 130,
+              minWidth: 150,
+              editable: true,
+              renderEditCell: (params: any) => (
+                <NganhHangSelectCell {...params} />
+              ),
               renderCell: ({ value }) => {
                 return <ProductName id={value} />;
               },
@@ -245,13 +252,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               headerName: "Đường dẫn",
               flex: 1,
               minWidth: 70,
-              renderCell: ({ value }) => {
-                return (
-                  <UI.Link href={value} variant="caption" target="_blank">
-                    <FiExternalLink /> {value}
-                  </UI.Link>
-                );
-              },
+              editable: true,
             },
             {
               field: "so_luong",
@@ -268,6 +269,10 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               flex: 1,
               align: "center",
               headerAlign: "center",
+              editable: true,
+              renderEditCell: (params: any) => (
+                <DonViTinhSelectCell {...params} />
+              ),
               renderCell: ({ value }) => {
                 return <UnitName code={value} />;
               },
@@ -361,6 +366,10 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
               flex: 1,
               align: "center",
               headerAlign: "center",
+              editable: true,
+              renderEditCell: (params: any) => (
+                <LoaiTienSelectCell {...params} />
+              ),
               renderCell: ({ value }) => {
                 return <CurrencyType code={value} />;
               },

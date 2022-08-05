@@ -27,6 +27,18 @@ export const donViTinhService = createApi({
         url: `/cau-hinh/group/don_vi/key/${value}`,
       }),
     }),
+    getDonViTinhList: builder.query<any, any>({
+      transformResponse: (response: any) =>
+        keys(response)?.map?.((x: any, index: number) => ({
+          label: response[x],
+          value: x,
+          id: index,
+        })),
+      query: () => ({
+        method: "GET",
+        url: `/cau-hinh/group/don_vi`,
+      }),
+    }),
   }),
 });
 
@@ -34,4 +46,5 @@ export const {
   useLazySearchDonViTinhQuery,
   useLazyGetDonViTinhByKeyQuery,
   useGetDonViTinhByKeyQuery,
+  useGetDonViTinhListQuery,
 } = donViTinhService;
