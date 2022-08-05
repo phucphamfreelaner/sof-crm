@@ -232,7 +232,7 @@ function Info() {
         <DetailInfo
           isOpen={isEdit}
           editContent={
-            <UI.CKBox p="26px">
+            <UI.CKBox p="4px">
               <BaoGiaForm
                 size="small"
                 id={params?.id}

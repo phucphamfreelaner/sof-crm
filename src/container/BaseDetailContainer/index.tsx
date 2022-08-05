@@ -160,9 +160,9 @@ function BaseDetail(props: IBaseDetail) {
       >
         <UI.Card
           sx={{
-            maxWidth: "68vw",
-            minWidth: "68vw",
-            width: "68vw",
+            maxWidth: "65vw",
+            minWidth: "65vw",
+            width: "65vw",
             height: "calc(100vh - 60px)",
           }}
         >
