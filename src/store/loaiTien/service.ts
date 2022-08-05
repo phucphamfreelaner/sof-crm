@@ -22,6 +22,14 @@ export const loaiTienGiaService = createApi({
         url: `/cau-hinh/group/loai_tien?s=${name}`,
       }),
     }),
+    getLoaiTienList: builder.query({
+      transformResponse: (response: any) =>
+        keys(response)?.map?.((x: any) => ({ label: response[x], value: x })),
+      query: ({ name }) => ({
+        method: "GET",
+        url: `/cau-hinh/group/loai_tien`,
+      }),
+    }),
     getLoaiTienByKey: builder.query<any, { value: string }>({
       transformResponse: (response: any) => response,
       query: ({ value }) => ({
@@ -36,4 +44,5 @@ export const {
   useLazySearchLoaiTienGiaListQuery,
   useGetLoaiTienByKeyQuery,
   useLazyGetLoaiTienByKeyQuery,
+  useGetLoaiTienListQuery,
 } = loaiTienGiaService;

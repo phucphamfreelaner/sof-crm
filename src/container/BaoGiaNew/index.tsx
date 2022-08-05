@@ -228,15 +228,11 @@ function BaoGaiForm(props: IBaoGiaForm) {
         san_pham: [
           {
             id: uniqueId(),
-            product_id: sanPhamData?.[0],
-            chat_lieu_key: chatLieuData?.[0],
-            don_vi_key: donViTinhData?.[0],
             so_luong: 1,
             don_gia: 0,
             thue: 0,
             phu_thu: 0,
             phi_khac: 0,
-            thanh_tien: 0,
           },
         ],
       }));
@@ -293,11 +289,12 @@ function BaoGaiForm(props: IBaoGiaForm) {
     const san_pham = data?.san_pham.map((x: any, index: number) => ({
       ...baoGiaData?.san_pham?.[index],
       ...x,
-      chat_lieu_key: x?.chat_lieu_key,
       don_vi_key: x?.don_vi_key,
       product_id: x?.product_id,
       baogia_id: +id,
     }));
+    console.log("san_pham", san_pham);
+
     const payload = {
       ...data,
       san_pham,
@@ -386,14 +383,12 @@ function BaoGaiForm(props: IBaoGiaForm) {
           getCongTyById={(id: any) => getCongTyById({ id }).unwrap()}
           getMauInById={(id: any) => getMauInById({ id }).unwrap()}
           onAddSanPham={() => ({
-            product_id: sanPhamData?.[0],
-            chat_lieu_key: chatLieuData?.[0],
-            don_vi_key: donViTinhData?.[0],
+            id: uniqueId(),
             so_luong: 1,
-            don_gia_von: "",
-            don_gia: "",
-            thanh_tien: "",
-            ghi_chu: "",
+            don_gia: 0,
+            thue: 0,
+            phu_thu: 0,
+            phi_khac: 0,
           })}
           defaultValues={defaultValues}
         />
