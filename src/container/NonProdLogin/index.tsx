@@ -12,6 +12,12 @@ interface INonProdLogin {
   children?: React.ReactNode;
 }
 
+declare global {
+  interface Window {
+    __BASE_URL__: string;
+  }
+}
+
 function NonProdLogin(props: INonProdLogin) {
   const theme = UI.useTheme();
   const { children } = props;
@@ -27,6 +33,9 @@ function NonProdLogin(props: INonProdLogin) {
     if (env === "non-prod" && !localStorage.getItem(LOCAL_KEY.TOKEN))
       setOpen(true);
     else setOpen(false);
+    if (window) {
+      window.__BASE_URL__ = "https://apisf.interphase.vn/api";
+    }
   }, []);
 
   React.useEffect(() => {

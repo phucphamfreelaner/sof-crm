@@ -8,7 +8,7 @@ import { ILichHen } from "@/store/types";
 
 export const lichHenService = createApi({
   baseQuery: axiosBaseQuery({
-    baseUrl: "https://apisf.interphase.vn/api",
+    baseUrl: window?.__BASE_URL__ || "https://apisf.interphase.vn/api",
     onError: (err) => toast.error(err.error || "Có lỗi xẩy ra!"),
     token: () => localStorage.getItem(LOCAL_KEY.TOKEN),
   }),

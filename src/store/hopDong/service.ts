@@ -6,7 +6,7 @@ import { IGetHopDongList, IHopDong } from "@/types/hopDong";
 
 export const hopDongService = createApi({
   baseQuery: axiosBaseQuery({
-    baseUrl: "https://apisf.interphase.vn/api",
+    baseUrl: window?.__BASE_URL__ || "https://apisf.interphase.vn/api",
     onError: (err) => {
       toast.error(err.error);
     },

@@ -5,7 +5,7 @@ import { LOCAL_KEY } from "@/constants";
 
 export const sanPhamService = createApi({
   baseQuery: axiosBaseQuery({
-    baseUrl: "https://apisf.interphase.vn/api",
+    baseUrl: window?.__BASE_URL__ || "https://apisf.interphase.vn/api",
     onError: (err) => toast.error(err.error),
     token: () => localStorage.getItem(LOCAL_KEY.TOKEN),
   }),

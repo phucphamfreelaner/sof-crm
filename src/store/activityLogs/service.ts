@@ -5,7 +5,7 @@ import { LOCAL_KEY } from "@/constants";
 
 export const activityLogsService = createApi({
   baseQuery: axiosBaseQuery({
-    baseUrl: "https://apisf.interphase.vn/api",
+    baseUrl: window?.__BASE_URL__ || "https://apisf.interphase.vn/api",
     onError: (err) => {
       toast.error(err.error || "activityLogsService: Có lỗi xẩy ra!");
     },

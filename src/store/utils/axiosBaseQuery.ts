@@ -1,7 +1,7 @@
 import qs from "qs";
 import axios, { Method } from "axios";
-import { env } from "./env";
 import { isString } from "lodash-es";
+import { LOCAL_KEY } from "@/constants";
 
 export interface IOptions {
   url?: string;
@@ -45,6 +45,14 @@ export const axiosBaseQuery =
           ? axiosError.response?.data?.error
           : JSON.stringify(axiosError.response?.data?.error),
       });
+
+      if (
+        ["token_invalid", "token_not_provided"].includes(
+          axiosError.response?.data?.error
+        )
+      ) {
+        localStorage.removeItem(LOCAL_KEY.TOKEN);
+      }
 
       return {
         error: {
