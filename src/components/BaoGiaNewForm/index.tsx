@@ -9,8 +9,10 @@ import {
 } from "@/components/TableCellRender";
 import { FiExternalLink } from "react-icons/fi";
 import numeral from "numeral";
+import { CSSObject } from "@emotion/react";
 
 interface IBaoGiaNewForm {
+  sx?: CSSObject;
   gap?: string;
   size?: "medium" | "small";
   companyData?: any;
@@ -93,6 +95,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
     getMauInById,
     gap,
     size = "medium",
+    sx,
   } = props;
 
   const [isVAT, setIsVAT] = useBoolean(false);
@@ -102,7 +105,7 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
 
   return (
     <BaseForm
-      sx={{ width: "100%" }}
+      sx={{ width: "100%", ...sx }}
       templateColumns="repeat(6, 1fr)"
       gap={gap || theme.spacing(2)}
       defaultValues={defaultValues}

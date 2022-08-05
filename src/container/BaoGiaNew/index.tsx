@@ -4,7 +4,7 @@ import { FaSave } from "react-icons/fa";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { toast } from "react-hot-toast";
-import { omit } from "lodash-es";
+import { omit, uniqueId } from "lodash-es";
 
 import BaoGiaNewForm from "@/components/BaoGiaNewForm";
 import {
@@ -227,7 +227,7 @@ function BaoGaiForm(props: IBaoGiaForm) {
         },
         san_pham: [
           {
-            _id: 1,
+            id: uniqueId(),
             product_id: sanPhamData?.[0],
             chat_lieu_key: chatLieuData?.[0],
             don_vi_key: donViTinhData?.[0],
