@@ -59,6 +59,10 @@ interface IBaoGiaNewForm {
   getDonViTinhByKey?: (key: string) => Promise<any>;
   getCongTyById?: (key: string) => Promise<any>;
   getMauInById?: (key: string) => Promise<any>;
+
+  isLoadingLoaiTyGia?: boolean;
+  loaiTyGiaData?: any[];
+  onSearchLoaiTyGia?: () => any;
 }
 
 function BaoGiaNewForm(props: IBaoGiaNewForm) {
@@ -98,6 +102,10 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
     gap,
     size = "medium",
     sx,
+
+    isLoadingLoaiTyGia,
+    loaiTyGiaData,
+    onSearchLoaiTyGia,
   } = props;
 
   const [isVAT, setIsVAT] = useBoolean(false);
@@ -391,7 +399,17 @@ function BaoGiaNewForm(props: IBaoGiaNewForm) {
           ],
           colSpan: 6,
         },
-
+        {
+          name: "loai_tien_key",
+          label: "Loại báo giá",
+          type: "autocomplete",
+          colSpan: 2,
+          colStart: 5,
+          size,
+          isLoading: isLoadingLoaiTyGia,
+          autocompleteOptions: loaiTyGiaData || [],
+          onSearchChange: onSearchLoaiTyGia,
+        },
         {
           name: "tong_gia_tri",
           label: "TỔNG GIÁ TRỊ SẢN PHẨM",

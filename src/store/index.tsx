@@ -39,6 +39,7 @@ import { mailTemplatesService } from "./mailTemplates";
 import { activityLogsService } from "./activityLogs";
 import { smsTemplatesService } from "./smsTemplates";
 import { appCalendarSlice, calendarService } from "./calendar";
+import { tyGiaService } from "./tyGia";
 
 // @ts-ignore
 const store: any = configureStore({
@@ -47,6 +48,7 @@ const store: any = configureStore({
     coHoi: coHoiSlice.reducer,
     modal: modalSlice.reducer,
     calendar: appCalendarSlice.reducer,
+    [tyGiaService.reducerPath]: tyGiaService.reducer,
     [calendarService.reducerPath]: calendarService.reducer,
     [customerService.reducerPath]: customerService.reducer,
     [coHoiService.reducerPath]: coHoiService.reducer,

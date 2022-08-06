@@ -21,7 +21,7 @@ function AddBaoGia() {
         </UI.Grid>
       </UI.Grid>
       <UI.Box sx={{ mt: 5, width: "100%" }}>
-        <BaoGiaNew />
+        <BaoGiaNew size="small" />
       </UI.Box>
     </UI.Box>
   );
