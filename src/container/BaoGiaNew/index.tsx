@@ -35,6 +35,7 @@ import {
   useLazyCreateBaoGiaQuery,
   useLazyPutBaoGiaByIdQuery,
 } from "@/store/baoGia";
+import { useLazySearchTyGiaGiaQuery } from "@/store/tyGia";
 
 interface IBaoGiaForm {
   baoGiaData?: any;
@@ -174,6 +175,11 @@ function BaoGaiForm(props: IBaoGiaForm) {
     },
   ] = useLazyCreateBaoGiaQuery();
 
+  const [
+    searchTyGia,
+    { data: dataTyGia, isLoading: isLoadingTyGia, isSuccess: isSuccessTyGia },
+  ] = useLazySearchTyGiaGiaQuery();
+
   const [updateBaoGia, { isLoading: isLoadingUpdateBaoGia }] =
     useLazyPutBaoGiaByIdQuery();
 
@@ -293,7 +299,6 @@ function BaoGaiForm(props: IBaoGiaForm) {
       product_id: x?.product_id,
       baogia_id: +id,
     }));
-    console.log("san_pham", san_pham);
 
     const payload = {
       ...data,
